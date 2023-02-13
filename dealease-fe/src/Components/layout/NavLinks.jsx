@@ -1,7 +1,7 @@
 import { NavLink, Link } from 'react-router-dom';
 
 function NavLinks() {
-  const activeStyle = { color: 'yellow' };
+  const activeStyle = { color: '#d69215' };
 
   const navLinks = [
     { title: 'Home', to: '/' },

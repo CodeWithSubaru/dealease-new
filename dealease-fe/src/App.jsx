@@ -1,12 +1,12 @@
-import './App.css';
+import { GlobalStyles } from './GlobalStyle.style';
 import { Routes, Route } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 import { Home } from './Pages/Buyer/Home';
 import { Message } from './Pages/Buyer/Message';
 
 function App() {
   return (
-    <div className='App'>
+    <div>
+      <GlobalStyles />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/message' element={<Message />} />

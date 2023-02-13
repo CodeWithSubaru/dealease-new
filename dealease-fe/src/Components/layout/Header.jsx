@@ -1,17 +1,18 @@
 import { useRef } from 'react';
-import { NavLink } from 'react-router-dom';
-import NavLinks from './NavLinks';
+import { ButtonStyle, ButtonBorderedStyle } from '../Button/button.style';
+import { Nav } from './Header.style';
+import { H1 } from '../Helpers/index.style';
 
 function Header() {
   // collapsible navlinks
   const collapse = useRef(null);
 
   return (
-    <nav className='navbar navbar-expand-lg bg-body-tertiary bg-dark'>
+    <Nav className='navbar navbar-expand-lg bg-body-tertiary'>
       <div className='container-fluid'>
-        <NavLink className='navbar-brand text-light' to='/'>
+        <H1 className='navbar-brand text-light' to='/'>
           Dealease
-        </NavLink>
+        </H1>
         <button
           className='navbar-toggler'
           type='button'
@@ -25,11 +26,20 @@ function Header() {
           id='navbarNav'
         >
           <ul className='navbar-nav'>
-            <NavLinks />
+            <ButtonStyle
+              backgroundColor='#efa726'
+              hoverBgColor='#d69215'
+              btnTitle='Login'
+            />
+
+            <ButtonBorderedStyle
+              backgroundColor='transparent'
+              btnTitle='Sign Up'
+            />
           </ul>
         </div>
       </div>
-    </nav>
+    </Nav>
   );
 }
 
