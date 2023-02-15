@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from './Button';
+import { Button } from './Button';
 
 const ButtonBaseStyle = styled(Button)`
   display: inline-block;
@@ -10,27 +10,26 @@ const ButtonBaseStyle = styled(Button)`
   font-family: Inter, sans-serif;
   cursor: pointer;
   padding: 0.8rem 2rem;
-`;
-
-export const ButtonStyle = styled(ButtonBaseStyle)`
   background-color: ${(props) => props.backgroundColor};
   transition: all 0.3s;
-  color: #fff;
+  text-decoration: none;
 
   &:hover {
+    color: #fff;
     background: ${(props) => props.hoverBgColor};
   }
 `;
 
-export const ButtonBorderedStyle = styled(ButtonBaseStyle)`
+export const PrimaryBtnStyle = styled(ButtonBaseStyle)`
+  color: #fff;
+`;
+
+export const SecondaryBtnStyle = styled(ButtonBaseStyle)`
   outline: 2px solid rgba(255, 255, 255, 0.5);
   color: rgba(255, 255, 255, 0.5);
   margin: 0 1rem;
 
-  &:hover,
-  &:focus {
-    background: ${(props) => props.hoverBgOutlineColor};
-    color: #fff;
-    outline: 2px solid #fff;
+  &:hover {
+    outline-color: ${(props) => props.hoverBgColor};
   }
 `;
