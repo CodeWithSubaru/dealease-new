@@ -1,12 +1,83 @@
+import { useEffect, useState } from 'react';
 import { PrimaryBtnStyle } from '../../Components/Button/Button.style';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import {
+  regions,
+  provinces,
+  cities,
+  barangays,
+} from 'select-philippines-address';
 
 export function Register() {
+  const [user, setUser] = useState({
+    first_name: null,
+    middle_name: null,
+    last_name: null,
+    ext_name: null,
+    birth_date: null,
+    contact_number: null,
+    region: null,
+    province: null,
+    city: null,
+    barangay: null,
+    street: null,
+    email: null,
+    password: null,
+    confirm_password: null,
+  });
+
+  const [regionData, setRegion] = useState([]);
+  const [provinceData, setProvince] = useState([]);
+  const [cityData, setCity] = useState([]);
+  const [barangayData, setBarangay] = useState([]);
+
+  const [regionAddr, setRegionAddr] = useState('');
+  const [provinceAddr, setProvinceAddr] = useState('');
+  const [cityAddr, setCityAddr] = useState('');
+  const [barangayAddr, setBarangayAddr] = useState('');
+
+  const region = () => {
+    regions().then((response) => {
+      setRegion(response);
+    });
+  };
+
+  const province = (e) => {
+    setRegionAddr(e.target.selectedOptions[0].text);
+    provinces(e.target.value).then((response) => {
+      setProvince(response);
+      setCity([]);
+      setBarangay([]);
+    });
+  };
+
+  const city = (e) => {
+    setProvinceAddr(e.target.selectedOptions[0].text);
+    cities(e.target.value).then((response) => {
+      setCity(response);
+    });
+  };
+
+  const barangay = (e) => {
+    setCityAddr(e.target.selectedOptions[0].text);
+    barangays(e.target.value).then((response) => {
+      setBarangay(response);
+    });
+  };
+
+  const brgy = (e) => {
+    setBarangayAddr(e.target.selectedOptions[0].text);
+  };
+
+  useEffect(() => {
+    region();
+  }, []);
+
   const { errors, setErrors, register } = useAuthContext();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    register({});
+    register(user);
     console.log('register');
   };
 
@@ -33,6 +104,7 @@ export function Register() {
           <div className='form-top'>
             <div className='personal-details'>
               <h3>Personal Details</h3>
+
               <hr />
               <div>
                 <div> First Name * </div>
@@ -40,12 +112,14 @@ export function Register() {
                   <input
                     type='text'
                     name='first_name'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) => setUser({ first_name: e.target.value })}
                     // required
                   />
                 </div>
               </div>
-              {/* <small className='errMsg'>{errors.first_name[0]}</small> */}
+              <small className='errMsg'>
+                {errors && errors.first_name && errors.first_name[0]}
+              </small>
 
               <div>
                 <div> Middle Name </div>
@@ -71,7 +145,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.last_name'>
-                {/* {errors.last_name[0]} */}
+                {errors && errors.last_name && errors.last_name[0]}
               </small>
 
               <div>
@@ -98,7 +172,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.birthday'>
-                {/* {errors.birthday[0]} */}
+                {errors && errors.birthday && errors.birthday[0]}
               </small>
 
               <div className='mb-1'>
@@ -112,7 +186,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.contact_number'>
-                {/* {errors.contact_number[0]} */}
+                {errors && errors.contact_number && errors.contact_number[0]}
               </small>
             </div>
 
@@ -122,37 +196,52 @@ export function Register() {
               <div>
                 <div>Region</div>
                 <div>
-                  <select id='region' onSelect={(e) => e.target.value}>
-                    <option></option>
-                    <option v-for='region in regions'>
-                      {/* {region.region_name} */}
-                    </option>
+                  <select onChange={province} onSelect={region}>
+                    <option disabled>Select Region</option>
+                    {regionData &&
+                      regionData.length > 0 &&
+                      regionData.map((item) => (
+                        <option key={item.region_code} value={item.region_code}>
+                          {item.region_name}
+                        </option>
+                      ))}
                   </select>
+                  <br />
+
+                  <br />
                   <span className='material-symbols-rounded expand_more'>
                     expand_more
                   </span>
                 </div>
               </div>
               <small className='errMsg' v-if='errors.region'>
-                {/* {errors.region[0]} */}
+                {errors && errors.region && errors.region[0]}
               </small>
 
               <div>
                 <div>Province</div>
                 <div>
-                  <select id='province' onSelect={(e) => e.target.value}>
-                    {/* <option>{form.province}</option> */}
-                    <option v-for='province in provinces'>
-                      {/* {province.province_name} */}
-                    </option>
+                  <select onChange={city}>
+                    <option disabled>Select Province</option>
+                    {provinceData &&
+                      provinceData.length > 0 &&
+                      provinceData.map((item) => (
+                        <option
+                          key={item.province_code}
+                          value={item.province_code}
+                        >
+                          {item.province_name}
+                        </option>
+                      ))}
                   </select>
+                  <br />
                   <span className='material-symbols-rounded expand_more'>
                     expand_more
                   </span>
                 </div>
               </div>
               <small className='errMsg' v-if='errors.province'>
-                {/* {errors.province[0]} */}
+                {errors && errors.province && errors.province[0]}
               </small>
 
               <div>
@@ -168,7 +257,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.city'>
-                {/* {errors.city[0]} */}
+                {errors && errors.city && errors.city[0]}
               </small>
 
               <div>
@@ -186,7 +275,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.brgy'>
-                {/* {errors.brgy[0]} */}
+                {errors && errors.barangay && errors.barangay[0]}
               </small>
 
               <div className=''>
@@ -201,7 +290,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.street'>
-                {/* {errors.street[0]} */}
+                {errors && errors.street && errors.street[0]}
               </small>
             </div>
           </div>
@@ -222,7 +311,7 @@ export function Register() {
                 </div>
               </div>
               <small className='errMsg' v-if='errors.email'>
-                {/* {errors.email[0]} */}
+                {errors && errors.email && errors.email[0]}
               </small>
 
               <div>
@@ -231,14 +320,14 @@ export function Register() {
                   <input
                     type='password'
                     name='password'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) => setUser({ password: e.target.value })}
                     // required
                   />
                 </div>
               </div>
 
               <small className='errMsg' v-if='errors.password'>
-                {/* {errors.password[0]} */}
+                {errors && errors.password && errors.password[0]}
               </small>
 
               <div className='mb-1'>

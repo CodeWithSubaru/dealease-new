@@ -9,7 +9,11 @@ export function AuthBuyerLayout() {
   return (
     <>
       <Header />
-      {user && user.user_type == 1 ? <Outlet /> : <Navigate to='/login' />}
+      {user && user.user_type == 'Buyer' ? (
+        <Outlet />
+      ) : (
+        <Navigate to='/login' />
+      )}
     </>
   );
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,6 +13,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that are mass assignable.
@@ -47,6 +51,17 @@ class User extends Authenticatable
 
     public function user_details()
     {
-        return  $this->hasOne(UserDetails::class);
+        return  $this->hasOne(\App\Models\UserDetail::class, 'user_id', 'user_id');
+    }
+
+    protected function getUserTypeAttribute()
+    {
+        if ($this->attributes['user_type'] === '1') {
+            return $this->attributes['user_type'] = 'Buyer';
+        } elseif ($this->attributes['user_type'] === '2') {
+            return $this->attributes['user_type'] = 'Seller';
+        } elseif ($this->attributes['user_type'] === '9') {
+            return $this->attributes['user_type'] = 'Admin';
+        }
     }
 }

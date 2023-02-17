@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from '../../api/axios';
@@ -13,7 +13,9 @@ export const AuthProvider = ({ children }) => {
   const csrf = () => axios.get('/sanctum/csrf-cookie');
 
   const getUser = () => {
-    axios.get('/api/user').then((res) => setUser(res.data));
+    axios.get('/api/user').then((res) => {
+      setUser(res.data[0]);
+    });
   };
 
   // Login Methods for each user
@@ -59,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!user) {
       getUser();
     }

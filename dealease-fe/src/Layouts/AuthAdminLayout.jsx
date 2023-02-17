@@ -9,7 +9,7 @@ export function AuthAdminLayout() {
   return (
     <>
       <Header />
-      {user && user.user_type === 9 ? (
+      {user && user.user_type == 'Admin' ? (
         <Outlet />
       ) : (
         <Navigate to='/admin/login' />

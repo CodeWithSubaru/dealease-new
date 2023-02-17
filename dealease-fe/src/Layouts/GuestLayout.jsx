@@ -12,12 +12,12 @@ export function GuestLayout() {
       <Header />
       {!user ? (
         <Outlet />
-      ) : user && user.user_type == 1 ? (
+      ) : user && user.user_type == 'Buyer' ? (
         <Navigate to='/' />
-      ) : user.user_type == 2 ? (
+      ) : user && user.user_type == 'Seller' ? (
         <Navigate to='/seller/home' />
       ) : (
-        <Navigate to='/admin/dashboard' />
+        user && user.user_type == 'Admin' && <Navigate to='/admin/dashboard' />
       )}
     </>
   );

@@ -70,8 +70,7 @@ function Header() {
               </>
             ) : (
               <>
-                {user.name}
-                <button onClick={handleLogout}>Logout</button>
+                {user.first_name} <button onClick={handleLogout}>Logout</button>
               </>
             )}
           </ul>

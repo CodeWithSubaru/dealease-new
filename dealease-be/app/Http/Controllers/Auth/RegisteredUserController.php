@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserDetails;
-use Illuminate\Auth\Events\Registered;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -44,11 +44,12 @@ class RegisteredUserController extends Controller
         ]);
 
         if ($user) {
-            $user = UserDetails::create([
+            $user = UserDetail::create([
                 'region' => $request->region,
                 'province' => $request->province,
                 'city' => $request->city,
                 'barangay' => $request->barangay,
+                'street' => $request->street,
                 'birth_date' => $request->birth_date,
                 'contact_number' =>  $request->contact_number,
             ]);
