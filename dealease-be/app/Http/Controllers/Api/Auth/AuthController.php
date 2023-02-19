@@ -1,25 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Api\Auth;
 
+use Rules\Password;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\ValidationException;
 
-class RegisteredUserController extends Controller
+class AuthController extends Controller
 {
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Display a listing of the resource.
      */
-    public function store(Request $request)
+
+    public function index()
+    {
+        $auth_user = User::with('user_details')->where('user_id', Auth::id())->get();
+        return $auth_user;
+    }
+
+    public function create(Request $request)
     {
         $request->validate([
             'first_name' => ['required', 'string', 'max:50'],
@@ -55,11 +60,45 @@ class RegisteredUserController extends Controller
                 'user_id' => $user->user_id
             ]);
 
-            event(new Registered($user));
-
-            Auth::login($user);
-
-            return response()->noContent();
+            return response()->json(['message' => 'User Created Successfully'], 200);
         }
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password', 'user_type'), $request->boolean('remember'))) {
+
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        $auth_user = User::with('user_details')->where('user_id', Auth::id())->get();
+
+        $token = $request->user()->createToken($auth_user[0]->user_type)->plainTextToken;
+
+        $obj = [
+            'message' => 'User Login Succesfully',
+            'user' => $auth_user,
+            'token' => $token,
+        ];
+        return response()->json($obj, 200);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->user()->tokens()->delete();
+
+        return response()->json(['message' => 'User loggedout successfully'], 200);
     }
 }

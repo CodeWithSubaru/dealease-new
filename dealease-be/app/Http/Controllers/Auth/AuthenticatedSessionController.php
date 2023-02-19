@@ -6,30 +6,39 @@ use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
-
-    public function index()
-    {
-        $auth_user = User::with('user_details')->where('user_id', Auth::id())->get();
-
-        return $auth_user;
-    }
-
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $validated = $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
 
-        $request->session()->regenerate();
+        if (!Auth::attempt($this->only('email', 'password', 'user_type'), $this->boolean('remember'))) {
 
-        return response()->noContent();
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        $auth_user = User::with('user_details')->where('user_id', Auth::id())->get();
+        $token = $auth_user->createToken($auth_user->user_type)->plainTextToken;
+
+        return response()->json([
+            'message' => 'User Login Succesfully',
+            'user' => $auth_user,
+            'token' => $token
+        ], 200);
     }
 
     /**

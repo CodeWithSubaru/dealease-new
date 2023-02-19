@@ -14,9 +14,11 @@ class UserDetail extends Model
         'birth_date',
         'region',
         'province',
-        'town',
+        'city',
+        'barangay',
         'street',
         'contact_number',
+        'user_id'
     ];
 
     public function user()

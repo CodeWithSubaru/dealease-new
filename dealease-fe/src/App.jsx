@@ -23,47 +23,48 @@ import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
 
 import { GuestLayout } from './Layouts/GuestLayout';
 import { Register } from './Pages/Auth/Register';
+import useAuthContext from './Hooks/Context/AuthContext';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+  const { loading, user } = useAuthContext();
+
+  if (loading && !user) {
+    return <Loader visibility={loading}></Loader>;
+  }
 
   return (
-    <div>
-      <Loader visibility={isLoading} />
-      <GlobalStyles />
+    <>
+      <div>
+        <GlobalStyles />
 
-      {/* Buyer Route */}
-      <Routes>
-        <Route element={<AuthBuyerLayout />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/message' element={<Message />} />
-        </Route>
+        {/* Buyer Route */}
+        <Routes>
+          <Route element={<AuthBuyerLayout />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/message' element={<Message />} />
+          </Route>
 
-        {/* Seller Route */}
-        <Route element={<AuthSellerLayout />}>
-          <Route path='/seller/home' element={<HomeSeller />} />
-        </Route>
+          {/* Seller Route */}
+          <Route element={<AuthSellerLayout />}>
+            <Route path='/seller/home' element={<HomeSeller />} />
+          </Route>
 
-        {/* Admin Route */}
-        <Route element={<AuthAdminLayout />}>
-          <Route path='/admin/dashboard' element={<Dashboard />} />
-        </Route>
+          {/* Admin Route */}
+          <Route element={<AuthAdminLayout />}>
+            <Route path='/admin/dashboard' element={<Dashboard />} />
+          </Route>
 
-        <Route element={<GuestLayout />}>
-          <Route path='/login' element={<Login />} />
-          <Route path='/seller/login' element={<LoginSeller />} />
-          <Route path='/admin/login' element={<LoginAdmin />} />
-          <Route path='/register' element={<Register />} />
-        </Route>
+          <Route element={<GuestLayout />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/seller/login' element={<LoginSeller />} />
+            <Route path='/admin/login' element={<LoginAdmin />} />
+            <Route path='/register' element={<Register />} />
+          </Route>
 
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-    </div>
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </div>
+    </>
   );
 }
 

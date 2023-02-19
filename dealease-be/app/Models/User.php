@@ -62,6 +62,8 @@ class User extends Authenticatable
             return $this->attributes['user_type'] = 'Seller';
         } elseif ($this->attributes['user_type'] === '9') {
             return $this->attributes['user_type'] = 'Admin';
+        } else {
+            return $this->attributes['user_type'];
         }
     }
 }

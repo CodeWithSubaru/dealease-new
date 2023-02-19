@@ -10,10 +10,6 @@ export const Login = () => {
   const user_type = 1;
   const { loginBuyer, errors, setErrors } = useAuthContext();
 
-  useEffect(() => {
-    setErrors(null);
-  }, []);
-
   const handleLogin = (e) => {
     e.preventDefault();
     loginBuyer({ email, password, user_type });

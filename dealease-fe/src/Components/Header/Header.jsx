@@ -9,7 +9,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 function Header() {
   // collapsible navlinks
   const collapse = useRef(null);
-  const { user, logout } = useAuthContext();
+  const { user, token, logout } = useAuthContext();
 
   const handleLogout = () => {
     logout();
@@ -34,7 +34,7 @@ function Header() {
           id='navbarNav'
         >
           <ul className='navbar-nav'>
-            {!user ? (
+            {!token ? (
               <>
                 <PrimaryBtnStyle
                   backgroundColor='#efa726'
@@ -43,7 +43,6 @@ function Header() {
                   btnTitle='Login'
                   link
                 />
-
                 <PrimaryBtnStyle
                   backgroundColor='#efa726'
                   hoverBgColor='#d69215'
@@ -51,7 +50,6 @@ function Header() {
                   btnTitle='LoginSeller'
                   link
                 />
-
                 <PrimaryBtnStyle
                   backgroundColor='#efa726'
                   hoverBgColor='#d69215'
@@ -59,7 +57,6 @@ function Header() {
                   btnTitle='LoginAdmin'
                   link
                 />
-
                 <SecondaryBtnStyle
                   backgroundColor='transparent'
                   hoverBgColor='#d69215'
@@ -70,7 +67,8 @@ function Header() {
               </>
             ) : (
               <>
-                {user.first_name} <button onClick={handleLogout}>Logout</button>
+                {user.first_name}
+                <button onClick={handleLogout}>Logout</button>
               </>
             )}
           </ul>

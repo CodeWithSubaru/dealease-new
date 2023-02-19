@@ -23,18 +23,19 @@ export function Register() {
     street: null,
     email: null,
     password: null,
-    confirm_password: null,
+    password_confirmation: null,
   });
+  const { errors, setErrors, register } = useAuthContext();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    register(user);
+  };
 
   const [regionData, setRegion] = useState([]);
   const [provinceData, setProvince] = useState([]);
   const [cityData, setCity] = useState([]);
   const [barangayData, setBarangay] = useState([]);
-
-  const [regionAddr, setRegionAddr] = useState('');
-  const [provinceAddr, setProvinceAddr] = useState('');
-  const [cityAddr, setCityAddr] = useState('');
-  const [barangayAddr, setBarangayAddr] = useState('');
 
   const region = () => {
     regions().then((response) => {
@@ -43,7 +44,7 @@ export function Register() {
   };
 
   const province = (e) => {
-    setRegionAddr(e.target.selectedOptions[0].text);
+    setUser({ ...user, region: e.target.selectedOptions[0].text });
     provinces(e.target.value).then((response) => {
       setProvince(response);
       setCity([]);
@@ -52,34 +53,26 @@ export function Register() {
   };
 
   const city = (e) => {
-    setProvinceAddr(e.target.selectedOptions[0].text);
+    setUser({ ...user, province: e.target.selectedOptions[0].text });
     cities(e.target.value).then((response) => {
       setCity(response);
     });
   };
 
   const barangay = (e) => {
-    setCityAddr(e.target.selectedOptions[0].text);
+    setUser({ ...user, city: e.target.selectedOptions[0].text });
     barangays(e.target.value).then((response) => {
       setBarangay(response);
     });
   };
 
   const brgy = (e) => {
-    setBarangayAddr(e.target.selectedOptions[0].text);
+    setUser({ ...user, barangay: e.target.selectedOptions[0].text });
   };
 
   useEffect(() => {
     region();
   }, []);
-
-  const { errors, setErrors, register } = useAuthContext();
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    register(user);
-    console.log('register');
-  };
 
   return (
     <main>
@@ -112,7 +105,9 @@ export function Register() {
                   <input
                     type='text'
                     name='first_name'
-                    onChange={(e) => setUser({ first_name: e.target.value })}
+                    onChange={(e) =>
+                      setUser({ ...user, first_name: e.target.value })
+                    }
                     // required
                   />
                 </div>
@@ -127,7 +122,9 @@ export function Register() {
                   <input
                     type='text'
                     name='middle_name'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, middle_name: e.target.value })
+                    }
                     // required
                   />
                 </div>
@@ -139,12 +136,14 @@ export function Register() {
                   <input
                     type='text'
                     name='name'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, last_name: e.target.value })
+                    }
                     // required
                   />
                 </div>
               </div>
-              <small className='errMsg' v-if='errors.last_name'>
+              <small className='errMsg'>
                 {errors && errors.last_name && errors.last_name[0]}
               </small>
 
@@ -154,7 +153,9 @@ export function Register() {
                   <input
                     type='text'
                     name='name'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, ext_name: e.target.value })
+                    }
                     // required
                   />
                 </div>
@@ -167,12 +168,14 @@ export function Register() {
                     type='date'
                     min='1930-01-01'
                     max='2012-12-31'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, birth_date: e.target.value })
+                    }
                   />
                 </div>
               </div>
-              <small className='errMsg' v-if='errors.birthday'>
-                {errors && errors.birthday && errors.birthday[0]}
+              <small className='errMsg'>
+                {errors && errors.birth_date && errors.birth_date[0]}
               </small>
 
               <div className='mb-1'>
@@ -181,7 +184,9 @@ export function Register() {
                   <input
                     type='number'
                     id='#number'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, contact_number: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -207,11 +212,6 @@ export function Register() {
                       ))}
                   </select>
                   <br />
-
-                  <br />
-                  <span className='material-symbols-rounded expand_more'>
-                    expand_more
-                  </span>
                 </div>
               </div>
               <small className='errMsg' v-if='errors.region'>
@@ -234,62 +234,64 @@ export function Register() {
                         </option>
                       ))}
                   </select>
-                  <br />
-                  <span className='material-symbols-rounded expand_more'>
-                    expand_more
-                  </span>
                 </div>
               </div>
-              <small className='errMsg' v-if='errors.province'>
+              <small className='errMsg'>
                 {errors && errors.province && errors.province[0]}
               </small>
 
               <div>
                 <div>City/Town</div>
                 <div>
-                  <select id='town' onSelect={(e) => e.target.value}>
-                    {/* <option>{form.city}</option> */}
-                    {/* <option v-for='city in cities'>{city.city_name}</option> */}
+                  <select onChange={barangay}>
+                    <option disabled>Select City</option>
+                    {cityData &&
+                      cityData.length > 0 &&
+                      cityData.map((item) => (
+                        <option key={item.city_code} value={item.city_code}>
+                          {item.city_name}
+                        </option>
+                      ))}
                   </select>
-                  <span className='material-symbols-rounded expand_more'>
-                    expand_more
-                  </span>
                 </div>
               </div>
-              <small className='errMsg' v-if='errors.city'>
+              <small className='errMsg'>
                 {errors && errors.city && errors.city[0]}
               </small>
 
               <div>
                 <div>Baranggay</div>
                 <div>
-                  <select id='baranggay' onSelect={(e) => e.target.value}>
-                    {/* <option>{form.baranggay}</option> */}
-                    <option v-for='baranggay in baranggays'>
-                      {/* {baranggay.brgy_name} */}
-                    </option>
+                  <select onChange={brgy}>
+                    <option disabled>Select Barangay</option>
+                    {barangayData &&
+                      barangayData.length > 0 &&
+                      barangayData.map((item) => (
+                        <option key={item.brgy_code} value={item.brgy_code}>
+                          {item.brgy_name}
+                        </option>
+                      ))}
                   </select>
-                  <span className='material-symbols-rounded expand_more'>
-                    expand_more
-                  </span>
                 </div>
               </div>
-              <small className='errMsg' v-if='errors.brgy'>
+              <small className='errMsg'>
                 {errors && errors.barangay && errors.barangay[0]}
               </small>
 
               <div className=''>
-                <div> Street </div>
+                <div>Street</div>
                 <div>
                   <input
                     type='text'
                     name=''
                     id=''
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, street: e.target.value })
+                    }
                   />
                 </div>
               </div>
-              <small className='errMsg' v-if='errors.street'>
+              <small className='errMsg'>
                 {errors && errors.street && errors.street[0]}
               </small>
             </div>
@@ -305,7 +307,9 @@ export function Register() {
                   <input
                     type='email'
                     name='email'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                     // required
                   />
                 </div>
@@ -320,7 +324,9 @@ export function Register() {
                   <input
                     type='password'
                     name='password'
-                    onChange={(e) => setUser({ password: e.target.value })}
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
                     // required
                   />
                 </div>
@@ -336,7 +342,12 @@ export function Register() {
                   <input
                     type='password'
                     name='password_confirmation'
-                    onChange={(e) => e.target.value}
+                    onChange={(e) =>
+                      setUser({
+                        ...user,
+                        password_confirmation: e.target.value,
+                      })
+                    }
                     // required
                   />
                 </div>
@@ -348,15 +359,7 @@ export function Register() {
             backgroundColor='#efa726'
             hoverBgColor='#d69215'
             btnTitle='Register'
-          >
-            <p>
-              <span> Register </span>
-              <span>
-                <span className='material-symbols-rounded spin'>autorenew</span>
-                Processing
-              </span>
-            </p>
-          </PrimaryBtnStyle>
+          />
 
           <div className='back-to-home-wrapper'>
             <router-link to='/login' className='back-to-home'>
