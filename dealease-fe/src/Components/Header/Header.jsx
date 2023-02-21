@@ -64,6 +64,14 @@ function Header() {
                   btnTitle='Sign Up'
                   link
                 />
+
+                <SecondaryBtnStyle
+                  backgroundColor='transparent'
+                  hoverBgColor='#d69215'
+                  navigateTo='/register-exist'
+                  btnTitle='Sign Up with exisitng account'
+                  link
+                />
               </>
             ) : (
               <>

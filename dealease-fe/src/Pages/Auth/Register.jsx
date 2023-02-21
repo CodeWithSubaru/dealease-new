@@ -10,25 +10,27 @@ import {
 
 export function Register() {
   const [user, setUser] = useState({
-    first_name: null,
-    middle_name: null,
-    last_name: null,
-    ext_name: null,
-    birth_date: null,
-    contact_number: null,
-    region: null,
-    province: null,
-    city: null,
-    barangay: null,
-    street: null,
+    // first_name: null,
+    // middle_name: null,
+    // last_name: null,
+    // ext_name: null,
+    // birth_date: null,
+    // contact_number: null,
+    // region: null,
+    // province: null,
+    // city: null,
+    // barangay: null,
+    // street: null,
     email: null,
     password: null,
     password_confirmation: null,
+    user_type: null,
   });
   const { errors, setErrors, register } = useAuthContext();
 
   const handleRegister = (e) => {
     e.preventDefault();
+    console.log(user);
     register(user);
   };
 
@@ -72,6 +74,7 @@ export function Register() {
 
   useEffect(() => {
     region();
+    setErrors(null);
   }, []);
 
   return (
@@ -201,10 +204,13 @@ export function Register() {
               <div>
                 <div>Region</div>
                 <div>
-                  <select onChange={province} onSelect={region}>
-                    <option disabled>Select Region</option>
+                  <select
+                    onChange={province}
+                    onSelect={region}
+                    defaultValue={'default'}
+                  >
+                    <option value='default'>Select Region</option>
                     {regionData &&
-                      regionData.length > 0 &&
                       regionData.map((item) => (
                         <option key={item.region_code} value={item.region_code}>
                           {item.region_name}
@@ -221,8 +227,8 @@ export function Register() {
               <div>
                 <div>Province</div>
                 <div>
-                  <select onChange={city}>
-                    <option disabled>Select Province</option>
+                  <select onChange={city} defaultValue={'default'}>
+                    <option value='default'>Select Province</option>
                     {provinceData &&
                       provinceData.length > 0 &&
                       provinceData.map((item) => (
@@ -243,8 +249,8 @@ export function Register() {
               <div>
                 <div>City/Town</div>
                 <div>
-                  <select onChange={barangay}>
-                    <option disabled>Select City</option>
+                  <select onChange={barangay} defaultValue={'default'}>
+                    <option value='default'>Select City</option>
                     {cityData &&
                       cityData.length > 0 &&
                       cityData.map((item) => (
@@ -260,10 +266,10 @@ export function Register() {
               </small>
 
               <div>
-                <div>Baranggay</div>
+                <div>Barangay</div>
                 <div>
-                  <select onChange={brgy}>
-                    <option disabled>Select Barangay</option>
+                  <select onChange={brgy} defaultValue={'default'}>
+                    <option value='default'>Select Barangay</option>
                     {barangayData &&
                       barangayData.length > 0 &&
                       barangayData.map((item) => (
@@ -352,6 +358,30 @@ export function Register() {
                   />
                 </div>
               </div>
+
+              <div>
+                <div>User type</div>
+                <div>
+                  <select
+                    defaultValue={'default'}
+                    onChange={(e) =>
+                      setUser({
+                        ...user,
+                        user_type: e.target.value,
+                      })
+                    }
+                  >
+                    <option value={'default'} disabled>
+                      Choose an option
+                    </option>
+                    <option value={'is_buyer 1'}>Buyer</option>
+                    <option value={'is_seller 1'}>Seller</option>
+                  </select>
+                </div>
+              </div>
+              <small className='errMsg'>
+                {errors && errors.user_type && errors.user_type[0]}
+              </small>
             </div>
           </div>
 

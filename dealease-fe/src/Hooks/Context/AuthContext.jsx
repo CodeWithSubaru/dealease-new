@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
   const setTokenAndUType = (token, type) => {
     _setToken(token);
     _setUserType(type);
+    console.log(token, type);
     if (token && type) {
       localStorage.setItem('ACCESS_TOKEN', token);
       localStorage.setItem('USER_TYPE', type);
@@ -37,7 +38,21 @@ export const AuthProvider = ({ children }) => {
     axiosClient
       .post('/login', data)
       .then((res) => {
-        setTokenAndUType(res.data.token, res.data.user[0].user_type);
+        if (res.data.user[0].role_type === 'Admin') {
+          setTokenAndUType(res.data.token, res.data.user[0].role_type);
+          console.log('Admin');
+        }
+
+        if (res.data.user[0].role_type === 'User') {
+          if (res.data.user[0].is_buyer === 'Buyer') {
+            setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
+          }
+
+          if (res.data.user[0].is_buyer === 'Seller') {
+            setTokenAndUType(res.data.token, res.data.user[0].is_seller);
+          }
+        }
+
         setUser(res.data.user[0]);
         navigate(redirect);
       })
@@ -84,6 +99,18 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  const registerExist = ({ ...data }) => {
+    axiosClient
+      .post('/register-exist', data)
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((e) => {
+        console.log(e);
+        setErrors(e.response.data.errors);
+      });
+  };
+
   useLayoutEffect(() => {
     axiosClient.get('/user').then((res) => {
       setUser(res.data[0]);
@@ -104,6 +131,7 @@ export const AuthProvider = ({ children }) => {
         loginSeller,
         loginAdmin,
         register,
+        registerExist,
         logout,
       }}
     >

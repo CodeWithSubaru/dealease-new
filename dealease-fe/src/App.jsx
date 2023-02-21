@@ -23,6 +23,7 @@ import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
 
 import { GuestLayout } from './Layouts/GuestLayout';
 import { Register } from './Pages/Auth/Register';
+import { RegisterExist } from './Pages/Auth/RegisterExist';
 import useAuthContext from './Hooks/Context/AuthContext';
 
 function App() {
@@ -36,7 +37,6 @@ function App() {
     <>
       <div>
         <GlobalStyles />
-
         {/* Buyer Route */}
         <Routes>
           <Route element={<AuthBuyerLayout />}>
@@ -59,6 +59,7 @@ function App() {
             <Route path='/seller/login' element={<LoginSeller />} />
             <Route path='/admin/login' element={<LoginAdmin />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/register-exist' element={<RegisterExist />} />
           </Route>
 
           <Route path='*' element={<NotFound />} />

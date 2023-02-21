@@ -7,7 +7,9 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 export const LoginAdmin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const user_type = 9;
+  const is_buyer = 0,
+    is_seller = 0,
+    role_type = 1;
   const { loginAdmin, errors, setErrors } = useAuthContext();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export const LoginAdmin = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginAdmin({ email, password, user_type });
+    loginAdmin({ email, password, is_buyer, is_seller, role_type });
   };
 
   return (
