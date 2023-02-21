@@ -21,14 +21,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'ext_name',
-        'email',
-        'password',
-    ];
+    protected $guarded;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -54,16 +47,30 @@ class User extends Authenticatable
         return  $this->hasOne(\App\Models\UserDetail::class, 'user_id', 'user_id');
     }
 
-    protected function getUserTypeAttribute()
+    protected function getIsBuyerAttribute()
     {
-        if ($this->attributes['user_type'] === '1') {
-            return $this->attributes['user_type'] = 'Buyer';
-        } elseif ($this->attributes['user_type'] === '2') {
-            return $this->attributes['user_type'] = 'Seller';
-        } elseif ($this->attributes['user_type'] === '9') {
-            return $this->attributes['user_type'] = 'Admin';
+        if ($this->attributes['is_buyer'] === '1') {
+            return $this->attributes['is_buyer'] = 'Buyer';
         } else {
-            return $this->attributes['user_type'];
+            return $this->attributes['is_buyer'];
+        }
+    }
+
+    protected function getIsSellerAttribute()
+    {
+        if ($this->attributes['is_seller'] === '1') {
+            return $this->attributes['is_seller'] = 'Seller';
+        } else {
+            return $this->attributes['is_seller'];
+        }
+    }
+
+    protected function getRoleTypeAttribute()
+    {
+        if ($this->attributes['role_type'] === '1') {
+            return $this->attributes['role_type'] = 'Admin';
+        } else {
+            return $this->attributes['role_type'] = 'User';
         }
     }
 }

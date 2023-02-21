@@ -46,6 +46,9 @@ class AuthController extends Controller
             'ext_name' => $request->ext_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_buyer' => 1,
+            'is_seller' => 0,
+            'is_admin' => 0,
         ]);
 
         if ($user) {
@@ -64,23 +67,55 @@ class AuthController extends Controller
         }
     }
 
+    public function registerExist(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255', 'exists:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->is_buyer && $user->is_seller) {
+            return response()->json(['errors' => ['email' => ['User updated already']]], 422);
+        }
+
+        if ($user->is_buyer) {
+            User::where('email', $request->email)->update(['is_seller' => '1']);
+            return response()->json(['message' => 'User Updated to Seller Successfully'], 200);
+        }
+
+        if ($user->is_seller) {
+            User::where('email', $request->email)->update(['is_buyer' => '1']);
+            return response()->json(['message' => 'User Update To Buyer Successfully'], 200);
+        }
+    }
+
+    /**
+     * Login for each user
+     */
+
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password', 'user_type'), $request->boolean('remember'))) {
+        if (!Auth::attempt($request->only('email', 'password', 'role_type', 'is_buyer', 'is_seller'), $request->boolean('remember'))) {
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        $auth_user = User::with('user_details')->where('user_id', Auth::id())->get();
 
-        $token = $request->user()->createToken($auth_user[0]->user_type)->plainTextToken;
+        $auth_user = User::with('user_details')->where('email', $request->email)->get();
+
+
+        $token = $request->user()->createToken($auth_user[0]->email)->plainTextToken;
+
 
         $obj = [
             'message' => 'User Login Succesfully',
@@ -91,7 +126,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Logout
      */
     public function destroy(Request $request)
     {

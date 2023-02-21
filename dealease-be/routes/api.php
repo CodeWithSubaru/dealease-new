@@ -25,6 +25,9 @@ Route::post('/register', [AuthController::class, 'create'])
     ->middleware('guest')
     ->name('register');
 
+Route::post('/register-exist', [AuthController::class, 'registerExist'])
+    ->middleware('guest');
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'index']);
 
