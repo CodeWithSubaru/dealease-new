@@ -24,7 +24,7 @@ class AuthController extends Controller
         return $auth_user;
     }
 
-    public function create(Request $request)
+    public function register(Request $request)
     {
         $request->validate([
             'first_name' => ['required', 'string', 'max:50'],
@@ -37,7 +37,17 @@ class AuthController extends Controller
             'contact_number' => ['required', 'min:11', 'max:11'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'user_type' => ['required'],
         ]);
+
+        $explodedUserType = explode(' ', $request->user_type);
+        if ($explodedUserType[0] === 'is_buyer') {
+            $is_buyer = $explodedUserType[1];
+            $is_seller = 0;
+        } elseif ($explodedUserType[0] === 'is_seller') {
+            $is_seller = $explodedUserType[1];
+            $is_buyer = 0;
+        }
 
         $user = User::create([
             'first_name' => $request->first_name,
@@ -46,9 +56,9 @@ class AuthController extends Controller
             'ext_name' => $request->ext_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_buyer' => 1,
-            'is_seller' => 0,
-            'is_admin' => 0,
+            'is_buyer' => $is_buyer,
+            'is_seller' => $is_seller,
+            'role_type' => 0,
         ]);
 
         if ($user) {
@@ -95,7 +105,7 @@ class AuthController extends Controller
      * Login for each user
      */
 
-    public function store(Request $request)
+    public function login(Request $request)
     {
 
         $validated = $request->validate([

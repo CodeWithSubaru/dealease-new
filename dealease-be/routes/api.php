@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Api\Admin\UsersController;
+use App\Http\Controllers\Api\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +15,15 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'store'])
-    ->middleware('guest')
-    ->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
 
-Route::post('/register', [AuthController::class, 'create'])
-    ->middleware('guest')
-    ->name('register');
 
-Route::post('/register-exist', [AuthController::class, 'registerExist'])
-    ->middleware('guest');
+Route::post('/register', [AuthController::class, 'register']);
+
+
+Route::post('/register-exist', [AuthController::class, 'registerExist']);
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'index']);
@@ -34,4 +31,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth')
         ->name('logout');
+
+    // Admin route
+    Route::apiResource('/admin/users', UsersController::class);
 });
