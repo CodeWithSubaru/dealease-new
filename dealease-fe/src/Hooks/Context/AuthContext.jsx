@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     axiosClient
       .post('/login', data)
       .then((res) => {
+        console.log(res);
         if (res.data.user[0].role_type === 'Admin') {
           setTokenAndUType(res.data.token, res.data.user[0].role_type);
           console.log('Admin');
