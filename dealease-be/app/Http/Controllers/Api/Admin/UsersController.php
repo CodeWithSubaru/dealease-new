@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
+use Rules\Password;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
@@ -78,14 +83,64 @@ class UsersController extends Controller
      */
     public function show(string $id)
     {
+        $foundUserById = User::with('user_details')->where('user_id', $id)->get();
+        return response()->json(['foundUserById' => $foundUserById], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+
+        $request->validate([
+            'first_name' => ['required', 'string', 'max:50'],
+            'last_name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'region' => ['required'],
+            'province' => ['required'],
+            'city' => ['required'],
+            'barangay' => ['required'],
+            'street' => ['required'],
+            'birth_date' => ['required'],
+            'contact_number' => ['required', 'min:11', 'max:11'],
+        ]);
+
+        if ($request->user_type === 'admin') {
+            $is_buyer = 0;
+            $is_seller = 0;
+            $role_type = 1;
+        } elseif ($request->user_type === 'buyer') {
+            $role_type = 0;
+            $is_buyer = 1;
+            $is_seller = 0;
+        } elseif ($request->user_type === 'seller') {
+            $role_type = 0;
+            $is_buyer = 0;
+            $is_seller = 1;
+        }
+
+
+        User::where('user_id', $request->user_id)->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'is_buyer' => $is_buyer,
+            'is_seller' => $is_seller,
+            'role_type' => $role_type,
+        ]);
+
+        UserDetail::where('user_id', $request->user_id)->update([
+            'region' => $request->region,
+            'province' => $request->province,
+            'city' => $request->province,
+            'barangay' => $request->barangay,
+            'street' => $request->street,
+            'birth_date' => $request->birth_date,
+            'contact_number' => $request->contact_number,
+        ]);
+
+        return response()->json(['message' => 'User Updated Successfully'], 200);
     }
 
     /**
@@ -93,6 +148,8 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $deleteUser = User::with('user_details')->find($id);
+        $deleteUser->delete();
+        return response()->json(['message' => 'User deleted Successfully'], 200);
     }
 }
