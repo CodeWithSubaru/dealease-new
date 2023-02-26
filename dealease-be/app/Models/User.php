@@ -47,6 +47,17 @@ class User extends Authenticatable
         return  $this->hasOne(\App\Models\UserDetail::class, 'user_id', 'user_id');
     }
 
+
+    public function messagesSender()
+    {
+        return  $this->belongsTo(\App\Models\Message::class, 'sender', 'user_id');
+    }
+
+    public function messagesReceiver()
+    {
+        return  $this->hasMany(\App\Models\Message::class, 'receiver', 'user_id');
+    }
+
     protected function getIsBuyerAttribute()
     {
         if ($this->attributes['is_buyer'] === '1') {

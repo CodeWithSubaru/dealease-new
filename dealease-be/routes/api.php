@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Admin\UsersController;
+use App\Http\Controllers\Api\Admin\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Admin route
     Route::apiResource('/admin/users', UsersController::class);
+    Route::apiResource('/admin/messages', MessageController::class);
 });
