@@ -1,17 +1,45 @@
-export function TableComp({ headers, data }) {
+import {
+  DatatableWrapper,
+  Filter,
+  Pagination,
+  PaginationOptions,
+  TableBody,
+  TableHeader,
+} from 'react-bs-datatable';
+import { Col, Row, Table } from 'react-bootstrap';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+export const TableComponent = ({ header, body }) => {
   return (
-    <>
-      <h1>Table</h1>
-      <table>
-        <thead>
-          <tr>
-            {headers.map((header) => {
-              <th> header</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody>{content}</tbody>
-      </table>
-    </>
+    <DatatableWrapper headers={header} body={body}>
+      <Row className='mb-4'>
+        <Col
+          xs={12}
+          lg={4}
+          className='d-flex flex-col justify-content-end align-items-end'
+        >
+          <Filter />
+        </Col>
+        <Col
+          xs={12}
+          sm={6}
+          lg={4}
+          className='d-flex flex-col justify-content-lg-center align-items-center justify-content-sm-start mb-2 mb-sm-0'
+        ></Col>
+        <Col
+          xs={12}
+          sm={6}
+          lg={4}
+          className='d-flex flex-col justify-content-end align-items-end'
+        >
+          <Pagination />
+        </Col>
+      </Row>
+      <Table style={{ color: 'white' }}>
+        <TableHeader />
+        <TableBody />
+      </Table>
+    </DatatableWrapper>
   );
-}
+};
