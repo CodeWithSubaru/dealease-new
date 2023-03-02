@@ -114,7 +114,6 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($request->only('email', 'password', 'role_type', 'is_buyer', 'is_seller'), $request->boolean('remember'))) {
-
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
