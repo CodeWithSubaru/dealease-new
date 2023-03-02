@@ -7,7 +7,7 @@ import useAuthContext from "../../Hooks/Context/AuthContext";
 export const LoginSeller = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const is_buyer = 0,
+  const is_buyer = [0, 1],
     is_seller = 1,
     role_type = 0;
   const { loginSeller, errors, setErrors } = useAuthContext();

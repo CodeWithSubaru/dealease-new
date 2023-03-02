@@ -8,7 +8,7 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const is_buyer = 1,
-    is_seller = 0,
+    is_seller = [0, 1],
     role_type = 0;
   const { loginBuyer, errors, setErrors } = useAuthContext();
 

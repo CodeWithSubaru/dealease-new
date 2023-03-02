@@ -19,6 +19,7 @@ import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
 
 // Admin Components
 import { Dashboard } from './Pages/Admin/Dashboard';
+import { MessageAdmin } from './Pages/Admin/Message';
 import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
 
 import { GuestLayout } from './Layouts/GuestLayout';
@@ -52,6 +53,7 @@ function App() {
           {/* Admin Route */}
           <Route element={<AuthAdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />} />
+            <Route path='/admin/message' element={<MessageAdmin />} />
           </Route>
 
           <Route element={<GuestLayout />}>
