@@ -1,7 +1,7 @@
-import { createContext, useContext, useLayoutEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useContext, useLayoutEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import axiosClient from '../../api/axios';
+import axiosClient from "../../api/axios";
 
 const AuthContext = createContext({
   user: null,
@@ -13,22 +13,22 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
-  const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
-  const [user_type, _setUserType] = useState(localStorage.getItem('USER_TYPE'));
+  const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+  const [user_type, _setUserType] = useState(localStorage.getItem("USER_TYPE"));
   const [errors, setErrors] = useState(null);
   const navigate = useNavigate();
 
-  const csrf = () => axiosClient.get('../sanctum/csrf-cookie');
+  const csrf = () => axiosClient.get("../sanctum/csrf-cookie");
 
   const setTokenAndUType = (token, type) => {
     _setToken(token);
     _setUserType(type);
     console.log(token, type);
     if (token && type) {
-      localStorage.setItem('ACCESS_TOKEN', token);
-      localStorage.setItem('USER_TYPE', type);
+      localStorage.setItem("ACCESS_TOKEN", token);
+      localStorage.setItem("USER_TYPE", type);
     } else {
-      localStorage.removeItem('ACCESS_TOKEN');
+      localStorage.removeItem("ACCESS_TOKEN");
     }
   };
 
@@ -36,20 +36,21 @@ export const AuthProvider = ({ children }) => {
   const login = ({ ...data }, redirect) => {
     csrf();
     axiosClient
-      .post('/login', data)
+      .post("/login", data)
       .then((res) => {
         console.log(res);
-        if (res.data.user[0].role_type === 'Admin') {
+        if (res.data.user[0].role_type === "Admin") {
           setTokenAndUType(res.data.token, res.data.user[0].role_type);
-          console.log('Admin');
+          console.log("Admin");
         }
 
-        if (res.data.user[0].role_type === 'User') {
-          if (res.data.user[0].is_buyer === 'Buyer') {
+        if (res.data.user[0].role_type === "User") {
+          if (res.data.user[0].is_buyer === "Buyer") {
             setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
           }
 
           if (res.data.user[0].is_seller === 'Seller') {
+          if (res.data.user[0].is_seller === "Seller") {
             setTokenAndUType(res.data.token, res.data.user[0].is_seller);
           }
         }
@@ -64,35 +65,35 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginBuyer = (data) => {
-    login(data, '/');
+    login(data, "/");
   };
 
   const loginSeller = (data) => {
-    login(data, '/seller/home');
+    login(data, "/seller/home");
   };
 
   const loginAdmin = (data) => {
-    login(data, '/admin/dashboard');
+    login(data, "/admin/dashboard");
   };
 
   const logout = () => {
-    axiosClient.post('/logout').then(() => {
+    axiosClient.post("/logout").then(() => {
       setUser({});
       setTokenAndUType(
-        localStorage.removeItem('ACCESS_TOKEN'),
-        localStorage.removeItem('USER_TYPE')
+        localStorage.removeItem("ACCESS_TOKEN"),
+        localStorage.removeItem("USER_TYPE")
       );
     });
   };
 
   const register = ({ ...data }) => {
     axiosClient
-      .post('/register', data)
+      .post("/register", data)
       .then((resp) => {
         setUser({});
         setErrors(null);
         _setToken(data.token);
-        navigate('/');
+        navigate("/");
         console.log(resp, data.token);
       })
       .catch((e) => {
@@ -102,7 +103,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerExist = ({ ...data }) => {
     axiosClient
-      .post('/register-exist', data)
+      .post("/register-exist", data)
       .then((resp) => {
         console.log(resp);
       })
@@ -113,7 +114,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useLayoutEffect(() => {
-    axiosClient.get('/user').then((res) => {
+    axiosClient.get("/user").then((res) => {
       setUser(res.data[0]);
       setLoading(false);
     });
