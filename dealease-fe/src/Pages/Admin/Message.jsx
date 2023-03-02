@@ -23,17 +23,15 @@ export const MessageAdmin = () => {
   const { user } = useAuthContext();
   const {
     userMessages,
-    senderMessage,
     messageSeller,
     inboxes,
     messageSellersExample,
-    handleSender,
     clikedUser,
-    setSenderMessage,
   } = useMessageContext();
 
   return (
     <div>
+      {/* Line 35 - 47 is used to message a user. Example post and make a deal */}
       <h1>Message Admin</h1>
       {messageSeller.map((seller) =>
         seller ? (
@@ -47,17 +45,6 @@ export const MessageAdmin = () => {
           ''
         )
       )}
-
-      <h2>Inbox</h2>
-      {inboxes.map((inbox) => (
-        <div
-          key={inbox.inbox_id}
-          onClick={() => clikedUser(inbox.recipient_id)}
-        >
-          <h5> {inbox.recipient.first_name}</h5>
-          <p> {inbox.last_message.chat}</p>
-        </div>
-      ))}
 
       <h2>Messages</h2>
       {userMessages.map((message) =>
