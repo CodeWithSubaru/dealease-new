@@ -9,9 +9,18 @@ import {
 } from 'select-philippines-address';
 import axiosClient from '../../api/axios';
 import axios from 'axios';
+import { TableComponent } from '../../Components/Table/Table';
+
+// Create table headers consisting of 4 columns.
+const header = [
+  { title: 'Id', prop: 'id' },
+  { title: 'Full Name', prop: 'fullname' },
+  { title: 'Action', prop: 'action' },
+];
 
 export function Dashboard() {
   const foundUserById = [];
+  const [body, setBody] = useState([]);
   const [listOfUsersShortDetails, setlistOfUsersShortDetails] = useState([]);
   const [listOfUsersLongDetails, setlistOfUsersLongDetails] = useState([]);
   const [regionData, setRegion] = useState([]);
@@ -176,62 +185,51 @@ export function Dashboard() {
       })
       .catch((e) => console.log(e));
   };
+  const viewCompleteDetails = (user_id) => {
+    console.log(user_id);
+  };
+  // get user in db
+  const setUserDataTable = () => {
+    axiosClient.get('/admin/users').then((resp) => {
+      setlistOfUsersLongDetails(resp.data.listOfUser);
+      const user = resp.data.listOfUser.map((user) => {
+        return {
+          id: user.user_id,
+          fullname:
+            user.first_name +
+            ' ' +
+            user.middle_name +
+            ' ' +
+            user.last_name +
+            ' ' +
+            user.ext_name,
+          action: (
+            <div>
+              <button onClick={() => viewCompleteDetails(user.user_id)}>
+                View
+              </button>
+              <button onClick={() => findUser(user.user_id)}>Edit</button>
+              <button onClick={() => deleteUser(user.user_id)}>Delete</button>
+            </div>
+          ),
+        };
+      });
+      setBody(user);
+    });
+  };
 
   useEffect(() => {
     region();
     setErrors(null);
-    // get user in db
-    axiosClient.get('/admin/users').then((resp) => {
-      setlistOfUsersShortDetails(resp.data.listOfUser);
-      setlistOfUsersLongDetails(resp.data.listOfUser);
-    });
-  }, []);
 
-  const viewCompleteDetails = () => {};
+    setUserDataTable();
+  }, []);
 
   return (
     <div>
-      <div>Dashboard1</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>fullname</th>
-            <th>fullname</th>
-            <th>fullname</th>
-            <th>fullname</th>
-            <th>fullname</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listOfUsersShortDetails.map((user) => {
-            return user ? (
-              <tr key={user.user_id}>
-                <td>{user.user_id}</td>
-                <td>{user.first_name}</td>
-                <td>{user.middle_name}</td>
-                <td>{user.last_name}</td>
-                <td>{user.ext_name}</td>
-                <td>
-                  <button href='' onClick={viewCompleteDetails}>
-                    View
-                  </button>
-                  <button onClick={() => findUser(user.user_id)}>Edit</button>
-                  <button onClick={() => deleteUser(user.user_id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ) : (
-              ''
-            );
-          })}
-        </tbody>
-        <tfoot></tfoot>
-      </table>
+      <div>Dashboard</div>
+      <TableComponent header={header} body={body}></TableComponent>
 
-      <br />
-      <br />
       <br />
       <br />
       {/* Use Modal */}
