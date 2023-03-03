@@ -1,5 +1,4 @@
 import Form from 'react-bootstrap/Form';
-import { PrimaryBtnStyle } from '../../Components/Button/Button.style';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useAddressContext from '../../Hooks/Context/AddressContext';
 
@@ -79,9 +78,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               name='birth_date'
               min='1930-01-01'
               max='2012-12-31'
-              onChangeHook={(e) =>
-                setUser({ ...user, birth_date: e.target.value })
-              }
+              onChange={(e) => setUser({ ...user, birth_date: e.target.value })}
             />
             {errors.birth_date ? (
               <Form.Control.Feedback type='invalid'>
@@ -96,7 +93,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               type='text'
               placeholder='Enter Contact Number'
               name='extension_name'
-              onChangeHook={(e) =>
+              onChange={(e) =>
                 setUser({ ...user, contact_number: e.target.value })
               }
             />
@@ -212,7 +209,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             ) : null}
           </Form.Group>
 
-          <Form.Group className='mb-3' controlId='middleName'>
+          <Form.Group className='mb-3' controlId='street'>
             <Form.Label>Street *</Form.Label>
             <Form.Control
               type='text'
@@ -231,7 +228,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
           <h3>Account Details</h3>
           <hr />
 
-          <Form.Group className='mb-3' controlId='middleName'>
+          <Form.Group className='mb-3' controlId='email'>
             <Form.Label>Email *</Form.Label>
             <Form.Control
               type='email'
@@ -246,7 +243,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             ) : null}
           </Form.Group>
 
-          <Form.Group className='mb-3' controlId='middleName'>
+          <Form.Group className='mb-3' controlId='password'>
             <Form.Label>Password *</Form.Label>
             <Form.Control
               type='password'
@@ -261,7 +258,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             ) : null}
           </Form.Group>
 
-          <Form.Group className='mb-3' controlId='middleName'>
+          <Form.Group className='mb-3' controlId='confirmPassword'>
             <Form.Label>Confirm Password *</Form.Label>
             <Form.Control
               type='password'
@@ -303,12 +300,12 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             ) : null}
           </Form.Group>
         </div>
-
-        <PrimaryBtnStyle
+        <button>Create</button>
+        {/* <PrimaryBtnStyle
           backgroundColor='#efa726'
           hoverBgColor='#d69215'
           btnTitle='Create'
-        />
+        /> */}
       </Form>
     </div>
   );
