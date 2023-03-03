@@ -2,18 +2,43 @@ import Form from 'react-bootstrap/Form';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useAddressContext from '../../Hooks/Context/AddressContext';
 
-export const FormCreate = ({ submitHook, user, setUser, edit }) => {
+export const FormCreate = ({
+  submitHook,
+  user,
+  setUser,
+  errors,
+  setErrors,
+  edit,
+}) => {
   const {
     regionData,
     provinceData,
     cityData,
     barangayData,
+    getProvince,
+    getCity,
+    getBarangay,
     region,
-    province,
-    city,
-    barangay,
   } = useAddressContext();
-  const { errors, setErrors } = useAuthContext();
+
+  const province = (e) => {
+    setUser({ ...user, region: e.target.selectedOptions[0].text });
+    getProvince(e);
+  };
+
+  const city = (e) => {
+    setUser({ ...user, province: e.target.selectedOptions[0].text });
+    getCity(e);
+  };
+
+  const barangay = (e) => {
+    setUser({ ...user, city: e.target.selectedOptions[0].text });
+    getBarangay(e);
+  };
+
+  const brgy = (e) => {
+    setUser({ ...user, barangay: e.target.selectedOptions[0].text });
+  };
 
   return (
     <div>
@@ -29,12 +54,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               type='text'
               placeholder='Enter First Name'
               onChange={(e) => setUser({ ...user, first_name: e.target.value })}
+              isInvalid={!!errors.first_name}
             />
-            {errors.first_name ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.first_name[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.first_name}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='middleName'>
@@ -54,12 +78,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               type='text'
               placeholder='Enter Last Name'
               onChange={(e) => setUser({ ...user, last_name: e.target.value })}
+              isInvalid={!!errors.last_name}
             />
-            {errors.last_name ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.last_name[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.last_name}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='extensionName'>
@@ -79,12 +102,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               min='1930-01-01'
               max='2012-12-31'
               onChange={(e) => setUser({ ...user, birth_date: e.target.value })}
+              isInvalid={!!errors.birth_date}
             />
-            {errors.birth_date ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.birth_date[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.birth_date}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='contactNumber'>
@@ -96,12 +118,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               onChange={(e) =>
                 setUser({ ...user, contact_number: e.target.value })
               }
+              isInvalid={!!errors.contact_number}
             />
-            {errors.contact_number ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.contact_number[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.contact_number}
+            </Form.Control.Feedback>
           </Form.Group>
         </div>
 
@@ -129,7 +150,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             </Form.Select>
             {errors.region ? (
               <Form.Control.Feedback type='invalid'>
-                errors.region[0]
+                {errors.region}
               </Form.Control.Feedback>
             ) : null}
           </Form.Group>
@@ -154,7 +175,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             </Form.Select>
             {errors.province ? (
               <Form.Control.Feedback type='invalid'>
-                errors.province[0]
+                {errors.province}
               </Form.Control.Feedback>
             ) : null}
           </Form.Group>
@@ -179,7 +200,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             </Form.Select>
             {errors.city ? (
               <Form.Control.Feedback type='invalid'>
-                errors.city[0]
+                {errors.city}
               </Form.Control.Feedback>
             ) : null}
           </Form.Group>
@@ -188,7 +209,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             <Form.Label className=''>Barangay *</Form.Label>
             <Form.Select
               defaultValue={'default'}
-              onChange={barangay}
+              onChange={brgy}
               className={errors.barangay ? 'is-invalid' : ''}
             >
               <option value='default' disabled>
@@ -204,7 +225,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             </Form.Select>
             {errors.barangay ? (
               <Form.Control.Feedback type='invalid'>
-                errors.barangay[0]
+                {errors.barangay}
               </Form.Control.Feedback>
             ) : null}
           </Form.Group>
@@ -215,12 +236,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               type='text'
               placeholder='Enter Street'
               onChange={(e) => setUser({ ...user, street: e.target.value })}
+              isInvalid={!!errors.street}
             />
-            {errors.street ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.street[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.street}
+            </Form.Control.Feedback>
           </Form.Group>
         </div>
 
@@ -235,12 +255,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               name='email'
               placeholder='Enter Email'
               onChange={(e) => setUser({ ...user, email: e.target.value })}
+              isInvalid={!!errors.email}
             />
-            {errors.email ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.email[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='password'>
@@ -250,12 +269,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               name='password'
               placeholder='Enter Password'
               onChange={(e) => setUser({ ...user, password: e.target.value })}
+              isInvalid={!!errors.password}
             />
-            {errors.password ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.password[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className='mb-3' controlId='confirmPassword'>
@@ -267,12 +285,11 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
               onChange={(e) =>
                 setUser({ ...user, password_confirmation: e.target.value })
               }
+              isInvalid={!!errors.password_confirmation}
             />
-            {errors.password_confirmation ? (
-              <Form.Control.Feedback type='invalid'>
-                errors.password_confirmation[0]
-              </Form.Control.Feedback>
-            ) : null}
+            <Form.Control.Feedback type='invalid'>
+              {errors.password_confirmation}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className=''>
@@ -295,7 +312,7 @@ export const FormCreate = ({ submitHook, user, setUser, edit }) => {
             </Form.Select>
             {errors.user_type ? (
               <Form.Control.Feedback type='invalid'>
-                errors.user_type[0]
+                {errors.user_type}
               </Form.Control.Feedback>
             ) : null}
           </Form.Group>

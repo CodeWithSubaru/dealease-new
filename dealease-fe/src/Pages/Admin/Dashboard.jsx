@@ -4,7 +4,6 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import axiosClient from '../../api/axios';
 import { TableComponent } from '../../Components/Table/Table';
 
-// Create table headers consisting of 4 columns.
 const header = [
   { title: 'Id', prop: 'id' },
   { title: 'Full Name', prop: 'fullname' },
@@ -144,7 +143,13 @@ export function Dashboard() {
       <div>Dashboard</div>
       <TableComponent header={header} body={body}></TableComponent>
       <br />
-      <FormCreate />
+      <FormCreate
+        submitHook={createUser}
+        user={user}
+        setUser={setUser}
+        errors={errors}
+        setErrors={setErrors}
+      />
       <br />
     </div>
   );
