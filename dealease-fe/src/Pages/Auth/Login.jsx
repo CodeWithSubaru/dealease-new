@@ -1,5 +1,5 @@
 // import { CardStyle } from '../../Components/Card/Card.style';
-import { PrimaryBtnStyle } from "../../Components/Button/Button.style";
+
 import { H1 } from "../../Components/Helpers/index.style";
 import { useEffect, useState } from "react";
 import useAuthContext from "../../Hooks/Context/AuthContext";
@@ -82,11 +82,11 @@ export const Login = () => {
           <div> Remember Me </div>
         </div>
 
-        <PrimaryBtnStyle
+        {/* <PrimaryBtnStyle
           backgroundColor="#efa726"
           hoverBgColor="#d69215"
           btnTitle="Login"
-        />
+        /> */}
 
         <div className="back-to-home-wrapper">
           <slot name="login-route"></slot>
