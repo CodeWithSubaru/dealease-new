@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [user_type, _setUserType] = useState(localStorage.getItem('USER_TYPE'));
-  const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   const csrf = () => axiosClient.get('../sanctum/csrf-cookie');
