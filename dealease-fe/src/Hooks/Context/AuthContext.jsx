@@ -49,11 +49,7 @@ export const AuthProvider = ({ children }) => {
             setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
           }
 
-<<<<<<< HEAD
           if (res.data.user[0].is_seller === "Seller") {
-=======
-          if (res.data.user[0].is_seller === 'Seller') {
->>>>>>> 7edadfd1f95b08116280d7754b578587baf48cb7
             setTokenAndUType(res.data.token, res.data.user[0].is_seller);
           }
         }

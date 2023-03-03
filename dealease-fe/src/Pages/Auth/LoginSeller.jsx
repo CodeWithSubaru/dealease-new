@@ -1,9 +1,7 @@
 // import { CardStyle } from '../../Components/Card/Card.style';
-import { PrimaryBtnStyle } from "../../Components/Button/Button.style";
 import { H1 } from "../../Components/Helpers/index.style";
 import { useState, useEffect } from "react";
 import useAuthContext from "../../Hooks/Context/AuthContext";
-
 export const LoginSeller = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -81,13 +79,13 @@ export const LoginSeller = () => {
 
           <div> Remember Me </div>
         </div>
-
-        <PrimaryBtnStyle
+        <button to="/login">Sign Up</button>
+        {/* <PrimaryBtnStyle
           backgroundColor="#efa726"
           hoverBgColor="#d69215"
           navigateTo="/login"
           btnTitle="Login"
-        />
+        /> */}
 
         <div className="back-to-home-wrapper">
           <slot name="login-route"></slot>

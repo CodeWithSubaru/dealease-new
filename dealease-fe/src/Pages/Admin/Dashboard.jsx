@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
-import { PrimaryBtnStyle } from '../../Components/Button/Button.style';
-import useAuthContext from '../../Hooks/Context/AuthContext';
+import { useEffect, useState } from "react";
+import useAuthContext from "../../Hooks/Context/AuthContext";
 import {
   regions,
   provinces,
   cities,
   barangays,
-} from 'select-philippines-address';
-import axiosClient from '../../api/axios';
-import axios from 'axios';
+} from "select-philippines-address";
+import axiosClient from "../../api/axios";
+import axios from "axios";
 
 export function Dashboard() {
   const foundUserById = [];
@@ -59,7 +58,7 @@ export function Dashboard() {
   const createUser = (e) => {
     e.preventDefault();
     axiosClient
-      .post('/admin/users', user)
+      .post("/admin/users", user)
       .then((resp) => {
         setlistOfUsersShortDetails([...user]);
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -74,7 +73,7 @@ export function Dashboard() {
 
   // Editing User
   const findUser = (user_id) => {
-    axiosClient.get('/admin/users/' + user_id).then((resp) => {
+    axiosClient.get("/admin/users/" + user_id).then((resp) => {
       console.log(resp);
       const flattenObject = {
         ...resp.data.foundUserById[0],
@@ -89,7 +88,7 @@ export function Dashboard() {
     e.preventDefault();
     console.log(updateUserDetails);
     axiosClient
-      .put('/admin/users/' + updateUserDetails.user_id, updateUserDetails)
+      .put("/admin/users/" + updateUserDetails.user_id, updateUserDetails)
       .then((resp) => console.log(resp))
       .catch((e) => console.log(e));
   };
@@ -169,7 +168,7 @@ export function Dashboard() {
   const deleteUser = (user_id) => {
     console.log(user_id);
     axiosClient
-      .delete('/admin/users/' + user_id)
+      .delete("/admin/users/" + user_id)
       .then((resp) => {
         console.log(resp);
         setUser({ ...user });
@@ -181,7 +180,7 @@ export function Dashboard() {
     region();
     setErrors(null);
     // get user in db
-    axiosClient.get('/admin/users').then((resp) => {
+    axiosClient.get("/admin/users").then((resp) => {
       setlistOfUsersShortDetails(resp.data.listOfUser);
       setlistOfUsersLongDetails(resp.data.listOfUser);
     });
@@ -213,7 +212,7 @@ export function Dashboard() {
                 <td>{user.last_name}</td>
                 <td>{user.ext_name}</td>
                 <td>
-                  <button href='' onClick={viewCompleteDetails}>
+                  <button href="" onClick={viewCompleteDetails}>
                     View
                   </button>
                   <button onClick={() => findUser(user.user_id)}>Edit</button>
@@ -223,7 +222,7 @@ export function Dashboard() {
                 </td>
               </tr>
             ) : (
-              ''
+              ""
             );
           })}
         </tbody>
@@ -241,7 +240,7 @@ export function Dashboard() {
           <div key={userView.user_id}>
             <h4> Full Name</h4>
             <p>
-              {userView.first_name} {userView.middle_name} {userView.last_name}{' '}
+              {userView.first_name} {userView.middle_name} {userView.last_name}{" "}
               {userView.ext_name}
             </p>
             <h4>User Account Details</h4>
@@ -259,15 +258,15 @@ export function Dashboard() {
             <p>{userView.user_details.birth_date}</p>
           </div>
         ) : (
-          ''
+          ""
         );
       })}
       <br />
       <br />
       <h1>New User</h1>
-      <form className='form' onSubmit={createUser}>
-        <div className='form-top'>
-          <div className='personal-details'>
+      <form className="form" onSubmit={createUser}>
+        <div className="form-top">
+          <div className="personal-details">
             <h3>Personal Details</h3>
 
             <hr />
@@ -275,8 +274,8 @@ export function Dashboard() {
               <div> First Name * </div>
               <div>
                 <input
-                  type='text'
-                  name='first_name'
+                  type="text"
+                  name="first_name"
                   onChange={(e) =>
                     setUser({ ...user, first_name: e.target.value })
                   }
@@ -284,7 +283,7 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.first_name && errors.first_name[0]}
             </small>
 
@@ -292,8 +291,8 @@ export function Dashboard() {
               <div> Middle Name </div>
               <div>
                 <input
-                  type='text'
-                  name='middle_name'
+                  type="text"
+                  name="middle_name"
                   onChange={(e) =>
                     setUser({ ...user, middle_name: e.target.value })
                   }
@@ -306,8 +305,8 @@ export function Dashboard() {
               <div> Last Name * </div>
               <div>
                 <input
-                  type='text'
-                  name='name'
+                  type="text"
+                  name="name"
                   onChange={(e) =>
                     setUser({ ...user, last_name: e.target.value })
                   }
@@ -315,7 +314,7 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.last_name && errors.last_name[0]}
             </small>
 
@@ -323,8 +322,8 @@ export function Dashboard() {
               <div> Extension Name </div>
               <div>
                 <input
-                  type='text'
-                  name='name'
+                  type="text"
+                  name="name"
                   onChange={(e) =>
                     setUser({ ...user, ext_name: e.target.value })
                   }
@@ -337,37 +336,37 @@ export function Dashboard() {
               <div> Birthday </div>
               <div>
                 <input
-                  type='date'
-                  min='1930-01-01'
-                  max='2012-12-31'
+                  type="date"
+                  min="1930-01-01"
+                  max="2012-12-31"
                   onChange={(e) =>
                     setUser({ ...user, birth_date: e.target.value })
                   }
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.birth_date && errors.birth_date[0]}
             </small>
 
-            <div className='mb-1'>
+            <div className="mb-1">
               <div> Contact Number </div>
               <div>
                 <input
-                  type='number'
-                  id='#number'
+                  type="number"
+                  id="#number"
                   onChange={(e) =>
                     setUser({ ...user, contact_number: e.target.value })
                   }
                 />
               </div>
             </div>
-            <small className='errMsg' v-if='errors.contact_number'>
+            <small className="errMsg" v-if="errors.contact_number">
               {errors && errors.contact_number && errors.contact_number[0]}
             </small>
           </div>
 
-          <div className='address-details'>
+          <div className="address-details">
             <h3>Address Details</h3>
             <hr />
             <div>
@@ -376,9 +375,9 @@ export function Dashboard() {
                 <select
                   onChange={province}
                   onSelect={region}
-                  defaultValue={'default'}
+                  defaultValue={"default"}
                 >
-                  <option value='default'>Select Region</option>
+                  <option value="default">Select Region</option>
                   {regionData &&
                     regionData.map((item) => (
                       <option key={item.region_code} value={item.region_code}>
@@ -389,15 +388,15 @@ export function Dashboard() {
                 <br />
               </div>
             </div>
-            <small className='errMsg' v-if='errors.region'>
+            <small className="errMsg" v-if="errors.region">
               {errors && errors.region && errors.region[0]}
             </small>
 
             <div>
               <div>Province</div>
               <div>
-                <select onChange={city} defaultValue={'default'}>
-                  <option value='default'>Select Province</option>
+                <select onChange={city} defaultValue={"default"}>
+                  <option value="default">Select Province</option>
                   {provinceData &&
                     provinceData.length > 0 &&
                     provinceData.map((item) => (
@@ -411,15 +410,15 @@ export function Dashboard() {
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.province && errors.province[0]}
             </small>
 
             <div>
               <div>City/Town</div>
               <div>
-                <select onChange={barangay} defaultValue={'default'}>
-                  <option value='default'>Select City</option>
+                <select onChange={barangay} defaultValue={"default"}>
+                  <option value="default">Select City</option>
                   {cityData &&
                     cityData.length > 0 &&
                     cityData.map((item) => (
@@ -430,15 +429,15 @@ export function Dashboard() {
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.city && errors.city[0]}
             </small>
 
             <div>
               <div>Barangay</div>
               <div>
-                <select onChange={brgy} defaultValue={'default'}>
-                  <option value='default'>Select Barangay</option>
+                <select onChange={brgy} defaultValue={"default"}>
+                  <option value="default">Select Barangay</option>
                   {barangayData &&
                     barangayData.length > 0 &&
                     barangayData.map((item) => (
@@ -449,43 +448,43 @@ export function Dashboard() {
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.barangay && errors.barangay[0]}
             </small>
 
-            <div className=''>
+            <div className="">
               <div>Street</div>
               <div>
                 <input
-                  type='text'
-                  name=''
-                  id=''
+                  type="text"
+                  name=""
+                  id=""
                   onChange={(e) => setUser({ ...user, street: e.target.value })}
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.street && errors.street[0]}
             </small>
           </div>
         </div>
 
-        <div className='form-bottom'>
-          <div className='account-details'>
+        <div className="form-bottom">
+          <div className="account-details">
             <h3>Account Details</h3>
             <hr />
             <div>
               <div> Email * </div>
               <div>
                 <input
-                  type='email'
-                  name='email'
+                  type="email"
+                  name="email"
                   onChange={(e) => setUser({ ...user, email: e.target.value })}
                   // required
                 />
               </div>
             </div>
-            <small className='errMsg' v-if='errors.email'>
+            <small className="errMsg" v-if="errors.email">
               {errors && errors.email && errors.email[0]}
             </small>
 
@@ -493,8 +492,8 @@ export function Dashboard() {
               <div>Password * </div>
               <div>
                 <input
-                  type='password'
-                  name='password'
+                  type="password"
+                  name="password"
                   onChange={(e) =>
                     setUser({ ...user, password: e.target.value })
                   }
@@ -503,16 +502,16 @@ export function Dashboard() {
               </div>
             </div>
 
-            <small className='errMsg' v-if='errors.password'>
+            <small className="errMsg" v-if="errors.password">
               {errors && errors.password && errors.password[0]}
             </small>
 
-            <div className='mb-1'>
+            <div className="mb-1">
               <div>Confirm Password * </div>
               <div>
                 <input
-                  type='password'
-                  name='password_confirmation'
+                  type="password"
+                  name="password_confirmation"
                   onChange={(e) =>
                     setUser({
                       ...user,
@@ -528,7 +527,7 @@ export function Dashboard() {
               <div>User type</div>
               <div>
                 <select
-                  defaultValue={'default'}
+                  defaultValue={"default"}
                   onChange={(e) =>
                     setUser({
                       ...user,
@@ -536,24 +535,24 @@ export function Dashboard() {
                     })
                   }
                 >
-                  <option value={'default'} disabled>
+                  <option value={"default"} disabled>
                     Choose an option
                   </option>
-                  <option value={'is_buyer 1'}>Buyer</option>
-                  <option value={'is_seller 1'}>Seller</option>
+                  <option value={"is_buyer 1"}>Buyer</option>
+                  <option value={"is_seller 1"}>Seller</option>
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.user_type && errors.user_type[0]}
             </small>
           </div>
         </div>
 
         <PrimaryBtnStyle
-          backgroundColor='#efa726'
-          hoverBgColor='#d69215'
-          btnTitle='Create'
+          backgroundColor="#efa726"
+          hoverBgColor="#d69215"
+          btnTitle="Create"
         />
       </form>
 
@@ -561,16 +560,16 @@ export function Dashboard() {
       <br />
       <br />
       <h1>Edit User</h1>
-      <form className='form' onSubmit={editUser}>
-        <div className='form-top'>
-          <div className='personal-details'>
+      <form className="form" onSubmit={editUser}>
+        <div className="form-top">
+          <div className="personal-details">
             <h3>Personal Details</h3>
 
             <hr />
 
             <input
-              type='text'
-              name='user_id'
+              type="text"
+              name="user_id"
               defaultValue={updateUserDetails.user_id}
               disabled
             />
@@ -579,8 +578,8 @@ export function Dashboard() {
               <div> First Name * </div>
               <div>
                 <input
-                  type='text'
-                  name='first_name'
+                  type="text"
+                  name="first_name"
                   defaultValue={updateUserDetails.first_name}
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -592,7 +591,7 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.first_name && errors.first_name[0]}
             </small>
 
@@ -600,8 +599,8 @@ export function Dashboard() {
               <div> Middle Name </div>
               <div>
                 <input
-                  type='text'
-                  name='middle_name'
+                  type="text"
+                  name="middle_name"
                   defaultValue={updateUserDetails.middle_name}
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -618,8 +617,8 @@ export function Dashboard() {
               <div> Last Name * </div>
               <div>
                 <input
-                  type='text'
-                  name='last_name'
+                  type="text"
+                  name="last_name"
                   defaultValue={updateUserDetails.last_name}
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -631,7 +630,7 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.last_name && errors.last_name[0]}
             </small>
 
@@ -639,8 +638,8 @@ export function Dashboard() {
               <div> Extension Name </div>
               <div>
                 <input
-                  type='text'
-                  name='ext_name'
+                  type="text"
+                  name="ext_name"
                   defaultValue={updateUserDetails.ext_name}
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -656,12 +655,12 @@ export function Dashboard() {
               <div> Birthday </div>
               <div>
                 <input
-                  type='date'
-                  min='1930-01-01'
-                  max='2012-12-31'
-                  name='birth_date'
+                  type="date"
+                  min="1930-01-01"
+                  max="2012-12-31"
+                  name="birth_date"
                   defaultValue={
-                    updateUserDetails ? updateUserDetails.birth_date : ''
+                    updateUserDetails ? updateUserDetails.birth_date : ""
                   }
                   onSelect={(e) =>
                     setUpdateUserDetails({
@@ -672,19 +671,19 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.birth_date && errors.birth_date[0]}
             </small>
 
-            <div className='mb-1'>
+            <div className="mb-1">
               <div> Contact Number </div>
               <div>
                 <input
-                  type='text'
-                  id='number'
-                  name='contact_number'
+                  type="text"
+                  id="number"
+                  name="contact_number"
                   defaultValue={
-                    updateUserDetails ? updateUserDetails.contact_number : ''
+                    updateUserDetails ? updateUserDetails.contact_number : ""
                   }
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -695,12 +694,12 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg' v-if='errors.contact_number'>
+            <small className="errMsg" v-if="errors.contact_number">
               {errors && errors.contact_number && errors.contact_number[0]}
             </small>
           </div>
 
-          <div className='address-details'>
+          <div className="address-details">
             <h3>Address Details</h3>
             <hr />
             <div>
@@ -710,13 +709,13 @@ export function Dashboard() {
                   onChange={updateProvince}
                   onSelect={region}
                   defaultValue={
-                    updateUserDetails ? updateUserDetails.region : ''
+                    updateUserDetails ? updateUserDetails.region : ""
                   }
                 >
                   <option
-                    value={updateUserDetails ? updateUserDetails.region : ''}
+                    value={updateUserDetails ? updateUserDetails.region : ""}
                   >
-                    {updateUserDetails ? updateUserDetails.region : ''}
+                    {updateUserDetails ? updateUserDetails.region : ""}
                   </option>
                   {regionData &&
                     regionData.map((item) => (
@@ -728,7 +727,7 @@ export function Dashboard() {
                 <br />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.region && errors.region[0]}
             </small>
 
@@ -738,13 +737,13 @@ export function Dashboard() {
                 <select
                   onChange={updateCity}
                   defaultValue={
-                    updateUserDetails ? updateUserDetails.province : ''
+                    updateUserDetails ? updateUserDetails.province : ""
                   }
                 >
                   <option
-                    value={updateUserDetails ? updateUserDetails.province : ''}
+                    value={updateUserDetails ? updateUserDetails.province : ""}
                   >
-                    {updateUserDetails ? updateUserDetails.province : ''}
+                    {updateUserDetails ? updateUserDetails.province : ""}
                   </option>
                   {provinceData &&
                     provinceData.length > 0 &&
@@ -759,7 +758,7 @@ export function Dashboard() {
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.province && errors.province[0]}
             </small>
 
@@ -768,12 +767,12 @@ export function Dashboard() {
               <div>
                 <select
                   onChange={updateBarangay}
-                  defaultValue={updateUserDetails ? updateUserDetails.city : ''}
+                  defaultValue={updateUserDetails ? updateUserDetails.city : ""}
                 >
                   <option
-                    value={updateUserDetails ? updateUserDetails.city : ''}
+                    value={updateUserDetails ? updateUserDetails.city : ""}
                   >
-                    {updateUserDetails ? updateUserDetails.city : ''}
+                    {updateUserDetails ? updateUserDetails.city : ""}
                   </option>
                   {cityData &&
                     cityData.length > 0 &&
@@ -785,7 +784,7 @@ export function Dashboard() {
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.city && errors.city[0]}
             </small>
 
@@ -795,13 +794,13 @@ export function Dashboard() {
                 <select
                   onChange={updateBarangay}
                   defaultValue={
-                    updateUserDetails ? updateUserDetails.barangay : ''
+                    updateUserDetails ? updateUserDetails.barangay : ""
                   }
                 >
                   <option
-                    value={updateUserDetails ? updateUserDetails.barangay : ''}
+                    value={updateUserDetails ? updateUserDetails.barangay : ""}
                   >
-                    {updateUserDetails ? updateUserDetails.barangay : ''}
+                    {updateUserDetails ? updateUserDetails.barangay : ""}
                   </option>
                   {barangayData &&
                     barangayData.length > 0 &&
@@ -813,19 +812,19 @@ export function Dashboard() {
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.barangay && errors.barangay[0]}
             </small>
 
-            <div className=''>
+            <div className="">
               <div>Street</div>
               <div>
                 <input
-                  type='text'
-                  name=''
-                  id=''
+                  type="text"
+                  name=""
+                  id=""
                   defaultValue={
-                    updateUserDetails ? updateUserDetails.street : ''
+                    updateUserDetails ? updateUserDetails.street : ""
                   }
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -836,22 +835,22 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.street && errors.street[0]}
             </small>
           </div>
         </div>
 
-        <div className='form-bottom'>
-          <div className='account-details'>
+        <div className="form-bottom">
+          <div className="account-details">
             <h3>Account Details</h3>
             <hr />
             <div>
               <div> Email * </div>
               <div>
                 <input
-                  type='email'
-                  name='email'
+                  type="email"
+                  name="email"
                   defaultValue={updateUserDetails.email}
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -863,7 +862,7 @@ export function Dashboard() {
                 />
               </div>
             </div>
-            <small className='errMsg' v-if='errors.email'>
+            <small className="errMsg" v-if="errors.email">
               {errors && errors.email && errors.email[0]}
             </small>
 
@@ -873,11 +872,11 @@ export function Dashboard() {
               <div>
                 <select
                   defaultValue={
-                    updateUserDetails.role_type === 'Admin'
+                    updateUserDetails.role_type === "Admin"
                       ? updateUserDetails.role_type
                       : updateUserDetails.is_seller
                       ? updateUserDetails.is_buyer
-                      : ''
+                      : ""
                   }
                   onChange={(e) =>
                     setUpdateUserDetails({
@@ -888,39 +887,39 @@ export function Dashboard() {
                 >
                   <option
                     value={
-                      updateUserDetails.role_type === 'Admin'
+                      updateUserDetails.role_type === "Admin"
                         ? updateUserDetails.role_type
                         : updateUserDetails.is_seller
                         ? updateUserDetails.is_buyer
-                        : ''
+                        : ""
                     }
                     disabled
                   >
-                    {updateUserDetails.role_type === 'Admin'
+                    {updateUserDetails.role_type === "Admin"
                       ? updateUserDetails.role_type
-                      : updateUserDetails.is_seller === '0'
+                      : updateUserDetails.is_seller === "0"
                       ? updateUserDetails.is_buyer
                       : updateUserDetails.is_seller}
                   </option>
-                  <option value={'admin'}>Admin</option>
-                  <option value={'buyer'}>Buyer</option>
-                  <option value={'seller'}>Seller</option>
+                  <option value={"admin"}>Admin</option>
+                  <option value={"buyer"}>Buyer</option>
+                  <option value={"seller"}>Seller</option>
                 </select>
               </div>
             </div>
-            <small className='errMsg'>
+            <small className="errMsg">
               {errors && errors.user_type && errors.user_type[0]}
             </small>
           </div>
         </div>
         <button
-          type='button'
+          type="button"
           onClick={() => setUpdateUserDetails({ ...foundUserById })}
         >
           Cancel
         </button>
 
-        <PrimaryBtnStyle
+        {/* <PrimaryBtnStyle
           backgroundColor='#efa726'
           hoverBgColor='#d69215'
           btnTitle='Update'
@@ -930,7 +929,7 @@ export function Dashboard() {
               user_id: user.user_id,
             })
           }
-        />
+        /> */}
       </form>
     </div>
   );

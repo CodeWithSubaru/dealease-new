@@ -11,10 +11,12 @@ import "../../assets/scss/card.scss";
 export function Card() {
   return (
     <div className="cards">
+      <h1>Check Out these Fresh Fish</h1>
       <div className="wrapper">
         <form action="#">
           <span>
-            <FontAwesomeIcon icon={faImage} />;<p>Browse Image to Upload</p>
+            <FontAwesomeIcon icon={faImage} />
+            <p>Browse Image to Upload</p>
           </span>
           <h9> Product Description</h9>
           <section className="text-area">
