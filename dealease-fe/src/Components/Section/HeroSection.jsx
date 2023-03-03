@@ -1,3 +1,4 @@
+// solla
 import React from "react";
 import { Button } from "../Button/Button";
 import "../../assets/scss/herosection.scss";
@@ -27,3 +28,4 @@ export function HeroSection() {
     </div>
   );
 }
+export default HeroSection;

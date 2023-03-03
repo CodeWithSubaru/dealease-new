@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import { AuthProvider } from './Hooks/Context/AuthContext';
 import { MessageProvider } from './Hooks/Context/MessageContext';
+import { AddressProvider } from './Hooks/Context/AddressContext';
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <AuthProvider>
         <MessageProvider>
-          <App />
+          <AddressProvider>
+            <App />
+          </AddressProvider>
         </MessageProvider>
       </AuthProvider>
     </React.StrictMode>
