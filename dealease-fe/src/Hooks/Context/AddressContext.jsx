@@ -1,13 +1,10 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   regions,
   provinces,
   cities,
   barangays,
 } from 'select-philippines-address';
-
-import axiosClient from '../../api/axios';
 
 const AddressContext = createContext();
 
@@ -31,11 +28,6 @@ export const AddressProvider = ({ children }) => {
     });
   };
 
-  const province = (e) => {
-    setUser({ ...user, region: e.target.selectedOptions[0].text });
-    getProvince(e);
-  };
-
   // updateUserDetails
   const updateProvince = (e) => {
     setUpdateUserDetails({
@@ -49,11 +41,6 @@ export const AddressProvider = ({ children }) => {
     cities(e.target.value).then((response) => {
       setCity(response);
     });
-  };
-
-  const city = (e) => {
-    setUser({ ...user, province: e.target.selectedOptions[0].text });
-    getCity(e);
   };
 
   // updateUserDetails
@@ -71,21 +58,12 @@ export const AddressProvider = ({ children }) => {
     });
   };
 
-  const barangay = (e) => {
-    setUser({ ...user, city: e.target.selectedOptions[0].text });
-    getBarangay(e);
-  };
-
   const updateBarangay = (e) => {
     setUpdateUserDetails({
       ...updateUserDetails,
       barangay: e.target.selectedOptions[0].text,
     });
     getBarangay(e);
-  };
-
-  const brgy = (e) => {
-    setUser({ ...user, barangay: e.target.selectedOptions[0].text });
   };
 
   useEffect(() => {
@@ -101,15 +79,11 @@ export const AddressProvider = ({ children }) => {
         barangayData,
         region,
         getProvince,
-        province,
-        updateProvince,
         getCity,
-        city,
-        updateCity,
         getBarangay,
-        barangay,
+        updateProvince,
+        updateCity,
         updateBarangay,
-        brgy,
       }}
     >
       {children}
