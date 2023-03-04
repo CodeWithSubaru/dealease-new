@@ -1,11 +1,44 @@
-import { Link } from 'react-router-dom';
+// import { Link } from "react-router-dom";
 
-export function Button({ className, navigateTo, btnTitle, link }) {
-  return link ? (
-    <Link to={navigateTo} className={className}>
-      {btnTitle}
+// export function Button({ className, navigateTo, btnTitle, link }) {
+//   return link ? (
+//     <Link to={navigateTo} className={className}>
+//       {btnTitle}
+//     </Link>
+//   ) : (
+//     <button className={className}>{btnTitle}</button>
+//   );
+// }
+//  solla
+import { Link } from "react-router-dom";
+import "../../assets/scss/button.scss";
+import React from "react";
+const STYLES = ["btn-primary", "btn-outline", "btn-test"];
+
+const SIZES = ["btn-medium", "btn-large"];
+
+export const Button = ({
+  children,
+  type,
+  onClick,
+  buttonStyle,
+  buttonSize,
+}) => {
+  const checkButtonStyle = STYLES.includes(buttonStyle)
+    ? buttonStyle
+    : STYLES[0];
+
+  const checkButtonSize = SIZES.includes(buttonSize) ? buttonSize : SIZES[0];
+
+  return (
+    <Link to="/seller/login" className="btn-mobile">
+      <button
+        className={`btn ${checkButtonStyle} ${checkButtonSize}`}
+        onClick={onClick}
+        type={type}
+      >
+        {children}
+      </button>
     </Link>
-  ) : (
-    <button className={className}>{btnTitle}</button>
   );
-}
+};
