@@ -15,8 +15,11 @@ export function Card() {
       <div className="wrapper">
         <form action="#">
           <span>
-            <FontAwesomeIcon icon={faImage} />
-            <p>Browse Image to Upload</p>
+            {/* <FontAwesomeIcon type="file" icon={faImage} /> */}
+            <InputGroup size="sm" value="Browse Image to Upload">
+              <Form.Control type="file" />
+            </InputGroup>
+            <p></p>
           </span>
           <h9> Product Description</h9>
           <section className="text-area">
