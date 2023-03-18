@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\UsersController;
@@ -36,4 +37,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Admin route
     Route::apiResource('/admin/users', UsersController::class);
     Route::apiResource('/admin/messages', MessageController::class);
+    Route::get('/admin/get-number-of-user', [AnalyticsControllers::class, 'getNumOfUsers']);
+    Route::get('/admin/get-number-of-message', [AnalyticsControllers::class, 'getNumOfMessages']);
 });

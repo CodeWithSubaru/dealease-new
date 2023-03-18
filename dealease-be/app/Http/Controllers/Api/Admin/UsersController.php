@@ -42,12 +42,23 @@ class UsersController extends Controller
         ]);
 
         $explodedUserType = explode(' ', $request->user_type);
-        if ($explodedUserType[0] === 'is_buyer') {
-            $is_buyer = $explodedUserType[1];
+
+        if ($explodedUserType[0] === 'buyer') {
+            $is_buyer = 1;
             $is_seller = 0;
-        } elseif ($explodedUserType[0] === 'is_seller') {
-            $is_seller = $explodedUserType[1];
+            $role_type = 0;
+        } elseif ($explodedUserType[0] === 'seller') {
             $is_buyer = 0;
+            $is_seller = 1;
+            $role_type = 0;
+        } elseif ($explodedUserType[0] === 'buyer_seller') {
+            $is_buyer = 1;
+            $is_seller = 1;
+            $role_type = 0;
+        } elseif ($explodedUserType[0] === 'admin') {
+            $is_seller = 0;
+            $is_buyer = 0;
+            $role_type = 1;
         }
 
         $user = User::create([
@@ -59,7 +70,7 @@ class UsersController extends Controller
             'password' => Hash::make($request->password),
             'is_buyer' => $is_buyer,
             'is_seller' => $is_seller,
-            'role_type' => 0,
+            'role_type' => $role_type,
         ]);
 
         if ($user) {
@@ -106,10 +117,21 @@ class UsersController extends Controller
             'contact_number' => ['required', 'min:11', 'max:11'],
         ]);
 
+        if (!isset($request->user_type)) {
+            $user = User::find($request->user_id);
+            $is_buyer = $user->is_buyer == 'Buyer' ? 1 : 0;
+            $is_seller = $user->is_seller == 'Seller' ? 1 : 0;
+            $role_type = $user->role_type == 'Admin' ? 1 : 0;
+        }
+
         if ($request->user_type === 'admin') {
             $is_buyer = 0;
             $is_seller = 0;
             $role_type = 1;
+        } elseif ($request->user_type === 'buyer_seller') {
+            $role_type = 0;
+            $is_buyer = 1;
+            $is_seller = 1;
         } elseif ($request->user_type === 'buyer') {
             $role_type = 0;
             $is_buyer = 1;

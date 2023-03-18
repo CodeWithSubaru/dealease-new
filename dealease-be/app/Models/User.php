@@ -60,6 +60,10 @@ class User extends Authenticatable
 
     protected function getIsBuyerAttribute()
     {
+        if ($this->attributes['is_buyer'] === '1' && $this->attributes['is_seller'] === '1') {
+            $this->attributes['is_seller'] = 'Buyer_Seller';
+            return $this->attributes['is_buyer'] = 'Buyer_Seller';
+        }
         if ($this->attributes['is_buyer'] === '1') {
             return $this->attributes['is_buyer'] = 'Buyer';
         } else {
@@ -69,6 +73,10 @@ class User extends Authenticatable
 
     protected function getIsSellerAttribute()
     {
+        if ($this->attributes['is_seller'] === '1' && $this->attributes['is_buyer'] === '1') {
+            $this->attributes['is_buyer'] = 'Buyer_Seller';
+            return $this->attributes['is_seller'] = 'Buyer_Seller';
+        }
         if ($this->attributes['is_seller'] === '1') {
             return $this->attributes['is_seller'] = 'Seller';
         } else {

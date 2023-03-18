@@ -33,13 +33,14 @@ export const TableComponent = ({ header, body }) => {
           lg={4}
           className='d-flex flex-col justify-content-end align-items-end'
         >
-          <Pagination />
+         
         </Col>
       </Row>
       <Table style={{ color: 'white' }}>
         <TableHeader />
         <TableBody />
       </Table>
+      <Pagination />
     </DatatableWrapper>
   );
 };

@@ -1,7 +1,7 @@
 import useMessageContext from '../../Hooks/Context/MessageContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
-export const InboxAdmin = () => {
+export const InboxBuyer = () => {
   const { user } = useAuthContext();
   const { inboxes, clickedUser } = useMessageContext();
 

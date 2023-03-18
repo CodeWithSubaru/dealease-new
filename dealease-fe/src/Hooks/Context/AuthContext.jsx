@@ -45,11 +45,15 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (res.data.user[0].role_type === 'User') {
-          if (res.data.user[0].is_buyer === 'Buyer') {
+          if (res.data.user[0].is_buyer === 'Buyer' || res.data.user[0].is_buyer === 'Buyer_Seller') {
             setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
+         
           }
 
-          if (res.data.user[0].is_seller === 'Seller') {
+          if (
+            res.data.user[0].is_seller === 'Seller' ||
+            res.data.user[0].is_seller === 'Buyer_Seller'
+          ) {
             setTokenAndUType(res.data.token, res.data.user[0].is_seller);
           }
         }
