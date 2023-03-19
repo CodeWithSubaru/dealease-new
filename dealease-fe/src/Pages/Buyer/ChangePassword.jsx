@@ -13,7 +13,7 @@ export function ChangePasswordBuyer() {
       .post('/change-password', password)
       .then((response) => {
         console.log(response.data);
-        console.log('Hi1');
+        console.log('Hi2');
       })
       .catch((error) => {
         console.log(error);
