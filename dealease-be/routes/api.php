@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\Admin\MessageController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+// Api's
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/register-exist', [AuthController::class, 'registerExist']);
