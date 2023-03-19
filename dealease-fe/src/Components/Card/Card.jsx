@@ -15,7 +15,7 @@ export function Card() {
       <div className="wrapper">
         <form action="#">
           <span>
-            {/* <FontAwesomeIcon type="file" icon={faImage} /> */}
+            <FontAwesomeIcon type="file" icon={faImage} />
             <InputGroup size="sm" value="Browse Image to Upload">
               <Form.Control type="file" />
             </InputGroup>
