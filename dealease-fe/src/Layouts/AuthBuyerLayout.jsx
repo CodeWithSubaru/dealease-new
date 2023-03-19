@@ -31,6 +31,11 @@ export function AuthBuyerLayout() {
           </Link>
         </li>
         <li className='nav-item'>
+          <Link to='/change-password' className='nav-links'>
+            Change Password
+          </Link>
+        </li>
+        <li className='nav-item'>
           <div className='nav-links'>
             {user.first_name}
             <button onClick={handleLogout}>Logout</button>

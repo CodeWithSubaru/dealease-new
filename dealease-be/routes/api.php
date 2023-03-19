@@ -18,18 +18,12 @@ use App\Http\Controllers\Api\Admin\MessageController;
 */
 
 Route::post('/login', [AuthController::class, 'login']);
-
-
-
 Route::post('/register', [AuthController::class, 'register']);
-
-
 Route::post('/register-exist', [AuthController::class, 'registerExist']);
-
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'index']);
-
+    Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth')
         ->name('logout');

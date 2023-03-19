@@ -9,6 +9,7 @@ import { LoginSeller } from './Pages/Auth/LoginSeller';
 
 // Buyer Components
 import { AuthBuyerLayout } from './Layouts/AuthBuyerLayout';
+import { ChangePasswordBuyer } from './Pages/Buyer/ChangePassword';
 import { Home } from './Pages/Buyer/Home';
 import { InboxBuyer } from './Pages/Buyer/Inbox';
 import { MessageBuyer } from './Pages/Buyer/Message';
@@ -55,6 +56,7 @@ function App() {
             <Route path='/inbox' element={<InboxBuyer />} />
             <Route path='/message/:message_id' element={<MessageBuyer />} />
             <Route path='/profile' element={<ProfileBuyer />} />
+            <Route path='/change-password' element={<ChangePasswordBuyer />} />
           </Route>
 
           {/* Seller Route */}

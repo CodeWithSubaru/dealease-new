@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
-import useAuthContext from '../../Hooks/Context/AuthContext';
-import '../../assets/scss/header.scss';
-import '../../assets/scss/global.scss';
-import { Button } from '../Button/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../../assets/scss/global.scss';
+import '../../assets/scss/header.scss';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import { Button } from '../Button/Button';
 
 function Header(props) {
   // collapsible navlinks
@@ -63,7 +63,11 @@ function Header(props) {
                 </Link>
               </li>
               <li className='nav-item'>
-                {button && <Button buttonStyle='btn-outline'>SIGN UP</Button>}
+                {button && (
+                  <Link to='/register' className='btn-outline'>
+                    SIGN UP
+                  </Link>
+                )}
               </li>
               <li>
                 <Link
