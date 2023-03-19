@@ -23,7 +23,9 @@ import { MessageAdmin } from "./Pages/Admin/Message";
 import { AuthAdminLayout } from "./Layouts/AuthAdminLayout";
 // solla
 import { Mainpage } from "./Pages";
-//
+// ramos
+import { Test } from "./Components/Header/Header";
+
 import { GuestLayout } from "./Layouts/GuestLayout";
 import { Register } from "./Pages/Auth/Register";
 import { RegisterExist } from "./Pages/Auth/RegisterExist";
@@ -67,6 +69,7 @@ function App() {
             <Route path="/admin/login" element={<LoginAdmin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/register-exist" element={<RegisterExist />} />
+            <Route path="/test" element={<Test />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

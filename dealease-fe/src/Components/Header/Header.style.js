@@ -6,3 +6,10 @@ export const Nav = styled.nav`
   color: #ffff;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
 `;
+
+export const Title = styled.Title`
+  padding: 1rem 2rem;
+  background: #121627;
+  color: black;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
+`;

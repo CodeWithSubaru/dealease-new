@@ -5,3 +5,9 @@ export const H1 = styled.h1`
   color: ${(props) => props.color};
   font-weight: bold;
 `;
+
+export const H3 = styled.h3`
+  font-size: 1em;
+  color: black;
+  font-weight: bold;
+`;
