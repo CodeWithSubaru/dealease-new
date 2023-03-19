@@ -1,12 +1,32 @@
+import React from "react";
 import { useEffect, useRef, useState } from "react";
+import { Modal, Form, Row, Col, InputGroup, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useAuthContext from "../../Hooks/Context/AuthContext";
 import { Link } from "react-router-dom";
 import "../../assets/scss/header.scss";
 import "../../assets/scss/global.scss";
-import { Button } from "../Button/Button";
-function Header() {
+import { H3 } from "../../Components/Helpers/index.style";
+import { Login } from "../../Pages/Auth/Login";
+import { LoginSeller } from "../../Pages/Auth/LoginSeller";
+import {MydModalWithGrid} from "../Modal/Signupmoda";
+
+
+export function Test() {
+
+
+  return (
+    <>
+      <div className="vr" />
+      
+    </>
+  );
+}
+
+// patrick
+
+export function Header() {
   // collapsible navlinks
   const collapse = useRef(null);
   const { user, token, logout } = useAuthContext();
@@ -29,6 +49,7 @@ function Header() {
     showButton();
   }, []);
   window.addEventListener("resize", showButton);
+  const [modalShow, setModalShow] = useState(false);
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -64,17 +85,17 @@ function Header() {
                   Products
                 </Link>
               </li>
-              <li className="nav-item">
-                {button && <Button buttonStyle="btn-outline">SIGN UP</Button>}
+              <li >
+              <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
+              <Button variant="light" onClick={() => setModalShow(true)} className="button-30" size="sm" role={Button}>
+      Sign-Up
+      <MydModalWithGrid/>
+      </Button>
+ 
+      
               </li>
               <li>
-                <Link
-                  to="/sign-up"
-                  className="nav-links-mobile"
-                  onClick={closeMobileMenu}
-                >
-                  Sign Up
-                </Link>
+               
               </li>
             </>
           ) : (
