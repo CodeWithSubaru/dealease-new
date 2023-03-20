@@ -11,7 +11,7 @@ export const Home = () => {
           {user.ext_name}
         </div>
         {user.email}
-        <div>Address:</div>
+        <div>Address: </div>
         <div>Type: {user.user_type}</div>
       </p>
     </div>

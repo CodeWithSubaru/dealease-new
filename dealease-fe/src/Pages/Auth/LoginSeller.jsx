@@ -79,7 +79,7 @@ export const LoginSeller = () => {
 
           <div> Remember Me </div>
         </div>
-        <button to="/login">Sign Up</button>
+        <button to="/login">Login</button>
         {/* <PrimaryBtnStyle
           backgroundColor="#efa726"
           hoverBgColor="#d69215"

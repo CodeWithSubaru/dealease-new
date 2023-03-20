@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Api\Admin\MessageController;
+use App\Http\Controllers\Api\Seller\PostContoller;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,16 +25,19 @@ Route::post('/register', [AuthController::class, 'register']);
 
 
 Route::post('/register-exist', [AuthController::class, 'registerExist']);
+Route::apiResource('/seller/post', PostContoller::class);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'index']);
 
     Route::post('/logout', [AuthController::class, 'destroy'])
-        ->middleware('auth')
-        ->name('logout');
+    ->middleware('auth')
+    ->name('logout');
 
     // Admin route
     Route::apiResource('/admin/users', UsersController::class);
     Route::apiResource('/admin/messages', MessageController::class);
+
+    // Seller Route
 });
