@@ -33,12 +33,14 @@ import { ProfileAdmin } from './Pages/Admin/Profile';
 import { Users } from './Pages/Admin/Users';
 
 // solla
-import { Mainpage } from './Pages';
-//
-import useAuthContext from './Hooks/Context/AuthContext';
-import { GuestLayout } from './Layouts/GuestLayout';
-import { Register } from './Pages/Auth/Register';
-import { RegisterExist } from './Pages/Auth/RegisterExist';
+import { Mainpage } from "./Pages";
+// ramos
+import { Test } from "./Components/Header/Header";
+
+import { GuestLayout } from "./Layouts/GuestLayout";
+import { Register } from "./Pages/Auth/Register";
+import { RegisterExist } from "./Pages/Auth/RegisterExist";
+import useAuthContext from "./Hooks/Context/AuthContext";
 
 function App() {
   const { loading, user } = useAuthContext();
@@ -96,11 +98,13 @@ function App() {
             {/*Solla */}
             <Route path='/Dealease' element={<Mainpage />} />
             {/*  */}
-            <Route path='/login' element={<Login />} />
-            <Route path='/seller/login' element={<LoginSeller />} />
-            <Route path='/admin/login' element={<LoginAdmin />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/register-exist' element={<RegisterExist />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/seller/login" element={<LoginSeller />} />
+            <Route path="/admin/login" element={<LoginAdmin />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/register-exist" element={<RegisterExist />} />
+            <Route path="/test" element={<Test />} />
           </Route>
 
           <Route path='*' element={<NotFound />} />
