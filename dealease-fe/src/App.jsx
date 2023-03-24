@@ -17,6 +17,7 @@ import { ProfileBuyer } from './Pages/Buyer/Profile';
 
 // Seller Components
 import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
+import { ChangePasswordSeller } from './Pages/Seller/ChangePassword';
 import { HomeSeller } from './Pages/Seller/Home';
 import { InboxSeller } from './Pages/Seller/Inbox';
 import { MessageSeller } from './Pages/Seller/Message';
@@ -24,6 +25,7 @@ import { ProfileSeller } from './Pages/Seller/Profile';
 
 // Admin Components
 import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
+import { ChangePasswordAdmin } from './Pages/Admin/ChangePassword';
 import { Dashboard } from './Pages/Admin/Dashboard';
 import { InboxAdmin } from './Pages/Admin/Inbox';
 import { MessageAdmin } from './Pages/Admin/Message';
@@ -68,6 +70,10 @@ function App() {
               element={<MessageSeller />}
             />
             <Route path='/seller/profile' element={<ProfileSeller />} />
+            <Route
+              path='/seller/change-password'
+              element={<ChangePasswordSeller />}
+            />
           </Route>
 
           {/* Admin Route */}
@@ -80,6 +86,10 @@ function App() {
               element={<MessageAdmin />}
             />
             <Route path='/admin/profile' element={<ProfileAdmin />} />
+            <Route
+              path='/admin/change-password'
+              element={<ChangePasswordAdmin />}
+            />
           </Route>
 
           <Route element={<GuestLayout />}>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import axiosClient from '../../api/axios';
 
-export function ChangePasswordBuyer() {
+export function ChangePasswordSeller() {
   const [errors, setErrors] = useState({});
   const [password, setPassword] = useState({});
 
