@@ -11,6 +11,11 @@ class Inbox extends Model
 
     protected $guarded;
 
+    public function sender()
+    {
+        return  $this->hasOne(\App\Models\User::class, 'user_id', 'user_id');
+    }
+
     public function recipient()
     {
         return  $this->hasOne(\App\Models\User::class, 'user_id', 'recipient_id');

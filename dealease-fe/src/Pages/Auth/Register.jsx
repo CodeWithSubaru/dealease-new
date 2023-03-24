@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import useAuthContext from "../../Hooks/Context/AuthContext";
+import { useEffect, useState } from 'react';
 import {
-  regions,
-  provinces,
-  cities,
   barangays,
-} from "select-philippines-address";
+  cities,
+  provinces,
+  regions,
+} from 'select-philippines-address';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Register() {
   const [user, setUser] = useState({
@@ -81,10 +81,10 @@ export function Register() {
       <div>
         <h1>Register</h1>
 
-        <div className="register-description mb-1">
-          <p className="register-details">Please provide your details</p>
+        <div className='register-description mb-1'>
+          <p className='register-details'>Please provide your details</p>
           <div>
-            <span className="material-symbols-rounded bulb">
+            <span className='material-symbols-rounded bulb'>
               tips_and_updates
             </span>
             <ul>
@@ -92,12 +92,12 @@ export function Register() {
               <li>All fields with asterisk (*) are required</li>
             </ul>
           </div>
-          <slot name="login-img" />
+          <slot name='login-img' />
         </div>
 
-        <form className="form" onSubmit={handleRegister}>
-          <div className="form-top">
-            <div className="personal-details">
+        <form className='form' onSubmit={handleRegister}>
+          <div className='form-top'>
+            <div className='personal-details'>
               <h3>Personal Details</h3>
 
               <hr />
@@ -105,8 +105,8 @@ export function Register() {
                 <div> First Name * </div>
                 <div>
                   <input
-                    type="text"
-                    name="first_name"
+                    type='text'
+                    name='first_name'
                     onChange={(e) =>
                       setUser({ ...user, first_name: e.target.value })
                     }
@@ -114,7 +114,7 @@ export function Register() {
                   />
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.first_name && errors.first_name[0]}
               </small>
 
@@ -122,8 +122,8 @@ export function Register() {
                 <div> Middle Name </div>
                 <div>
                   <input
-                    type="text"
-                    name="middle_name"
+                    type='text'
+                    name='middle_name'
                     onChange={(e) =>
                       setUser({ ...user, middle_name: e.target.value })
                     }
@@ -136,8 +136,8 @@ export function Register() {
                 <div> Last Name * </div>
                 <div>
                   <input
-                    type="text"
-                    name="name"
+                    type='text'
+                    name='name'
                     onChange={(e) =>
                       setUser({ ...user, last_name: e.target.value })
                     }
@@ -145,7 +145,7 @@ export function Register() {
                   />
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.last_name && errors.last_name[0]}
               </small>
 
@@ -153,8 +153,8 @@ export function Register() {
                 <div> Extension Name </div>
                 <div>
                   <input
-                    type="text"
-                    name="name"
+                    type='text'
+                    name='name'
                     onChange={(e) =>
                       setUser({ ...user, ext_name: e.target.value })
                     }
@@ -167,37 +167,37 @@ export function Register() {
                 <div> Birthday </div>
                 <div>
                   <input
-                    type="date"
-                    min="1930-01-01"
-                    max="2012-12-31"
+                    type='date'
+                    min='1930-01-01'
+                    max='2012-12-31'
                     onChange={(e) =>
                       setUser({ ...user, birth_date: e.target.value })
                     }
                   />
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.birth_date && errors.birth_date[0]}
               </small>
 
-              <div className="mb-1">
+              <div className='mb-1'>
                 <div> Contact Number </div>
                 <div>
                   <input
-                    type="number"
-                    id="#number"
+                    type='number'
+                    id='#number'
                     onChange={(e) =>
                       setUser({ ...user, contact_number: e.target.value })
                     }
                   />
                 </div>
               </div>
-              <small className="errMsg" v-if="errors.contact_number">
+              <small className='errMsg' v-if='errors.contact_number'>
                 {errors && errors.contact_number && errors.contact_number[0]}
               </small>
             </div>
 
-            <div className="address-details">
+            <div className='address-details'>
               <h3>Address Details</h3>
               <hr />
               <div>
@@ -206,9 +206,9 @@ export function Register() {
                   <select
                     onChange={province}
                     onSelect={region}
-                    defaultValue={"default"}
+                    defaultValue={'default'}
                   >
-                    <option value="default">Select Region</option>
+                    <option value='default'>Select Region</option>
                     {regionData &&
                       regionData.map((item) => (
                         <option key={item.region_code} value={item.region_code}>
@@ -219,15 +219,15 @@ export function Register() {
                   <br />
                 </div>
               </div>
-              <small className="errMsg" v-if="errors.region">
+              <small className='errMsg' v-if='errors.region'>
                 {errors && errors.region && errors.region[0]}
               </small>
 
               <div>
                 <div>Province</div>
                 <div>
-                  <select onChange={city} defaultValue={"default"}>
-                    <option value="default">Select Province</option>
+                  <select onChange={city} defaultValue={'default'}>
+                    <option value='default'>Select Province</option>
                     {provinceData &&
                       provinceData.length > 0 &&
                       provinceData.map((item) => (
@@ -241,15 +241,15 @@ export function Register() {
                   </select>
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.province && errors.province[0]}
               </small>
 
               <div>
                 <div>City/Town</div>
                 <div>
-                  <select onChange={barangay} defaultValue={"default"}>
-                    <option value="default">Select City</option>
+                  <select onChange={barangay} defaultValue={'default'}>
+                    <option value='default'>Select City</option>
                     {cityData &&
                       cityData.length > 0 &&
                       cityData.map((item) => (
@@ -260,15 +260,15 @@ export function Register() {
                   </select>
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.city && errors.city[0]}
               </small>
 
               <div>
                 <div>Barangay</div>
                 <div>
-                  <select onChange={brgy} defaultValue={"default"}>
-                    <option value="default">Select Barangay</option>
+                  <select onChange={brgy} defaultValue={'default'}>
+                    <option value='default'>Select Barangay</option>
                     {barangayData &&
                       barangayData.length > 0 &&
                       barangayData.map((item) => (
@@ -279,39 +279,39 @@ export function Register() {
                   </select>
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.barangay && errors.barangay[0]}
               </small>
 
-              <div className="">
+              <div className=''>
                 <div>Street</div>
                 <div>
                   <input
-                    type="text"
-                    name=""
-                    id=""
+                    type='text'
+                    name=''
+                    id=''
                     onChange={(e) =>
                       setUser({ ...user, street: e.target.value })
                     }
                   />
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.street && errors.street[0]}
               </small>
             </div>
           </div>
 
-          <div className="form-bottom">
-            <div className="account-details">
+          <div className='form-bottom'>
+            <div className='account-details'>
               <h3>Account Details</h3>
               <hr />
               <div>
                 <div> Email * </div>
                 <div>
                   <input
-                    type="email"
-                    name="email"
+                    type='email'
+                    name='email'
                     onChange={(e) =>
                       setUser({ ...user, email: e.target.value })
                     }
@@ -319,7 +319,7 @@ export function Register() {
                   />
                 </div>
               </div>
-              <small className="errMsg" v-if="errors.email">
+              <small className='errMsg' v-if='errors.email'>
                 {errors && errors.email && errors.email[0]}
               </small>
 
@@ -327,8 +327,8 @@ export function Register() {
                 <div>Password * </div>
                 <div>
                   <input
-                    type="password"
-                    name="password"
+                    type='password'
+                    name='password'
                     onChange={(e) =>
                       setUser({ ...user, password: e.target.value })
                     }
@@ -337,16 +337,16 @@ export function Register() {
                 </div>
               </div>
 
-              <small className="errMsg" v-if="errors.password">
+              <small className='errMsg' v-if='errors.password'>
                 {errors && errors.password && errors.password[0]}
               </small>
 
-              <div className="mb-1">
+              <div className='mb-1'>
                 <div>Confirm Password * </div>
                 <div>
                   <input
-                    type="password"
-                    name="password_confirmation"
+                    type='password'
+                    name='password_confirmation'
                     onChange={(e) =>
                       setUser({
                         ...user,
@@ -362,7 +362,7 @@ export function Register() {
                 <div>User type</div>
                 <div>
                   <select
-                    defaultValue={"default"}
+                    defaultValue={'default'}
                     onChange={(e) =>
                       setUser({
                         ...user,
@@ -370,28 +370,24 @@ export function Register() {
                       })
                     }
                   >
-                    <option value={"default"} disabled>
+                    <option value={'default'} disabled>
                       Choose an option
                     </option>
-                    <option value={"is_buyer 1"}>Buyer</option>
-                    <option value={"is_seller 1"}>Seller</option>
+                    <option value={'is_buyer 1'}>Buyer</option>
+                    <option value={'is_seller 1'}>Seller</option>
                   </select>
                 </div>
               </div>
-              <small className="errMsg">
+              <small className='errMsg'>
                 {errors && errors.user_type && errors.user_type[0]}
               </small>
             </div>
           </div>
 
-          {/* <PrimaryBtnStyle
-            backgroundColor="#efa726"
-            hoverBgColor="#d69215"
-            btnTitle="Register"
-          /> */}
+          <button> Submit </button>
 
-          <div className="back-to-home-wrapper">
-            <router-link to="/login" className="back-to-home">
+          <div className='back-to-home-wrapper'>
+            <router-link to='/login' className='back-to-home'>
               Go to Login
             </router-link>
           </div>

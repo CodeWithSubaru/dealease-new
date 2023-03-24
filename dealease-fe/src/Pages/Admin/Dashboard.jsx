@@ -1,156 +1,175 @@
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
 import { useEffect, useState } from 'react';
-import { FormCreate } from '../../Components/Form/Form';
-import useAuthContext from '../../Hooks/Context/AuthContext';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import axiosClient from '../../api/axios';
-import { TableComponent } from '../../Components/Table/Table';
-
-const header = [
-  { title: 'Id', prop: 'id' },
-  { title: 'Full Name', prop: 'fullname' },
-  { title: 'Action', prop: 'action' },
-];
 
 export function Dashboard() {
-  const foundUserById = [];
-  const [body, setBody] = useState([]);
-  const [listOfUsersLongDetails, setlistOfUsersLongDetails] = useState([]);
+  const [countOfUsers, setCountOfUsers] = useState([]);
+  const [countOfMessages, setCountOfMessages] = useState([]);
 
-  const [user, setUser] = useState({
-    first_name: null,
-    middle_name: null,
-    last_name: null,
-    ext_name: null,
-    birth_date: null,
-    contact_number: null,
-    region: null,
-    province: null,
-    city: null,
-    barangay: null,
-    street: null,
-    email: null,
-    password: null,
-    password_confirmation: null,
-    user_type: null,
-  });
+  Chart.register(
+    ArcElement,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+  );
 
-  const [updateUserDetails, setUpdateUserDetails] = useState({
-    user_id: null,
-    first_name: null,
-    middle_name: null,
-    last_name: null,
-    ext_name: null,
-    email: null,
-    user_type: null,
-    birth_date: null,
-    contact_number: null,
-    region: null,
-    province: null,
-    city: null,
-    barangay: null,
-    street: null,
-  });
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Total Numbers',
+      },
+    },
+  };
 
-  const { errors, setErrors } = useAuthContext();
+  const labels = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
-  const createUser = (e) => {
-    e.preventDefault();
-    axiosClient
-      .post('/admin/users', user)
-      .then((resp) => {
-        setUser({ ...user, [e.target.name]: e.target.value });
-        console.log(resp);
-        setErrors([]);
-      })
-      .catch((e) => {
-        console.log(e.response.data.errors);
-        setErrors(e.response.data.errors);
+  function countByCategory(response, label) {
+    const countsByMonth = Array.from({ length: label.length }, () => 0);
+    if (!(response.length > 0)) {
+      return;
+    }
+
+    response.map(({ month, count }) => {
+      labels.map((label, index) => {
+        if (month === index + 1) {
+          countsByMonth[index] += count;
+        }
       });
-  };
-
-  // Editing User
-  const findUser = (user_id) => {
-    axiosClient.get('/admin/users/' + user_id).then((resp) => {
-      console.log(resp);
-      const flattenObject = {
-        ...resp.data.foundUserById[0],
-        ...resp.data.foundUserById[0].user_details,
-      };
-
-      setUpdateUserDetails(flattenObject);
     });
-  };
+    return countsByMonth;
+  }
 
-  const editUser = (e) => {
-    e.preventDefault();
-    console.log(updateUserDetails);
-    axiosClient
-      .put('/admin/users/' + updateUserDetails.user_id, updateUserDetails)
-      .then((resp) => console.log(resp))
-      .catch((e) => console.log(e));
-  };
-
-  // delete user
-  const deleteUser = (user_id) => {
-    console.log(user_id);
-    axiosClient
-      .delete('/admin/users/' + user_id)
-      .then((resp) => {
-        console.log(resp);
-        setUser({ ...user });
-      })
-      .catch((e) => console.log(e));
-  };
-  const viewCompleteDetails = (user_id) => {
-    console.log(user_id);
-  };
-  // get user in db
-  const setUserDataTable = () => {
-    axiosClient.get('/admin/users').then((resp) => {
-      setlistOfUsersLongDetails(resp.data.listOfUser);
-      const user = resp.data.listOfUser.map((user) => {
-        return {
-          id: user.user_id,
-          fullname:
-            user.first_name +
-            ' ' +
-            user.middle_name +
-            ' ' +
-            user.last_name +
-            ' ' +
-            user.ext_name,
-          action: (
-            <div>
-              <button onClick={() => viewCompleteDetails(user.user_id)}>
-                View
-              </button>
-              <button onClick={() => findUser(user.user_id)}>Edit</button>
-              <button onClick={() => deleteUser(user.user_id)}>Delete</button>
-            </div>
-          ),
-        };
-      });
-      setBody(user);
+  function calculateTotal(response) {
+    let totalNumber = 0;
+    Object.values(response).map((item) => {
+      totalNumber += Number(item.count);
     });
+    return totalNumber;
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Users',
+        data: countByCategory(countOfUsers, labels),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Messages',
+        data: countByCategory(countOfMessages, labels),
+        backgroundColor: 'green',
+      },
+      {
+        label: 'Total Reported Users',
+        data: [0],
+        backgroundColor: 'blue',
+      },
+    ],
+  };
+
+  const dataChart = {
+    labels,
+    datasets: [
+      {
+        label: '# of Users',
+        data: countOfUsers.map((item) => item.count),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
   };
 
   useEffect(() => {
-    setErrors([]);
-    setUserDataTable();
-  }, []);
+    axiosClient
+      .get('/admin/get-number-of-user')
+      .then((response) => setCountOfUsers(response.data));
+
+    axiosClient
+      .get('/admin/get-number-of-message')
+      .then((response) => setCountOfMessages(response.data));
+  }, [countOfUsers.count, countOfMessages.count]);
 
   return (
-    <div>
-      <div>Dashboard</div>
-      <TableComponent header={header} body={body}></TableComponent>
-      <br />
-      <FormCreate
-        submitHook={createUser}
-        user={user}
-        setUser={setUser}
-        errors={errors}
-        setErrors={setErrors}
-      />
-      <br />
+    <div className='dashboard'>
+      <div className='cards-details-wrapper'>
+        <CardDetails
+          title='Total Users'
+          totalNumber={calculateTotal(countOfUsers)}
+        />
+        <CardDetails
+          title='Total Messages'
+          totalNumber={calculateTotal(countOfMessages)}
+        />
+        <CardDetails title='Total Reported Users' totalNumber={2} />
+      </div>
+
+      <div className='graph-container' style={{ background: 'white' }}>
+        <Bar options={options} data={data} />
+
+        <Doughnut data={dataChart} />
+      </div>
+    </div>
+  );
+}
+
+function CardDetails(props) {
+  return (
+    <div className='card-details'>
+      <h2>{props.title}</h2>
+      <p>{props.totalNumber}</p>
     </div>
   );
 }

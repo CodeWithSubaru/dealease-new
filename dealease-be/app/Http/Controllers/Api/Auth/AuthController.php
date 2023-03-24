@@ -145,4 +145,18 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'User loggedout successfully'], 200);
     }
+
+    public function changePass(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'old_password' => ['required', 'current_password'],
+            'new_password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user->update(['password' => Hash::make($request->new_password)]);
+
+        return response()->json(['message' => 'Password changed successfully']);
+    }
 }

@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
   const setTokenAndUType = (token, type) => {
     _setToken(token);
     _setUserType(type);
-    console.log(token, type);
     if (token && type) {
       localStorage.setItem('ACCESS_TOKEN', token);
       localStorage.setItem('USER_TYPE', type);
@@ -45,11 +44,17 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (res.data.user[0].role_type === 'User') {
-          if (res.data.user[0].is_buyer === 'Buyer') {
+          if (
+            res.data.user[0].is_buyer === 'Buyer' ||
+            res.data.user[0].is_buyer === 'Buyer_Seller'
+          ) {
             setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
           }
 
-          if (res.data.user[0].is_seller === 'Seller') {
+          if (
+            res.data.user[0].is_seller === 'Seller' ||
+            res.data.user[0].is_seller === 'Buyer_Seller'
+          ) {
             setTokenAndUType(res.data.token, res.data.user[0].is_seller);
           }
         }

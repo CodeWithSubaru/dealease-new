@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 import axiosClient from '../../api/axios';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useMessageContext from '../../Hooks/Context/MessageContext';
@@ -55,12 +55,13 @@ const MessageForm = () => {
   );
 };
 
-export const MessageBuyer = () => {
+export const MessageSeller = () => {
   const {
     userMessages,
     messageSeller,
     messageSellersExample,
     setUserMessages,
+    setSenderMessage,
   } = useMessageContext();
   const { user } = useAuthContext();
   const { message_id } = useParams();

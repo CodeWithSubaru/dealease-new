@@ -1,12 +1,12 @@
 // import { CardStyle } from '../../Components/Card/Card.style';
 
-import { H1 } from "../../Components/Helpers/index.style";
-import { useEffect, useState } from "react";
-import useAuthContext from "../../Hooks/Context/AuthContext";
+import { useEffect, useState } from 'react';
+import { H1 } from '../../Components/Helpers/index.style';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const is_buyer = 1,
     is_seller = [0, 1],
     role_type = 0;
@@ -24,25 +24,25 @@ export const Login = () => {
   return (
     <>
       <H1>Login</H1>
-      <div className="login-description">
-        <p className="login-details">Please login your credentials</p>
-        <slot name="login-img" />
+      <div className='login-description'>
+        <p className='login-details'>Please login your credentials</p>
+        <slot name='login-img' />
       </div>
 
       <form onSubmit={handleLogin}>
         <div>
           <div>
             Email
-            <small className="errMsg">
-              {errors && errors.email ? errors.email[0] : ""}
+            <small className='errMsg'>
+              {errors && errors.email ? errors.email[0] : ''}
             </small>
           </div>
           <div>
             <input
-              type="email"
-              name="email"
+              type='email'
+              name='email'
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
+              placeholder='Email'
               // required
               autoFocus
             />
@@ -52,30 +52,30 @@ export const Login = () => {
         <div>
           <div>
             Password
-            <small className="errMsg">
-              {errors && errors.password ? errors.password[0] : ""}
+            <small className='errMsg'>
+              {errors && errors.password ? errors.password[0] : ''}
             </small>
           </div>
           <div>
             <input
-              type="password"
-              name="password"
-              placeholder="Password"
+              type='password'
+              name='password'
+              placeholder='Password'
               onChange={(e) => setPassword(e.target.value)}
-              pattern=".{8,}"
+              pattern='.{8,}'
               // required
             />
           </div>
         </div>
 
-        <div className="remember_me-wrapper">
+        <div className='remember_me-wrapper'>
           <div>
             <input
-              type="checkbox"
-              name="checkbox"
-              id="remember-me"
-              className="remember_me"
-              v-model="form.rmb_me"
+              type='checkbox'
+              name='checkbox'
+              id='remember-me'
+              className='remember_me'
+              v-model='form.rmb_me'
             />
           </div>
 
@@ -87,10 +87,11 @@ export const Login = () => {
           hoverBgColor="#d69215"
           btnTitle="Login"
         /> */}
+        <button>Submit</button>
 
-        <div className="back-to-home-wrapper">
-          <slot name="login-route"></slot>
-          <p className="back-to-home">Go to Register</p>
+        <div className='back-to-home-wrapper'>
+          <slot name='login-route'></slot>
+          <p className='back-to-home'>Go to Register</p>
         </div>
       </form>
     </>

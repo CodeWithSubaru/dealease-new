@@ -10,12 +10,17 @@ use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index(): JsonResponse
     {
-        $inbox = Inbox::with('recipient', 'last_message')->where('user_id', auth()->id())->get();
+        // get the messages of authenticated user
+        $inbox = Inbox::with('sender', 'recipient', 'last_message')
+            ->where('user_id', auth()->id())
+            ->orWhere('recipient_id', auth()->id())
+            ->get();
         return response()->json($inbox, 200);
     }
 
@@ -33,19 +38,20 @@ class MessageController extends Controller
         ]);
 
         // get last message
-        $inbox = Inbox::where('user_id', $request->sender)->where('recipient_id', $request->receiver)->orWhere('recipient_id', $request->sender)
-            ->update([
-                'message_id' => $message->message_id,
-            ]);
-        if ($inbox) {
-            return response()->json($inbox, 200);
-        }
+        $inbox = Inbox::where('user_id', $request->sender)
+            ->where('recipient_id', $request->receiver)
+            ->orWhere('recipient_id', $request->sender)
+            ->where('user_id', $request->receiver);
 
-        Inbox::create([
-            'user_id' => $request->sender,
-            'message_id' => $message->message_id,
-            'recipient_id' => $message->receiver
-        ]);
+        if (count($inbox->get(['user_id', 'recipient_id'])) > 0) {
+            $inbox->update(['message_id' => $message->message_id]);
+        } else {
+            $inbox->create([
+                'user_id' => $request->sender,
+                'message_id' => $message->message_id,
+                'recipient_id' => $message->receiver
+            ]);
+        }
 
         return response()->json(['message' => 'sent'], 200);
     }

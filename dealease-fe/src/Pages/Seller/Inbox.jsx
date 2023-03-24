@@ -1,7 +1,7 @@
 import useMessageContext from '../../Hooks/Context/MessageContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
-export const InboxAdmin = () => {
+export const InboxSeller = () => {
   const { user } = useAuthContext();
   const { inboxes, clickedUser } = useMessageContext();
 
@@ -22,7 +22,7 @@ export const InboxAdmin = () => {
             <p> {inbox.last_message.chat}</p>
           </div>
         ) : (
-          ''
+          <p>No Messages Yet.</p>
         )
       )}
     </>

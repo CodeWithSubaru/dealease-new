@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { CardItem } from "./CardItem";
 import "../../assets/scss/card.scss";
+import "../../assets/scss/button.scss";
 
 export function Card() {
   return (
@@ -15,9 +16,19 @@ export function Card() {
       <div className="wrapper">
         <form action="#">
           <span>
-            <FontAwesomeIcon icon={faImage} />
-            <p>Browse Image to Upload</p>
+            <FontAwesomeIcon type="file" icon={faImage} />
+            <InputGroup size="sm" value="Browse Image to Upload">
+              <Form.Control type="file" />
+            </InputGroup>
+            <p></p>
           </span>
+          <img  src="../../../public/images/dragdrop.png" alt="" id="blah" />
+          <div className="div-file">
+          <input className="file" type="file" id="viewImg"/>
+          </div>
+
+
+
           <h9> Product Description</h9>
           <section className="text-area">
             <InputGroup size="lg" className="mb-1">

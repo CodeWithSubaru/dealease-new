@@ -87,7 +87,7 @@ export const LoginAdmin = () => {
           navigateTo="/login"
           btnTitle="Login"
         /> */}
-
+  <button>Submit</button>
         <div className="back-to-home-wrapper">
           <slot name="login-route"></slot>
           <p className="back-to-home">Go to Register</p>

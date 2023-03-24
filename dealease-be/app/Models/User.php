@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -60,6 +60,10 @@ class User extends Authenticatable
 
     protected function getIsBuyerAttribute()
     {
+        if ($this->attributes['is_buyer'] === '1' && $this->attributes['is_seller'] === '1') {
+            $this->attributes['is_seller'] = 'Buyer_Seller';
+            return $this->attributes['is_buyer'] = 'Buyer_Seller';
+        }
         if ($this->attributes['is_buyer'] === '1') {
             return $this->attributes['is_buyer'] = 'Buyer';
         } else {
@@ -69,6 +73,10 @@ class User extends Authenticatable
 
     protected function getIsSellerAttribute()
     {
+        if ($this->attributes['is_seller'] === '1' && $this->attributes['is_buyer'] === '1') {
+            $this->attributes['is_buyer'] = 'Buyer_Seller';
+            return $this->attributes['is_seller'] = 'Buyer_Seller';
+        }
         if ($this->attributes['is_seller'] === '1') {
             return $this->attributes['is_seller'] = 'Seller';
         } else {

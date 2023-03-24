@@ -1,18 +1,35 @@
+import React from "react";
 import { useEffect, useRef, useState } from "react";
+import { Modal, Form, Row, Col, InputGroup, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import useAuthContext from "../../Hooks/Context/AuthContext";
 import { Link } from "react-router-dom";
 import "../../assets/scss/header.scss";
 import "../../assets/scss/global.scss";
-import { Button } from "../Button/Button";
-function Header() {
+import { H3 } from "../../Components/Helpers/index.style";
+import { Login } from "../../Pages/Auth/Login";
+import { LoginSeller } from "../../Pages/Auth/LoginSeller";
+import {MydModalWithGrid} from "../Modal/Signupmoda";
+
+
+export function Test() {
+
+
+  return (
+    <>
+      <div className="vr" />
+      
+    </>
+  );
+}
+
+// patrick
+
+export function Header() {
   // collapsible navlinks
-  const collapse = useRef(null);
-  const { user, token, logout } = useAuthContext();
-  const handleLogout = () => {
-    logout();
-  };
+  const { token } = useAuthContext();
+
   // Solla
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
@@ -29,65 +46,57 @@ function Header() {
     showButton();
   }, []);
   window.addEventListener("resize", showButton);
+  const [modalShow, setModalShow] = useState(false);
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+    <nav className='navbar'>
+      <div className='navbar-container'>
+        <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
           Dealease
         </Link>
-        <div className="menu-icon" onClick={handleClick}>
+        <div className='menu-icon' onClick={handleClick}>
           <FontAwesomeIcon icon={click ? faXmark : faBars} />
         </div>
-        <ul className={click ? "nav-menu active" : "nav-menu"}>
+        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
           {!token ? (
             <>
-              <li className="nav-item">
-                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+              <li className='nav-item'>
+                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className='nav-item'>
                 <Link
-                  to="/about"
-                  className="nav-links"
+                  to='/about'
+                  className='nav-links'
                   onClick={closeMobileMenu}
                 >
                   About
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className='nav-item'>
                 <Link
-                  to="/products"
-                  className="nav-links"
+                  to='/products'
+                  className='nav-links'
                   onClick={closeMobileMenu}
                 >
                   Products
                 </Link>
               </li>
-              <li className="nav-item">
-                {button && <Button buttonStyle="btn-outline">SIGN UP</Button>}
+              <li >
+              <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
+              <Button variant="light" onClick={() => setModalShow(true)} className="button-30" size="sm" role={Button}>
+      Sign-Up
+      <MydModalWithGrid/>
+      </Button>
+ 
+      
               </li>
               <li>
-                <Link
-                  to="/sign-up"
-                  className="nav-links-mobile"
-                  onClick={closeMobileMenu}
-                >
-                  Sign Up
-                </Link>
+               
               </li>
             </>
           ) : (
-            <>
-              {/* Modified Solla */}
-              <li className="nav-item">
-                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                  Home
-                </Link>
-              </li>
-              {user.first_name}
-              <button onClick={handleLogout}>Logout</button>
-            </>
+            props.children
           )}
         </ul>
       </div>

@@ -1,7 +1,7 @@
 // import { CardStyle } from '../../Components/Card/Card.style';
+import { useEffect, useState } from 'react';
 import { Button } from '../../Components/Button/Button';
 import { H1 } from '../../Components/Helpers/index.style';
-import { useState, useEffect } from 'react';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export const LoginSeller = () => {
