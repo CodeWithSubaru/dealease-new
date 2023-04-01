@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\AnalyticsControllers;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Seller\PostContoller;
 use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Api\Admin\MessageController;
-use App\Http\Controllers\Api\Seller\PostContoller;
+use App\Http\Controllers\Api\Admin\AnalyticsControllers;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use Tests\Feature\Auth\EmailVerificationTest;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +21,8 @@ use App\Http\Controllers\Api\Seller\PostContoller;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/test-email', VerifyEmailController::class);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);

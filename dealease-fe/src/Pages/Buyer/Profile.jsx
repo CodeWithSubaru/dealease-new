@@ -26,6 +26,6 @@ export const ProfileBuyer = () => {
       <p>{user.user_details ? user.user_details.birth_date : ''}</p>
     </div>
   ) : (
-    ''
+    <p>Loading...</p>
   );
 };

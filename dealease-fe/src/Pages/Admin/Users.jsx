@@ -45,7 +45,6 @@ export function Users() {
         });
       })
       .catch((e) => {
-        console.log(e.response.data.errors);
         setErrors(e.response.data.errors);
       });
   };
@@ -63,10 +62,11 @@ export function Users() {
 
   const editUser = (e) => {
     e.preventDefault();
-    console.log(updateUserDetails);
     axiosClient
       .put('/admin/users/' + updateUserDetails.user_id, updateUserDetails)
-      .then((resp) => console.log(resp))
+      .then((resp) => {
+        console.log(resp);
+      })
       .catch((e) => console.log(e));
   };
 
@@ -126,10 +126,8 @@ export function Users() {
       <div>Dashboard</div>
       <TableComponent header={header} body={body}></TableComponent>
       <br />
-
       {/* Get Single User */}
       <ViewSingleUser data={singleUser} />
-
       {/* Create New User */}
       <FormUser
         submitHook={createUser}
@@ -138,7 +136,6 @@ export function Users() {
         errors={errors}
         setErrors={setErrors}
       />
-
       {/* Update User */}
       <FormUser
         submitHook={editUser}

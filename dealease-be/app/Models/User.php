@@ -61,8 +61,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function getIsBuyerAttribute()
     {
         if ($this->attributes['is_buyer'] === '1' && $this->attributes['is_seller'] === '1') {
-            $this->attributes['is_seller'] = 'Buyer_Seller';
-            return $this->attributes['is_buyer'] = 'Buyer_Seller';
+            $this->attributes['is_seller'] = 'Buyer_seller2';
+            return $this->attributes['is_buyer'] = 'Buyer_seller1';
         }
         if ($this->attributes['is_buyer'] === '1') {
             return $this->attributes['is_buyer'] = 'Buyer';
@@ -74,8 +74,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function getIsSellerAttribute()
     {
         if ($this->attributes['is_seller'] === '1' && $this->attributes['is_buyer'] === '1') {
-            $this->attributes['is_buyer'] = 'Buyer_Seller';
-            return $this->attributes['is_seller'] = 'Buyer_Seller';
+            $this->attributes['is_buyer'] = 'Buyer_seller1';
+            return $this->attributes['is_seller'] = 'Buyer_seller2';
         }
         if ($this->attributes['is_seller'] === '1') {
             return $this->attributes['is_seller'] = 'Seller';
@@ -91,5 +91,10 @@ class User extends Authenticatable implements MustVerifyEmail
         } else {
             return $this->attributes['role_type'] = 'User';
         }
+    }
+
+    protected function getProfImg()
+    {
+        return 'images/' . $this->attributes['prof_img'];
     }
 }

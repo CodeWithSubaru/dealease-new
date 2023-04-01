@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Rules\Password;
 use App\Models\User;
 use App\Models\UserDetail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
@@ -26,7 +26,9 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+
         $request->validate([
+            'profile_image' => ['image'],
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
             'region' => ['required'],
@@ -49,7 +51,18 @@ class AuthController extends Controller
             $is_buyer = 0;
         }
 
+
+        $imageName = 'default_profile.jpg';
+
+        if ($request->has('profile_image')) {
+            // uploading image
+            $imageName = time() . '.' . $request->file('profile_image')->getClientOriginalExtension();
+
+            $request->file('profile_image')->move(public_path('images'), $imageName);
+        }
+
         $user = User::create([
+            'prof_img' => $imageName,
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
@@ -86,6 +99,10 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
+        if ($user->role_type == 'Admin') {
+            return response()->json(['errors' => ['email' => ['Account update failed. This action is not allowed.!']]], 422);
+        }
+
         if ($user->is_buyer && $user->is_seller) {
             return response()->json(['errors' => ['email' => ['User updated already']]], 422);
         }
@@ -113,21 +130,19 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password', 'role_type', 'is_buyer', 'is_seller'), $request->boolean('remember'))) {
+        if (!Auth::attempt($request->only('email', 'password', 'role_type', 'is_buyer', 'is_seller'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-
         $auth_user = User::with('user_details')->where('email', $request->email)->get();
-
 
         $token = $request->user()->createToken($auth_user[0]->email)->plainTextToken;
 
 
         $obj = [
-            'message' => 'User Login Succesfully',
+            'message' => 'Welcome ' . Auth::user()->first_name . '. You are Login Succesfully',
             'user' => $auth_user,
             'token' => $token,
         ];
@@ -143,7 +158,7 @@ class AuthController extends Controller
 
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'User loggedout successfully'], 200);
+        return response()->json(['message' => 'Come back again. You have logged out successfully'], 200);
     }
 
     public function changePass(Request $request)
@@ -154,6 +169,10 @@ class AuthController extends Controller
             'old_password' => ['required', 'current_password'],
             'new_password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        if ($request->old_password === $request->new_password) {
+            return response()->json(['errors' => ['new_password' => ['Please ensure that you have entered a new password.']]], 422);
+        }
 
         $user->update(['password' => Hash::make($request->new_password)]);
 

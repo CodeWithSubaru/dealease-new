@@ -9,6 +9,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Register() {
   const [user, setUser] = useState({
+    profile_image: null,
     first_name: null,
     middle_name: null,
     last_name: null,
@@ -25,11 +26,11 @@ export function Register() {
     password_confirmation: null,
     user_type: null,
   });
+
   const { errors, setErrors, register } = useAuthContext();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    console.log(user);
     register(user);
   };
 
@@ -95,12 +96,31 @@ export function Register() {
           <slot name='login-img' />
         </div>
 
-        <form className='form' onSubmit={handleRegister}>
+        <form
+          className='form'
+          onSubmit={handleRegister}
+          encType='multipart/form-data'
+        >
           <div className='form-top'>
             <div className='personal-details'>
               <h3>Personal Details</h3>
 
               <hr />
+              <div>
+                <div htmlFor='upload-img'>Upload Profile Picture</div>
+                <input
+                  type='file'
+                  name='upload-img'
+                  onChange={(e) => {
+                    setUser({ ...user, profile_image: e.target.files[0] });
+                  }}
+                  id='upload-img'
+                />
+              </div>
+              <small className='errMsg'>
+                {errors && errors.profile_image && errors.profile_image[0]}
+              </small>
+
               <div>
                 <div> First Name * </div>
                 <div>
@@ -203,12 +223,8 @@ export function Register() {
               <div>
                 <div>Region</div>
                 <div>
-                  <select
-                    onChange={province}
-                    onSelect={region}
-                    defaultValue={'default'}
-                  >
-                    <option value='default'>Select Region</option>
+                  <select onChange={province} onSelect={region}>
+                    <option>Select Region</option>
                     {regionData &&
                       regionData.map((item) => (
                         <option key={item.region_code} value={item.region_code}>

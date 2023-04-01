@@ -1,5 +1,6 @@
-import { createContext, useContext, useLayoutEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Notification } from '../../Components/Notification/Notification';
 
 import axiosClient from '../../api/axios';
 
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [user_type, _setUserType] = useState(localStorage.getItem('USER_TYPE'));
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
+  const logoutTimerIdRef = useRef(null);
 
   const csrf = () => axiosClient.get('../sanctum/csrf-cookie');
 
@@ -28,52 +30,64 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('USER_TYPE', type);
     } else {
       localStorage.removeItem('ACCESS_TOKEN');
+      localStorage.removeItem('USER_TYPE');
     }
   };
 
   // Login Methods for each user
-  const login = ({ ...data }, redirect) => {
+  const login = ({ ...data }, redirect, loginAs) => {
     csrf();
     axiosClient
       .post('/login', data)
       .then((res) => {
-        console.log(res);
-        if (res.data.user[0].role_type === 'Admin') {
-          setTokenAndUType(res.data.token, res.data.user[0].role_type);
-          console.log('Admin');
+        if (res.status == 200) {
+          Notification({
+            title: 'Success',
+            message: res.data.message,
+            icon: 'success',
+          }).then(() => {
+            setLoading(true);
+            if (res.data.user[0].role_type === 'Admin') {
+              setTokenAndUType(res.data.token, res.data.user[0].role_type);
+            }
+
+            if (res.data.user[0].role_type === 'User') {
+              if (
+                res.data.user[0].is_buyer === 'Buyer' ||
+                (res.data.user[0].is_buyer === 'Buyer_seller1' && loginAs === 1)
+              ) {
+                setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
+              }
+
+              if (
+                res.data.user[0].is_seller === 'Seller' ||
+                (res.data.user[0].is_seller === 'Buyer_seller2' &&
+                  loginAs === 2)
+              ) {
+                setTokenAndUType(res.data.token, res.data.user[0].is_seller);
+              }
+            }
+            setUser(res.data.user[0]);
+            navigate(redirect);
+          });
         }
-
-        if (res.data.user[0].role_type === 'User') {
-          if (
-            res.data.user[0].is_buyer === 'Buyer' ||
-            res.data.user[0].is_buyer === 'Buyer_Seller'
-          ) {
-            setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
-          }
-
-          if (
-            res.data.user[0].is_seller === 'Seller' ||
-            res.data.user[0].is_seller === 'Buyer_Seller'
-          ) {
-            setTokenAndUType(res.data.token, res.data.user[0].is_seller);
-          }
-        }
-
-        setUser(res.data.user[0]);
-        navigate(redirect);
       })
       .catch((e) => {
-        console.log(e);
+        Notification({
+          title: 'Error',
+          message: 'Something went wrong',
+          icon: 'error',
+        });
         setErrors(e.response.data.errors);
       });
   };
 
   const loginBuyer = (data) => {
-    login(data, '/');
+    login(data, '/', 1);
   };
 
   const loginSeller = (data) => {
-    login(data, '/seller/home');
+    login(data, '/seller/home', 2);
   };
 
   const loginAdmin = (data) => {
@@ -81,26 +95,51 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    axiosClient.post('/logout').then(() => {
-      setUser({});
-      setTokenAndUType(
-        localStorage.removeItem('ACCESS_TOKEN'),
-        localStorage.removeItem('USER_TYPE')
-      );
+    axiosClient.post('/logout').then((res) => {
+      if (res.status == 200) {
+        Notification({
+          title: 'Success',
+          message: res.data.message,
+          icon: 'success',
+        }).then((res) => {
+          setLoading(true);
+          setUser({});
+          setTokenAndUType(
+            localStorage.removeItem('ACCESS_TOKEN'),
+            localStorage.removeItem('USER_TYPE')
+          );
+        });
+      }
     });
   };
 
   const register = ({ ...data }) => {
+    console.log(data);
     axiosClient
-      .post('/register', data)
-      .then((resp) => {
-        setUser({});
-        setErrors(null);
-        _setToken(data.token);
-        navigate('/');
-        console.log(resp, data.token);
+      .post('/register', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          Notification({
+            title: 'Success',
+            message: res.data.message,
+            icon: 'success',
+          }).then((res) => {
+            setLoading(true);
+            setUser({});
+            setErrors([]);
+            _setToken(data.token);
+            navigate('/');
+          });
+        }
       })
       .catch((e) => {
+        Notification({
+          title: 'Error',
+          message: 'Errors Found',
+          icon: 'error',
+        });
         setErrors(e.response.data.errors);
       });
   };
@@ -108,20 +147,55 @@ export const AuthProvider = ({ children }) => {
   const registerExist = ({ ...data }) => {
     axiosClient
       .post('/register-exist', data)
-      .then((resp) => {
-        console.log(resp);
+      .then((res) => {
+        if (res.status == 200) {
+          Notification({
+            title: 'Success',
+            message: res.data.message,
+            icon: 'success',
+          }).then(() => setLoading(true));
+        }
       })
       .catch((e) => {
-        console.log(e);
+        Notification({
+          title: 'Error',
+          message: 'Errors Found',
+          icon: 'error',
+        });
         setErrors(e.response.data.errors);
       });
   };
 
-  useLayoutEffect(() => {
-    axiosClient.get('/user').then((res) => {
-      setUser(res.data[0]);
-      setLoading(false);
-    });
+  useEffect(() => {
+    if (user) {
+      axiosClient
+        .get('/user')
+        .then((res) => {
+          setLoading(false);
+          setUser(res.data[0]);
+        })
+        .catch((e) => setLoading(false));
+    }
+    setErrors([]);
+  }, [user]);
+
+  useEffect(() => {
+    const autoLogout = () => {
+      if (document.visibilityState === 'hidden') {
+        const timeOutId = window.setTimeout(() => {
+          logout();
+        }, 5 * 60 * 1000);
+        logoutTimerIdRef.current = timeOutId;
+      } else {
+        window.clearTimeout(logoutTimerIdRef.current);
+      }
+    };
+
+    document.addEventListener('visibilitychange', autoLogout);
+
+    return () => {
+      document.removeEventListener('visibilitychange', autoLogout);
+    };
   }, []);
 
   return (

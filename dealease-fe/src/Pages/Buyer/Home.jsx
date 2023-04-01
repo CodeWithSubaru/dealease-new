@@ -1,22 +1,15 @@
 // import { Adsense } from '@ctrl/react-adsense';
 import React from 'react';
 import useAuthContext from '../../Hooks/Context/AuthContext';
-
+import HeroSection from "../../Components/Section/HeroSection";
+import { Card } from "../../Components/Card/Card";
+import { Footer } from "../../Components/Footer/footer";
 export const Home = () => {
   const { user } = useAuthContext();
   return (
-    <div>
-      <h3>Posts</h3>
-      <div>
-        <p>THis is an article</p>
-      </div>
-      {/*  responsive ads */}
-      {/* <Adsense
-        client='ca-pub-6501523458220893'
-        slot='2372107736'
-        style={{ display: 'block' }}
-        format='fluid'
-  /> */}
-    </div>
+      <>
+      <Card />
+      <Footer />
+    </>
   );
 };

@@ -4,7 +4,7 @@
   border-radius: 5px;
   display: flex;
   top: 80px;
-  z-index: 999;
+  z-index: 9;
   position: sticky;
   margin-left: auto;
   margin-right: auto;
@@ -12,35 +12,23 @@
   color: black;
   background: #f5f5f5;
 }
-.wrapper span {
-  height: 167px;
-  display: flex;
-  margin: 10px 0;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border-radius: 5px;
-  border: 2px dashed #189aa7;
-  background: #f5f5f5;
+.search-post {
+  width: 50%;
+  float: right;
+  margin-right: 55px;
+  border-radius: 20px;
 }
-.wrapper h9 {
-  font-size: small;
-  color: #999999;
-  float: left;
-}
-form :where(i, p) {
-  color: #189aa7;
-}
-.cards {
-  padding: 4rem;
-  background: #fff;
+.search-post::placeholder {
+  color: #1f98f4;
 }
 
-h1 {
-  text-align: center;
-  color: black;
+.text-home {
+  text-align: left;
+  margin-left: 60px;
+  color: #1f98f4;
+  border-bottom: 5px solid #1f98f4;
+  width: 20%;
 }
-
 .cards_container {
   display: flex;
   flex-flow: column;
@@ -48,6 +36,7 @@ h1 {
   max-width: 1120px;
   width: 90%;
   margin: 0 auto;
+  background-color: #ffffff;
 }
 
 .cards_wrapper {
@@ -136,11 +125,16 @@ h1 {
   font-size: 18px;
   line-height: 24px;
 }
+ol,
+ul {
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+}
 .make-deal {
   color: #fff;
   background-color: #1f98f4;
   border-color: #1f98f4;
-  font-size: 18px;
+  font-size: 13px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   margin-left: auto;
@@ -164,10 +158,13 @@ h1 {
     display: flex;
   }
 }
+@media only screen and (min-width: 500px) {
+  .cards_items {
+  }
+}
 
 @media only screen and (max-width: 1024px) {
   .cards_item {
     margin-bottom: 2rem;
   }
 }
-
