@@ -1,8 +1,23 @@
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Modal, Form, Row, Col, InputGroup, Container, Button } from "react-bootstrap";
+import {
+  Modal,
+  Form,
+  Row,
+  Col,
+  InputGroup,
+  Container,
+  Button,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faFishFins,
+  faHouse,
+  faInfoCircle,
+  faSignInAlt,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import useAuthContext from "../../Hooks/Context/AuthContext";
 import { Link } from "react-router-dom";
 import "../../assets/scss/header.scss";
@@ -10,16 +25,12 @@ import "../../assets/scss/global.scss";
 import { H3 } from "../../Components/Helpers/index.style";
 import { Login } from "../../Pages/Auth/Login";
 import { LoginSeller } from "../../Pages/Auth/LoginSeller";
-import {MydModalWithGrid} from "../Modal/Signupmoda";
-
+import { MydModalWithGrid } from "../Modal/Signupmoda";
 
 export function Test() {
-
-
   return (
     <>
       <div className="vr" />
-      
     </>
   );
 }
@@ -47,53 +58,64 @@ export function Header() {
   }, []);
   window.addEventListener("resize", showButton);
   const [modalShow, setModalShow] = useState(false);
+
   return (
-    <nav className='navbar'>
-      <div className='navbar-container'>
-        <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-          Dealease
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+          <img src="../../../public/images/logo.png" className="logo"></img>
+          <img src="../../../public/images/bran.png" className="mt-3"></img>
         </Link>
-        <div className='menu-icon' onClick={handleClick}>
+        <div className="menu-icon" onClick={handleClick}>
           <FontAwesomeIcon icon={click ? faXmark : faBars} />
         </div>
-        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+        <ul className={click ? "nav-menu active" : "nav-menu"}>
           {!token ? (
             <>
-              <li className='nav-item'>
-                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+              <li className="nav-item">
+                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+                  <FontAwesomeIcon icon={faHouse} className="navs-icon" />
                   Home
                 </Link>
               </li>
-              <li className='nav-item'>
+              <li className="nav-item">
                 <Link
-                  to='/about'
-                  className='nav-links'
+                  to="/about"
+                  className="nav-links"
                   onClick={closeMobileMenu}
                 >
+                  <FontAwesomeIcon icon={faInfoCircle} className="navs-icon" />
                   About
                 </Link>
               </li>
-              <li className='nav-item'>
+              <li className="nav-item">
                 <Link
-                  to='/products'
-                  className='nav-links'
+                  to="/products"
+                  className="nav-links"
                   onClick={closeMobileMenu}
                 >
+                  <FontAwesomeIcon icon={faFishFins} className="navs-icon" />
                   Products
                 </Link>
               </li>
-              <li >
-              <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
-              <Button variant="light" onClick={() => setModalShow(true)} className="button-30" size="sm" role={Button}>
-      Sign-Up
-      <MydModalWithGrid/>
-      </Button>
- 
-      
+              <li className="nav-item">
+                <MydModalWithGrid
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
+                />
+                <Button
+                  variant="light"
+                  onClick={() => setModalShow(true)}
+                  className="button-30"
+                  size="sm"
+                  role={Button}
+                >
+                  <FontAwesomeIcon icon={faSignInAlt} className="navs-icon" />
+                  Sign in
+                  <MydModalWithGrid />
+                </Button>
               </li>
-              <li>
-               
-              </li>
+              <li></li>
             </>
           ) : (
             props.children

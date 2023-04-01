@@ -17,17 +17,11 @@ export function Card() {
         <form action="#">
           <span>
             <FontAwesomeIcon type="file" icon={faImage} />
-            <InputGroup size="sm" value="Browse Image to Upload">
-              <Form.Control type="file" />
-            </InputGroup>
+            <div className="div-file">
+              <input className="file" type="file" id="viewImg" />
+            </div>
             <p></p>
           </span>
-          <img  src="../../../public/images/dragdrop.png" alt="" id="blah" />
-          <div className="div-file">
-          <input className="file" type="file" id="viewImg"/>
-          </div>
-
-
 
           <h9> Product Description</h9>
           <section className="text-area">
