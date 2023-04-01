@@ -55,7 +55,7 @@
   color: #36395a;
   cursor: pointer;
   display: inline-flex;
-  font-family: "JetBrains Mono", monospace;
+  font-family: 'JetBrains Mono', monospace;
   height: 40px;
   justify-content: center;
   line-height: 1;
@@ -93,17 +93,50 @@
   transform: translateY(2px);
 }
 
-.file {
-  margin-top: 40px !important;
+.file-seller {
+  margin-top: 200px !important;
   position: absolute;
   top: 0;
   z-index: 1000;
   opacity: 0;
   cursor: pointer;
-  margin-right: 50px;
-  height: 40%;
+  margin-right: 280px;
+  height: 17%;
   font-size: 24px;
-  width: 80%;
-  left: 0;
-  margin-left: 28px;
+  width: 42%;
+  right: 0;
+}
+
+.div-dropdown {
+  color: #fff;
+  align-items: center;
+  display: flex;
+  text-align: center;
+  text-decoration: none;
+  height: 100%;
+  width: auto;
+}
+.dropdown-button {
+  height: 40px;
+}
+
+.dropdown-logout {
+  border-radius: 50px;
+  align-items: center;
+  display: flex;
+  text-align: center;
+}
+.dropdown-logout-profile {
+  margin-left: -20px;
+}
+@media screen and (max-width: 960px) {
+  .div-dropdown {
+    color: #fff;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    text-decoration: none;
+    height: 100%;
+    margin-left: 22%;
+  }
 }

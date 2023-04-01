@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import useAuthContext from '../Hooks/Context/AuthContext';
-
+import '../assets/scss/button.scss';
 export function AuthAdminLayout() {
   const { user, user_type, logout } = useAuthContext();
 
@@ -41,7 +41,9 @@ export function AuthAdminLayout() {
             <li className='nav-item'>
               <div className='nav-links'>
                 {user.first_name}
-                <button onClick={handleLogout}>Logout</button>
+                <button className='button-30' onClick={handleLogout}>
+                  Logout
+                </button>
               </div>
             </li>
           </>
