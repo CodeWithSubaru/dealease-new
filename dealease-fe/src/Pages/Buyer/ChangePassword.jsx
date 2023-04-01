@@ -1,34 +1,46 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import axiosClient from '../../api/axios';
+import { Notification } from '../../Components/Notification/Notification';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function ChangePasswordBuyer() {
   const [errors, setErrors] = useState({});
   const [password, setPassword] = useState({});
+  const { logout } = useAuthContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosClient
       .post('/change-password', password)
-      .then((response) => {
-        if (response.data) {
-          console.log(response.data);
+      .then((res) => {
+        if (res.status === 200) {
+          Notification({
+            title: 'Success',
+            message:
+              'Your password has been changed. For security reasons, you will be automatically logged out. Thank you for understanding',
+            icon: 'success',
+            timer: 5000,
+          }).then(() => {
+            logout();
+          });
+          setErrors([]);
         }
-        setErrors([]);
       })
       .catch((e) => {
+        Notification({
+          title: 'Error',
+          message: 'Something went wrong',
+          icon: 'error',
+        });
+
         setErrors(e.response.data.errors);
       });
   };
 
-  useEffect(() => {
-    setErrors([]);
-  }, []);
-
   return (
     <form onSubmit={handleSubmit}>
       <h3>Change Password</h3>
-      {console.log(errors)}
       <Form.Group className='mb-3'>
         <Form.Label>Old Password *</Form.Label>
         <Form.Control

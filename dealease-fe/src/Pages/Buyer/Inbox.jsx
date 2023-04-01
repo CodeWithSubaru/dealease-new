@@ -8,22 +8,26 @@ export const InboxBuyer = () => {
   return (
     <>
       <h2>Inbox</h2>
-      {inboxes.map((inbox) =>
-        inbox.user_id === user.user_id ? (
-          <div
-            key={inbox.inbox_id}
-            onClick={() => clickedUser(inbox.recipient_id)}
-          >
-            <h5>
-              {inbox.user_id === user.user_id
-                ? inbox.recipient.first_name
-                : inbox.sender.first_name}
-            </h5>
-            <p> {inbox.last_message.chat}</p>
-          </div>
-        ) : (
-          ''
+      {inboxes.length > 0 ? (
+        inboxes.map((inbox) =>
+          inbox.user_id === user.user_id ? (
+            <div
+              key={inbox.inbox_id}
+              onClick={() => clickedUser(inbox.recipient_id)}
+            >
+              <h5>
+                {inbox.user_id === user.user_id
+                  ? inbox.recipient.first_name
+                  : inbox.sender.first_name}
+              </h5>
+              <p> {inbox.last_message.chat}</p>
+            </div>
+          ) : (
+            ''
+          )
         )
+      ) : (
+        <p>No Inbox Yet... </p>
       )}
     </>
   );

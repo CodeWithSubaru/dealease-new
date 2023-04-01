@@ -8,6 +8,7 @@ export function Loader({ visibility }) {
         width='100'
         color='#4fa94d'
         ariaLabel='line-wave'
+        wrapperClass={'loader ' + (visibility ? '' : 'opacity')}
         wrapperStyle={{
           width: '100%',
           height: '100%',

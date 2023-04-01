@@ -3,18 +3,16 @@
 import { useEffect, useState } from 'react';
 import { H1 } from '../../Components/Helpers/index.style';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const is_buyer = 1,
     is_seller = [0, 1],
     role_type = 0;
   const { loginBuyer, errors, setErrors } = useAuthContext();
-
-  useEffect(() => {
-    setErrors(null);
-  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -68,20 +66,6 @@ export const Login = () => {
           </div>
         </div>
 
-        <div className='remember_me-wrapper'>
-          <div>
-            <input
-              type='checkbox'
-              name='checkbox'
-              id='remember-me'
-              className='remember_me'
-              v-model='form.rmb_me'
-            />
-          </div>
-
-          <div> Remember Me </div>
-        </div>
-
         {/* <PrimaryBtnStyle
           backgroundColor="#efa726"
           hoverBgColor="#d69215"
@@ -89,9 +73,8 @@ export const Login = () => {
         /> */}
         <button>Submit</button>
 
-        <div className='back-to-home-wrapper'>
-          <slot name='login-route'></slot>
-          <p className='back-to-home'>Go to Register</p>
+        <div className='back-to-register'>
+          <Link to='/register'>Go to Register</Link>
         </div>
       </form>
     </>

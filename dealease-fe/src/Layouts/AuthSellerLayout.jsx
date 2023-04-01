@@ -36,7 +36,7 @@ export function AuthSellerLayout() {
           </div>
         </li>
       </Header>
-      {user_type === 'Seller' || user_type === 'Buyer_Seller' ? (
+      {user_type === 'Seller' || user_type === 'Buyer_seller2' ? (
         <Outlet />
       ) : (
         <Navigate to='/seller/login' />

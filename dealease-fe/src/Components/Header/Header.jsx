@@ -1,34 +1,38 @@
-import React from "react";
-import { useEffect, useRef, useState } from "react";
-import { Modal, Form, Row, Col, InputGroup, Container, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
-import useAuthContext from "../../Hooks/Context/AuthContext";
-import { Link } from "react-router-dom";
-import "../../assets/scss/header.scss";
-import "../../assets/scss/global.scss";
-import { H3 } from "../../Components/Helpers/index.style";
-import { Login } from "../../Pages/Auth/Login";
-import { LoginSeller } from "../../Pages/Auth/LoginSeller";
-import {MydModalWithGrid} from "../Modal/Signupmoda";
-
+import React from 'react';
+import { useEffect, useState } from 'react';
+import {
+  Modal,
+  Form,
+  Row,
+  Col,
+  InputGroup,
+  Container,
+  Button,
+} from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import { Link } from 'react-router-dom';
+import '../../assets/scss/header.scss';
+import '../../assets/scss/global.scss';
+import { H3 } from '../../Components/Helpers/index.style';
+import { Login } from '../../Pages/Auth/Login';
+import { LoginSeller } from '../../Pages/Auth/LoginSeller';
+import { MydModalWithGrid } from '../Modal/Signupmoda';
 
 export function Test() {
-
-
   return (
     <>
-      <div className="vr" />
-      
+      <div className='vr' />
     </>
   );
 }
 
 // patrick
 
-export function Header() {
+export function Header(props) {
   // collapsible navlinks
-  const { token } = useAuthContext();
+  const { user, token } = useAuthContext();
 
   // Solla
   const [click, setClick] = useState(false);
@@ -45,7 +49,7 @@ export function Header() {
   useEffect(() => {
     showButton();
   }, []);
-  window.addEventListener("resize", showButton);
+  window.addEventListener('resize', showButton);
   const [modalShow, setModalShow] = useState(false);
   return (
     <nav className='navbar'>
@@ -82,18 +86,28 @@ export function Header() {
                   Products
                 </Link>
               </li>
-              <li >
-              <MydModalWithGrid show={modalShow} onHide={() => setModalShow(false)} />
-              <Button variant="light" onClick={() => setModalShow(true)} className="button-30" size="sm" role={Button}>
-      Sign-Up
-      <MydModalWithGrid/>
-      </Button>
- 
-      
-              </li>
-              <li>
-               
-              </li>
+              {!token ? (
+                <li>
+                  <MydModalWithGrid
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                  />
+                  <Button
+                    variant='light'
+                    onClick={() => setModalShow(true)}
+                    className='button-30'
+                    size='sm'
+                    role={Button}
+                  >
+                    Sign-Up
+                    <MydModalWithGrid />
+                  </Button>
+                </li>
+              ) : (
+                <li>
+                  <Link> Dashboard </Link>
+                </li>
+              )}
             </>
           ) : (
             props.children

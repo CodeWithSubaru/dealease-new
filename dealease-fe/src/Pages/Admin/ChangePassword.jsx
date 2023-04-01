@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
+import { Navigate } from 'react-router-dom';
 import axiosClient from '../../api/axios';
+import { Notification } from '../../Components/Notification/Notification';
 
 export function ChangePasswordAdmin() {
   const [errors, setErrors] = useState({});
@@ -10,14 +12,25 @@ export function ChangePasswordAdmin() {
     e.preventDefault();
     axiosClient
       .post('/change-password', password)
-      .then((response) => {
-        if (response.data) {
-          console.log(response.data);
+      .then((res) => {
+        if (res.status === 200) {
+          Notification({
+            title: 'Success',
+            message:
+              'Your password has been changed. You will be redirected to login page',
+            icon: 'success',
+          }).then(() => {
+            <Navigate to='/admin/login' />;
+          });
         }
         setErrors([]);
       })
       .catch((e) => {
-        setErrors(e.response.data.errors);
+        Notification({
+          title: 'Error',
+          message: 'Something went wrong',
+          icon: 'error',
+        }).then(() => setErrors(e.response.data.errors));
       });
   };
 
@@ -28,7 +41,6 @@ export function ChangePasswordAdmin() {
   return (
     <form onSubmit={handleSubmit}>
       <h3>Change Password</h3>
-      {console.log(errors)}
       <Form.Group className='mb-3'>
         <Form.Label>Old Password *</Form.Label>
         <Form.Control

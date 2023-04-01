@@ -25,14 +25,16 @@ export const MessageProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    axiosClient.get('/admin/users').then((resp) => {
-      setMessageSeller(resp.data.listOfUser);
-    });
+    if (user) {
+      axiosClient.get('/admin/users').then((resp) => {
+        setMessageSeller(resp.data.listOfUser);
+      });
 
-    axiosClient.get('admin/messages').then((resp) => {
-      setInboxes(resp.data);
-    });
-  }, [inboxes.inbox_id]);
+      axiosClient.get('admin/messages').then((resp) => {
+        setInboxes(resp.data);
+      });
+    }
+  }, [user, inboxes.inbox_id]);
 
   return (
     <MessageContext.Provider

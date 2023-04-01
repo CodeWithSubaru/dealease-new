@@ -33,19 +33,19 @@ import { ProfileAdmin } from './Pages/Admin/Profile';
 import { Users } from './Pages/Admin/Users';
 
 // solla
-import { Mainpage } from "./Pages";
+import { Mainpage } from './Pages';
 // ramos
-import { Test } from "./Components/Header/Header";
+import { Test } from './Components/Header/Header';
 
-import { GuestLayout } from "./Layouts/GuestLayout";
-import { Register } from "./Pages/Auth/Register";
-import { RegisterExist } from "./Pages/Auth/RegisterExist";
-import useAuthContext from "./Hooks/Context/AuthContext";
+import { GuestLayout } from './Layouts/GuestLayout';
+import { Register } from './Pages/Auth/Register';
+import { RegisterExist } from './Pages/Auth/RegisterExist';
+import useAuthContext from './Hooks/Context/AuthContext';
 
 function App() {
   const { loading, user } = useAuthContext();
 
-  if (loading && !user) {
+  if (loading) {
     return <Loader visibility={loading}></Loader>;
   }
 
@@ -62,7 +62,6 @@ function App() {
             <Route path='/profile' element={<ProfileBuyer />} />
             <Route path='/change-password' element={<ChangePasswordBuyer />} />
           </Route>
-
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
             <Route path='/seller/home' element={<HomeSeller />} />
@@ -77,7 +76,6 @@ function App() {
               element={<ChangePasswordSeller />}
             />
           </Route>
-
           {/* Admin Route */}
           <Route element={<AuthAdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />} />
@@ -93,20 +91,18 @@ function App() {
               element={<ChangePasswordAdmin />}
             />
           </Route>
-
           <Route element={<GuestLayout />}>
             {/*Solla */}
             <Route path='/Dealease' element={<Mainpage />} />
             {/*  */}
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/seller/login" element={<LoginSeller />} />
-            <Route path="/admin/login" element={<LoginAdmin />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/register-exist" element={<RegisterExist />} />
-            <Route path="/test" element={<Test />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/seller/login' element={<LoginSeller />} />
+            <Route path='/admin/login' element={<LoginAdmin />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/register-exist' element={<RegisterExist />} />
+            <Route path='/test' element={<Test />} />
           </Route>
-
           <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
