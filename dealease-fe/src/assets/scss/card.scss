@@ -1,9 +1,16 @@
-// Search form
-.search-post {
-  width: 50%;
-  float: right;
-  margin-right: 55px;
-  border-radius: 20px;
+.wrapper {
+  width: 300px;
+  padding: 30px;
+  border-radius: 5px;
+  display: flex;
+  top: 80px;
+  z-index: 9;
+  position: sticky;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  color: black;
+  background: #f5f5f5;
 }
 .search-post::placeholder {
   color: #1f98f4;

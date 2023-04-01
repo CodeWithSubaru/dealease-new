@@ -12,6 +12,29 @@ import "../../assets/scss/button.scss";
 export function Card() {
   return (
     <div className="cards">
+      <h1>Check Out these Fresh Fish</h1>
+      <div className="wrapper">
+        <form action="#">
+          <span>
+            <FontAwesomeIcon type="file" icon={faImage} />
+            <div className="div-file">
+              <input className="file" type="file" id="viewImg" />
+            </div>
+            <p></p>
+          </span>
+
+          <h9> Product Description</h9>
+          <section className="text-area">
+            <InputGroup size="lg" className="mb-1">
+              <Form.Control
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+            </InputGroup>
+          </section>
+          <Button className="btn-post">Post</Button>
+        </form>
+      </div>
       <div className="cards_container">
         <div className="cards_wrapper">
           <Container>

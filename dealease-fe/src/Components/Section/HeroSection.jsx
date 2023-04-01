@@ -7,6 +7,11 @@ export function HeroSection() {
   return (
     <div className="hero-container">
       <video src="../.../../public/videos/video.mp4" autoPlay loop muted />
+      <img
+        src="../../../public/images/dealeasebig.png"
+        className="logobig"
+      ></img>
+
       <h1>Make a Deal Now</h1>
       <p>What are you waiting for?</p>
       <div className="hero-btns">

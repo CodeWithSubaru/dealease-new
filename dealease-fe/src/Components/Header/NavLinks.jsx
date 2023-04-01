@@ -1,19 +1,19 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link } from "react-router-dom";
 
 function NavLinks() {
-  const activeStyle = { color: '#d69215' };
+  const activeStyle = { color: "#d69215" };
 
   const navLinks = [
-    { title: 'Home', to: '/' },
-    { title: 'Message', to: '/message' },
-    { title: 'Profile', to: '/profile' },
+    { title: "Home", to: "/" },
+    { title: "Message", to: "/message" },
+    { title: "Profile", to: "/profile" },
   ];
 
   const navItem = (title, to) => {
     return (
-      <li className='nav-item' key={title}>
+      <li className="nav-item" key={title}>
         <NavLink
-          className='nav-link'
+          className="nav-link"
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
           to={to}
         >

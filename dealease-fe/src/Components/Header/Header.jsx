@@ -10,7 +10,14 @@ import {
   Button,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faFishFins,
+  faHouse,
+  faInfoCircle,
+  faSignInAlt,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import useAuthContext from "../../Hooks/Context/AuthContext";
 import { Link } from "react-router-dom";
 import "../../assets/scss/header.scss";
@@ -56,7 +63,8 @@ export function Header(props) {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          Dealease
+          <img src="../../../public/images/logo.png" className="logo"></img>
+          <img src="../../../public/images/bran.png" className="mt-3"></img>
         </Link>
         <div className="menu-icon" onClick={handleClick}>
           <FontAwesomeIcon icon={click ? faXmark : faBars} />
@@ -66,6 +74,7 @@ export function Header(props) {
             <>
               <li className="nav-item">
                 <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+                  <FontAwesomeIcon icon={faHouse} className="navs-icon" />
                   Home
                 </Link>
               </li>
@@ -75,6 +84,7 @@ export function Header(props) {
                   className="nav-links"
                   onClick={closeMobileMenu}
                 >
+                  <FontAwesomeIcon icon={faInfoCircle} className="navs-icon" />
                   About
                 </Link>
               </li>
@@ -84,10 +94,11 @@ export function Header(props) {
                   className="nav-links"
                   onClick={closeMobileMenu}
                 >
+                  <FontAwesomeIcon icon={faFishFins} className="navs-icon" />
                   Products
                 </Link>
               </li>
-              <li>
+              <li className="nav-item">
                 <MydModalWithGrid
                   show={modalShow}
                   onHide={() => setModalShow(false)}
@@ -99,7 +110,8 @@ export function Header(props) {
                   size="sm"
                   role={Button}
                 >
-                  Sign-Up
+                  <FontAwesomeIcon icon={faSignInAlt} className="navs-icon" />
+                  Sign in
                   <MydModalWithGrid />
                 </Button>
               </li>
