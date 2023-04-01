@@ -47,6 +47,7 @@ form :where(i, p) {
   border-radius: 15px;
 }
 .textarea-input {
+  resize: none;
   height: 100px;
 }
 .image-container {

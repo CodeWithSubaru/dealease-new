@@ -7,6 +7,7 @@ import {
   faSquareEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { H1 } from "../../Components/Helpers/index.style";
 import useAuthContext from "../../Hooks/Context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -75,28 +76,11 @@ export const Login = () => {
             </div>
 
             <div className="remember_me-wrapper mt-2">
-              <div className="text-black mt-1">
-                <label htmlFor="remember-me">
-                  <input
-                    type="checkbox"
-                    name="checkbox"
-                    id="remember-me"
-                    className="remember_me me-2"
-                    v-model="form.rmb_me"
-                  />
-                  Remember Me
-                </label>
-                <div className="back-to-home-wrapper float-end">
-                  <slot name="login-route"></slot>
-                  <p className="back-to-home text-right">
-                    <a href="#" className="fw-bold">
-                      {" "}
-                      Register
-                    </a>
-                  </p>
-                </div>
-              </div>
+              <Link to="/register" className="fw-bold text-right">
+                Register
+              </Link>
             </div>
+
             {/* <PrimaryBtnStyle
           backgroundColor="#efa726"
           hoverBgColor="#d69215"

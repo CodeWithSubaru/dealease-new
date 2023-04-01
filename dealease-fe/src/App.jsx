@@ -93,15 +93,10 @@ function App() {
           </Route>
           <Route element={<GuestLayout />}>
             {/*Solla */}
-            <Route path="/Dealease" element={<Mainpage />} />
-            {/*  */}
-
-            <Route path="/login" />
-            <Route path="/seller/login" element={<LoginSeller />} />
+            <Route path="/dealease" element={<Mainpage />} />
             <Route path="/admin/login" element={<LoginAdmin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/register-exist" element={<RegisterExist />} />
-            <Route path="/test" element={<Test />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
