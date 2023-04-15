@@ -1,0 +1,77 @@
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+
+export const ViewSingleUser = (props) => {
+  function dateFormat(date) {
+    let yourDate = new Date(date);
+    yourDate = yourDate.toUTCString();
+    return yourDate.split(' ').slice(1, 4).join(' ');
+  }
+
+  return (
+    <>
+      <Modal
+        size='lg'
+        show={props.showSingleUser}
+        onHide={props.closeSingleUserModal}
+        centered
+        keyboard
+        scrollable
+        contentClassName={'mt-0'}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>View User</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {props.data ? (
+            <div key={props.data.user_id}>
+              <h4> Full Name</h4>
+              <p>
+                {props.data ? props.data.first_name : ''}{' '}
+                {props.data ? props.data.middle_name[0] + '.' : ''}{' '}
+                {props.data ? props.data.last_name : ''}{' '}
+                {props.data ? props.data.ext_name : ''}
+              </p>
+              <h4>User Account Details</h4>
+              <p>{props.data ? props.data.email : ''}</p>
+              <h4>Address</h4>
+              <p>
+                {props.data.user_details ? props.data.user_details.street : ''}{' '}
+                {props.data.user_details
+                  ? props.data.user_details.barangay
+                  : ''}{' '}
+                {props.data.user_details ? props.data.user_details.city : ''}{' '}
+                {props.data.user_details
+                  ? props.data.user_details.province
+                  : ''}{' '}
+                {props.data.user_details ? props.data.user_details.region : ''}
+              </p>
+              <h4>Contact Number</h4>
+              <p>
+                {props.data.user_details
+                  ? props.data.user_details.contact_number
+                  : ''}
+              </p>
+
+              <h4>Birthday</h4>
+              <p>
+                {props.data.user_details
+                  ? dateFormat(props.data.user_details.birth_date)
+                  : ''}
+              </p>
+            </div>
+          ) : (
+            'Loading...'
+          )}
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant='secondary' onClick={props.closeSingleUserModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};

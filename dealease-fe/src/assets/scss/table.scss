@@ -1,0 +1,47 @@
+// table style
+
+.table {
+  border-radius: 5px;
+  box-shadow: 0 0 0;
+  overflow: hidden;
+}
+
+.thead-th {
+  font-weight: 600;
+}
+
+.thead,
+.tbody-tr {
+  border-color: rgba(3, 155, 200, 1);
+}
+
+.thead,
+.tbody-tr:nth-child(2n) {
+  background: rgba(3, 155, 200, 1);
+}
+
+.thead-tr .thead-th,
+.tbody-tr .tbody-td {
+  padding: 20px;
+}
+
+.tbody-tr:hover {
+  background: rgba(4, 133, 179, 1);
+  color: white;
+}
+
+@media screen and (max-width: 826px) {
+  .tbody {
+    overflow-x: auto;
+  }
+
+  .ButtonGroup__root {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+// pagination options styles
+.paginationOpts__root label {
+  color: black !important;
+}

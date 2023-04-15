@@ -1,0 +1,108 @@
+:root {
+  --primary: #fff;
+}
+
+.btn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background-color: transparent !important;
+  color: #fff;
+  padding: 8px 20px;
+  border: 1px solid var(--primary);
+  transition: all 0.3s ease-out;
+}
+
+.btn-medium {
+  padding: 8px 20px;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.btn-large {
+  padding: 12px 26px;
+  font-size: 20px;
+}
+
+.btn-medium:hover,
+.btn-large:hover {
+  transition: all 0.3s ease-out;
+  background: #fff !important;
+  color: #242424 !important;
+  border: 2px solid #fff !important;
+}
+
+.file-seller {
+  margin-top: 200px !important;
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  opacity: 0;
+  cursor: pointer;
+  margin-right: 280px;
+  height: 17%;
+  font-size: 24px;
+  width: 42%;
+  right: 0;
+}
+
+.div-dropdown {
+  color: #fff;
+  align-items: center;
+  display: flex;
+  text-align: center;
+  text-decoration: none;
+  height: 100%;
+  width: auto;
+}
+.dropdown-button {
+  height: 40px;
+}
+
+.dropdown-logout {
+  border-radius: 50px;
+  align-items: center;
+  display: flex;
+  text-align: center;
+}
+.dropdown-logout-profile {
+  margin-left: -20px;
+}
+@media screen and (max-width: 960px) {
+  .div-dropdown {
+    color: #fff;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    text-decoration: none;
+    height: 100%;
+    margin-left: 22%;
+  }
+}
+
+// Newly Defined button
+.btn-1 {
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 14px;
+  text-align: right;
+  letter-spacing: 0.025em;
+  font-weight: 400;
+  display: inline-block;
+}
+
+.btn-remove {
+  background: #9d6262;
+  margin-right: 10px;
+}
+
+.btn-change {
+  background: #1f98f4;
+}

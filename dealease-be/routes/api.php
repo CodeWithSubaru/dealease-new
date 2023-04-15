@@ -1,0 +1,57 @@
+<?php
+
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Seller\PostContoller;
+use App\Http\Controllers\Api\Admin\UsersController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Api\Admin\MessageController;
+use App\Http\Controllers\Api\Admin\AnalyticsControllers;
+use App\Http\Controllers\Api\Admin\AnnouncementController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register-exist', [AuthController::class, 'registerExist']);
+Route::get('/public/post', [PostContoller::class, 'getPostsForPublic']);
+Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('/seller/post', PostContoller::class);
+    Route::get('/user', [AuthController::class, 'index']);
+    Route::post('/change-password', [AuthController::class, 'changePass']);
+    Route::post('/logout', [AuthController::class, 'destroy'])
+        ->middleware('auth');
+
+
+    Route::apiResource('/messages', MessageController::class);
+
+    // Admin route
+    Route::post('/admin/users/{id}', [UsersController::class, 'update']);
+    Route::apiResource('/admin/users', UsersController::class);
+    Route::get('/admin/users-by-10', [UsersController::class, 'getTenUsers']);
+    Route::post('/messages/inbox/delete/{id}', [MessageController::class, 'softDelete']);
+    Route::post('/messages/inbox/restore/{id}', [MessageController::class, 'restore']);
+    Route::get('/admin/get-number-of-user', [AnalyticsControllers::class, 'getNumOfUsers']);
+    Route::get('/admin/get-number-of-message', [AnalyticsControllers::class, 'getNumOfMessages']);
+    Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
+    Route::apiResource('/admin/announcement', AnnouncementController::class);
+    Route::post('/admin/announcement/publish/{id}', [AnnouncementController::class, 'publish']);
+    Route::post('/admin/announcement/draft/{id}', [AnnouncementController::class, 'draft']);
+    Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
+    Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
+    Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
+});
