@@ -53,21 +53,13 @@ const MessageForm = () => {
 };
 
 export const MessageBuyer = () => {
-  const {
-    userMessages,
-    messageSeller,
-    messageSellersExample,
-    setUserMessages,
-    fetchMessage,
-    path,
-    setPath,
-  } = useMessageContext();
+  const { userMessages, fetchMessage } = useMessageContext();
   const { user } = useAuthContext();
   const { message_id } = useParams();
 
   useEffect(() => {
     fetchMessage(message_id);
-  }, [path]);
+  }, []);
 
   return (
     <div>

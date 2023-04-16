@@ -66,9 +66,9 @@ export const MessageSeller = () => {
   const { user } = useAuthContext();
   const { message_id } = useParams();
 
-  useEffect(() => {
-    fetchMessage(message_id);
-  }, [path]);
+  // useEffect(() => {
+  //   fetchMessage(message_id);
+  // }, [path]);
 
   return (
     <div>

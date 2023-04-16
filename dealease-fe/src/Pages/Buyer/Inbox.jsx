@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useMessageContext from '../../Hooks/Context/MessageContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Button, Row, Col, Container, Badge, Form } from 'react-bootstrap';
@@ -8,14 +9,19 @@ import '../../assets/scss/inbox.scss';
 
 export const InboxBuyer = () => {
   const { user } = useAuthContext();
-  const { softDel } = useMessageContext();
-  const { inboxes, clickedUser } = useMessageContext();
+  const { softDel, inboxes, clickedUser, fetchInbox, messages } =
+    useMessageContext();
 
   function dateFormat(date) {
     let yourDate = new Date(date);
     yourDate = yourDate.toUTCString();
     return yourDate.split(' ').slice(0, 5).join(' ');
   }
+
+  useEffect(() => {
+    fetchInbox();
+    console.log();
+  }, []);
 
   return (
     <>

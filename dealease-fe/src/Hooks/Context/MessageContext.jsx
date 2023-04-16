@@ -15,6 +15,7 @@ export const MessageProvider = ({ children }) => {
   const [messageSeller, setMessageSeller] = useState([]);
   const [errors, setErrors] = useState({});
   const [inboxes, setInboxes] = useState([]);
+  const messages = [];
 
   const messageSellersExample = (user_id) => setReceiverId(user_id);
 
@@ -34,8 +35,8 @@ export const MessageProvider = ({ children }) => {
 
   function fetchInbox() {
     axiosClient.get('/messages').then((resp) => {
-      console.log(resp.data);
       setInboxes(resp.data);
+      messages.push(inboxes.map((inbox) => inbox.message_id));
     });
   }
 
@@ -77,19 +78,6 @@ export const MessageProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    if (user) {
-      axiosClient.get('/admin/users').then((resp) => {
-        setMessageSeller(resp.data.listOfUser);
-      });
-
-      axiosClient.get('/messages').then((resp) => {
-        setInboxes(resp.data);
-      });
-    }
-  }, [user]);
-
-  useEffect(() => {
-    fetchInbox();
     setErrors([]);
   }, []);
 
@@ -99,6 +87,7 @@ export const MessageProvider = ({ children }) => {
         userMessages,
         messageSeller,
         inboxes,
+        messages,
         softDel,
         handleRestoration,
         messageSellersExample,
