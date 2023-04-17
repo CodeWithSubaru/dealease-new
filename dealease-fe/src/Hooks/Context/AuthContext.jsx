@@ -175,7 +175,13 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
           setUser(res.data[0]);
         })
-        .catch((e) => setLoading(false));
+        .catch((e) => {
+          if (e.response.status === 401) {
+            localStorage.removeItem('ACCESS_TOKEN');
+            localStorage.removeItem('USER_TYPE');
+          }
+          setLoading(false);
+        });
     }
     setErrors([]);
   }, [user.user_id]);
