@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Seller\PostContoller;
 use App\Http\Controllers\Api\Admin\UsersController;
@@ -36,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth');
 
+    Route::apiResource('/report-user', ReportUserController::class);
 
     Route::apiResource('/messages', MessageController::class);
 

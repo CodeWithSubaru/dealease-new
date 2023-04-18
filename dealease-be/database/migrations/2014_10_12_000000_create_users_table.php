@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('ext_name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->decimal('seller_amount', 8, 2)->default(0);
+            $table->decimal('buyer_amount', 8, 2)->default(0);
+            $table->integer('coin_owner_type')->unsigned()->default(0);
+            $table->foreignId('user_details_id')->constrained('users_details', 'user_details_id')->onDelete('cascade');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

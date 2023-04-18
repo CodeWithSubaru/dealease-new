@@ -4,16 +4,31 @@ import { Footer } from '../../Components/Footer/footer';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import { FaUserEdit } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import PUBLIC_URL from '../../api/public_url';
+import axiosClient from '../../api/axios';
 
 export const ProfileBuyer = () => {
   const { user } = useAuthContext();
   const [show, setShow] = useState(false);
+  const [reportUserModal, setReportUserModal] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  function handleReportUser() {
+    axiosClient.post(PUBLIC_URL + '/users/' + user);
+  }
+
+  function showReportUserModal() {
+    setReportUserModal(true);
+  }
+
+  function hideReportUserModal() {
+    setReportUserModal(false);
+  }
 
   return user ? (
     <>
@@ -85,6 +100,11 @@ export const ProfileBuyer = () => {
                   <FaUserEdit size='0.7rem' /> &nbsp; Edit Profile
                 </Button>
 
+                {/* <Button variant='light' onClick={showReportUserModal}>
+                  <FaUserEdit size='0.7rem' /> &nbsp; Report
+                </Button> */}
+
+                {/* Modal Profile User */}
                 <Modal show={show} onHide={handleClose}>
                   <Modal.Header closeButton>
                     <Modal.Title>Edit Profile</Modal.Title>
@@ -155,6 +175,50 @@ export const ProfileBuyer = () => {
             </div>
           </div>
         </form>
+
+        {/* Modal Report User */}
+        <Modal
+          show={reportUserModal}
+          onHide={hideReportUserModal}
+          backdrop='static'
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Modal title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form className='text-black-50'>
+              <Form.Group className='mb-3'>
+                <Form.Label className='text-black-50'>Reason</Form.Label>
+                <Form.Select aria-label='Default select example'>
+                  <option>Open this select menu</option>
+                  <option value='1'>Scam</option>
+                  <option value='2'>Sample 1</option>
+                  <option value='3'>Sample 2</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group controlId='formFileMultiple' className='mb-3'>
+                <Form.Label className='text-black-50'>
+                  Proof of your report (Screenshot)
+                </Form.Label>
+                <Form.Label>Multiple files input example</Form.Label>
+                <Form.Control type='file' multiple />
+              </Form.Group>
+
+              <Form.Check
+                type='checkbox'
+                label='Sigurado ka ba na nais mong mag-file ng report laban sa user na ito? Kung mapatunayan na may kasalanan ang indibidwal, magpapatuloy ang pagre-report. Mahalaga na maunawaan na may mga banta sa iyong mga aksyon, at kung hindi pasok ang report sa kwalipikasyon, magkakaroon ng babala.'
+              />
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={hideReportUserModal}>
+              Close
+            </Button>
+            <Button variant='primary'>Understood</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
       <Footer />
     </>

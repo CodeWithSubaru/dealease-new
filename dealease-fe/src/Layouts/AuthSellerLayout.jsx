@@ -34,6 +34,7 @@ export function AuthSellerLayout() {
             Donasyon
           </Link>
         </li>
+        <p className='nav-links'> {user ? user.seller_amount : null}</p>
         <li className='nav-item'>
           <div className='div-dropdown'>
             <Dropdown as={ButtonGroup} className='dropdown-button'>

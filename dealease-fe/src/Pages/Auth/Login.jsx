@@ -15,12 +15,20 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const is_buyer = 1,
     is_seller = [0, 1],
-    role_type = 0;
+    role_type = 0,
+    coin_owner_type = 0;
   const { loginBuyer, errors, setErrors } = useAuthContext();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginBuyer({ email, password, is_buyer, is_seller, role_type });
+    loginBuyer({
+      email,
+      password,
+      is_buyer,
+      is_seller,
+      role_type,
+      coin_owner_type,
+    });
   };
 
   return (

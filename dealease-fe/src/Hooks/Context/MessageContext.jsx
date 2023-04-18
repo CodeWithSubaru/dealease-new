@@ -15,6 +15,7 @@ export const MessageProvider = ({ children }) => {
   const [messageSeller, setMessageSeller] = useState([]);
   const [errors, setErrors] = useState({});
   const [inboxes, setInboxes] = useState([]);
+  const [senderMessage, setSenderMessage] = useState('');
   const messages = [];
 
   const messageSellersExample = (user_id) => setReceiverId(user_id);
@@ -95,6 +96,8 @@ export const MessageProvider = ({ children }) => {
         setUserMessages,
         fetchMessage,
         fetchInbox,
+        senderMessage,
+        setSenderMessage,
       }}
     >
       {children}

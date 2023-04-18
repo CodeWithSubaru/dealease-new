@@ -75,8 +75,8 @@ export const AuthProvider = ({ children }) => {
           message: 'Something went wrong',
           icon: 'error',
         });
-        setErrors(e.response.data.errors);
         console.log(e);
+        setErrors(e.response.data.errors);
       });
   };
 

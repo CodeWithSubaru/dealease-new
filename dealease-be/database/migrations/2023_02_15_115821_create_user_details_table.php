@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('barangay', 100);
             $table->string('street', 100)->nullable();
             $table->string('contact_number', 11);
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
             $table->timestamps();
         });
     }

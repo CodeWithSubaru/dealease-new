@@ -8,6 +8,7 @@ import { Footer } from '../../Components/Footer/footer';
 
 export const Home = () => {
   const { user } = useAuthContext();
+
   return (
     <>
       <Card />

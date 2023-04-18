@@ -44,6 +44,10 @@ import { ForgotPassword } from './Pages/Auth/ForgotPassword';
 import { PasswordReset } from './Pages/Auth/PassworReset';
 import useAuthContext from './Hooks/Context/AuthContext';
 
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+import { useEffect } from 'react';
+
 function App() {
   const { loading } = useAuthContext();
 

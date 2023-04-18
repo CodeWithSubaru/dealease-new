@@ -6,11 +6,11 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import useMessageContext from '../../Hooks/Context/MessageContext';
 
 const MessageForm = () => {
-  const [senderMessage, setSenderMessage] = useState('');
+  const { senderMessage, setSenderMessage, fetchMessage, fetchInbox } =
+    useMessageContext();
   const { message_id } = useParams();
   const { user } = useAuthContext();
   const [errors, setErrors] = useState('');
-  const { fetchMessage, setPath } = useMessageContext();
 
   const handleSend = (receiverId, e) => {
     e.preventDefault();
@@ -26,6 +26,7 @@ const MessageForm = () => {
       .then((resp) => {
         setSenderMessage('');
         fetchMessage(message_id);
+        fetchInbox();
       })
       .catch((e) => {
         setErrors(e.response.data.errors);
@@ -54,11 +55,14 @@ const MessageForm = () => {
 
 export const MessageBuyer = () => {
   const { userMessages, fetchMessage } = useMessageContext();
+
   const { user } = useAuthContext();
   const { message_id } = useParams();
 
   useEffect(() => {
     fetchMessage(message_id);
+    const chatInterval = setInterval(() => fetchMessage(message_id), 10000);
+    return () => clearInterval(chatInterval);
   }, []);
 
   return (
