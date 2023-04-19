@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { Footer } from '../../Components/Footer/footer';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { Modal, Form, Row, Col, Container } from 'react-bootstrap';
 import { FaUserEdit } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import PUBLIC_URL from '../../api/public_url';
@@ -19,7 +19,7 @@ export const ProfileBuyer = () => {
     <>
       <div className='userprofile'>
         <form method=''>
-          <div className='row'>
+          <Row>
             <div className='col-md-4'>
               <img
                 className='profimg rounded-circle'
@@ -153,7 +153,7 @@ export const ProfileBuyer = () => {
                 </Modal>
               </div>
             </div>
-          </div>
+          </Row>
         </form>
       </div>
       <Footer />
