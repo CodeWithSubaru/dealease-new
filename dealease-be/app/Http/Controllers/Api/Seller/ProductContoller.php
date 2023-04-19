@@ -6,17 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Post;
+use App\Models\Product;
 use App\Models\User;
 
-class PostContoller extends Controller
+class ProductContoller extends Controller
 {
     // display publicly
-
-    public function getPostsForPublic()
+    public function getProductsForPublic()
     {
-        $post = Post::all();
-        return $post;
+        $product = Product::all();
+        return $product;
     }
 
     /**
@@ -25,8 +24,8 @@ class PostContoller extends Controller
     public function index()
     {
         $id = Auth::id(); //getting authenticated user id
-        $post = Post::where('user_id', $id)->get();
-        return $post;
+        $product = Product::where('user_id', $id)->get();
+        return $product;
     }
 
     /**
@@ -37,17 +36,17 @@ class PostContoller extends Controller
         $id = Auth::id(); //getting authenticated user id
 
         $request->validate([
-            'post_description' => 'required', 'string', 'max:255',
-            'post_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required', 'string', 'max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $imageName = time() . '.' . $request->post_image->extension();
+        $imageName = time() . '.' . $request->image->extension();
 
-        $request->post_image->move(public_path('images'), $imageName);
+        $request->image->move(public_path('images'), $imageName);
 
-        $post = Post::create([
-            'post_description' => $request->post_description,
-            'post_image' => $imageName,
+        $post = Product::create([
+            'description' => $request->description,
+            'image' => $imageName,
             'user_id' => $id, //for test only
         ]);
 

@@ -22,26 +22,41 @@ export function Announcement() {
     if (!item.deleted_at && item.is_published) {
       hasAnnouncements = true;
       return (
-        <Carousel.Item key={item.id}>
-          <img
-            className='d-block w-100'
-            src={PUBLIC_URL + 'images/' + item.image}
+        <Carousel.Item key={item.id} className='d-flex justify-content-center'>
+          <Card
+            className='d-flex justify-content-between align-items-center flex-column' //border border-1 border-primary
             style={{
-              backgroundSize: 'contain',
-              objectFit: 'contain',
-              height: '80vh',
+              height: '400px',
+              width: '400px',
             }}
-            alt={item.title}
-          />
-          <Carousel.Caption
-            className='bg-dark w-50 mx-auto px-0'
-            style={{ bottom: '0px' }}
           >
-            <div className='text-light'>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
+            <div
+              className='w-100'
+              style={{
+                height: '250px',
+                overflow: 'hidden',
+              }}
+            >
+              <img
+                src={PUBLIC_URL + 'images/' + item.image}
+                style={{
+                  backgroundSize: 'cover',
+                  backgroundClip: 'center',
+                  backgroundPosition: 'center',
+                }}
+                alt={item.title}
+              />
             </div>
-          </Carousel.Caption>
+            <Carousel.Caption
+              className='w-50 mx-auto px-0'
+              style={{ position: 'absolute', bottom: '0' }}
+            >
+              <div className='text-light'>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </Carousel.Caption>
+          </Card>
         </Carousel.Item>
       );
     }
@@ -53,7 +68,7 @@ export function Announcement() {
         <div className='w-50 mx-auto mb-5'>
           <h1 className='title d-block w-100'>Announcement</h1>
         </div>
-        <Carousel style={{ height: '80vh' }} variant='dark' slide={false}>
+        <Carousel style={{ height: '50vh' }} variant='dark' slide={false}>
           {hasAnnouncements ? (
             announcements
           ) : (

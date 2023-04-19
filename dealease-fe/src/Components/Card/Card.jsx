@@ -9,15 +9,15 @@ import { CardItem } from './CardItem';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
 import axiosClient from '../../api/axios';
-import usePostContext from '../../Hooks/Context/PostContext';
+import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Card() {
   const { user, token } = useAuthContext();
-  const { posts, fetchPost, fetchPublicPosts } = usePostContext();
+  const { products, fetchProduct, fetchPublicProducts } = useProductContext();
 
   useEffect(() => {
-    fetchPublicPosts();
+    fetchPublicProducts();
   }, []);
 
   return (
@@ -43,14 +43,14 @@ export function Card() {
           </Container>
           {/* Card for Seller */}
           <Row className='mx-2'>
-            {posts.length > 0
-              ? posts.map((post, data) =>
-                  post ? (
+            {products.length > 0
+              ? products.map((product, data) =>
+                  product ? (
                     <Col className='mb-4 card-card'>
                       <CardItem
                         key={data}
-                        src={'http://localhost:8000/images/' + post.post_image}
-                        text={post.post_description}
+                        src={'http://localhost:8000/images/' + product.image}
+                        text={product.description}
                         label='Sold'
                         button='Make a Deal'
                         editbutton='Edit'

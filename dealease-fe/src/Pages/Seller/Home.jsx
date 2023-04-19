@@ -20,7 +20,7 @@ import '../../assets/scss/button.scss';
 import '../../assets/scss/post-section.scss';
 import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
-import usePostContext from '../../Hooks/Context/PostContext';
+import usePostContext from '../../Hooks/Context/ProductContext';
 
 export const HomeSeller = () => {
   const { fetchPost } = usePostContext();

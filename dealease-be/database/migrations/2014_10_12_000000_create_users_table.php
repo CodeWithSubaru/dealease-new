@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('seller_amount', 8, 2)->default(0);
             $table->decimal('buyer_amount', 8, 2)->default(0);
             $table->integer('coin_owner_type')->unsigned()->default(0);
-            $table->foreignId('user_details_id')->constrained('users_details', 'user_details_id')->onDelete('cascade');
+            $table->integer('user_details_id')->unsigned();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

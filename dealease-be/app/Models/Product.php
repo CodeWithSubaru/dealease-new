@@ -10,9 +10,12 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'post_description',
-        'post_image',
-        'user_id',
+        'title',
+        'description',
+        'image',
+        'stock',
+        'amount',
+        'weight',
     ];
 
     public function postedByUser()

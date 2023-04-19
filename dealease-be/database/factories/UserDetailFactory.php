@@ -27,7 +27,6 @@ class UserDetailFactory extends Factory
             'barangay' => fake()->streetName(),
             'street' => fake()->streetAddress(),
             'contact_number' => '09298384753',
-            'user_id' =>  rand(1, 10),
         ];
     }
 }
