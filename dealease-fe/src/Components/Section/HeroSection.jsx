@@ -22,7 +22,7 @@ export function HeroSection(props) {
         </Button>
         <a
           className='btn btn-primary btn-large text-decoration-none border border-2 border-primary'
-          href='#Post'
+          href='#products'
         >
           See Posts
         </a>

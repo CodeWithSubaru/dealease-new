@@ -21,6 +21,7 @@ class AuthController extends Controller
     public function index()
     {
         $auth_user = User::with('user_details')->where('user_id', Auth::id())->get();
+        $auth_user = $auth_user->makeHidden([$auth_user[0]->coin_owner_type === 0 ? 'buyer_amount' : 'seller_amount'])->toArray();
         return $auth_user;
     }
 
@@ -130,23 +131,26 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password', 'role_type', 'is_buyer', 'is_seller'))) {
+        if (!Auth::attempt($request->only('email', 'password', 'is_buyer', 'is_seller', 'role_type'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        $auth_user = User::with('user_details')->where('email', $request->email)->get();
+        $auth_user = User::with('user_details')->where('email', $request->email);
 
-        $token = $request->user()->createToken($auth_user[0]->email)->plainTextToken;
+        $auth_user->update(['coin_owner_type' => $request->coin_owner_type]);
 
+        $token = $request->user()->createToken($auth_user->get()[0]->email)->plainTextToken;
 
-        $obj = [
+        $data = [
             'message' => 'Welcome ' . Auth::user()->first_name . '. You are Login Succesfully',
-            'user' => $auth_user,
+            'coin_owner_type' => $auth_user->get([$request->coin_owner_type === 0 ? 'buyer_amount' : 'seller_amount'])->makeHidden(['user_details'])->toArray(),
+            'user' => $auth_user->get()->makeHidden(['coin_owner_type', 'seller_amount', 'buyer_amount'])->toArray(),
             'token' => $token,
         ];
-        return response()->json($obj, 200);
+
+        return response()->json($data, 200);
     }
 
     /**

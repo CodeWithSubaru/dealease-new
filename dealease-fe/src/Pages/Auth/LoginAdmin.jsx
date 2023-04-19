@@ -18,7 +18,8 @@ export const LoginAdmin = () => {
   const [password, setPassword] = useState('');
   const is_buyer = 0,
     is_seller = 0,
-    role_type = 1;
+    role_type = 1,
+    coin_owner_type = 2;
   const { loginAdmin, errors, setErrors, user_type, token } = useAuthContext();
 
   if (token) {
@@ -33,7 +34,14 @@ export const LoginAdmin = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginAdmin({ email, password, is_buyer, is_seller, role_type });
+    loginAdmin({
+      email,
+      password,
+      is_buyer,
+      is_seller,
+      role_type,
+      coin_owner_type,
+    });
   };
 
   return (

@@ -20,7 +20,7 @@ import '../../assets/scss/button.scss';
 import '../../assets/scss/post-section.scss';
 import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
-import usePostContext from '../../Hooks/Context/PostContext';
+import usePostContext from '../../Hooks/Context/ProductContext';
 
 export const HomeSeller = () => {
   const { fetchPost } = usePostContext();
@@ -60,7 +60,7 @@ export const HomeSeller = () => {
   return (
     <>
       <div className='post_container'>
-        <Container className='container_item'>
+        <Container className='container_item px-5'>
           <form onSubmit={handlePost}>
             <Row>
               <Col>

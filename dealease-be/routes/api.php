@@ -1,15 +1,18 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
-use App\Http\Controllers\Api\Seller\PostContoller;
+use App\Http\Controllers\Api\Seller\ProductContoller;
 use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Api\Admin\MessageController;
 use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Api\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,16 +29,17 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/register-exist', [AuthController::class, 'registerExist']);
-Route::get('/public/post', [PostContoller::class, 'getPostsForPublic']);
+Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
-
+Route::get('/payment', [PaymentController::class, 'payment']);
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/seller/post', PostContoller::class);
+    Route::apiResource('/seller/product', ProductContoller::class);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth');
 
+    Route::apiResource('/report-user', ReportUserController::class);
 
     Route::apiResource('/messages', MessageController::class);
 

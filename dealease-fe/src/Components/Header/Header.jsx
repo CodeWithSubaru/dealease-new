@@ -65,7 +65,7 @@ export function Header(props) {
     <nav className='navbar'>
       <div className='navbar-container'>
         <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-          <div className='img-contain'>
+          <div className='img-contain '>
             <img src='/images/dealeaselogo.png' className='logo'></img>
           </div>
         </Link>

@@ -17,7 +17,8 @@ export const LoginSeller = () => {
   const [password, setPassword] = useState('');
   const is_buyer = [0, 1],
     is_seller = 1,
-    role_type = 0;
+    role_type = 0,
+    coin_owner_type = 1;
   const { loginSeller, errors, setErrors } = useAuthContext();
 
   useEffect(() => {
@@ -26,7 +27,14 @@ export const LoginSeller = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginSeller({ email, password, is_buyer, is_seller, role_type });
+    loginSeller({
+      email,
+      password,
+      is_buyer,
+      is_seller,
+      role_type,
+      coin_owner_type,
+    });
   };
 
   return (

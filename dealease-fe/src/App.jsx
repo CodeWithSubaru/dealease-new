@@ -3,9 +3,7 @@ import { Loader } from './Components/Loader/Loader';
 import { GlobalStyles } from './GlobalStyle.style';
 import { NotFound } from './Pages/NotFound';
 
-import { Login } from './Pages/Auth/Login';
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
-import { LoginSeller } from './Pages/Auth/LoginSeller';
 
 // Buyer Components
 import { AuthBuyerLayout } from './Layouts/AuthBuyerLayout';
@@ -41,14 +39,17 @@ import { Mainpage } from './Pages';
 import { Test } from './Components/Header/Header';
 
 import { GuestLayout } from './Layouts/GuestLayout';
-import { Register } from './Pages/Auth/Register';
 import { RegisterExist } from './Pages/Auth/RegisterExist';
 import { ForgotPassword } from './Pages/Auth/ForgotPassword';
 import { PasswordReset } from './Pages/Auth/PassworReset';
 import useAuthContext from './Hooks/Context/AuthContext';
 
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+import { useEffect } from 'react';
+
 function App() {
-  const { loading, user } = useAuthContext();
+  const { loading } = useAuthContext();
 
   if (loading) {
     return <Loader visibility={loading}></Loader>;

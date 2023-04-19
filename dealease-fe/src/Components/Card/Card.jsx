@@ -9,48 +9,48 @@ import { CardItem } from './CardItem';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
 import axiosClient from '../../api/axios';
-import usePostContext from '../../Hooks/Context/PostContext';
+import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Card() {
   const { user, token } = useAuthContext();
-  const { posts, fetchPost, fetchPublicPosts } = usePostContext();
+  const { products, fetchProduct, fetchPublicProducts } = useProductContext();
 
   useEffect(() => {
-    fetchPublicPosts();
+    fetchPublicProducts();
   }, []);
 
   return (
     <div className='cards' id='products'>
       <div className='cards_container'>
+        <Container className='mt-5 px-5'>
+          <Row>
+            <Col>
+              <h1 className='text-home'>{token ? 'Home' : 'Products'}</h1>
+            </Col>
+            <Col>
+              <Form>
+                <Form.Control
+                  type='search'
+                  placeholder='Search...'
+                  className='search-post'
+                  aria-label='Search'
+                />
+              </Form>
+            </Col>
+          </Row>
+        </Container>
         <div className='cards_wrapper'>
-          <Container>
-            <Row>
-              <Col>
-                <h1 className='text-home'>{token ? 'Home' : 'Products'}</h1>
-              </Col>
-              <Col>
-                <Form>
-                  <Form.Control
-                    type='search'
-                    placeholder='Search...'
-                    className='search-post'
-                    aria-label='Search'
-                  />
-                </Form>
-              </Col>
-            </Row>
-          </Container>
           {/* Card for Seller */}
           <Row className='mx-2'>
-            {posts.length > 0
-              ? posts.map((post, data) =>
-                  post ? (
+            {products.length > 0
+              ? products.map((product, data) =>
+                  product ? (
                     <Col className='mb-4 card-card'>
                       <CardItem
                         key={data}
-                        src={'http://localhost:8000/images/' + post.post_image}
-                        text={post.post_description}
+                        src={'http://localhost:8000/images/' + product.image}
+                        text={product.description}
                         label='Sold'
                         button='Make a Deal'
                         editbutton='Edit'
@@ -64,67 +64,6 @@ export function Card() {
                 )
               : ''}
           </Row>
-
-          {/* Card for buyer */}
-          {/* <ul className='cards_items'> */}
-          {/* <Row className='mx-2'>
-            <Col className='mb-4'>
-              <CardItem
-                src='/images/image-1.jpg'
-                text='1 kilo bangus tirahin mo na baka matira pa nang iba'
-                label='Sold'
-                button='Make a Deal'
-                editbutton='Edit'
-                delbutton='Delete'
-                path='/services'
-              />
-            </Col>
-            <Col className='mb-4'>
-              <CardItem
-                src='/images/image-1.jpg'
-                text='1 kilo bangus tirahin mo na baka matira pa nang iba'
-                label='Sold'
-                button='Make a Deal'
-                editbutton='Edit'
-                delbutton='Delete'
-                path='/services'
-              />
-            </Col>
-            <Col className='mb-4'>
-              <CardItem
-                src='/images/image-1.jpg'
-                text='1 kilo bangus tirahin mo na baka matira pa nang iba'
-                label='Sold'
-                button='Make a Deal'
-                editbutton='Edit'
-                delbutton='Delete'
-                path='/services'
-              />
-            </Col>
-            <Col className='mb-4'>
-              <CardItem
-                src='/images/image-1.jpg'
-                text='1 kilo bangus tirahin mo na baka matira pa nang iba'
-                label='Sold'
-                button='Make a Deal'
-                editbutton='Edit'
-                delbutton='Delete'
-                path='/services'
-              />
-            </Col>
-            <Col className='mb-4'>
-              <CardItem
-                src='/images/image-1.jpg'
-                text='1 kilo bangus tirahin mo na baka matira pa nang iba'
-                label='Sold'
-                button='Make a Deal'
-                editbutton='Edit'
-                delbutton='Delete'
-                path='/services'
-              />
-            </Col>
-          </Row> */}
-          {/* </ul> */}
         </div>
       </div>
     </div>

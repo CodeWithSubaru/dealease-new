@@ -23,7 +23,7 @@ export const ProfileSeller = () => {
             <div className='col-md-4'>
               <img
                 className='profimg rounded-circle'
-                src={PUBLIC_URL + 'images/' + user.prof_img}
+                src={PUBLIC_PATH + 'images/' + user.prof_img}
                 alt='profimg'
               />
               <div className='proffirst'>{user ? user.first_name : ''} </div>

@@ -67,9 +67,9 @@ export const MessageAdmin = () => {
     });
   }
 
-  useEffect(() => {
-    fetchMessage();
-  }, [userMessages]);
+  // useEffect(() => {
+  //   fetchMessage();
+  // }, [userMessages]);
 
   return (
     <div>

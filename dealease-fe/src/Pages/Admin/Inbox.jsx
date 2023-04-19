@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useMessageContext from '../../Hooks/Context/MessageContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Button, Row, Col, Container, Badge, Form } from 'react-bootstrap';
@@ -8,14 +9,28 @@ import '../../assets/scss/inbox.scss';
 
 export const InboxAdmin = () => {
   const { user } = useAuthContext();
-  const { softDel } = useMessageContext();
-  const { inboxes, clickedUser } = useMessageContext();
+  const { softDel, inboxes, clickedUser, fetchInbox } = useMessageContext();
 
   function dateFormat(date) {
-    let yourDate = new Date(date);
-    yourDate = yourDate.toUTCString();
-    return yourDate.split(' ').slice(0, 5).join(' ');
+    const convertedDate = new Date(date);
+    const options = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+
+    const formattedDate = convertedDate.toLocaleDateString('en-US', options);
+    return formattedDate;
   }
+
+  useEffect(() => {
+    fetchInbox();
+    const chatInterval = setInterval(() => fetchInbox(), 10000);
+    return () => clearInterval(chatInterval);
+  }, []);
 
   return (
     <>
@@ -56,7 +71,8 @@ export const InboxAdmin = () => {
                           ? inbox.recipient.first_name
                           : inbox.sender.first_name}{' '}
                       </div>
-                      {inbox.last_message.chat}
+                      {inbox.last_message.chat}{' '}
+                      {dateFormat(inbox.last_message.created_at)}
                     </div>
                   </Col>
                   <Col>
