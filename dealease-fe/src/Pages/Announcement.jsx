@@ -22,9 +22,8 @@ export function Announcement() {
     if (!item.deleted_at && item.is_published) {
       hasAnnouncements = true;
       return (
-        <Carousel.Item key={item.id} className='d-flex justify-content-center'>
+        <Carousel.Item key={item.id} className='d-flex justify-content-center '>
           <Card
-            className='d-flex justify-content-between align-items-center flex-column' //border border-1 border-primary
             style={{
               height: '400px',
               width: '400px',
@@ -39,19 +38,25 @@ export function Announcement() {
             >
               <img
                 src={PUBLIC_URL + 'images/' + item.image}
+                className='w-100 h-100'
                 style={{
                   backgroundSize: 'cover',
-                  backgroundClip: 'center',
-                  backgroundPosition: 'center',
+                  backgroundPosition: 'center center',
+                  objectFit: 'cover',
                 }}
                 alt={item.title}
               />
             </div>
             <Carousel.Caption
-              className='w-50 mx-auto px-0'
-              style={{ position: 'absolute', bottom: '0' }}
+              className='text-light bg-dark w-100'
+              style={{
+                position: 'absolute',
+                bottom: '0',
+                left: '0',
+                top: '250px',
+              }}
             >
-              <div className='text-light'>
+              <div className=''>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
@@ -64,11 +69,16 @@ export function Announcement() {
 
   return (
     <div className='p-5 primary-bg' id='announcement'>
-      <Card className='p-5 rounded'>
+      <Card className='p-5 rounded w-75 mx-auto'>
         <div className='w-50 mx-auto mb-5'>
-          <h1 className='title d-block w-100'>Announcement</h1>
+          <H1 className='d-block w-100'>Announcement</H1>
         </div>
-        <Carousel style={{ height: '50vh' }} variant='dark' slide={false}>
+        <Carousel
+          style={{ height: '50vh' }}
+          variant='dark'
+          slide={false}
+          className='d-flex align-items-center'
+        >
           {hasAnnouncements ? (
             announcements
           ) : (
