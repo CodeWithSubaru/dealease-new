@@ -11,7 +11,6 @@ export function Announcement() {
 
   function fetchData() {
     axiosClient.get('/announcement').then((res) => {
-      console.log(res);
       setData(res.data);
     });
   }

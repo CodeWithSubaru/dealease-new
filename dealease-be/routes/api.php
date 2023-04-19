@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Admin\MessageController;
 use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Api\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/register-exist', [AuthController::class, 'registerExist']);
 Route::get('/public/post', [PostContoller::class, 'getPostsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
-
+Route::get('/payment', [PaymentController::class, 'payment']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/seller/post', PostContoller::class);
     Route::get('/user', [AuthController::class, 'index']);

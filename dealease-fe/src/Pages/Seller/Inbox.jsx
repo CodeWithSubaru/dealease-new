@@ -12,9 +12,18 @@ export const InboxSeller = () => {
   const { softDel, inboxes, clickedUser, fetchInbox } = useMessageContext();
 
   function dateFormat(date) {
-    let yourDate = new Date(date);
-    yourDate = yourDate.toUTCString();
-    return yourDate.split(' ').slice(0, 5).join(' ');
+    const convertedDate = new Date(date);
+    const options = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+
+    const formattedDate = convertedDate.toLocaleDateString('en-US', options);
+    return formattedDate;
   }
 
   useEffect(() => {
@@ -61,7 +70,8 @@ export const InboxSeller = () => {
                         ? inbox.recipient.first_name
                         : inbox.sender.first_name}{' '}
                     </div>
-                    {inbox.last_message.chat}
+                    {inbox.last_message.chat}{' '}
+                    {dateFormat(inbox.last_message.created_at)}
                   </div>
                 </Col>
                 <Col>
