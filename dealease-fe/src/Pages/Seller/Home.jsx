@@ -60,7 +60,7 @@ export const HomeSeller = () => {
   return (
     <>
       <div className='post_container'>
-        <Container className='container_item'>
+        <Container className='container_item px-5'>
           <form onSubmit={handlePost}>
             <Row>
               <Col>

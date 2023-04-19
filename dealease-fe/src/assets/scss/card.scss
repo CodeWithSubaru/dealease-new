@@ -6,7 +6,6 @@ backgrnd {
 .col-md-4 {
   display: flex;
   flex-flow: column;
-  max-width: 1120px;
   width: 90%;
   margin: 0 auto;
   background-color: white;
@@ -139,14 +138,14 @@ backgrnd {
   display: flex;
   flex-flow: column;
   align-items: center;
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
   background-color: #ffffff;
 }
 
 .cards_wrapper {
   position: relative;
-  margin: 50px 0 100px;
+  margin: 40px 0 100px;
 }
 
 .cards_item {
