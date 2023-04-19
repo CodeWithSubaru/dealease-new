@@ -19,6 +19,8 @@ export const InboxSeller = () => {
 
   useEffect(() => {
     fetchInbox();
+    const chatInterval = setInterval(() => fetchInbox(), 10000);
+    return () => clearInterval(chatInterval);
   }, []);
 
   return (

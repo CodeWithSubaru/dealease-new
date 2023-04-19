@@ -20,7 +20,8 @@ export const InboxBuyer = () => {
 
   useEffect(() => {
     fetchInbox();
-    console.log();
+    const chatInterval = setInterval(() => fetchInbox(), 10000);
+    return () => clearInterval(chatInterval);
   }, []);
 
   return (
