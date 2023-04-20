@@ -28,7 +28,7 @@ use App\Http\Controllers\Api\PaymentController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/register-exist', [AuthController::class, 'registerExist']);
+Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 Route::get('/payment', [PaymentController::class, 'payment']);

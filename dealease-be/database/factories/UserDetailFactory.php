@@ -20,6 +20,9 @@ class UserDetailFactory extends Factory
     public function definition(): array
     {
         return [
+            'middle_name' => fake()->lastName(),
+            'last_name' => fake()->lastName(),
+            'ext_name' => fake()->suffix(),
             'birth_date' => date('Y-m-d'),
             'region' => fake()->state(),
             'province' => fake()->country(),

@@ -6,18 +6,18 @@ import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import Button from 'react-bootstrap/Button';
 
-export function RegisterExist() {
+export function UpdateAccess() {
   const [user, setUser] = useState({
     email: '',
     password: '',
     password_confirmation: '',
   });
 
-  const { errors, setErrors, registerExist } = useAuthContext();
+  const { errors, setErrors, updateAccess } = useAuthContext();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    registerExist(user);
+    updateAccess(user);
   };
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function RegisterExist() {
 
       <div className='register-account-exist mb-1'>
         <p className='register-details'>Please provide your details</p>
-        <div class='alert alert-warning' role='alert'>
+        <div className='alert alert-warning' role='alert'>
           <ul>
             <div className='d-flex align-items-center mb-3'>
               <FontAwesomeIcon
@@ -100,7 +100,9 @@ export function RegisterExist() {
         </div>
 
         <div className='d-flex justify-content-end'>
-          <Button variant='primary'>Submit</Button>
+          <Button variant='primary' type='submit'>
+            Submit
+          </Button>
         </div>
       </Form>
     </Card>

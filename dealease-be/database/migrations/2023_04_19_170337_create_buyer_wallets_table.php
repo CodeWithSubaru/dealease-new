@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_buyer', 1)->default(0);
-            $table->boolean('is_seller', 1)->default(0);
-            $table->boolean('role_type', 1)->default(0);
+        Schema::create('buyer_wallets', function (Blueprint $table) {
+            $table->id('buyer_wallet_id');
+            $table->decimal('shell_coin_amount', 50);
+            $table->foreignId('user_id')->constrained('users', 'user_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -23,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('user', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('buyer_wallets');
     }
 };

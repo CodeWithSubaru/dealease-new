@@ -37,7 +37,9 @@ export function AuthBuyerLayout() {
           </Link>
         </li>
         <li className='nav-item'>
-          <p className='nav-links'> {user ? user.buyer_amount : null}</p>
+          <p className='nav-links'>
+            {user.buyer_wallet ? user.buyer_wallet.shell_coin_amount : null}
+          </p>
         </li>
         <li className='nav-item'>
           <div className='div-dropdown'>
