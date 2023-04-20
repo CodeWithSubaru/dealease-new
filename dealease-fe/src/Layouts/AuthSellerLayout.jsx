@@ -64,6 +64,11 @@ export function AuthSellerLayout() {
           </Link>
         </li>
         <li className='nav-item'>
+          <Link to='/seller/shop' className='nav-links'>
+            Shop
+          </Link>
+        </li>
+        <li className='nav-item'>
           <Link to='/seller/inbox' className='nav-links'>
             Inbox
           </Link>
