@@ -19,7 +19,13 @@ export const LoginSeller = () => {
     is_seller = 1,
     role_type = 0,
     coin_owner_type = 1;
-  const { loginSeller, errors, setErrors } = useAuthContext();
+  const {
+    loginSeller,
+    errors,
+    setErrors,
+    isRegistrationSuccess,
+    setRegistrationSuccess,
+  } = useAuthContext();
 
   useEffect(() => {
     setErrors([]);
@@ -39,6 +45,11 @@ export const LoginSeller = () => {
 
   return (
     <>
+      {isRegistrationSuccess && (
+        <div className='fadeInDown alert alert-primary' role='alert'>
+          Your account registered successfully! You can now log in.
+        </div>
+      )}
       <div className='Auth-form-container'>
         <form onSubmit={handleLogin} className='Auth-form' id='loginSeller'>
           <div className='Auth-form-content'>

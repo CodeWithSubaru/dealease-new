@@ -14,11 +14,13 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+  const [isRegistrationSuccess, setRegistrationSuccess] = useState(false);
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [user_type, _setUserType] = useState(localStorage.getItem('USER_TYPE'));
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
   const logoutTimerIdRef = useRef(null);
+  const [modalShow, setModalShow] = useState(false);
 
   const csrf = () => axiosClient.get('../sanctum/csrf-cookie');
 
@@ -115,6 +117,7 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
+        setRegistrationSuccess(res.data.is_registration_done);
         if (res.status == 200) {
           setLoading(true);
           Notification({
@@ -140,9 +143,9 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const registerExist = ({ ...data }) => {
+  const updateAccess = ({ ...data }) => {
     axiosClient
-      .post('/register-exist', data)
+      .post('/update-access', data)
       .then((res) => {
         if (res.status == 200) {
           setLoading(true);
@@ -214,12 +217,16 @@ export const AuthProvider = ({ children }) => {
         token,
         errors,
         user_type,
+        isRegistrationSuccess,
+        modalShow,
+        setModalShow,
+        setRegistrationSuccess,
         setErrors,
         loginBuyer,
         loginSeller,
         loginAdmin,
         register,
-        registerExist,
+        updateAccess,
         logout,
       }}
     >

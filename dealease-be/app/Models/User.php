@@ -47,6 +47,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return  $this->hasOne(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
     }
 
+    public function buyerWallet()
+    {
+        return $this->hasOne(\App\Models\BuyerWallet::class, 'user_id', 'user_id');
+    }
+
+    public function sellerWallet()
+    {
+        return $this->hasOne(\App\Models\SellerWallet::class, 'user_id', 'user_id');
+    }
 
     public function messagesSender()
     {

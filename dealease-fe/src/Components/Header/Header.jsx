@@ -41,7 +41,14 @@ export function Test() {
 
 export function Header(props) {
   // collapsible navlinks
-  const { user, token } = useAuthContext();
+  const {
+    user,
+    token,
+    modalShow,
+    setModalShow,
+    isRegistrationSuccess,
+    setRegistrationSuccess,
+  } = useAuthContext();
 
   // Solla
   const [click, setClick] = useState(false);
@@ -55,12 +62,18 @@ export function Header(props) {
       setButton(true);
     }
   };
+
+  const [modalRegisterShow, setRegisterModalShow] = useState(false);
+
   useEffect(() => {
     showButton();
+
+    if (isRegistrationSuccess) {
+      setModalShow(true);
+    }
   }, []);
   window.addEventListener('resize', showButton);
-  const [modalShow, setModalShow] = useState(false);
-  const [modalRegisterShow, setRegisterModalShow] = useState(false);
+
   return (
     <nav className='navbar'>
       <div className='navbar-container'>
@@ -132,11 +145,11 @@ export function Header(props) {
               </li>
               <li className='d-flex align-items-center mb-1'>
                 <Link
-                  to='/register-exist'
+                  to='/update-access'
                   className='signup-button p-2'
                   role={Button}
                 >
-                  Sign up Exist
+                  Update Access
                 </Link>
               </li>
             </>
