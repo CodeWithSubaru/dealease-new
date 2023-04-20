@@ -95,7 +95,7 @@ export const HomeSeller = () => {
                   <span>
                     <FontAwesomeIcon icon={faImage} className='image' />
                     <h6 className='input_text'>Add Photos</h6>
-                    <h5>Or drag and drop1</h5>
+                    <h5>Or drag and drop</h5>
                   </span>
                   <input
                     value={post_image ? post_image : ''}
