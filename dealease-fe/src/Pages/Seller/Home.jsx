@@ -1,8 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
-import '../../assets/scss/global.scss';
+import React from "react";
+import { useState } from "react";
+import "../../assets/scss/global.scss";
 // import { HeroSection } from "../../Components/Section/HeroSection";
-import { Card } from '../../Components/Card/Card';
+import { Card } from "../../Components/Card/Card";
 import {
   Modal,
   Form,
@@ -11,47 +11,47 @@ import {
   InputGroup,
   Button,
   Container,
-} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../../Components/Footer/footer';
-import '../../assets/scss/card.scss';
-import '../../assets/scss/button.scss';
-import '../../assets/scss/post-section.scss';
-import axiosClient from '../../api/axios';
-import { Notification } from '../../Components/Notification/Notification';
-import usePostContext from '../../Hooks/Context/PostContext';
+} from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { Footer } from "../../Components/Footer/footer";
+import "../../assets/scss/card.scss";
+import "../../assets/scss/button.scss";
+import "../../assets/scss/post-section.scss";
+import axiosClient from "../../api/axios";
+import { Notification } from "../../Components/Notification/Notification";
+import usePostContext from "../../Hooks/Context/PostContext";
 
 export const HomeSeller = () => {
   const { fetchPost } = usePostContext();
-  const [post_description, setDescription] = useState('');
-  const [post_image, setImage] = useState('');
+  const [post_description, setDescription] = useState("");
+  const [post_image, setImage] = useState("");
   const data = { post_description: post_description, post_image: post_image };
   const handlePost = (e) => {
     e.preventDefault();
     console.log(post_description, post_image);
     axiosClient
-      .post('/seller/post', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      .post("/seller/post", data, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
         if (res.status == 200) {
           Notification({
-            title: 'Success',
+            title: "Success",
             message: res.data.message,
-            icon: 'success',
+            icon: "success",
           }).then(() => {
             fetchPost();
-            setDescription('');
-            setImage('');
+            setDescription("");
+            setImage("");
           });
         }
       })
       .catch((e) => {
         Notification({
-          title: 'Error',
-          message: 'Errors Found',
-          icon: 'error',
+          title: "Error",
+          message: "Errors Found",
+          icon: "error",
         });
         setErrors(e.response.data.errors);
       });
@@ -59,7 +59,7 @@ export const HomeSeller = () => {
 
   return (
     <>
-      <div className='post_container'>
+      {/* <div className='post_container'>
         <Container className='container_item'>
           <form onSubmit={handlePost}>
             <Row>
@@ -101,9 +101,9 @@ export const HomeSeller = () => {
             </Row>
           </form>
         </Container>
-      </div>
+      </div> */}
       {/* <HeroSection /> */}
-      <Card />
+      {/* <Card /> */}
       <Footer />
     </>
   );
