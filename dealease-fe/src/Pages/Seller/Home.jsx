@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import '../../assets/scss/global.scss';
 // import { HeroSection } from "../../Components/Section/HeroSection";
@@ -20,10 +20,12 @@ import '../../assets/scss/button.scss';
 import '../../assets/scss/post-section.scss';
 import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
-import usePostContext from '../../Hooks/Context/PostContext';
+import usePostContext from '../../Hooks/Context/ProductContext';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export const HomeSeller = () => {
   const { fetchPost } = usePostContext();
+  const { setRegistrationSuccess } = useAuthContext();
   const [post_description, setDescription] = useState('');
   const [post_image, setImage] = useState('');
   const data = { post_description: post_description, post_image: post_image };
@@ -56,6 +58,12 @@ export const HomeSeller = () => {
         setErrors(e.response.data.errors);
       });
   };
+
+  useEffect(() => {
+    return () => {
+      setRegistrationSuccess(false);
+    };
+  }, []);
 
   return (
     <>

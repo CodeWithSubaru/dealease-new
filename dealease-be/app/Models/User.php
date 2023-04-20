@@ -44,9 +44,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function user_details()
     {
-        return  $this->hasOne(\App\Models\UserDetail::class, 'user_id', 'user_id');
+        return  $this->hasOne(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
     }
 
+    public function buyerWallet()
+    {
+        return $this->hasOne(\App\Models\BuyerWallet::class, 'user_id', 'user_id');
+    }
+
+    public function sellerWallet()
+    {
+        return $this->hasOne(\App\Models\SellerWallet::class, 'user_id', 'user_id');
+    }
 
     public function messagesSender()
     {
@@ -60,11 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected function getIsBuyerAttribute()
     {
-        if ($this->attributes['is_buyer'] === '1' && $this->attributes['is_seller'] === '1') {
+        if ($this->attributes['is_buyer'] && $this->attributes['is_seller']) {
             $this->attributes['is_seller'] = 'Buyer_seller2';
             return $this->attributes['is_buyer'] = 'Buyer_seller1';
         }
-        if ($this->attributes['is_buyer'] === '1') {
+        if ($this->attributes['is_buyer']) {
             return $this->attributes['is_buyer'] = 'Buyer';
         } else {
             return $this->attributes['is_buyer'];
@@ -73,11 +82,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected function getIsSellerAttribute()
     {
-        if ($this->attributes['is_seller'] === '1' && $this->attributes['is_buyer'] === '1') {
+        if ($this->attributes['is_seller'] && $this->attributes['is_buyer']) {
             $this->attributes['is_buyer'] = 'Buyer_seller1';
             return $this->attributes['is_seller'] = 'Buyer_seller2';
         }
-        if ($this->attributes['is_seller'] === '1') {
+        if ($this->attributes['is_seller']) {
             return $this->attributes['is_seller'] = 'Seller';
         } else {
             return $this->attributes['is_seller'];
@@ -86,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected function getRoleTypeAttribute()
     {
-        if ($this->attributes['role_type'] === '1') {
+        if ($this->attributes['role_type']) {
             return $this->attributes['role_type'] = 'Admin';
         } else {
             return $this->attributes['role_type'] = 'User';

@@ -6,7 +6,7 @@ import { AuthProvider } from './Hooks/Context/AuthContext';
 import { MessageProvider } from './Hooks/Context/MessageContext';
 import { AddressProvider } from './Hooks/Context/AddressContext';
 import App from './App';
-import { PostProvider } from './Hooks/Context/PostContext';
+import { ProductProvider } from './Hooks/Context/ProductContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -14,9 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <MessageProvider>
           <AddressProvider>
-            <PostProvider>
+            <ProductProvider>
               <App />
-            </PostProvider>
+            </ProductProvider>
           </AddressProvider>
         </MessageProvider>
       </AuthProvider>

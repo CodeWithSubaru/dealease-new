@@ -17,8 +17,15 @@ export const LoginSeller = () => {
   const [password, setPassword] = useState('');
   const is_buyer = [0, 1],
     is_seller = 1,
-    role_type = 0;
-  const { loginSeller, errors, setErrors } = useAuthContext();
+    role_type = 0,
+    coin_owner_type = 1;
+  const {
+    loginSeller,
+    errors,
+    setErrors,
+    isRegistrationSuccess,
+    setRegistrationSuccess,
+  } = useAuthContext();
 
   useEffect(() => {
     setErrors([]);
@@ -26,11 +33,23 @@ export const LoginSeller = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    loginSeller({ email, password, is_buyer, is_seller, role_type });
+    loginSeller({
+      email,
+      password,
+      is_buyer,
+      is_seller,
+      role_type,
+      coin_owner_type,
+    });
   };
 
   return (
     <>
+      {isRegistrationSuccess && (
+        <div className='fadeInDown alert alert-primary' role='alert'>
+          Your account registered successfully! You can now log in.
+        </div>
+      )}
       <div className='Auth-form-container'>
         <form onSubmit={handleLogin} className='Auth-form' id='loginSeller'>
           <div className='Auth-form-content'>

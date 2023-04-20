@@ -39,6 +39,10 @@ export function AuthSellerLayout() {
             Donasyon
           </Link>
         </li>
+
+        <p className='nav-links'>
+          {user.seller_wallet ? user.seller_wallet.shell_coin_amount : null}
+        </p>
         <li className='nav-item'>
           <div className='div-dropdown'>
             <Dropdown as={ButtonGroup} className='dropdown-button'>

@@ -3,9 +3,7 @@ import { Loader } from './Components/Loader/Loader';
 import { GlobalStyles } from './GlobalStyle.style';
 import { NotFound } from './Pages/NotFound';
 
-import { Login } from './Pages/Auth/Login';
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
-import { LoginSeller } from './Pages/Auth/LoginSeller';
 
 // Buyer Components
 import { AuthBuyerLayout } from './Layouts/AuthBuyerLayout';
@@ -42,14 +40,13 @@ import { Mainpage } from './Pages';
 import { Test } from './Components/Header/Header';
 
 import { GuestLayout } from './Layouts/GuestLayout';
-import { Register } from './Pages/Auth/Register';
-import { RegisterExist } from './Pages/Auth/RegisterExist';
+import { UpdateAccess } from './Pages/Auth/UpdateAccess';
 import { ForgotPassword } from './Pages/Auth/ForgotPassword';
 import { PasswordReset } from './Pages/Auth/PassworReset';
 import useAuthContext from './Hooks/Context/AuthContext';
 
 function App() {
-  const { loading, user } = useAuthContext();
+  const { loading } = useAuthContext();
 
   if (loading) {
     return <Loader visibility={loading}></Loader>;
@@ -106,7 +103,7 @@ function App() {
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
             <Route path='/home' element={<Mainpage />} />
-            <Route path='/register-exist' element={<RegisterExist />} />
+            <Route path='/update-access' element={<UpdateAccess />} />
           </Route>
 
           <Route path='/admin/login' element={<LoginAdmin />} />

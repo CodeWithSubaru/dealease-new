@@ -39,9 +39,7 @@ class MessageController extends Controller
 
         // get last inbox
         $inbox = Inbox::where('user_id', $request->sender)
-            ->where('recipient_id', $request->receiver)
-            ->orWhere('recipient_id', $request->sender)
-            ->where('user_id', $request->receiver);
+            ->where('recipient_id', $request->receiver);
 
         if (count($inbox->get(['user_id', 'recipient_id'])) > 0) {
             $inbox->update(['message_id' => $message->message_id]);

@@ -20,6 +20,9 @@ class UserDetailFactory extends Factory
     public function definition(): array
     {
         return [
+            'middle_name' => fake()->lastName(),
+            'last_name' => fake()->lastName(),
+            'ext_name' => fake()->suffix(),
             'birth_date' => date('Y-m-d'),
             'region' => fake()->state(),
             'province' => fake()->country(),
@@ -27,7 +30,6 @@ class UserDetailFactory extends Factory
             'barangay' => fake()->streetName(),
             'street' => fake()->streetAddress(),
             'contact_number' => '09298384753',
-            'user_id' =>  rand(1, 10),
         ];
     }
 }

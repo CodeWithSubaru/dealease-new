@@ -11,6 +11,9 @@ class UserDetail extends Model
 
 
     protected $fillable = [
+        'middle_name',
+        'last_name',
+        'ext_name',
         'birth_date',
         'region',
         'province',
@@ -18,11 +21,10 @@ class UserDetail extends Model
         'barangay',
         'street',
         'contact_number',
-        'user_id'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class, 'user_details_id', 'user_details_id');
     }
 }
