@@ -1,12 +1,12 @@
-import { Navigate, Outlet } from 'react-router-dom';
-
-import { Link } from 'react-router-dom';
-import Header from '../Components/Header/Header';
-import useAuthContext from '../Hooks/Context/AuthContext';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-import PUBLIC_PATH from '../api/public_url';
+import { Navigate, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useAuthContext from "../Hooks/Context/AuthContext";
+import PUBLIC_PATH from "../api/public_url";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import { SidebarData } from "../Components/Sidebar/Sidebar";
+import "../assets/scss/navbar.scss";
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthSellerLayout() {
@@ -14,11 +14,50 @@ export function AuthSellerLayout() {
   const handleLogout = () => {
     logout();
   };
+  const [sidebar, setSidebar] = useState(true);
+  const showSidebar = () => setSidebar(!sidebar);
 
   return (
     <>
-      <Header>
-        {/* Modified Solla */}
+      <div className="nav-bar">
+        <Link to="#" className="menu-bars">
+          <FontAwesomeIcon icon={faBars} onClick={showSidebar} />
+        </Link>
+      </div>
+      <nav className={sidebar ? "nav_menu " : "nav_menu active"}>
+        <ul className="nav-menu-items">
+          <li className="navbar-toggle">
+            <Link to="#" className="menu-bars">
+              <FontAwesomeIcon icon={faXmark} onClick={showSidebar} />
+            </Link>
+          </li>
+          {SidebarData.map((item, index) => {
+            return (
+              <li key={index} className={item.cName}>
+                <Link to={item.path}>
+                  {item.icon}
+                  <span className="item-title">{item.title}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      {user_type === "Seller" || user_type === "Buyer_seller2" ? (
+        <>
+          <Outlet />
+          {/* <GoogleAdSense /> */}
+        </>
+      ) : (
+        <Navigate to="/home" />
+      )}
+    </>
+  );
+}
+// Old Navbar
+{
+  /* <Header>
+ 
         <li className='nav-item'>
           <Link to='/seller/home' className='nav-links'>
             Home
@@ -74,15 +113,5 @@ export function AuthSellerLayout() {
             </Dropdown>
           </div>
         </li>
-      </Header>
-      {user_type === 'Seller' || user_type === 'Buyer_seller2' ? (
-        <>
-          <Outlet />
-          {/* <GoogleAdSense /> */}
-        </>
-      ) : (
-        <Navigate to='/home' />
-      )}
-    </>
-  );
+      </Header> */
 }

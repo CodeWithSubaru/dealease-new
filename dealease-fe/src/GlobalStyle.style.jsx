@@ -1,13 +1,14 @@
-import { createGlobalStyle } from 'styled-components';
-import Background from './assets/img/test.png';
+import { createGlobalStyle } from "styled-components";
+import Background from "./assets/img/test.png";
 
 export const GlobalStyles = createGlobalStyle`
   *,
   *::before,
   *::after {
-    box-sizing: inherit;
-    padding: 0;
-    margin: 0;
+    box-sizing: border-box;
+    margin:0 ;
+    padding:0 ;
+   
     font-family: 'Poppins', sans-serif !important;
     
   }

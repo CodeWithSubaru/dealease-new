@@ -109,9 +109,10 @@ export const HomeSeller = () => {
             </Row>
           </form>
         </Container>
-      </div>
+      </div>{' '}
+      */}
       {/* <HeroSection /> */}
-      <Card />
+      {/* <Card /> */}
       <Footer />
     </>
   );
