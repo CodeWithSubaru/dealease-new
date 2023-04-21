@@ -6,13 +6,14 @@ import PUBLIC_URL from '../../api/public_url';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Container } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 
 const header = [
-  //   {
-  //     title: 'Id',
-  //     prop: 'id',
-  //     isSortable: true,
-  //   },
+  {
+    title: 'Id',
+    prop: 'id',
+    isSortable: true,
+  },
   {
     title: 'Product Name',
     prop: 'title',
@@ -39,11 +40,11 @@ const header = [
     isFilterable: true,
     isSortable: true,
   },
-  //   {
-  //     title: 'Date Joined',
-  //     prop: 'date_joined',
-  //     isSortable: true,
-  //   },
+  {
+    title: 'Date Joined',
+    prop: 'date_joined',
+    isSortable: true,
+  },
   { title: 'Action', prop: 'action' },
 ];
 

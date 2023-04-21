@@ -25,7 +25,7 @@ class ProductContoller extends Controller
     {
         $id = Auth::id(); //getting authenticated user id
         $product = Product::where('user_id', $id)->get();
-        return $product;
+        return response()->json(['listOfProduct' => $product], 200);
     }
 
     /**
@@ -36,6 +36,7 @@ class ProductContoller extends Controller
         $id = Auth::id(); //getting authenticated user id
 
         $request->validate([
+            'title' => 'required', 'string', 'max:255',
             'description' => 'required', 'string', 'max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

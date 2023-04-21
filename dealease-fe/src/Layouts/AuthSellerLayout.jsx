@@ -1,12 +1,18 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { Link } from "react-router-dom";
-import useAuthContext from "../Hooks/Context/AuthContext";
-import PUBLIC_PATH from "../api/public_url";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { SidebarData } from "../Components/Sidebar/Sidebar";
-import "../assets/scss/navbar.scss";
+import { Navigate, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import useAuthContext from '../Hooks/Context/AuthContext';
+import PUBLIC_PATH from '../api/public_url';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import { SidebarData } from '../Components/Sidebar/Sidebar';
+
+import Header from '../Components/Header/Header';
+import '../assets/scss/button.scss';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import '../assets/scss/navbar.scss';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthSellerLayout() {
@@ -19,15 +25,47 @@ export function AuthSellerLayout() {
 
   return (
     <>
-      <div className="nav-bar">
-        <Link to="#" className="menu-bars">
+      <div className='nav-bar'>
+        <Link to='#' className='menu-bars'>
           <FontAwesomeIcon icon={faBars} onClick={showSidebar} />
         </Link>
+        <div className='img-contain '>
+          <img src='/images/dealeaselogo.png' className='logo'></img>
+        </div>
+        <div className='div-dropdown me-3'>
+          <Dropdown as={ButtonGroup} className='dropdown-button'>
+            <Button variant='dark' className='dropdown-logout'>
+              <img
+                className='dropdown-logout-profile me-2'
+                src={PUBLIC_PATH + 'images/' + user.prof_img}
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  objectFit: 'fit',
+                }}
+              />{' '}
+              {user.first_name}
+            </Button>
+
+            <Dropdown.Toggle split variant='dark' id='dropdown-split-basic' />
+
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to={'/seller/profile'}>
+                My Profile
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to={'/seller/change-password'}>
+                Change Password
+              </Dropdown.Item>
+              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
       </div>
-      <nav className={sidebar ? "nav_menu " : "nav_menu active"}>
-        <ul className="nav-menu-items">
-          <li className="navbar-toggle">
-            <Link to="#" className="menu-bars">
+      <nav className={sidebar ? 'nav_menu ' : 'nav_menu active'}>
+        <ul className='nav-menu-items'>
+          <li className='navbar-toggle'>
+            <Link to='#' className='close-menu-bars me-3'>
               <FontAwesomeIcon icon={faXmark} onClick={showSidebar} />
             </Link>
           </li>
@@ -35,21 +73,23 @@ export function AuthSellerLayout() {
             return (
               <li key={index} className={item.cName}>
                 <Link to={item.path}>
-                  {item.icon}
-                  <span className="item-title">{item.title}</span>
+                  <span className='item-title'>
+                    {item.icon}
+                    {item.title}
+                  </span>
                 </Link>
               </li>
             );
           })}
         </ul>
       </nav>
-      {user_type === "Seller" || user_type === "Buyer_seller2" ? (
+      {user_type === 'Seller' || user_type === 'Buyer_seller2' ? (
         <>
           <Outlet />
           {/* <GoogleAdSense /> */}
         </>
       ) : (
-        <Navigate to="/home" />
+        <Navigate to='/home' />
       )}
     </>
   );

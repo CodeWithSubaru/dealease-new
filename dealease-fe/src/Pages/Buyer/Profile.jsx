@@ -10,7 +10,6 @@ import PUBLIC_URL from '../../api/public_url';
 import axiosClient from '../../api/axios';
 
 export const ProfileBuyer = () => {
-  const { user } = useAuthContext();
   const [show, setShow] = useState(false);
   const [reportUserModal, setReportUserModal] = useState(false);
 
