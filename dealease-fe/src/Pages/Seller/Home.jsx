@@ -41,19 +41,13 @@ const header = [
   },
   {
     title: 'Stocks',
-    prop: 'stocks',
+    prop: 'stock',
     isFilterable: true,
     isSortable: true,
   },
   {
     title: 'Price',
     prop: 'price',
-    isFilterable: true,
-    isSortable: true,
-  },
-  {
-    title: 'Product Status',
-    prop: 'status',
     isFilterable: true,
     isSortable: true,
   },
@@ -75,29 +69,25 @@ export const HomeSeller = () => {
   const [body, setBody] = useState([]);
   const { fetchProduct } = useProductContext();
   const { setRegistrationSuccess } = useAuthContext();
-  const [product_title, setTitle] = useState('');
-  const [product_description, setDescription] = useState('');
-  const [product_image, setImage] = useState('');
-  const [stocks_per_kg, setStocks] = useState('');
-  const [price_per_kg, setPrice] = useState('');
+  const [productTitle, setTitle] = useState('');
+  const [productDescription, setDescription] = useState('');
+  const [productImage, setImage] = useState('');
+  const [productStocks, setStocks] = useState('');
+  const [productPrice, setPrice] = useState('');
+  const [productStatus, setStatus] = useState('');
   const data = {
-    product_title: product_title,
-    product_description: product_description,
-    product_image: product_image,
-    product_stocks: stocks_per_kg,
-    product_price: price_per_kg,
+    productTitle,
+    productDescription,
+    productImage,
+    productStocks,
+    productPrice,
+    productStatus,
   };
   const handlePost = (e) => {
     e.preventDefault();
-    console.log(
-      product_title,
-      product_description,
-      product_image,
-      stocks_per_kg,
-      price_per_kg
-    );
+    console.log(data);
     axiosClient
-      .post('/seller/post', data, {
+      .post('/seller/shop', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
@@ -113,6 +103,7 @@ export const HomeSeller = () => {
             setImage('');
             setStocks('');
             setPrice('');
+            setStatus('');
           });
         }
       })
@@ -132,6 +123,12 @@ export const HomeSeller = () => {
     };
   }, []);
 
+  function dateFormat(date) {
+    let yourDate = new Date(date);
+    yourDate = yourDate.toUTCString();
+    return yourDate.split(' ').slice(1, 4).join(' ');
+  }
+
   function setProductDataTable() {
     axiosClient.get('/seller/shop').then((resp) => {
       const product = resp.data.listOfProduct.map((product, i) => {
@@ -140,13 +137,13 @@ export const HomeSeller = () => {
           // fullname: (
           //   <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
           //     <img
-          //       src={PUBLIC_URL + 'images/' + product.product_image}
+          //       src={PUBLIC_URL + 'images/' + product.productImage}
           //       className='rounded pr-5'
           //       style={{ width: '50px', height: '50px' }}
           //     />
           //     <div>
           //       <p className='mb-0'>
-          //         {product.product_title +
+          //         {product.productTitle +
           //           ' ' +
           //           product.middle_name[0] +
           //           '.' +
@@ -161,11 +158,10 @@ export const HomeSeller = () => {
           //     </div>
           //   </div>
           // ),
-          title: product_title,
-          description: product_description,
-          stocks: stocks_per_kg,
-          price: price_per_kg,
-          status: product_status,
+          title: product.title,
+          description: product.description,
+          stock: product.stocks_per_kg,
+          price: product.price_per_kg,
           date_joined: dateFormat(product.created_at),
           // action: (
           //   <div key={i} className='button-actions'>
@@ -202,11 +198,11 @@ export const HomeSeller = () => {
 
   return (
     <>
-      <div className='post_container'>
+      <div className='post_container mb-5'>
         <Container className='container_item px-5'>
-          <Form onSubmit={handlePost}>
+          <Form onSubmit={handlePost} className='mb-5'>
             <Row>
-              <Col>
+              {/* <Col>
                 <div className='image-container'>
                   <img
                     src='/images/1.jpg'
@@ -214,15 +210,15 @@ export const HomeSeller = () => {
                     className='imagepost float-end mb-4'
                   />
                 </div>
-              </Col>
-              <Col lg={8}>
+              </Col> */}
+              <Col>
                 <Form.Group className='mt-2'>
                   <Form.Label className='text-black'>Product Name</Form.Label>
                   <Form.Control
                     type='text'
                     className='form-control'
                     autoComplete='none'
-                    value={product_title ? product_title : ''}
+                    value={productTitle ? productTitle : ''}
                     onChange={(e) => setTitle(e.target.value)}
                   />
                 </Form.Group>
@@ -237,7 +233,7 @@ export const HomeSeller = () => {
                     aria-describedby='inputGroup-sizing-sm'
                     placeholder="What's on your mind?"
                     autoComplete='none'
-                    value={product_description ? product_description : ''}
+                    value={productDescription ? productDescription : ''}
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </Form.Group>
@@ -247,7 +243,7 @@ export const HomeSeller = () => {
                     type='file'
                     className='form-control mb-3'
                     autoComplete='none'
-                    value={product_image ? product_image : ''}
+                    value={productImage ? productImage : ''}
                     onChange={(e) => setImage(e.target.files[0])}
                   />
                 </Form.Group>
@@ -261,7 +257,7 @@ export const HomeSeller = () => {
                         type='number'
                         className='form-control'
                         autoComplete='none'
-                        value={stocks_per_kg ? stocks_per_kg : ''}
+                        value={productStocks ? productStocks : ''}
                         onChange={(e) => setStocks(e.target.value)}
                       />
                     </Form.Group>
@@ -275,8 +271,22 @@ export const HomeSeller = () => {
                         type='number'
                         className='form-control'
                         autoComplete='none'
-                        value={price_per_kg ? price_per_kg : ''}
+                        value={productPrice ? productPrice : ''}
                         onChange={(e) => setPrice(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group className=''>
+                      <Form.Label className='text-black'>
+                        Price (per kg)
+                      </Form.Label>
+                      <Form.Control
+                        type='number'
+                        className='form-control'
+                        autoComplete='none'
+                        value={productStatus ? productStatus : ''}
+                        onChange={(e) => setStatus(e.target.value)}
                       />
                     </Form.Group>
                   </Col>
@@ -286,15 +296,15 @@ export const HomeSeller = () => {
               </Col>
             </Row>
           </Form>
+          {/* <HeroSection /> */}
+          <TableComponent
+            header={header}
+            body={body}
+            button={<Button variant='primary'>Add Product</Button>}
+          />
         </Container>
       </div>
-      {/* <HeroSection /> */}
-      <TableComponent
-        header={header}
-        body={body}
-        button={<Button variant='primary'>Add Product</Button>}
-      />
-      <Card />
+      {/* <Card /> */}
       <Footer />
     </>
   );
