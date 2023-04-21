@@ -110,7 +110,6 @@ export const HomeSeller = () => {
           </form>
         </Container>
       </div>{' '}
-      */}
       {/* <HeroSection /> */}
       {/* <Card /> */}
       <Footer />
