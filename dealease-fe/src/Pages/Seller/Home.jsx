@@ -80,14 +80,12 @@ export const HomeSeller = () => {
   const [product_image, setImage] = useState('');
   const [stocks_per_kg, setStocks] = useState('');
   const [price_per_kg, setPrice] = useState('');
-  const [product_status, setStatus] = useState('');
   const data = {
     product_title: product_title,
     product_description: product_description,
     product_image: product_image,
     product_stocks: stocks_per_kg,
     product_price: price_per_kg,
-    product_status: product_status,
   };
   const handlePost = (e) => {
     e.preventDefault();
@@ -96,8 +94,7 @@ export const HomeSeller = () => {
       product_description,
       product_image,
       stocks_per_kg,
-      price_per_kg,
-      product_status
+      price_per_kg
     );
     axiosClient
       .post('/seller/post', data, {
@@ -116,7 +113,6 @@ export const HomeSeller = () => {
             setImage('');
             setStocks('');
             setPrice('');
-            setStatus('');
           });
         }
       })
@@ -285,27 +281,7 @@ export const HomeSeller = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <div>
-                  {/* <span>
-                    <FontAwesomeIcon icon={faImage} className='image' />
-                    <h6 className='input_text'>Add Photos</h6>
-                    <h5>Or drag and drop</h5>
-                  </span> */}
-                  {/* <input
-                    value={product_image ? product_image : ''}
-                    type='text'
-                    className='form-control mb-2'
-                    className='file-seller'
-                    onChange={(e) => setImage(e.target.files[0])}
-                  /> */}
-                  {/* <input
-                    value={product_image ? product_image : ''}
-                    type='file'
-                    className='form-control mb-3'
-                    // className='file-seller'
-                    onChange={(e) => setImage(e.target.files[0])}
-                  /> */}
-                </div>
+
                 <button className='w-100 btn btn-primary mt-3'>Save</button>
               </Col>
             </Row>
