@@ -13,13 +13,6 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('status')->unsigned();
-            $table->string('status_desc', 25);
-            $table->string('trans_desc', 100);
-            $table->foreignId('user_id')
-                ->constrained('users', 'user_id')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }
