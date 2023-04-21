@@ -35,6 +35,7 @@ import { AnnouncementAdmin } from './Pages/Admin/Announcement';
 
 // solla
 import { Mainpage } from './Pages';
+import { Recharge } from './Pages/Recharge';
 // ramos
 import { Test } from './Components/Header/Header';
 
@@ -98,6 +99,7 @@ function App() {
           </Route>
           <Route element={<GuestLayout />}>
             {/*Solla */}
+            <Route path='/recharge' element={<Recharge />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
             <Route path='/home' element={<Mainpage />} />

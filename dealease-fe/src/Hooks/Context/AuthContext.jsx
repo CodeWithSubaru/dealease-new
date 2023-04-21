@@ -179,7 +179,7 @@ export const AuthProvider = ({ children }) => {
           setUser(res.data[0]);
         })
         .catch((e) => {
-          if (e.response.status === 401) {
+          if (e.status === 401) {
             localStorage.removeItem('ACCESS_TOKEN');
             localStorage.removeItem('USER_TYPE');
           }

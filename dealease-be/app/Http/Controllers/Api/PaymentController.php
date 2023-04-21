@@ -22,6 +22,6 @@ class PaymentController extends Controller
             ],
         ]);
 
-        echo $response->getBody()['data']['checkout_url'];
+        echo $response->getBody();
     }
 }
