@@ -15,7 +15,7 @@ class Product extends Model
         'image',
         'stock',
         'amount',
-        'weight',
+        'user_id'
     ];
 
     public function postedByUser()

@@ -87,7 +87,7 @@ export const HomeSeller = () => {
     e.preventDefault();
     console.log(data);
     axiosClient
-      .post('/seller/shop', data, {
+      .post('/seller/product', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {

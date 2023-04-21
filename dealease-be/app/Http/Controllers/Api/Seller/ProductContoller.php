@@ -39,6 +39,8 @@ class ProductContoller extends Controller
             'title' => 'required', 'string', 'max:255',
             'description' => 'required', 'string', 'max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'stock' => 'required', 'numeric',
+            'amount' => 'required', 'numeric'
         ]);
 
         $imageName = time() . '.' . $request->image->extension();
@@ -46,8 +48,11 @@ class ProductContoller extends Controller
         $request->image->move(public_path('images'), $imageName);
 
         $post = Product::create([
+            'title' => $request->title,
             'description' => $request->description,
             'image' => $imageName,
+            'stock' => $request->stock,
+            'amount' => $request->amount,
             'user_id' => $id, //for test only
         ]);
 
