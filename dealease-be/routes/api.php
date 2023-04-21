@@ -32,9 +32,9 @@ Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 Route::get('/payment', [PaymentController::class, 'payment']);
+Route::apiResource('/seller/shop', ProductContoller::class);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/seller/shop', ProductContoller::class);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])

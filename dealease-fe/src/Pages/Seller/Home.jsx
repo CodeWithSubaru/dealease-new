@@ -97,7 +97,7 @@ export const HomeSeller = () => {
       price_per_kg
     );
     axiosClient
-      .post('/seller/post', data, {
+      .post('/seller/product', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
