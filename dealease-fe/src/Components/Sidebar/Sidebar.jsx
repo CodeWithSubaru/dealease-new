@@ -17,8 +17,8 @@ export const SidebarData = [
     cName: 'nav-text',
   },
   {
-    title: 'Shop',
-    path: '/seller/shop',
+    title: 'Products',
+    path: '/seller/product',
     icon: <FontAwesomeIcon icon={faShop} className='me-3 ms-4' />,
     cName: 'nav-text',
   },

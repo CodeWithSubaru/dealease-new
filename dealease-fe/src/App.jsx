@@ -17,7 +17,7 @@ import { DonationBuyer } from './Pages/Buyer/Donation';
 // Seller Components
 import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
 import { ChangePasswordSeller } from './Pages/Seller/ChangePassword';
-import { ShopSeller } from './Pages/Seller/Shop';
+import { ProductSeller } from './Pages/Seller/Product';
 import { HomeSeller } from './Pages/Seller/Home';
 import { InboxSeller } from './Pages/Seller/Inbox';
 import { MessageSeller } from './Pages/Seller/Message';
@@ -70,7 +70,7 @@ function App() {
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
             <Route path='/seller/home' element={<HomeSeller />} />
-            <Route path='/seller/shop' element={<ShopSeller />} />
+            <Route path='/seller/Product' element={<ProductSeller />} />
             <Route path='/seller/inbox' element={<InboxSeller />} />
             <Route
               path='/seller/message/:message_id'

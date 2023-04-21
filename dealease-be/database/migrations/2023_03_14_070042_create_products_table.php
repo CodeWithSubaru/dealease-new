@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title', 50);
             $table->text('description');
-            $table->string('image', 10)->nullable();
-            $table->string('stocks_per_kg')->nullable();
-            $table->string('price_per_kg')->nullable();
+            $table->string('image', 255)->nullable();
+            $table->string('stocks_per_kg')->default(0);
+            $table->string('price_per_kg')->default(0.00);
             $table->foreignId('user_id')->unsigned();
-            $table->boolean('product_status')->nullable();
           
             $table->timestamps();
         });

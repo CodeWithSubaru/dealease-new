@@ -39,8 +39,8 @@ class ProductContoller extends Controller
             'title' => 'required', 'string', 'max:255',
             'description' => 'required', 'string', 'max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'stock' => 'required', 'numeric',
-            'amount' => 'required', 'numeric'
+            'stocks_per_kg' => 'required', 'numeric',
+            'price_per_kg' => 'required', 'numeric'
         ]);
 
         $imageName = time() . '.' . $request->image->extension();
@@ -51,8 +51,8 @@ class ProductContoller extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'image' => $imageName,
-            'stock' => $request->stock,
-            'amount' => $request->amount,
+            'stocks_per_kg' => $request->stocks_per_kg,
+            'price_per_kg' => $request->price_per_kg,
             'user_id' => $id, //for test only
         ]);
 

@@ -46,13 +46,7 @@ export const TableComponent = ({ header, body, button }) => {
           {button}
         </Col>
       </Row>
-      <Table
-        responsive
-        striped='columns'
-        bordered
-        hover
-        style={{ color: '#000' }}
-      >
+      <Table responsive style={{ color: '#000' }}>
         <TableHeader />
         <TableBody />
       </Table>

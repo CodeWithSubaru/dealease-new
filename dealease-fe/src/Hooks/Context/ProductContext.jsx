@@ -7,7 +7,7 @@ export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState({});
 
   function fetchProduct() {
-    axiosClient.get('/seller/shop').then((resp) => {
+    axiosClient.get('/seller/product').then((resp) => {
       setProducts(resp.data);
     });
   }
