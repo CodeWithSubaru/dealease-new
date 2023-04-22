@@ -54,23 +54,16 @@ const header = [
     isSortable: true,
   },
   {
-    title: 'Date Joined',
+    title: 'Date Added',
     prop: 'date_joined',
     isSortable: true,
   },
   { title: 'Action', prop: 'action' },
 ];
-// Show Create User Modal
-// const [showCreateUser, setShowCreateUser] = useState(false);
-// const showCreateUserModal = () => setShowCreateUser(true);
-// const closeCreateUserModal = () => {
-//   setShowCreateUser(false);
-//   setErrors([]);
-// };
 export const ProductSeller = () => {
   const [errors, setErrors] = useState([]);
   const [body, setBody] = useState([]);
-  const { fetchProduct, products } = useProductContext();
+  const { fetchProduct } = useProductContext();
   const { setRegistrationSuccess } = useAuthContext();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -83,6 +76,13 @@ export const ProductSeller = () => {
     image,
     stocks_per_kg,
     price_per_kg,
+  };
+  // Show Create Product Modal
+  const [showCreateProduct, setShowCreateProduct] = useState(false);
+  const showCreateProductModal = () => setShowCreateProduct(true);
+  const closeCreateProductModal = () => {
+    setShowCreateProduct(false);
+    setErrors([]);
   };
   const handlePost = (e) => {
     e.preventDefault();
@@ -100,11 +100,12 @@ export const ProductSeller = () => {
           }).then(() => {
             setTitle('');
             setDescription('');
-            setImage('');
+            setImage(e.target.files);
             setStocks('');
             setPrice('');
           });
           setProductDataTable();
+          closeCreateProductModal();
         }
       })
       .catch((e) => {
@@ -151,7 +152,7 @@ export const ProductSeller = () => {
           action: (
             <div key={i} className='button-actions'>
               <span
-                onClick={() => viewCompleteDetails(user.user_id)}
+                onClick={() => viewProductDetails(user.user_id)}
                 style={{ cursor: 'pointer' }}
               >
                 <FontAwesomeIcon icon={faEye} className='mx-2' />
@@ -186,10 +187,29 @@ export const ProductSeller = () => {
       <div className='post_container mb-5'>
         <Container className='container_item px-5'>
           <H1>PRODUCTS</H1>
+          <Modal
+            size='lg'
+            show={showCreateProduct}
+            onHide={closeCreateProductModal}
+            centered
+            keyboard
+            scrollable
+            contentClassName={'mt-0'}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Create New Product</Modal.Title>
+            </Modal.Header>
 
-          <Form onSubmit={handlePost} className='mb-5'>
-            <Row>
-              {/* <Col>
+            <Modal.Body>
+              <Form
+                id='createProductForm'
+                onSubmit={handlePost}
+                errors={errors}
+                setErrors={setErrors}
+                className='mb-5'
+              >
+                <Row>
+                  {/* <Col>
                 <div className='image-container'>
                   <img
                     src='/images/1.jpg'
@@ -198,82 +218,102 @@ export const ProductSeller = () => {
                   />
                 </div>
               </Col> */}
-              <Col>
-                <Form.Group className='mt-2'>
-                  <Form.Label className='text-black'>Product Name</Form.Label>
-                  <Form.Control
-                    type='text'
-                    className='form-control'
-                    autoComplete='none'
-                    value={title ? title : ''}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className='mt-2'>
-                  <Form.Label className='text-black'>
-                    Product Description
-                  </Form.Label>
-                  <Form.Control
-                    as='textarea'
-                    className='form-control textarea-input'
-                    aria-label='Small'
-                    aria-describedby='inputGroup-sizing-sm'
-                    placeholder="What's on your mind?"
-                    autoComplete='none'
-                    value={description ? description : ''}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className='mt-2'>
-                  <Form.Label className='text-black'>Product Image</Form.Label>
-                  <Form.Control
-                    type='file'
-                    className='form-control mb-3'
-                    autoComplete='none'
-                    // value={image ? image : ''}
-                    onChange={(e) => setImage(e.target.files[0])}
-                  />
-                </Form.Group>
-                <Row>
                   <Col>
-                    <Form.Group className=''>
+                    <Form.Group className='mt-2'>
                       <Form.Label className='text-black'>
-                        Stocks (in kg)
+                        Product Name
                       </Form.Label>
                       <Form.Control
-                        type='number'
+                        type='text'
                         className='form-control'
                         autoComplete='none'
-                        value={stocks_per_kg ? stocks_per_kg : ''}
-                        onChange={(e) => setStocks(e.target.value)}
+                        value={title ? title : ''}
+                        onChange={(e) => setTitle(e.target.value)}
                       />
                     </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group className=''>
+                    <Form.Group className='mt-2'>
                       <Form.Label className='text-black'>
-                        Price (per kg)
+                        Product Description
                       </Form.Label>
                       <Form.Control
-                        type='number'
-                        className='form-control'
+                        as='textarea'
+                        className='form-control textarea-input'
+                        aria-label='Small'
+                        aria-describedby='inputGroup-sizing-sm'
+                        placeholder="What's on your mind?"
                         autoComplete='none'
-                        value={price_per_kg ? price_per_kg : ''}
-                        onChange={(e) => setPrice(e.target.value)}
+                        value={description ? description : ''}
+                        onChange={(e) => setDescription(e.target.value)}
                       />
                     </Form.Group>
+                    <Form.Group className='mt-2'>
+                      <Form.Label className='text-black'>
+                        Product Image
+                      </Form.Label>
+                      <Form.Control
+                        type='file'
+                        className='form-control mb-3'
+                        autoComplete='none'
+                        // value={image ? image : ''}
+                        onChange={(e) => setImage(e.target.files[0])}
+                      />
+                    </Form.Group>
+                    <Form.Group className='mt-2'>
+                      <img src={image} />
+                    </Form.Group>
+
+                    <Row>
+                      <Col>
+                        <Form.Group className=''>
+                          <Form.Label className='text-black'>
+                            Stocks (in kg)
+                          </Form.Label>
+                          <Form.Control
+                            type='number'
+                            className='form-control'
+                            autoComplete='none'
+                            value={stocks_per_kg ? stocks_per_kg : ''}
+                            onChange={(e) => setStocks(e.target.value)}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group className=''>
+                          <Form.Label className='text-black'>
+                            Price (per kg)
+                          </Form.Label>
+                          <Form.Control
+                            type='number'
+                            className='form-control'
+                            autoComplete='none'
+                            value={price_per_kg ? price_per_kg : ''}
+                            onChange={(e) => setPrice(e.target.value)}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={closeCreateProductModal}>
+                Close
+              </Button>
+              <Button variant='primary' type='submit' form='createProductForm'>
+                Add
+              </Button>
+            </Modal.Footer>
+          </Modal>
 
-                <button className='w-100 btn btn-primary mt-3'>Add</button>
-              </Col>
-            </Row>
-          </Form>
-          {/* <HeroSection /> */}
           <TableComponent
             header={header}
             body={body}
-            button={<Button variant='primary'>Add Product</Button>}
+            button={
+              <Button variant='primary' onClick={showCreateProductModal}>
+                Add Product
+              </Button>
+            }
           />
         </Container>
       </div>
