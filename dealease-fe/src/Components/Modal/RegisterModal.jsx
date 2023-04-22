@@ -26,8 +26,13 @@ export function RegisterModal(props) {
       aria-labelledby='contained-modal-title-vcenter'
     >
       <div className='boxregister'>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <h1 className='text-white fw-bold'>Register</h1>
+          </Modal.Title>
+        </Modal.Header>{' '}
+        <i></i>
         <Modal.Body>
-          <i></i>
           <Container>
             <Row>
               <Register />
