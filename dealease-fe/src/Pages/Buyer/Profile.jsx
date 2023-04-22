@@ -1,4 +1,3 @@
-import useAuthContext from '../../Hooks/Context/AuthContext';
 import Table from 'react-bootstrap/Table';
 import { Footer } from '../../Components/Footer/footer';
 import React, { useState } from 'react';
@@ -8,10 +7,12 @@ import { FaUserEdit } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import PUBLIC_URL from '../../api/public_url';
 import axiosClient from '../../api/axios';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export const ProfileBuyer = () => {
   const [show, setShow] = useState(false);
   const [reportUserModal, setReportUserModal] = useState(false);
+  const { user } = useAuthContext();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

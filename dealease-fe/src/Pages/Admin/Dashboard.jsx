@@ -117,12 +117,12 @@ export function Dashboard() {
                 <p className='mb-0'>
                   {user.first_name +
                     ' ' +
-                    user.middle_name[0] +
+                    user.user_details.middle_name +
                     '.' +
                     ' ' +
-                    user.last_name +
+                    user.user_details.last_name +
                     ' ' +
-                    user.ext_name}
+                    user.user_details.ext_name}
                 </p>
                 <span className='badge rounded-pill text-bg-primary'>
                   {switchUserType(user)}

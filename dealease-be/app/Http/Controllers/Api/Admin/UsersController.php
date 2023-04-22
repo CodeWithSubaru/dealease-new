@@ -78,21 +78,21 @@ class UsersController extends Controller
             $request->file('profile_image')->move(public_path('images'), $imageName);
         }
 
-        $user = User::create([
-            'prof_img' => $imageName,
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'ext_name' => $request->ext_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_buyer' => $is_buyer,
-            'is_seller' => $is_seller,
-            'role_type' => $role_type,
-        ]);
+        $user = new User();
+        $user->prof_img = $imageName;
+        $user->first_name = $request->first_name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->is_buyer = $is_buyer;
+        $user->is_seller = $is_seller;
+        $user->role_type = $role_type;
+        $user->user_details_id = $user->user_id;
 
         if ($user) {
             $user = UserDetail::create([
+                'middle_name' => $request->middle_name,
+                'last_name' => $request->last_name,
+                'ext_name' => $request->ext_name,
                 'region' => $request->region,
                 'province' => $request->province,
                 'city' => $request->city,
@@ -100,7 +100,6 @@ class UsersController extends Controller
                 'street' => $request->street,
                 'birth_date' => $request->birth_date,
                 'contact_number' =>  $request->contact_number,
-                'user_id' => $user->user_id
             ]);
 
             return response()->json(['message' => 'User Created Successfully'], 200);
@@ -172,9 +171,6 @@ class UsersController extends Controller
         User::where('user_id', $request->user_id)->update([
             'prof_img' => $imageName,
             'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'ext_name' => $request->ext_name,
             'email' => $request->email,
             'is_buyer' => $is_buyer,
             'is_seller' => $is_seller,
@@ -182,6 +178,9 @@ class UsersController extends Controller
         ]);
 
         UserDetail::where('user_id', $request->user_id)->update([
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'ext_name' => $request->ext_name,
             'region' => $request->region,
             'province' => $request->province,
             'city' => $request->province,
