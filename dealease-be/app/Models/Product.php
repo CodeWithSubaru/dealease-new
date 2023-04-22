@@ -13,8 +13,8 @@ class Product extends Model
         'title',
         'description',
         'image',
-        'stock',
-        'amount',
+        'stocks_per_kg',
+        'price_per_kg',
         'user_id'
     ];
 
