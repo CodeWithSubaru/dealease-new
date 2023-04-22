@@ -8,6 +8,7 @@ import { Footer } from '../../Components/Footer/footer';
 import '../../assets/scss/inbox.scss';
 import axiosClient from '../../api/axios';
 import PUBLIC_PATH from '../../api/public_url';
+import { Link } from 'react-router-dom';
 
 export const InboxBuyer = () => {
   const { user } = useAuthContext();
@@ -74,24 +75,30 @@ export const InboxBuyer = () => {
             <div>
               <h3 className='p-3'>List of Users</h3>
               <div className=''>
+                {availableUsers.length === 0 && (
+                  <div className='d-flex ms-3'>Loading users... </div>
+                )}
+
                 {availableUsers.map((user) => (
                   <>
-                    <hr />
-                    <div className='d-flex ms-3'>
-                      <img
-                        src={PUBLIC_PATH + 'images/' + user.prof_img}
-                        alt={user.prof_img}
-                        className='rounded-circle h-25 w-25 me-2'
-                      />
-                      <div className='flex-grow-1 align-self-center'>
-                        <h5 className='mb-0'> {user.first_name}</h5>
-                        <p className='mb-0 badge rounded-pill text-bg-primary'>
-                          {user.is_buyer === 'Buyer'
-                            ? user.is_buyer
-                            : user.is_seller}
-                        </p>
+                    <Link to={'../message/' + user.user_id}>
+                      <hr />
+                      <div className='d-flex ms-3'>
+                        <img
+                          src={PUBLIC_PATH + 'images/' + user.prof_img}
+                          alt={user.prof_img}
+                          className='rounded-circle h-25 w-25 me-2'
+                        />
+                        <div className='flex-grow-1 align-self-center'>
+                          <h5 className='mb-0'> {user.first_name}</h5>
+                          <p className='mb-0 badge rounded-pill text-bg-primary'>
+                            {user.is_buyer === 'Buyer'
+                              ? user.is_buyer
+                              : user.is_seller}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </>
                 ))}
               </div>
