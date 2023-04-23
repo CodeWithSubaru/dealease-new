@@ -130,6 +130,7 @@ export function Register() {
         </div>
 
         <form
+          id='registerForm'
           className='form'
           onSubmit={handleRegister}
           encType='multipart/form-data'
@@ -591,14 +592,14 @@ export function Register() {
                         </button>
                       </div>
                     </Col> */}
-              <Col>
+              {/* <Col>
                 <div className='pb-3 ps-2'>
-                  <button type='submit' className='btn btn-primary btn-submit'>
+                  <button type='submit' className='btn btn-primary-register'>
                     {' '}
                     Submit{' '}
                   </button>
                 </div>
-              </Col>
+              </Col> */}
             </div>
           </Row>
 
