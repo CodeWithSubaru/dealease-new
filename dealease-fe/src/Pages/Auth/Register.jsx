@@ -72,7 +72,6 @@ export function Register() {
     // setUser({ ...user, region: e.target.selectedOptions[0].text });
     setUser({ ...user, region: 'Region III (Central Luzon)' });
     provinces(e.target.value).then((response) => {
-      console.log(response[1]);
       setProvince(response[1]);
       setCity([]);
       setBarangay([]);

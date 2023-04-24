@@ -1,6 +1,7 @@
 import Form from 'react-bootstrap/Form';
 import useAddressContext from '../../../Hooks/Context/AddressContext';
 import PUBLIC_URL from '../../../api/public_url';
+import { useEffect } from 'react';
 
 export const FormUser = ({
   submitHook,
@@ -26,9 +27,14 @@ export const FormUser = ({
     edit
       ? setUpdateUserDetails({
           ...updateUserDetails,
-          region: e.target.selectedOptions[0].text,
+          // region: e.target.selectedOptions[0].text,
+          region: 'Region III (Central Luzon)',
         })
-      : setUser({ ...user, region: e.target.selectedOptions[0].text });
+      : setUser({
+          ...user,
+          // region: e.target.selectedOptions[0].text
+          region: 'Region III (Central Luzon)',
+        });
 
     getProvince(e);
   };
@@ -37,9 +43,14 @@ export const FormUser = ({
     edit
       ? setUpdateUserDetails({
           ...updateUserDetails,
-          province: e.target.selectedOptions[0].text,
+          // province: e.target.selectedOptions[0].text,
+          province: 'Bulacan',
         })
-      : setUser({ ...user, province: e.target.selectedOptions[0].text });
+      : setUser({
+          ...user,
+          // province: e.target.selectedOptions[0].text
+          province: 'Bulacan',
+        });
     getCity(e);
   };
 
@@ -47,9 +58,10 @@ export const FormUser = ({
     edit
       ? setUpdateUserDetails({
           ...updateUserDetails,
-          city: e.target.selectedOptions[0].text,
+          // city: e.target.selectedOptions[0].text,
+          city: 'Obando',
         })
-      : setUser({ ...user, city: e.target.selectedOptions[0].text });
+      : setUser({ ...user, city: 'Obando' });
     getBarangay(e);
   };
 
@@ -72,6 +84,10 @@ export const FormUser = ({
       ? updateUserDetails.is_seller
       : updateUserDetails.is_buyer
     : 'Select User type';
+
+  useEffect(() => {
+    region();
+  }, []);
 
   return (
     <>
@@ -278,12 +294,15 @@ export const FormUser = ({
               <option value={'default'} disabled>
                 {edit ? updateUserDetails.region : 'Select Region'}
               </option>
-              {regionData &&
-                regionData.map((item) => (
-                  <option key={item.region_code} value={item.region_code}>
-                    {item.region_name}
-                  </option>
-                ))}
+              {regionData && (
+                // regionData.map((item) => (
+                <option
+                  key={regionData.region_code}
+                  value={regionData.region_code}
+                >
+                  {regionData.region_name}
+                </option>
+              )}
             </Form.Select>
             {errors && errors.region ? (
               <Form.Control.Feedback type='invalid'>
@@ -308,13 +327,16 @@ export const FormUser = ({
               <option value={'default'} disabled>
                 {edit ? updateUserDetails.region : 'Select Province'}
               </option>
-              {provinceData &&
-                provinceData.length > 0 &&
-                provinceData.map((item) => (
-                  <option key={item.province_code} value={item.province_code}>
-                    {item.province_name}
-                  </option>
-                ))}
+              {provinceData && (
+                // provinceData.length > 0 &&
+                // provinceData.map((item) => (
+                <option
+                  key={provinceData.province_code}
+                  value={provinceData.province_code}
+                >
+                  {provinceData.province_name}
+                </option>
+              )}
             </Form.Select>
             {errors && errors.province ? (
               <Form.Control.Feedback type='invalid'>
@@ -340,13 +362,13 @@ export const FormUser = ({
                 {edit ? updateUserDetails.city : 'Select City/Town'}
               </option>
 
-              {cityData &&
-                cityData.length > 0 &&
-                cityData.map((item) => (
-                  <option key={item.city_code} value={item.city_code}>
-                    {item.city_name}
-                  </option>
-                ))}
+              {cityData && (
+                // cityData.length > 0 &&
+                // cityData.map((item) => (
+                <option key={cityData.city_code} value={cityData.city_code}>
+                  {cityData.city_name}
+                </option>
+              )}
             </Form.Select>
             {errors && errors.city ? (
               <Form.Control.Feedback type='invalid'>

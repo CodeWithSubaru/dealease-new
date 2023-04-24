@@ -11,7 +11,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import { useState } from 'react';
 
 export function EmailVerification() {
-  const { user, handleLogout } = useAuthContext();
+  const { user, logout } = useAuthContext();
 
   const [message, setMessage] = useState('');
 
@@ -19,6 +19,10 @@ export function EmailVerification() {
     e.preventDefault();
     axiosClient.get('/email/resend').then((res) => setMessage(res.data.msg));
   }
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <>
