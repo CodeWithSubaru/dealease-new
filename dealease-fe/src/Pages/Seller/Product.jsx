@@ -64,7 +64,6 @@ export const ProductSeller = () => {
   const [errors, setErrors] = useState([]);
   const [body, setBody] = useState([]);
   const { fetchProduct } = useProductContext();
-  const { setRegistrationSuccess } = useAuthContext();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
@@ -117,12 +116,6 @@ export const ProductSeller = () => {
         setErrors(e.response.data.errors);
       });
   };
-
-  useEffect(() => {
-    return () => {
-      setRegistrationSuccess(false);
-    };
-  }, []);
 
   function dateFormat(date) {
     let yourDate = new Date(date);
