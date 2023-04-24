@@ -97,7 +97,9 @@ class AuthController extends Controller
                 'user_id' => $user->user_id,
             ]);
 
-            return response()->json(['message' => 'User Created Successfully', 'is_registration_done' => true], 200);
+            $user->sendEmailVerificationNotification();
+
+            return response()->json(['message' => 'User Created Successfully', 'email_verified' => false, 'email_verified_status' => "Please verifiy your email. We've sent you an email verification to your account"], 200);
         }
     }
 

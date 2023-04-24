@@ -4,15 +4,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportUserController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\Api\Auth\AuthController;
-use App\Http\Controllers\Api\Seller\ProductContoller;
 use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Api\Admin\MessageController;
+use App\Http\Controllers\Api\Seller\ProductContoller;
 use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Api\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,16 +26,20 @@ use App\Http\Controllers\Api\PaymentController;
 |
 */
 
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
-Route::get('/payment', [PaymentController::class, 'payment']);
+Route::post('/payment', [PaymentController::class, 'payment']);
+Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw']);
 Route::apiResource('/seller/product', ProductContoller::class);
 
+Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])

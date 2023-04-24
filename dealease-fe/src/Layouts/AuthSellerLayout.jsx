@@ -13,15 +13,20 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import '../assets/scss/navbar.scss';
+import { EmailVerification } from '../Pages/Auth/EmailVerification';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthSellerLayout() {
-  const { user, user_type, logout } = useAuthContext();
+  const { user, token, user_type, logout } = useAuthContext();
   const handleLogout = () => {
     logout();
   };
   const [sidebar, setSidebar] = useState(true);
   const showSidebar = () => setSidebar(!sidebar);
+
+  if (!user.email_verified_at && token) {
+    return <EmailVerification />;
+  }
 
   return (
     <>

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Models\Message;
 use App\Models\Inbox;
+use App\Models\Message;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
@@ -14,70 +14,61 @@ class MessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        // get the inbox of authenticated user
-        $inbox = Inbox::with('sender', 'recipient', 'last_message')
-            ->where('user_id', auth()->id())
-            ->orWhere('recipient_id', auth()->id())
-            ->latest()->get();
+
+        $inbox = Inbox::join('messages', 'messages.message_id', 'inboxes.last_message_id')->with('sender', 'lastMessage.receiver')
+            ->where('sender_id', auth()->id())
+            ->orWhere('messages.receiver_id', auth()->id())
+            ->get();
+
         return response()->json($inbox, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
-        $request->validate(['chat' => ['required']]);
+        $request->validate(['message' => ['required']]);
 
         $message = Message::create([
-            'chat' => $request->chat,
-            'sender' => $request->sender,
-            'receiver' => $request->receiver,
+            'message' => $request->message,
+            'receiver_id' => $request->receiver_id,
         ]);
 
-        // get last inbox
-        $inbox = Inbox::where('user_id', $request->sender)
-            ->where('recipient_id', $request->receiver);
+        $inbox = Inbox::join('messages', 'messages.message_id', 'inboxes.last_message_id')
+            ->where('sender_id', $request->sender_id)
+            ->where('messages.message_id', $message->message_id);
 
-        if (count($inbox->get(['user_id', 'recipient_id'])) > 0) {
-            $inbox->update(['message_id' => $message->message_id]);
+        if (count($inbox->get()) > 0) {
+            $inbox->update(['last_message_id' => $message->message_id]);
         } else {
-            $inbox->create([
-                'user_id' => $request->sender,
-                'message_id' => $message->message_id,
-                'recipient_id' => $message->receiver
+            Inbox::create([
+                'sender_id' => $request->sender_id,
+                'last_message_id' => $message->message_id,
             ]);
         }
 
-        return response()->json(['message' => 'sent'], 200);
+        return response()->json(['status' => 'Message Sent'], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($clicked_user): JsonResponse
+    public function show($clicked_user)
     {
-        $getMessage = Message::with(
-            'sender:user_id,first_name,middle_name,last_name,ext_name',
-            'receiver:user_id,first_name,middle_name,last_name,ext_name'
+        $getMessage = Message::join('inboxes', 'inboxes.last_message_id', 'messages.message_id')->with(
+            'sender:user_id,first_name',
+            'receiver:user_id,first_name'
         )
-            ->where('sender', auth()->id())
-            ->where('receiver', $clicked_user)
-            ->orWhere('sender', $clicked_user)
-            ->where('receiver', auth()->id())
+            ->where('inboxes.sender_id', auth()->id())
+            ->where('receiver_id', $clicked_user)
+            ->orWhere('inboxes.sender_id', $clicked_user)
+            ->where('receiver_id', auth()->id())
             ->get();
 
         return response()->json($getMessage, 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Message $message): JsonResponse
-    {
-        return response()->json();
     }
 
     /**
@@ -93,8 +84,5 @@ class MessageController extends Controller
     {
         Inbox::withTrashed()->find($id)->restore();
         return response()->json(['status' => 'Restored message successfully'], 200);
-    }
-    public function destroy(Message $message): JsonResponse
-    {
     }
 }

@@ -8,14 +8,20 @@ import '../assets/scss/button.scss';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { EmailVerification } from '../Pages/Auth/EmailVerification';
+
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthBuyerLayout() {
-  const { user, user_type, logout } = useAuthContext();
+  const { user, token, user_type, logout } = useAuthContext();
   const closeMobileMenu = () => setClick(false);
   const handleLogout = () => {
     logout();
   };
+
+  if (!user.email_verified_at && token) {
+    return <EmailVerification />;
+  }
 
   return (
     <>

@@ -64,28 +64,32 @@ export function Register() {
 
   const region = () => {
     regions().then((response) => {
-      setRegion(response);
+      setRegion(response[2]);
     });
   };
 
   const province = (e) => {
-    setUser({ ...user, region: e.target.selectedOptions[0].text });
+    // setUser({ ...user, region: e.target.selectedOptions[0].text });
+    setUser({ ...user, region: 'Region III (Central Luzon)' });
     provinces(e.target.value).then((response) => {
-      setProvince(response);
+      console.log(response[1]);
+      setProvince(response[1]);
       setCity([]);
       setBarangay([]);
     });
   };
 
   const city = (e) => {
-    setUser({ ...user, province: e.target.selectedOptions[0].text });
+    // setUser({ ...user, province: e.target.selectedOptions[0].text });
+    setUser({ ...user, province: 'Bulacan' });
     cities(e.target.value).then((response) => {
-      setCity(response);
+      setCity(response[13]);
     });
   };
 
   const barangay = (e) => {
-    setUser({ ...user, city: e.target.selectedOptions[0].text });
+    // setUser({ ...user, city: e.target.selectedOptions[0].text });
+    setUser({ ...user, city: 'Obando' });
     barangays(e.target.value).then((response) => {
       setBarangay(response);
     });
@@ -330,15 +334,15 @@ export function Register() {
                       className='form-select'
                     >
                       <option>Select Region</option>
-                      {regionData &&
-                        regionData.map((item) => (
-                          <option
-                            key={item.region_code}
-                            value={item.region_code}
-                          >
-                            {item.region_name}
-                          </option>
-                        ))}
+                      {regionData && (
+                        // regionData.map((item) => (
+                        <option
+                          key={regionData.region_code}
+                          value={regionData.region_code}
+                        >
+                          {regionData.region_name}
+                        </option>
+                      )}
                     </select>
                   </div>
                 </div>
@@ -356,16 +360,16 @@ export function Register() {
                       className='form-select'
                     >
                       <option value='default'>Select Province</option>
-                      {provinceData &&
-                        provinceData.length > 0 &&
-                        provinceData.map((item) => (
-                          <option
-                            key={item.province_code}
-                            value={item.province_code}
-                          >
-                            {item.province_name}
-                          </option>
-                        ))}
+                      {provinceData && (
+                        // provinceData.length > 0 &&
+                        // provinceData.map((item) => (
+                        <option
+                          key={provinceData.province_code}
+                          value={provinceData.province_code}
+                        >
+                          {provinceData.province_name}
+                        </option>
+                      )}
                     </select>
                   </div>
                 </div>
@@ -385,13 +389,16 @@ export function Register() {
                       className='form-select'
                     >
                       <option value='default'>Select City</option>
-                      {cityData &&
-                        cityData.length > 0 &&
-                        cityData.map((item) => (
-                          <option key={item.city_code} value={item.city_code}>
-                            {item.city_name}
-                          </option>
-                        ))}
+                      {cityData && (
+                        // cityData.length > 0 &&
+                        // cityData.map((item) => (
+                        <option
+                          key={cityData.city_code}
+                          value={cityData.city_code}
+                        >
+                          {cityData.city_name}
+                        </option>
+                      )}
                     </select>
                   </div>
                 </div>

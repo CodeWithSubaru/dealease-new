@@ -7,11 +7,11 @@ import { Card } from '../../Components/Card/Card';
 import { Footer } from '../../Components/Footer/footer';
 
 export const Home = () => {
-  const { user, setRegistrationSuccess } = useAuthContext();
+  const { user, setEmailVerified } = useAuthContext();
 
   useEffect(() => {
     return () => {
-      setRegistrationSuccess(false);
+      setEmailVerified(false);
     };
   }, []);
 

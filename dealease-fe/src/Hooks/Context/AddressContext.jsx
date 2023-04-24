@@ -1,10 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import {
-  regions,
-  provinces,
-  cities,
-  barangays,
-} from 'select-philippines-address';
+import { provinces, cities, barangays } from 'select-philippines-address';
 
 const AddressContext = createContext();
 
@@ -14,14 +9,14 @@ export const AddressProvider = ({ children }) => {
   const [cityData, setCity] = useState([]);
   const [barangayData, setBarangay] = useState([]);
 
-  const region = () => {
-    regions().then((response) => {
-      setRegion(response);
-    });
-  };
+  // const region = () => {
+  //   regions().then((response) => {
+  //     setRegion(response);
+  //   });
+  // };
 
   const getProvince = (e) => {
-    provinces(e.target.value).then((response) => {
+    provinces('03').then((response) => {
       setProvince(response);
       setCity([]);
       setBarangay([]);
@@ -40,17 +35,18 @@ export const AddressProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    region();
+    // region();
+    getProvince();
   }, []);
 
   return (
     <AddressContext.Provider
       value={{
-        regionData,
+        // regionData,
         provinceData,
         cityData,
         barangayData,
-        region,
+        // region,
         getProvince,
         getCity,
         getBarangay,

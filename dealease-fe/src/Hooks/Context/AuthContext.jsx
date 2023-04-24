@@ -14,7 +14,8 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
-  const [isRegistrationSuccess, setRegistrationSuccess] = useState(false);
+  const [isEmailVerified, setEmailVerified] = useState(false);
+  const [emailVerificationMessage, setEmailVerificationMessage] = useState('');
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [user_type, _setUserType] = useState(localStorage.getItem('USER_TYPE'));
   const [errors, setErrors] = useState([]);
@@ -68,6 +69,10 @@ export const AuthProvider = ({ children }) => {
           icon: 'success',
         }).then(() => {
           setUser(res.data.user[0]);
+          if (!user.email_verified_at) {
+            navigate('/email-verification');
+            console.log(user.email_verified_at);
+          }
           navigate(redirect);
         });
       })
@@ -117,7 +122,8 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
-        setRegistrationSuccess(res.data.is_registration_done);
+        setEmailVerified(res.data.email_verified_status);
+        setEmailVerificationMessage(res.data.email_verified_status);
         if (res.status == 200) {
           setLoading(true);
           Notification({
@@ -217,10 +223,11 @@ export const AuthProvider = ({ children }) => {
         token,
         errors,
         user_type,
-        isRegistrationSuccess,
         modalShow,
+        isEmailVerified,
+        emailVerificationMessage,
+        setEmailVerified,
         setModalShow,
-        setRegistrationSuccess,
         setErrors,
         loginBuyer,
         loginSeller,
