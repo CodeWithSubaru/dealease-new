@@ -117,9 +117,7 @@ export const FormUser = ({
           }
 
           <Form.Group class='mb-3'>
-            <Form.Label for='formFile' class='form-label'>
-              Select Profile Image
-            </Form.Label>
+            <Form.Label className='text-dark'>Select Profile Image</Form.Label>
             <Form.Control
               type='file'
               id='formFile'
@@ -145,7 +143,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className='mb-3'>
-            <Form.Label>First Name *</Form.Label>
+            <Form.Label className='text-dark'>First Name *</Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter First Name'
@@ -168,7 +166,7 @@ export const FormUser = ({
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Middle Name *</Form.Label>
+            <Form.Label className='text-dark'>Middle Name *</Form.Label>
             <Form.Control
               type='text'
               placeholder={edit ? '' : 'Enter Middle Name'}
@@ -184,7 +182,7 @@ export const FormUser = ({
             />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Last Name *</Form.Label>
+            <Form.Label className='text-dark'>Last Name *</Form.Label>
             <Form.Control
               type='text'
               placeholder={edit ? '' : 'Enter Last Name'}
@@ -206,7 +204,7 @@ export const FormUser = ({
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Extension Name</Form.Label>
+            <Form.Label className='text-dark'>Extension Name</Form.Label>
             <Form.Control
               type='text'
               placeholder={edit ? '' : 'Enter Extension Name'}
@@ -222,7 +220,7 @@ export const FormUser = ({
             />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Birthday *</Form.Label>
+            <Form.Label className='text-dark'>Birthday *</Form.Label>
             <Form.Control
               type='date'
               name='birth_date'
@@ -247,7 +245,7 @@ export const FormUser = ({
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Contact Number</Form.Label>
+            <Form.Label className='text-dark'>Contact Number</Form.Label>
             <Form.Control
               type='text'
               name='contact_number'
@@ -278,7 +276,7 @@ export const FormUser = ({
           <hr />
 
           <Form.Group className=''>
-            <Form.Label className=''>Region *</Form.Label>
+            <Form.Label className='text-dark'>Region *</Form.Label>
             <Form.Select
               onSelect={region}
               onChange={province}
@@ -312,7 +310,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className=''>
-            <Form.Label className=''>Province *</Form.Label>
+            <Form.Label className='text-dark'>Province *</Form.Label>
             <Form.Select
               onChange={city}
               value={
@@ -346,7 +344,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className=''>
-            <Form.Label className=''>City/Town *</Form.Label>
+            <Form.Label className='text-dark'>City/Town *</Form.Label>
             <Form.Select
               onChange={barangay}
               value={
@@ -378,7 +376,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className=''>
-            <Form.Label className=''>Barangay *</Form.Label>
+            <Form.Label className='text-dark'>Barangay *</Form.Label>
             <Form.Select
               value={
                 user.barangay
@@ -412,7 +410,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className='mb-3'>
-            <Form.Label>Street *</Form.Label>
+            <Form.Label className='text-dark'>Street *</Form.Label>
             <Form.Control
               type='text'
               name='street'
@@ -441,7 +439,7 @@ export const FormUser = ({
           <hr />
 
           <Form.Group className='mb-3'>
-            <Form.Label>Email *</Form.Label>
+            <Form.Label className='text-dark'>Email *</Form.Label>
             <Form.Control
               type='email'
               name='email'
@@ -467,7 +465,7 @@ export const FormUser = ({
           {edit ? null : (
             <>
               <Form.Group className='mb-3'>
-                <Form.Label>Password *</Form.Label>
+                <Form.Label className='text-dark'>Password *</Form.Label>
                 <Form.Control
                   type='password'
                   name='password'
@@ -486,7 +484,9 @@ export const FormUser = ({
               </Form.Group>
 
               <Form.Group className='mb-3'>
-                <Form.Label>Confirm Password *</Form.Label>
+                <Form.Label className='text-dark'>
+                  Confirm Password *
+                </Form.Label>
                 <Form.Control
                   type='password'
                   name='password_confirmation'
@@ -507,7 +507,7 @@ export const FormUser = ({
           )}
 
           <Form.Group className=''>
-            <Form.Label className=''>User type *</Form.Label>
+            <Form.Label className='text-dark'>User type *</Form.Label>
             <Form.Select
               value={
                 user.user_type
