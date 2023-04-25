@@ -18,7 +18,7 @@ export function AuthBuyerLayout() {
   const handleLogout = () => {
     logout();
   };
-
+  console.log(user);
   if (!user.email_verified_at && token) {
     return <EmailVerification />;
   }

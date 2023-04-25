@@ -106,8 +106,8 @@ export const FormUser = ({
                     ? typeof updateUserDetails.prof_img === 'object'
                       ? URL.createObjectURL(updateUserDetails.prof_img)
                       : PUBLIC_URL + 'images/' + updateUserDetails.prof_img
-                    : typeof user.profile_image === 'object'
-                    ? URL.createObjectURL(user.profile_image)
+                    : typeof user.prof_img === 'object'
+                    ? URL.createObjectURL(user.prof_img)
                     : PUBLIC_URL + 'images/' + 'default_profile.jpg'
                 }
                 className='rounded-circle'
@@ -116,7 +116,7 @@ export const FormUser = ({
             </div>
           }
 
-          <Form.Group class='mb-3'>
+          <Form.Group className='mb-3'>
             <Form.Label className='text-dark'>Select Profile Image</Form.Label>
             <Form.Control
               type='file'
@@ -128,14 +128,11 @@ export const FormUser = ({
                       ...updateUserDetails,
                       prof_img: e.target.files[0],
                     })
-                  : setUser({ ...user, profile_image: e.target.files[0] });
+                  : setUser({ ...user, prof_img: e.target.files[0] });
               }}
-              isInvalid={edit ? !!errors.prof_img : !!errors.profile_image}
+              isInvalid={!!errors.prof_img}
             />
             <Form.Control.Feedback type='invalid'>
-              {errors.profile_image &&
-                errors.profile_image.length > 0 &&
-                errors.profile_image[0]}
               {errors.prof_img &&
                 errors.prof_img.length > 0 &&
                 errors.prof_img[0]}
