@@ -77,13 +77,108 @@ export const ProductSeller = () => {
     stocks_per_kg,
     price_per_kg,
   };
+  const [product_id, setProductId] = useState('');
   // Show Create Product Modal
   const [showCreateProduct, setShowCreateProduct] = useState(false);
-  const showCreateProductModal = () => setShowCreateProduct(true);
+  const showCreateProductModal = () => {
+    setTitle('');
+    setDescription('');
+    setImage('');
+    setStocks('');
+    setPrice('');
+    setShowCreateProduct(true);
+  };
   const closeCreateProductModal = () => {
     setShowCreateProduct(false);
     setErrors([]);
   };
+
+  // Show Edit Product Modal
+  const [showEditProduct, setShowEditProduct] = useState(false);
+  const ShowEditProductModal = (id) => {
+    axiosClient
+    .get('/seller/product/'+id, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    .then((res) => {
+      if (res) {
+        console.log(res.data.data);
+        setTitle(res.data.data.title);
+        setDescription(res.data.data.description);
+        setImage(res.data.data.image);
+        setStocks(res.data.data.stocks_per_kg);
+        setPrice(res.data.data.price_per_kg);
+        setProductId(id)
+        setShowEditProduct(true);
+        }
+      });
+
+  };
+  const closeEditProductModal = () => {
+    setShowEditProduct(false);
+    setErrors([]);
+  };
+
+  // Soft Delete Product
+
+  const deleteProduct = (product_id) => {
+    console.log(product_id);
+    axiosClient
+      .post('product/' + product_id, data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          Notification({
+            title: 'Success',
+            message: res.data.message,
+            icon: 'success',
+          });
+          setProductDataTable();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        Notification({
+          title: 'Error',
+          message: 'Errors Found',
+          icon: 'error',
+        });
+        setErrors(e.response.data.errors);
+      });
+  };
+
+  // Submit Edit Form
+  const handlePostEdit = (e) => {
+    e.preventDefault();
+    console.log(data);
+    axiosClient
+      .post('/seller/product/' + product_id, data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          Notification({
+            title: 'Success',
+            message: res.data.message,
+            icon: 'success',
+          });
+          setProductDataTable();
+          closeEditProductModal();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        Notification({
+          title: 'Error',
+          message: 'Errors Found',
+          icon: 'error',
+        });
+        setErrors(e.response.data.errors);
+      });
+  };
+  
+  // Submit Add Product
   const handlePost = (e) => {
     e.preventDefault();
     console.log(data);
@@ -152,19 +247,19 @@ export const ProductSeller = () => {
           action: (
             <div key={i} className='button-actions'>
               <span
-                onClick={() => viewProductDetails(user.user_id)}
+                onClick={() => viewProductDetails(product.id)}
                 style={{ cursor: 'pointer' }}
               >
                 <FontAwesomeIcon icon={faEye} className='mx-2' />
               </span>
               <span
-                onClick={() => findUser(user.user_id)}
+                onClick={() => ShowEditProductModal(product.id)}
                 style={{ cursor: 'pointer' }}
               >
                 <FontAwesomeIcon icon={faEdit} className='mx-2' />
               </span>
               <span
-                onClick={() => deleteUser(user.user_id)}
+                onClick={() => deleteProduct(product.id)}
                 style={{ cursor: 'pointer' }}
               >
                 <FontAwesomeIcon icon={faTrash} className='mx-2' />
@@ -254,7 +349,7 @@ export const ProductSeller = () => {
                         type='file'
                         className='form-control mb-3'
                         autoComplete='none'
-                        // value={image ? image : ''}
+                        value={image ? image : ''}
                         onChange={(e) => setImage(e.target.files[0])}
                       />
                     </Form.Group>
@@ -302,6 +397,132 @@ export const ProductSeller = () => {
               </Button>
               <Button variant='primary' type='submit' form='createProductForm'>
                 Add
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          {/* edit Modal */}
+          <Modal
+            size='lg'
+            show={showEditProduct}
+            onHide={closeEditProductModal}
+            centered
+            keyboard
+            scrollable
+            contentClassName={'mt-0'}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Product</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <Form
+                id='editProductForm'
+                onSubmit={handlePostEdit}
+                errors={errors}
+                setErrors={setErrors}
+                className='mb-5'
+              >
+                <Row>
+                  {/* <Col>
+                <div className='image-container'>
+                  <img
+                    src='/images/1.jpg'
+                    alt=''
+                    className='imagepost float-end mb-4'
+                  />
+                </div>
+              </Col> */}
+                  <Col>
+                    <Form.Group className='mt-2'>
+                      <Form.Label className='text-black'>
+                        Product Name
+                      </Form.Label>
+                      <Form.Control
+                        type='text'
+                        className='form-control'
+                        autoComplete='none'
+                        value={title ? title : ''}
+                        onChange={(e) => setTitle(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className='mt-2'>
+                      <Form.Label className='text-black'>
+                        Product Description
+                      </Form.Label>
+                      <Form.Control
+                        as='textarea'
+                        className='form-control textarea-input'
+                        aria-label='Small'
+                        aria-describedby='inputGroup-sizing-sm'
+                        placeholder="What's on your mind?"
+                        autoComplete='none'
+                        value={description ? description : ''}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className='mt-2'>
+                      <Form.Label className='text-black'>
+                        Product Image
+                      </Form.Label>
+                      <Form.Control
+                        type='file'
+                        className='form-control mb-3'
+                        autoComplete='none'
+                        // value={image ? image : ''}
+                        onChange={(e) => setImage(e.target.files[0])}
+                      />
+                    </Form.Group>
+                    <Form.Group className='mt-2'>
+                      <img src={image} />
+                    </Form.Group>
+
+                    <Row>
+                      <Col>
+                        <Form.Group className=''>
+                          <Form.Label className='text-black'>
+                            Stocks (in kg)
+                          </Form.Label>
+                          <Form.Control
+                            type='number'
+                            className='form-control'
+                            autoComplete='none'
+                            value={stocks_per_kg ? stocks_per_kg : ''}
+                            onChange={(e) => setStocks(e.target.value)}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group className=''>
+                          <Form.Label className='text-black'>
+                            Price (per kg)
+                          </Form.Label>
+                          <Form.Control
+                            type='number'
+                            className='form-control'
+                            autoComplete='none'
+                            value={price_per_kg ? price_per_kg : ''}
+                            onChange={(e) => setPrice(e.target.value)}
+                          />
+                          <Form.Control
+                            type='hidden'
+                            className='form-control'
+                            value={product_id ? product_id : ''}
+                            onChange={(e) => setProductId(e.target.value)}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={closeEditProductModal}>
+                Close
+              </Button>
+              <Button variant='primary' type='submit' form='editProductForm'>
+                Update
               </Button>
             </Modal.Footer>
           </Modal>
