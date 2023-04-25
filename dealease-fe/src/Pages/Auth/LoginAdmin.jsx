@@ -64,16 +64,20 @@ export const LoginAdmin = () => {
         keyboard
         aria-labelledby='contained-modal-title-vcenter'
       >
-        <div className='box'>
+        <div className='box text-light'>
           <Modal.Body>
             <i></i>
             {/*  */}
             <div className='Auth-form-container'>
-              <form onSubmit={handleLogin} className='Auth-form'>
+              <form
+                onSubmit={handleLogin}
+                className='Auth-form'
+                style={{ zIndex: '9999' }}
+              >
                 <div className='Auth-form-content'>
-                  <H1 className='Auth-form-title'>Login Admin</H1>
+                  <H1 className='Auth-form-title text-white'>Login Admin</H1>
                   <div className='mt-4'>
-                    <div>Email</div>
+                    <div style={{ color: '#fff', opacity: '1' }}>Email</div>
                     <div>
                       <div className='login-wrapper'>
                         <FontAwesomeIcon

@@ -35,7 +35,7 @@ Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic'])
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 
 Route::post('/payment', [PaymentController::class, 'payment']);
-Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
+Route::post('/request-withdrawal', [PaymentController::class, 'withdraw'])
     ->middleware('throttle:5,1');
 
 

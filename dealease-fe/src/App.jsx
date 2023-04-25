@@ -13,6 +13,7 @@ import { InboxBuyer } from './Pages/Buyer/Inbox';
 import { MessageBuyer } from './Pages/Buyer/Message';
 import { ProfileBuyer } from './Pages/Buyer/Profile';
 import { DonationBuyer } from './Pages/Buyer/Donation';
+import { WithdrawBuyer } from './Pages/Buyer/Withdraw';
 
 // Seller Components
 import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
@@ -70,6 +71,7 @@ function App() {
             <Route path='/donation' element={<DonationBuyer />} />
             <Route path='/transactions' element={<TransactionsBuyer />} />
             <Route path='/add-to-cart' element={<AddToCart />} />
+            <Route path='/withdraw' element={<WithdrawBuyer />} />
           </Route>
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
