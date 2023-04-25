@@ -38,8 +38,14 @@ export function AuthBuyerLayout() {
           </Link>
         </li>
         <li className='nav-item'>
-          <Link to='/donation' className='nav-links'>
-            Donasyon
+          <Link to='/add-to-cart' className='nav-links'>
+            Cart{' '}
+            <span
+              className='badge rounded-pill text-bg-danger position-relative'
+              style={{ top: '-5px' }}
+            >
+              10
+            </span>
           </Link>
         </li>
         <li className='nav-item'>

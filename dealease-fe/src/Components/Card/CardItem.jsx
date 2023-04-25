@@ -8,10 +8,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Edit } from '../Modal/Editmodal';
 import { MydModalWithGrid } from '../Modal/Signupmoda';
+import axiosClient from '../../api/axios';
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+
 export function CardItem(props) {
+  const { token } = useAuthContext();
   const [editModalshow, setEditmodalShow] = useState(false);
   const [signinModal, setSigninModal] = useState(false);
   const userType = localStorage.getItem('USER_TYPE');
+  const { setMsgStatus, setStatus } = useAddToCartContext();
+
+  function addToCart(id) {
+    axiosClient
+      .post('/orders', { id })
+      .then((res) => {
+        console.log(res.data);
+        setMsgStatus(res.data.status);
+        setStatus(true);
+      })
+      .catch((e) => {
+        setMsgStatus(e.response.data.status);
+        setStatus(false);
+      });
+  }
 
   return (
     <>
@@ -56,8 +75,10 @@ export function CardItem(props) {
                   onHide={() => setSigninModal(false)}
                 />
                 <button
-                  className='btn make-deal'
-                  onClick={() => setSigninModal(true)}
+                  className='btn make-deal rounded'
+                  onClick={() =>
+                    !token ? setSigninModal(true) : addToCart(props.id)
+                  }
                 >
                   {props.button}
                 </button>
