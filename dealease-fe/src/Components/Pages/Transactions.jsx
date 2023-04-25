@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { TableComponent } from '../Components/Table/Table';
-import { Footer } from '../Components/Footer/Footer';
+import { TableComponent } from '../Table/Table';
+import { Footer } from '../Footer/Footer';
 import Card from 'react-bootstrap/Card';
-import axiosClient from '../api/axios';
+import axiosClient from '../../api/axios';
 
 export function Transactions(props) {
   return (

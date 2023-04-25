@@ -1,5 +1,5 @@
 import axiosClient from '../../api/axios';
-import { Transactions } from '../Transactions';
+import { Transactions } from '../../Components/Pages/Transactions';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
