@@ -87,7 +87,7 @@ export function TransactionsAdmin() {
   }
 
   function setBuyerTransactionsDataTable() {
-    axiosClient.get('/transactions').then((resp) => {
+    axiosClient.get('/admin/transactions').then((resp) => {
       const transactions = resp.data.map((transaction, i) => {
         return {
           payment_number: i + 1,

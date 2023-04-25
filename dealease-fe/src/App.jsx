@@ -34,6 +34,7 @@ import { MessageAdmin } from './Pages/Admin/Message';
 import { ProfileAdmin } from './Pages/Admin/Profile';
 import { Users } from './Pages/Admin/Users';
 import { AnnouncementAdmin } from './Pages/Admin/Announcement';
+import { TransactionsAdmin } from './Pages/Admin/Transactions';
 
 // solla
 import { Mainpage } from './Pages';
@@ -93,7 +94,7 @@ function App() {
           <Route element={<AuthAdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<Users />} />
-            {/* <Route path='/admin/transactions' element={<Transactions />} /> */}
+            <Route path='/admin/transactions' element={<TransactionsAdmin />} />
             <Route path='/admin/inbox' element={<InboxAdmin />} />
             <Route
               path='/admin/message/:message_id'
