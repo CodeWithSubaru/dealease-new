@@ -15,7 +15,7 @@ use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-
+use App\Http\Controllers\Api\Admin\AdminPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,5 +78,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
     Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
     Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
-    Route::apiResource('/admin/transactions', TransactionsController::class);
+    Route::apiResource('/admin/transactions', AdminPaymentController::class);
 });

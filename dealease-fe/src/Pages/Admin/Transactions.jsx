@@ -2,9 +2,16 @@ import axiosClient from '../../api/axios';
 import { Transactions } from '../../Components/Pages/Transactions';
 import { useState, useEffect } from 'react';
 import PUBLIC_URL from '../../api/public_url';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'react-bootstrap';
 
 export function TransactionsAdmin() {
   const [body, setBody] = useState([]);
+
+  function accept() {}
+  function decline() {}
 
   const header = [
     {
@@ -37,12 +44,13 @@ export function TransactionsAdmin() {
       prop: 'created_at',
       isSortable: true,
     },
-    // { title: 'Action', prop: 'action' },
+    { title: 'Action', prop: 'action' },
   ];
 
   function dateFormat(date) {
     const convertedDate = new Date(date);
     const options = {
+      weekday: 'short',
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -88,6 +96,7 @@ export function TransactionsAdmin() {
 
   function setBuyerTransactionsDataTable() {
     axiosClient.get('/admin/transactions').then((resp) => {
+      console.log(resp);
       const transactions = resp.data.map((transaction, i) => {
         return {
           payment_number: i + 1,
@@ -125,26 +134,26 @@ export function TransactionsAdmin() {
           payment_description: transaction.payment_description,
           payment_total_amount: 'Php ' + transaction.payment_total_amount,
           created_at: dateFormat(transaction.created_at),
-          // action: (
-          //   <div key={i} className='button-actions text-light d-flex'>
-          //     <Button
-          //       variant='primary'
-          //       onClick={() => viewCompleteDetails(user.user_id)}
-          //       style={{ cursor: 'pointer' }}
-          //       className='p-2 me-2 rounded'
-          //     >
-          //       <FontAwesomeIcon icon={faCheck} className='mx-2' />
-          //     </Button>
-          //     <Button
-          //       variant='danger'
-          //       onClick={() => findUser(user.user_id)}
-          //       style={{ cursor: 'pointer' }}
-          //       className='p-2 2 rounded'
-          //     >
-          //       <FontAwesomeIcon icon={faClose} className='mx-2' />
-          //     </Button>
-          //   </div>
-          // ),
+          action: (
+            <div key={i} className='button-actions text-light d-flex'>
+              <Button
+                variant='primary'
+                onClick={() => accept(user.user_id)}
+                style={{ cursor: 'pointer' }}
+                className='p-2 me-2 rounded'
+              >
+                <FontAwesomeIcon icon={faCheck} className='mx-2' />
+              </Button>
+              <Button
+                variant='danger'
+                onClick={() => decline(user.user_id)}
+                style={{ cursor: 'pointer' }}
+                className='p-2 2 rounded'
+              >
+                <FontAwesomeIcon icon={faClose} className='mx-2' />
+              </Button>
+            </div>
+          ),
         };
       });
 
@@ -155,8 +164,6 @@ export function TransactionsAdmin() {
   useEffect(() => {
     setBuyerTransactionsDataTable();
   }, [body.id]);
-
-  console.log(body);
 
   return (
     <>
