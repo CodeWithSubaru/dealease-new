@@ -2,7 +2,6 @@ import { Card } from 'react-bootstrap';
 import { Footer } from '../../Components/Footer/Footer';
 import Button from 'react-bootstrap/Button';
 import { H1, H3 } from '../../Components/Helpers/index.style';
-import { Modal } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import PUBLIC_URL from '../../api/public_url';
@@ -11,9 +10,17 @@ import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 export function AddToCart() {
-  const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
+  const [count, setCount] = useState(0);
   const { fetchCountInItemsCart } = useAddToCartContext();
+
+  function decrement() {
+    return count <= 0 ? 0 : setCount(count - 1);
+  }
+
+  function increment() {
+    setCount(count + 1);
+  }
 
   function fetchOrders() {
     axiosClient
@@ -31,9 +38,6 @@ export function AddToCart() {
       fetchCountInItemsCart();
     });
   }
-
-  function handleClose() {}
-  function handleSubmit() {}
 
   useEffect(() => {
     fetchOrders();
@@ -78,15 +82,39 @@ export function AddToCart() {
                               <p>Sub Total {item.total_price}</p>
                             </div>
                             <div className='flex-shrink-0 align-self-end'>
-                              <Button
-                                variant='danger'
-                                className='me-2'
-                                onClick={() =>
-                                  removeFromCart(item.order_number)
-                                }
-                              >
-                                Remove
-                              </Button>
+                              <div className='d-flex align-items-end'>
+                                <Button
+                                  variant='primary'
+                                  className='w-25 py-2 px-0 me-2'
+                                  onClick={decrement}
+                                >
+                                  -
+                                </Button>
+                                <input
+                                  type='text'
+                                  className='w-25 py-1 text-center'
+                                  min='0'
+                                  value={count}
+                                  disabled
+                                />
+                                <Button
+                                  variant='primary'
+                                  className='w-25 py-2 px-0 ms-2 me-3'
+                                  onClick={increment}
+                                >
+                                  +
+                                </Button>
+
+                                <Button
+                                  variant='danger'
+                                  className='me-2'
+                                  onClick={() =>
+                                    removeFromCart(item.order_number)
+                                  }
+                                >
+                                  Remove
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </Card>
