@@ -11,6 +11,8 @@ import '../../assets/scss/button.scss';
 import axiosClient from '../../api/axios';
 import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import { Notification } from '../../Components/Notification/Notification';
+import { useNavigate } from 'react-router-dom';
 
 export function Card() {
   const { user, token } = useAuthContext();
@@ -19,6 +21,7 @@ export function Card() {
   // Widthdraw from shell into money
   const [shellToConvert, setShellToConvert] = useState(0);
   const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPublicProducts();
@@ -78,8 +81,25 @@ export function Card() {
                 })
                 .then((res) => {
                   console.log(res);
+                  if (res.status === 200) {
+                    Notification({
+                      title: 'Success',
+                      message: res.data.status,
+                      icon: 'success',
+                    }).then(() => {
+                      setShellToConvert('');
+                      setErrors([]);
+                      navigate('/transactions');
+                    });
+                  }
                 })
-                .catch((e) => setErrors(e.response.data.message));
+                .catch((e) => {
+                  Notification({
+                    title: 'Error',
+                    message: 'Something went wrong',
+                    icon: 'error',
+                  }).then(() => setErrors(e.response.data.message));
+                });
             }}
           >
             <h1>Request for Widthdrawal</h1>
@@ -94,7 +114,7 @@ export function Card() {
                 isInvalid={
                   shellToConvert >
                     Number(user.buyer_wallet?.shell_coin_amount) ||
-                  errors.length > 0
+                  !!errors.length > 0
                 }
               />
               <Form.Control.Feedback type='invalid'>

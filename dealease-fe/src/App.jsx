@@ -45,6 +45,7 @@ import { UpdateAccess } from './Pages/Auth/UpdateAccess';
 import { ForgotPassword } from './Pages/Auth/ForgotPassword';
 import { PasswordReset } from './Pages/Auth/PassworReset';
 import useAuthContext from './Hooks/Context/AuthContext';
+import { TransactionsBuyer } from './Pages/Buyer/Transactions';
 
 function App() {
   const { loading } = useAuthContext();
@@ -66,6 +67,7 @@ function App() {
             <Route path='/profile' element={<ProfileBuyer />} />
             <Route path='/change-password' element={<ChangePasswordBuyer />} />
             <Route path='/donation' element={<DonationBuyer />} />
+            <Route path='/transactions' element={<TransactionsBuyer />} />
           </Route>
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
@@ -87,6 +89,7 @@ function App() {
           <Route element={<AuthAdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<Users />} />
+            {/* <Route path='/admin/transactions' element={<Transactions />} /> */}
             <Route path='/admin/inbox' element={<InboxAdmin />} />
             <Route
               path='/admin/message/:message_id'

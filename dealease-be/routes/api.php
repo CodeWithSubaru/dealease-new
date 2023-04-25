@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,12 +33,16 @@ Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 Route::post('/payment', [PaymentController::class, 'payment']);
-Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw']);
+Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
+    ->middleware('throttle:5,1');
 Route::apiResource('/seller/product', ProductContoller::class);
 
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    // Buyer
+    Route::apiResource('/transactions', PaymentController::class);
 
     Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
@@ -65,4 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
     Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
     Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
+
+    // Admin: Transactions
+    Route::apiResource('/admin/transactions', TransactionsController::class);
 });

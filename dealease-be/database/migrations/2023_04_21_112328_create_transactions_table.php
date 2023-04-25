@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+            $table->id('trans_id');
+            $table->char('trans_status', 1);
+            $table->string('order_number', 255);
+            $table->decimal('total_amount', 8, 2);
             $table->timestamps();
         });
     }

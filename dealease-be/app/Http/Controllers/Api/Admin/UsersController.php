@@ -35,7 +35,7 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'profile_image' => ['image'],
+            'prof_img' => ['image'],
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
             'region' => ['required'],
@@ -71,11 +71,11 @@ class UsersController extends Controller
 
         $imageName = 'default_profile.jpg';
 
-        if ($request->has('profile_image')) {
+        if ($request->has('prof_img')) {
             // uploading image
-            $imageName = time() . '.' . $request->file('profile_image')->getClientOriginalExtension();
+            $imageName = time() . '.' . $request->file('prof_img')->getClientOriginalExtension();
 
-            $request->file('profile_image')->move(public_path('images'), $imageName);
+            $request->file('prof_img')->move(public_path('images'), $imageName);
         }
 
         $user = new User();
