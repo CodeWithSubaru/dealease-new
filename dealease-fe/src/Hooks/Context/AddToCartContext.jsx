@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react';
 import { useEffect } from 'react';
 import axiosClient from '../../api/axios';
 
-const AddToCartContext = createContext();
+export const AddToCartContext = createContext('default');
 
 export const AddToCartProvider = ({ children }) => {
   const [msgStatus, setMsgStatus] = useState('');
