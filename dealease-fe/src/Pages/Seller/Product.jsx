@@ -23,7 +23,10 @@ import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
 import '../../assets/scss/post-section.scss';
 import axiosClient from '../../api/axios';
-import { Notification } from '../../Components/Notification/Notification';
+import {
+  Notification,
+  Delete,
+} from '../../Components/Notification/Notification';
 import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
@@ -96,22 +99,21 @@ export const ProductSeller = () => {
   const [showEditProduct, setShowEditProduct] = useState(false);
   const ShowEditProductModal = (id) => {
     axiosClient
-    .get('/seller/product/'+id, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    .then((res) => {
-      if (res) {
-        console.log(res.data.data);
-        setTitle(res.data.data.title);
-        setDescription(res.data.data.description);
-        setImage(res.data.data.image);
-        setStocks(res.data.data.stocks_per_kg);
-        setPrice(res.data.data.price_per_kg);
-        setProductId(id)
-        setShowEditProduct(true);
+      .get('/seller/product/' + id, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => {
+        if (res) {
+          console.log(res.data.data);
+          setTitle(res.data.data.title);
+          setDescription(res.data.data.description);
+          setImage(res.data.data.image);
+          setStocks(res.data.data.stocks_per_kg);
+          setPrice(res.data.data.price_per_kg);
+          setProductId(id);
+          setShowEditProduct(true);
         }
       });
-
   };
   const closeEditProductModal = () => {
     setShowEditProduct(false);
@@ -128,11 +130,7 @@ export const ProductSeller = () => {
       })
       .then((res) => {
         if (res.status == 200) {
-          Notification({
-            title: 'Success',
-            message: res.data.message,
-            icon: 'success',
-          });
+          Delete();
           setProductDataTable();
         }
       })
@@ -176,7 +174,7 @@ export const ProductSeller = () => {
         setErrors(e.response.data.errors);
       });
   };
-  
+
   // Submit Add Product
   const handlePost = (e) => {
     e.preventDefault();
@@ -342,7 +340,6 @@ export const ProductSeller = () => {
                         type='file'
                         className='form-control mb-3'
                         autoComplete='none'
-                        value={image ? image : ''}
                         onChange={(e) => setImage(e.target.files[0])}
                       />
                     </Form.Group>

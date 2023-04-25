@@ -35,7 +35,7 @@ export const TableComponent = ({ header, body, button }) => {
           lg={4}
           className='d-flex flex-col justify-content-end align-items-end mb-2'
         >
-          <Filter />
+          <Filter placeholder='Search...'></Filter>
         </Col>
         <Col
           xs={12}
