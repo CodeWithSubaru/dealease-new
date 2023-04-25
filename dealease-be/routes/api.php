@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Admin\MessageController;
 use App\Http\Controllers\Api\Seller\ProductContoller;
 use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 
@@ -49,6 +50,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Buyer
     Route::apiResource('/transactions', PaymentController::class);
+    Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
+    Route::apiResource('/orders', OrderController::class);
 
     Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);

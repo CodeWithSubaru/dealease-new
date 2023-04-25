@@ -13,6 +13,7 @@ import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Notification } from '../../Components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 export function Card() {
   const { user, token } = useAuthContext();
@@ -21,6 +22,7 @@ export function Card() {
   // Widthdraw from shell into money
   const [shellToConvert, setShellToConvert] = useState(0);
   const [errors, setErrors] = useState([]);
+  const { msgStatus, status } = useAddToCartContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,6 +49,20 @@ export function Card() {
             </Col>
           </Row>
         </Container>
+
+        {msgStatus && (
+          <div
+            className={
+              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-absolute ' +
+              (status ? 'alert-primary' : 'alert-danger')
+            }
+            style={{ top: '100px' }}
+            role='alert'
+          >
+            {msgStatus}
+          </div>
+        )}
+
         <div className='cards_wrapper'>
           {/* Card for Seller */}
           <Row className='mx-2'>
@@ -56,10 +72,11 @@ export function Card() {
                     <Col className='mb-4 card-card'>
                       <CardItem
                         key={data}
+                        id={product.id}
                         src={'http://localhost:8000/images/' + product.image}
                         text={product.description}
                         label='Sold'
-                        button='Make a Deal'
+                        button='Add to cart'
                         editbutton='Edit'
                         delbutton='Delete'
                         path='/services'
@@ -80,7 +97,6 @@ export function Card() {
                   shell_coin_amount: shellToConvert,
                 })
                 .then((res) => {
-                  console.log(res);
                   if (res.status === 200) {
                     Notification({
                       title: 'Success',

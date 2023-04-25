@@ -46,6 +46,7 @@ import { ForgotPassword } from './Pages/Auth/ForgotPassword';
 import { PasswordReset } from './Pages/Auth/PassworReset';
 import useAuthContext from './Hooks/Context/AuthContext';
 import { TransactionsBuyer } from './Pages/Buyer/Transactions';
+import { AddToCart } from './Pages/Buyer/AddToCart';
 
 function App() {
   const { loading } = useAuthContext();
@@ -68,6 +69,7 @@ function App() {
             <Route path='/change-password' element={<ChangePasswordBuyer />} />
             <Route path='/donation' element={<DonationBuyer />} />
             <Route path='/transactions' element={<TransactionsBuyer />} />
+            <Route path='/add-to-cart' element={<AddToCart />} />
           </Route>
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
