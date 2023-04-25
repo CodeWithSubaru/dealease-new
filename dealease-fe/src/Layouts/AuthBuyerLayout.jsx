@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import useAuthContext from '../Hooks/Context/AuthContext';
@@ -9,11 +9,14 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { EmailVerification } from '../Pages/Auth/EmailVerification';
+import useAddToCartContext from '../Hooks/Context/AddToCartContext';
 
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthBuyerLayout() {
   const { user, token, user_type, logout } = useAuthContext();
+  const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
+
   const closeMobileMenu = () => setClick(false);
   const handleLogout = () => {
     logout();
@@ -22,6 +25,10 @@ export function AuthBuyerLayout() {
   if (!user.email_verified_at && token) {
     return <EmailVerification />;
   }
+
+  useEffect(() => {
+    fetchCountInItemsCart();
+  }, []);
 
   return (
     <>
@@ -44,7 +51,7 @@ export function AuthBuyerLayout() {
               className='badge rounded-pill text-bg-danger position-relative'
               style={{ top: '-5px' }}
             >
-              10
+              {countItemsInCart}
             </span>
           </Link>
         </li>

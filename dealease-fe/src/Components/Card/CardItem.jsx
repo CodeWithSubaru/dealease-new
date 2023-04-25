@@ -16,7 +16,8 @@ export function CardItem(props) {
   const [editModalshow, setEditmodalShow] = useState(false);
   const [signinModal, setSigninModal] = useState(false);
   const userType = localStorage.getItem('USER_TYPE');
-  const { setMsgStatus, setStatus } = useAddToCartContext();
+  const { setMsgStatus, setStatus, fetchCountInItemsCart } =
+    useAddToCartContext();
 
   function addToCart(id) {
     axiosClient
@@ -25,6 +26,7 @@ export function CardItem(props) {
         console.log(res.data);
         setMsgStatus(res.data.status);
         setStatus(true);
+        fetchCountInItemsCart();
       })
       .catch((e) => {
         setMsgStatus(e.response.data.status);

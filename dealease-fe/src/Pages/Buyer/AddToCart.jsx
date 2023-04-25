@@ -8,10 +8,12 @@ import Form from 'react-bootstrap/Form';
 import PUBLIC_URL from '../../api/public_url';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axios';
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 export function AddToCart() {
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
+  const { fetchCountInItemsCart } = useAddToCartContext();
 
   function fetchOrders() {
     axiosClient
@@ -24,8 +26,12 @@ export function AddToCart() {
   }
 
   function removeFromCart(id) {
-    axiosClient.delete('/orders/' + id).then((res) => fetchOrders());
+    axiosClient.delete('/orders/' + id).then((res) => {
+      fetchOrders();
+      fetchCountInItemsCart();
+    });
   }
+
   function handleClose() {}
   function handleSubmit() {}
 

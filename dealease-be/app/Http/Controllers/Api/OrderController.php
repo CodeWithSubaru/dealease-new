@@ -5,10 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
+
+    public function fetchCountOfOrders()
+    {
+        $countAddedToCart = $this->index()->count();
+        return $countAddedToCart;
+    }
+
     /**
      * Display a listing of the resource.
      */
