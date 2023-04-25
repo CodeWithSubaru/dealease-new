@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('stocks_per_kg')->default(0);
             $table->string('price_per_kg')->default(0.00);
             $table->foreignId('user_id')->unsigned();
-          
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -68,7 +68,8 @@ class ProductContoller extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::find($id);
+        return response()->json(['data' => $product], 200);
     }
 
     /**
@@ -76,7 +77,31 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required', 'string', 'max:255',
+            'description' => 'required', 'string', 'max:255',
+            'stocks_per_kg' => 'required', 'numeric',
+            'price_per_kg' => 'required', 'numeric'
+        ]);
+
+        $imageName = Product::find($request->id)->image;
+
+        if ($request->has('image') && $request->image !== $imageName) {
+            // uploading image
+            $imageName = time() . '.' . $request->image->extension();
+
+            $request->image->move(public_path('images'), $imageName);
+        }
+
+        Product::where('id', $id)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $imageName,
+            'stocks_per_kg' => $request->stocks_per_kg,
+            'price_per_kg' => $request->price_per_kg,
+        ]);
+
+        return response()->json(['message' => 'Updated Successfully'], 200);
     }
 
     /**
@@ -84,6 +109,8 @@ class ProductContoller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id)->delete();
+        return response()->json(['message' => 'Deleted Successfully'], 200);
+
     }
 }
