@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const logoutTimerIdRef = useRef(null);
   const [modalShow, setModalShow] = useState(false);
+  const [isLogin, setLoginDisabled] = useState(false);
 
   const csrf = () => axiosClient.get('../sanctum/csrf-cookie');
 
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }) => {
   // Login Methods for each user
   const login = ({ ...data }, redirect, loginAs) => {
     csrf();
+    setLoginDisabled(true);
     axiosClient
       .post('/login', data)
       .then((res) => {
@@ -72,8 +74,10 @@ export const AuthProvider = ({ children }) => {
           setUser(res.data.user[0]);
           navigate(redirect);
         });
+        setLoginDisabled(false);
       })
       .catch((e) => {
+        setLoginDisabled(false);
         Notification({
           title: 'Error',
           message: 'Something went wrong',
@@ -215,6 +219,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        isLogin,
         csrf,
         loading,
         user,

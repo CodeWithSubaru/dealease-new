@@ -7,6 +7,7 @@ import { Footer } from '../../Components/Footer/Footer';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
+
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 
@@ -37,8 +38,13 @@ export const Home = () => {
               },
             }}
           >
-            <MenuItem component={<Link to='/' />}>
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' /> Home
+            <MenuItem
+              className='text-black fw-bold'
+              // icon={<FaHouse />}
+              component={<Link to='/' />}
+            >
+              {/* <FontAwesomeIcon icon={faHouse} className='navs-icon' />  */}
+              Home
             </MenuItem>
             <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
             <MenuItem> E-commerce</MenuItem>
@@ -46,7 +52,9 @@ export const Home = () => {
         </Sidebar>
         <main className='w-100'>
           <button onClick={() => collapseSidebar()}>Collapse</button>
-          <button className='btn btn-dark'>Recharge</button>
+          <button className='btn btn-dark' to={'/recharge'}>
+            Recharge
+          </button>
           <Card />
         </main>
         <Footer />

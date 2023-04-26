@@ -104,13 +104,14 @@ export function TransactionsBuyer() {
               <div>
                 <p className='mb-0'>
                   {
-                    transaction.user.first_name +
-                      ' ' +
-                      // transaction.user.user_details.middle_name +
-                      // '.' +
-                      ' ' +
-                      // transaction.user_details.last_name +
-                      ' '
+                    transaction.user.first_name
+                    // +
+                    //   ' ' +
+                    // transaction.user.user_details.middle_name +
+                    // '.' +
+                    // ' ' +
+                    // transaction.user_details.last_name +
+                    // ' '
                     // transaction.user_details.ext_name
                   }
                 </p>
