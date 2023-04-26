@@ -99,7 +99,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        return PaymentTransaction::with('user')->where('user_id', auth()->id())->latest()->get();
+        return PaymentTransaction::with('user', 'user.user_details')->where('user_id', auth()->id())->latest()->get();
     }
 
     /**
@@ -124,9 +124,15 @@ class PaymentController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function accept()
+    public function accept($id)
     {
-        // update
+        // update status
+
+        PaymentTransaction::find($id)->update([
+            'status' => 2,
+        ]);
+
+        return response()->json(['status' => 'Accepted Successfully'], 200);
     }
 
     public function cancel()

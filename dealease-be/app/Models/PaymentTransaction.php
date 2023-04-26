@@ -17,4 +17,9 @@ class PaymentTransaction extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
+
+    public function user_details()
+    {
+        return  $this->belongsTo(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
+    }
 }
