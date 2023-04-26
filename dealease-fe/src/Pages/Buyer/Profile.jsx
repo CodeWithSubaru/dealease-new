@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Modal, Form, Row, Col, Container } from 'react-bootstrap';

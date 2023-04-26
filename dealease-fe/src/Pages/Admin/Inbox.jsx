@@ -4,7 +4,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Button, Row, Col, Container, Badge, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 import '../../assets/scss/inbox.scss';
 
 export const InboxAdmin = () => {

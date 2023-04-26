@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { H1 } from '../../Components/Helpers/index.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 
 export function DonationSeller() {
   return (

@@ -1,11 +1,14 @@
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import axiosClient from '../../api/axios';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRightArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { Notification } from '../../Components/Notification/Notification';
 
 export function Recharge() {
+  const [errors, setErrors] = useState([]);
   const [amountToShell, setAmountToShell] = useState(0);
   const data = {
     amountToShell,
@@ -15,14 +18,13 @@ export function Recharge() {
     e.preventDefault();
     console.log(data);
     axiosClient
-      .post('/seller/product', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
+      .post('/recharge', data)
       .then((res) => {
+        console.log(res);
         if (res.status == 200) {
           Notification({
             title: 'Success',
-            message: res.data.message,
+            message: 'cute mo po',
             icon: 'success',
           }).then(() => {
             setAmountToShell('');

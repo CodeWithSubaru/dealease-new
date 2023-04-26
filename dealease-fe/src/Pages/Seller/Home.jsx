@@ -17,7 +17,7 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 import PUBLIC_URL from '../../api/public_url';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';

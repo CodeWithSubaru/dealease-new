@@ -3,7 +3,7 @@ import '../../src/assets/scss/global.scss';
 import HeroSection from '../Components/Section/HeroSection';
 import { Card } from '../Components/Card/Card';
 import { Announcement } from './Announcement';
-import { Footer } from '../Components/Footer/footer';
+import { Footer } from '../Components/Footer/Footer';
 import useAuthContext from '../Hooks/Context/AuthContext';
 
 export function Mainpage(props) {

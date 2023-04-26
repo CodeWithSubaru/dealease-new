@@ -6,7 +6,7 @@ import {
   faMagnifyingGlass,
   faHouse,
 } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 export function DonationBuyer() {
   const { collapseSidebar } = useProSidebar();

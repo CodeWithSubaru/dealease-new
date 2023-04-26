@@ -17,7 +17,7 @@ import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { H1 } from '../../Components/Helpers/index.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 import PUBLIC_URL from '../../api/public_url';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
