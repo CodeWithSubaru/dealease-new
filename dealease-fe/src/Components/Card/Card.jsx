@@ -76,7 +76,7 @@ export function Card() {
                         src={'http://localhost:8000/images/' + product.image}
                         text={product.description}
                         label='Sold'
-                        button='Add to cart'
+                        button='Add to cart '
                         editbutton='Edit'
                         delbutton='Delete'
                         path='/services'

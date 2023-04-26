@@ -8,6 +8,14 @@ import PUBLIC_URL from '../../api/public_url';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEye,
+  faEdit,
+  faTrash,
+  faFishFins,
+  faSheqel,
+} from '@fortawesome/free-solid-svg-icons';
 
 export function AddToCart() {
   const [data, setData] = useState([]);
@@ -77,8 +85,16 @@ export function AddToCart() {
                             <div>
                               <H3 className='fs-3'>{item.product.title}</H3>
                               <p>{item.product.description}</p>
-                              <p>Price {item.product.price_per_kg}</p>
-                              <p>Stocks: {item.product.stocks_per_kg}</p>
+                              <h5>
+                                {' '}
+                                <img
+                                  src='/images/seashell.png'
+                                  className='me-2 pb-1'
+                                  style={{ height: '25px' }}
+                                ></img>
+                                {item.product.price_per_kg}
+                              </h5>
+                              Stocks: {item.product.stocks_per_kg}
                               <p>Sub Total {item.total_price}</p>
                             </div>
                             <div className='flex-shrink-0 align-self-end'>

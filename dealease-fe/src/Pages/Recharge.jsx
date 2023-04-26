@@ -7,11 +7,43 @@ import { useState } from 'react';
 
 export function Recharge() {
   const [amountToShell, setAmountToShell] = useState(0);
+  const data = {
+    amountToShell,
+  };
+  // Submit Recharge
+  const handleRecharge = (e) => {
+    e.preventDefault();
+    console.log(data);
+    axiosClient
+      .post('/seller/product', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          Notification({
+            title: 'Success',
+            message: res.data.message,
+            icon: 'success',
+          }).then(() => {
+            setAmountToShell('');
+          });
+        }
+      })
+      .catch((e) => {
+        Notification({
+          title: 'Error',
+          message: 'Errors Found',
+          icon: 'error',
+        });
+        setErrors(e.response.data.errors);
+      });
+  };
+
   return (
     <div className='mx-auto w-75'>
       <Card>
         <h3>Recharge</h3>
-        <Form>
+        <Form onSubmit={handleRecharge}>
           <Form.Control
             type='number'
             min=''

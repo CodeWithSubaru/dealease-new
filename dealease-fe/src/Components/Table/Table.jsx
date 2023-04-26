@@ -41,7 +41,7 @@ export const TableComponent = ({ header, body, button }) => {
           xs={12}
           sm={12}
           lg={8}
-          className='d-flex flex-col justify-content-end align-items-end'
+          className='d-flex flex-col justify-content-end align-items-end mb-2'
         >
           {button}
         </Col>
