@@ -15,7 +15,7 @@ use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-
+use App\Http\Controllers\Api\Admin\AdminPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,22 +48,25 @@ Route::post('product/{id}', [ProductContoller::class, 'destroy']);
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
-    // Buyer
-    Route::apiResource('/transactions', PaymentController::class);
-    Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
-    Route::apiResource('/orders', OrderController::class);
-
     Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth');
 
-    Route::get('/users', [UsersController::class, 'index']);
-    Route::apiResource('/report-user', ReportUserController::class);
+    // Buyer
+    Route::apiResource('/transactions', PaymentController::class);
+    Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
+    Route::apiResource('/orders', OrderController::class);
+    Route::post('/payment', [PaymentController::class, 'payment']);
+    Route::post('/request-withdrawal', [PaymentController::class, 'withdraw'])
+        ->middleware('throttle:5,1');
 
+
+    Route::get('/users', [UsersController::class, 'index']);
     Route::apiResource('/messages', MessageController::class);
+    // To be implemented
+    // Route::apiResource('/report-user', ReportUserController::class);
 
     // Admin route
     Route::post('/admin/users/{id}', [UsersController::class, 'update']);
@@ -80,7 +83,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
     Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
     Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
-
-    // Admin: Transactions
-    Route::apiResource('/admin/transactions', TransactionsController::class);
+    Route::apiResource('/admin/transactions', AdminPaymentController::class);
 });

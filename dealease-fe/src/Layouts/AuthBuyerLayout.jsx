@@ -23,7 +23,7 @@ export function AuthBuyerLayout() {
   const handleLogout = () => {
     logout();
   };
-  console.log(user);
+
   if (!user.email_verified_at && token) {
     return <EmailVerification />;
   }
@@ -44,6 +44,16 @@ export function AuthBuyerLayout() {
         <li className='nav-item'>
           <Link to='/inbox' className='nav-links'>
             Inbox
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link to='/withdraw' className='nav-links'>
+            Withdraw
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link to='/transactions' className='nav-links'>
+            Transactions
           </Link>
         </li>
         <li className='nav-item'>

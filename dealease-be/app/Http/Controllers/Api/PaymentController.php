@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 
 class PaymentController extends Controller
 {
-    public function widthdraw(Request $request)
+    public function withdraw(Request $request)
     {
         $typeOfWallet = !$request->wallet ?
             BuyerWallet::class :
@@ -23,7 +23,7 @@ class PaymentController extends Controller
 
         $request->validate([
             'shell_coin_amount' => [
-                'required', 'numeric', 'max:' . $wallet->get()[0]->shell_coin_amount . '',
+                'required', 'numeric', 'min:100', 'max:' . $wallet->get()[0]->shell_coin_amount . '',
             ],
         ]);
 
@@ -34,8 +34,8 @@ class PaymentController extends Controller
         PaymentTransaction::create([
             'user_id' => auth()->id(),
             'payment_status' => 1,
-            'payment_description' => auth()->user()->first_name . " request to widthdraw for " . $request->shell_coin_amount . ' Shells',
-            'payment_total_amount' => $request->shell_coin_amount,
+            'payment_description' => auth()->user()->first_name . " request to withdraw for " . $request->shell_coin_amount . ' Shells',
+            'payment_total_amount' => $request->shell_coin_amount / 1.5,
         ]);
 
         return response()->json(['status' => 'Request Created Successfully'], 200);
@@ -86,8 +86,8 @@ class PaymentController extends Controller
                         [
                             "currency" => "PHP",
                             "amount" => 10000,
-                            "description" => "widthdraw",
-                            "name" => "Widthdraw",
+                            "description" => "withdraw",
+                            "name" => "Withdraw",
                             "quantity" => 1
                         ],
                     ],
@@ -95,7 +95,7 @@ class PaymentController extends Controller
                     "send_email_receipt" => true,
                     "show_description" => true,
                     "show_line_items" => true,
-                    "description" => "widthdrawal",
+                    "description" => "withdrawal",
                     "reference_number" => "invoice-200"
                 ]
             ]
@@ -122,7 +122,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        return PaymentTransaction::with('user')->where('user_id', auth()->id())->get();
+        return PaymentTransaction::with('user', 'user.user_details')->where('user_id', auth()->id())->latest()->get();
     }
 
     /**
@@ -147,9 +147,15 @@ class PaymentController extends Controller
         return response()->json(['status' => 'success'], 200);
     }
 
-    public function accept()
+    public function accept($id)
     {
-        // update
+        // update status
+
+        PaymentTransaction::find($id)->update([
+            'status' => 2,
+        ]);
+
+        return response()->json(['status' => 'Accepted Successfully'], 200);
     }
 
     public function cancel()

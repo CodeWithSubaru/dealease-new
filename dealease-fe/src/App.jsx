@@ -14,6 +14,7 @@ import { InboxBuyer } from './Pages/Buyer/Inbox';
 import { MessageBuyer } from './Pages/Buyer/Message';
 import { ProfileBuyer } from './Pages/Buyer/Profile';
 import { DonationBuyer } from './Pages/Buyer/Donation';
+import { WithdrawBuyer } from './Pages/Buyer/Withdraw';
 
 // Seller Components
 import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
@@ -34,6 +35,7 @@ import { MessageAdmin } from './Pages/Admin/Message';
 import { ProfileAdmin } from './Pages/Admin/Profile';
 import { Users } from './Pages/Admin/Users';
 import { AnnouncementAdmin } from './Pages/Admin/Announcement';
+import { TransactionsAdmin } from './Pages/Admin/Transactions';
 
 // solla
 import { Mainpage } from './Pages';
@@ -72,6 +74,7 @@ function App() {
             <Route path='/recharge' element={<Recharge />} />
             <Route path='/transactions' element={<TransactionsBuyer />} />
             <Route path='/add-to-cart' element={<AddToCart />} />
+            <Route path='/withdraw' element={<WithdrawBuyer />} />
           </Route>
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
@@ -93,7 +96,7 @@ function App() {
           <Route element={<AuthAdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<Users />} />
-            {/* <Route path='/admin/transactions' element={<Transactions />} /> */}
+            <Route path='/admin/transactions' element={<TransactionsAdmin />} />
             <Route path='/admin/inbox' element={<InboxAdmin />} />
             <Route
               path='/admin/message/:message_id'
