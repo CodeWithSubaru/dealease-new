@@ -5,13 +5,10 @@ import HeroSection from '../../Components/Section/HeroSection';
 import { Card } from '../../Components/Card/Card';
 import { Footer } from '../../Components/Footer/Footer';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
-import {
-  faPhone,
-  faMagnifyingGlass,
-  faHouse,
-} from '@fortawesome/free-solid-svg-icons';
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
@@ -40,14 +37,14 @@ export const Home = () => {
               },
             }}
           >
-            <MenuItem>
+            <MenuItem component={<Link to='/' />}>
               <FontAwesomeIcon icon={faHouse} className='navs-icon' /> Home
             </MenuItem>
-            <MenuItem> Products</MenuItem>
+            <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
             <MenuItem> E-commerce</MenuItem>
           </Menu>
         </Sidebar>
-        <main>
+        <main className='w-100'>
           <button onClick={() => collapseSidebar()}>Collapse</button>
           <button className='btn btn-dark'>Recharge</button>
           <Card />
