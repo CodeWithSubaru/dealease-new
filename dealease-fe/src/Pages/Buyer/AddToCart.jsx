@@ -81,7 +81,9 @@ export function AddToCart() {
           <div className='p-5'>
             <H1>Add to Cart</H1>
             <div className=' primary-bg rounded p-5'>
-              <Link to='/'>Choose another product</Link>
+              <Link className='btn btn-primary rounded' to='/'>
+                Choose another product
+              </Link>
               <div className='d-flex'>
                 <div className='d-flex flex-wrap me-2'>
                   {data && data.length > 0
