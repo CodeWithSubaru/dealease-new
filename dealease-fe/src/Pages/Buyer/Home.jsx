@@ -6,9 +6,24 @@ import { Card } from '../../Components/Card/Card';
 import { Footer } from '../../Components/Footer/Footer';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBurger,
+  faHamburger,
+  faHouse,
+  faSliders,
+  faTable,
+  faToggleOn,
+} from '@fortawesome/free-solid-svg-icons';
 
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  useProSidebar,
+  sidebarClasses,
+  menuClasses,
+} from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 
 export const Home = () => {
@@ -25,7 +40,16 @@ export const Home = () => {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar backgroundColor='#19a9d0'>
+        <Sidebar
+          width='190px'
+          collapsedWidth='65px'
+          transitionDuration='500'
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: '#19a9d0',
+            },
+          }}
+        >
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -38,8 +62,16 @@ export const Home = () => {
               },
             }}
           >
+            <button className='btn btn-dark' onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faTable} className='navs-icon' />
+            </button>
+
+            <SubMenu label='Transactions'>
+              <MenuItem> Withdraw </MenuItem>
+              <MenuItem> Recharge </MenuItem>
+            </SubMenu>
             <MenuItem
-              className='text-black fw-bold'
+              className='text-black '
               // icon={<FaHouse />}
               component={<Link to='/' />}
             >
@@ -51,7 +83,6 @@ export const Home = () => {
           </Menu>
         </Sidebar>
         <main className='w-100'>
-          <button onClick={() => collapseSidebar()}>Collapse</button>
           <button className='btn btn-dark' to={'/recharge'}>
             Recharge
           </button>

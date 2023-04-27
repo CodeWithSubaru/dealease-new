@@ -5,6 +5,7 @@ import {
   faPhone,
   faMagnifyingGlass,
   faHouse,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { Footer } from '../../Components/Footer/Footer';
 import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
@@ -29,7 +30,7 @@ export function DonationBuyer() {
           <MenuItem>
             <FontAwesomeIcon icon={faHouse} className='navs-icon' /> Home
           </MenuItem>
-          <MenuItem> Products</MenuItem>
+          <MenuItem icon={faUser}> Products</MenuItem>
           <MenuItem> E-commerce</MenuItem>
         </Menu>
       </Sidebar>
