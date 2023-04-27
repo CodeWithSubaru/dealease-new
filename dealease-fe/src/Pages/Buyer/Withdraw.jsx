@@ -1,7 +1,15 @@
 import { Withdraw } from '../../Components/Pages/Withdraw';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+import { faHouse, faTable } from '@fortawesome/free-solid-svg-icons';
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  useProSidebar,
+  sidebarClasses,
+  menuClasses,
+} from 'react-pro-sidebar';
 import { Footer } from '../../Components/Footer/Footer';
 import { Link } from 'react-router-dom';
 import { Modal, Row, Col, Container } from 'react-bootstrap';
@@ -11,7 +19,16 @@ export function WithdrawBuyer() {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar backgroundColor='#19a9d0'>
+        <Sidebar
+          width='190px'
+          collapsedWidth='65px'
+          transitionDuration='500'
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: '#19a9d0',
+            },
+          }}
+        >
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -24,19 +41,34 @@ export function WithdrawBuyer() {
               },
             }}
           >
-            <MenuItem component={<Link to='/' />}>
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' /> Home
+            <button className='btn btn-dark' onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faTable} className='navs-icon' />
+            </button>
+
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/' />}
+            >
+              {/* <FontAwesomeIcon icon={faHouse} className='navs-icon' />  */}
+              Home
             </MenuItem>
+            <SubMenu label='Transactions'>
+              <MenuItem> Withdraw </MenuItem>
+              <MenuItem> Recharge </MenuItem>
+            </SubMenu>
             <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
-            <MenuItem> E-commerce</MenuItem>
+            <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>
         <main className='w-100'>
-          <Container>
-            <button onClick={() => collapseSidebar()}>Collapse</button>
-            <button className='btn btn-dark'>Recharge</button>
-            <Withdraw />
-          </Container>
+          <div style={{ height: '80vh' }}>
+            <Container>
+              <button onClick={() => collapseSidebar()}>Collapse</button>
+              <button className='btn btn-dark'>Recharge</button>
+              <Withdraw />
+            </Container>
+          </div>
         </main>
         <Footer />
       </div>

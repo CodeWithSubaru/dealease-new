@@ -34,7 +34,7 @@ export function DonationBuyer() {
           <MenuItem> E-commerce</MenuItem>
         </Menu>
       </Sidebar>
-      <main>
+      <main className='w-100'>
         <button onClick={() => collapseSidebar()}>Collapse</button>
         <Card className='w-75 mx-auto'>
           <div className='p-4'>

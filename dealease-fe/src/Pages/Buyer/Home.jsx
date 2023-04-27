@@ -66,10 +66,6 @@ export const Home = () => {
               <FontAwesomeIcon icon={faTable} className='navs-icon' />
             </button>
 
-            <SubMenu label='Transactions'>
-              <MenuItem> Withdraw </MenuItem>
-              <MenuItem> Recharge </MenuItem>
-            </SubMenu>
             <MenuItem
               className='text-black '
               // icon={<FaHouse />}
@@ -78,8 +74,12 @@ export const Home = () => {
               {/* <FontAwesomeIcon icon={faHouse} className='navs-icon' />  */}
               Home
             </MenuItem>
+            <SubMenu label='Transactions'>
+              <MenuItem> Withdraw </MenuItem>
+              <MenuItem> Recharge </MenuItem>
+            </SubMenu>
             <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
-            <MenuItem> E-commerce</MenuItem>
+            <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>
         <main className='w-100'>
