@@ -54,7 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
     Route::get('/orders/increment/{id}', [OrderController::class, 'increment']);
     Route::get('/orders/decrement/{id}', [OrderController::class, 'decrement']);
-    Route::get('/orders/user-id', [OrderController::class, 'fetchCartGroupById']);
+    Route::get('/orders/seller-id', [OrderController::class, 'fetchCartGroupById']);
     Route::apiResource('/orders', OrderController::class);
     Route::post('/payment', [PaymentController::class, 'payment']);
     Route::post('/request-withdrawal', [PaymentController::class, 'withdraw'])

@@ -11,8 +11,17 @@ import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 export function AddToCart() {
   const [data, setData] = useState([]);
-  const [count, setCount] = useState(1);
+  const [orderHistoryBySellerId, setOrderHistoryBySellerId] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
+
+  function fetchCartHistoryBySellerId() {
+    axiosClient
+      .get('orders/seller-id')
+      .then((res) => {
+        setOrderHistoryBySellerId(Object.values(res.data));
+      })
+      .catch((e) => console.log(e));
+  }
 
   function fetchOrders() {
     axiosClient
@@ -39,7 +48,6 @@ export function AddToCart() {
     axiosClient
       .get('/orders/increment/' + id)
       .then((res) => {
-        console.log(res);
         fetchOrders();
       })
       .catch((e) => console.log(e));
@@ -49,14 +57,20 @@ export function AddToCart() {
     axiosClient
       .get('/orders/decrement/' + id)
       .then((res) => {
-        console.log(res);
         fetchOrders();
       })
       .catch((e) => console.log(e));
   }
 
+  function calculateTotalPrice(price) {
+    let totalPrice = 0;
+    totalPrice = totalPrice + Number(price);
+    return totalPrice;
+  }
+
   useEffect(() => {
     fetchOrders();
+    fetchCartHistoryBySellerId();
   }, []);
 
   return (
@@ -159,25 +173,26 @@ export function AddToCart() {
                   <Card className='mt-2 w-100 align-self-baseline'>
                     <Form
                       className='mt-2 p-2 px-3'
-                      onSubmit={() => {
-                        axiosClient
-                          .get('/orders/user-id')
-                          .then((res) => console.log(res.data))
-                          .catch((e) => console.log(e));
+                      onSubmit={(e) => {
+                        e.preventDefault();
                       }}
                     >
                       <h3>Summary Details</h3>
-                      <p> Sub total: </p>
+                      {orderHistoryBySellerId.map((item) => {
+                        item.map((cartItem) => {
+                          return (
+                            <p>
+                              Sub total:
+                              {calculateTotalPrice(cartItem.total_price)}
+                            </p>
+                          );
+                        });
+                      })}
                       <div className='text-end'>
                         <Button
                           variant='warning'
                           className='text-light rounded'
-                          onClick={() => {
-                            axiosClient
-                              .post('', {})
-                              .then((res) => console.log(res))
-                              .catch((e) => console.log(e));
-                          }}
+                          type='submit'
                         >
                           Place Order
                         </Button>

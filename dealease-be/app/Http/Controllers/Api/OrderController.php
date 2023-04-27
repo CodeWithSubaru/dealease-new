@@ -28,7 +28,8 @@ class OrderController extends Controller
 
     public function fetchCartGroupById()
     {
-        return Cart::with('product', 'product.user', 'user.user_detail')->where('order_by', auth()->id())->get();
+        $cart = $this->index();
+        return $cart->groupBy('product.user_id');
     }
 
     /**

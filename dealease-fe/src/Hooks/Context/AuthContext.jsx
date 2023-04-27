@@ -205,11 +205,11 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    document.addEventListener('visibilitychange', autoLogout);
+    // document.addEventListener('visibilitychange', autoLogout);
 
-    return () => {
-      document.removeEventListener('visibilitychange', autoLogout);
-    };
+    // return () => {
+    //   document.removeEventListener('visibilitychange', autoLogout);
+    // };
   }, []);
 
   return (
