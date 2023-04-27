@@ -178,16 +178,14 @@ export function AddToCart() {
                       }}
                     >
                       <h3>Summary Details</h3>
-                      {orderHistoryBySellerId.map((item) => {
-                        item.map((cartItem) => {
-                          return (
-                            <p>
-                              Sub total:
-                              {calculateTotalPrice(cartItem.total_price)}
-                            </p>
-                          );
-                        });
-                      })}
+                      {orderHistoryBySellerId.map((item) =>
+                        item.map((cartItem, index) => (
+                          <p key={index}>
+                            Sub total:
+                            {calculateTotalPrice(cartItem.total_price)}
+                          </p>
+                        ))
+                      )}
                       <div className='text-end'>
                         <Button
                           variant='warning'
