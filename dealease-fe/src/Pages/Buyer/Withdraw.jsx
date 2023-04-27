@@ -1,6 +1,6 @@
 import { Withdraw } from '../../Components/Pages/Withdraw';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faTable } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faHouse, faTable } from '@fortawesome/free-solid-svg-icons';
 import {
   Sidebar,
   Menu,
@@ -41,8 +41,8 @@ export function WithdrawBuyer() {
               },
             }}
           >
-            <button className='btn btn-dark' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faTable} className='navs-icon' />
+            <button className='btn ' onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className='navs-icon' />
             </button>
 
             <MenuItem
@@ -54,10 +54,15 @@ export function WithdrawBuyer() {
               Home
             </MenuItem>
             <SubMenu label='Transactions'>
-              <MenuItem> Withdraw </MenuItem>
-              <MenuItem> Recharge </MenuItem>
+              <MenuItem component={<Link to='/withdraw' />}>
+                {' '}
+                Withdraw{' '}
+              </MenuItem>
+              <MenuItem component={<Link to='/recharge' />}>
+                {' '}
+                Recharge{' '}
+              </MenuItem>
             </SubMenu>
-            <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
             <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>

@@ -16,6 +16,7 @@ import {
   faFishFins,
   faSheqel,
   faTable,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   Sidebar,
@@ -87,8 +88,8 @@ export function AddToCart() {
               },
             }}
           >
-            <button className='btn btn-dark' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faTable} className='navs-icon' />
+            <button className='btn ' onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className='navs-icon' />
             </button>
 
             <MenuItem
@@ -100,10 +101,15 @@ export function AddToCart() {
               Home
             </MenuItem>
             <SubMenu label='Transactions'>
-              <MenuItem> Withdraw </MenuItem>
-              <MenuItem> Recharge </MenuItem>
+              <MenuItem component={<Link to='/withdraw' />}>
+                {' '}
+                Withdraw{' '}
+              </MenuItem>
+              <MenuItem component={<Link to='/recharge' />}>
+                {' '}
+                Recharge{' '}
+              </MenuItem>
             </SubMenu>
-            <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
             <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>

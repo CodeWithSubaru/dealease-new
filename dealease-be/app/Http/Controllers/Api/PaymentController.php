@@ -41,34 +41,34 @@ class PaymentController extends Controller
         return response()->json(['status' => 'Request Created Successfully'], 200);
 
         // Patrick
-        // $authUser = User::with('user_details')->where('user_id', auth()->id())->get()[0];
-        // return $this->payment($authUser->first_name, $authUser->email, $request->shell_coin_amount, $authUser->user_details->contact_number);
-    }
-
-    public function recharge(Request $request) {
-        $typeOfWallet = !$request->wallet ?
-        BuyerWallet::class :
-        SellerWallet::class;
-
-        $wallet = $typeOfWallet::where('user_id', auth()->id());
-
-        $request->validate([
-            'amount_coin_shell' => [
-                'required', 'numeric', 'max:' . $wallet->get()[0]->amount_coin_shell . '',
-            ],
-        ]);
-
-        // return $request->all();
-        PaymentTransaction::create([
-            'user_id' => auth()->id(),
-            'payment_status' => 1,
-            'payment_description' => auth()->user()->first_name . " request to Recharge for " . $request->amount_coin_shell . ' Shells',
-            'payment_total_amount' => $request->amount_coin_shell,
-        ]);
-
     }
     
-    public function payment($firstName, $email, $amount, $contactNumber)
+    public function recharge(Request $request) {
+        
+        
+        $request->validate([
+            'shell_coin_amount' => [
+                'required', 'numeric'
+            ],
+        ]);
+        
+        // return $request->all();
+        $paymentTransaction = PaymentTransaction::create([
+            'user_id' => auth()->id(),
+            'payment_status' => 1,
+            'payment_description' => auth()->user()->first_name . " request to Recharge for " . $request->shell_coin_amount . ' Shells',
+            'payment_total_amount' => $request->shell_coin_amount,
+        ]);
+
+        $authUser = User::with('user_details')->where('user_id', auth()->id())->get()[0];
+        $amount = $request->shell_coin_amount . '00';
+        $pay = $this->payment($paymentTransaction->payment_number, $authUser->first_name, $authUser->email, $amount, $authUser->user_details->contact_number);
+        return response()->json(['status' => 'Request Created Successfully', $pay], 200);
+        
+        // return $this->payment($authUser->first_name, $authUser->email, $request->shell_coin_amount, $authUser->user_details->contact_number);
+    }
+    
+    public function payment($id, $firstName, $email, $amount, $contactNumber)
     {
         $client = new \GuzzleHttp\Client();
 
@@ -85,9 +85,9 @@ class PaymentController extends Controller
                     "line_items" => [
                         [
                             "currency" => "PHP",
-                            "amount" => 10000,
+                            "amount" => (float) $amount,
                             "description" => "withdraw",
-                            "name" => "Withdraw",
+                            "name" => "Shells",
                             "quantity" => 1
                         ],
                     ],
@@ -95,8 +95,8 @@ class PaymentController extends Controller
                     "send_email_receipt" => true,
                     "show_description" => true,
                     "show_line_items" => true,
-                    "description" => "withdrawal",
-                    "reference_number" => "invoice-200"
+                    "description" => "Recharge",
+                    "reference_number" => "$id"
                 ]
             ]
         ];
