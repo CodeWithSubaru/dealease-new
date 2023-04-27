@@ -4,15 +4,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportUserController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\Api\Auth\AuthController;
-use App\Http\Controllers\Api\Seller\ProductContoller;
 use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Api\Admin\MessageController;
+use App\Http\Controllers\Api\Seller\ProductContoller;
 use App\Http\Controllers\Api\Admin\AnalyticsControllers;
 use App\Http\Controllers\Api\Admin\AnnouncementController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\Admin\AdminPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,29 +28,43 @@ use App\Http\Controllers\Api\PaymentController;
 |
 */
 
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
-Route::get('/payment', [PaymentController::class, 'payment']);
+
 
 // Seller Route
 Route::post('/seller/product/{id}', [ProductContoller::class, 'update']);
 Route::apiResource('/seller/product', ProductContoller::class);
 Route::post('product/{id}', [ProductContoller::class, 'destroy']);
 
+Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth');
 
-    Route::get('/users', [UsersController::class, 'index']);
-    Route::apiResource('/report-user', ReportUserController::class);
+    // Buyer
+    Route::apiResource('/transactions', PaymentController::class);
+    Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
+    Route::get('/orders/increment/{id}', [OrderController::class, 'increment']);
+    Route::get('/orders/decrement/{id}', [OrderController::class, 'decrement']);
+    Route::get('/orders/seller-id', [OrderController::class, 'fetchCartGroupById']);
+    Route::apiResource('/orders', OrderController::class);
+    Route::post('/payment', [PaymentController::class, 'payment']);
+    Route::post('/request-withdrawal', [PaymentController::class, 'withdraw'])
+        ->middleware('throttle:5,1');
 
+
+    Route::get('/users', [UsersController::class, 'index']);
     Route::apiResource('/messages', MessageController::class);
+    // To be implemented
+    // Route::apiResource('/report-user', ReportUserController::class);
 
     // Admin route
     Route::post('/admin/users/{id}', [UsersController::class, 'update']);
@@ -64,4 +81,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
     Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
     Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
+    Route::apiResource('/admin/transactions', AdminPaymentController::class);
 });

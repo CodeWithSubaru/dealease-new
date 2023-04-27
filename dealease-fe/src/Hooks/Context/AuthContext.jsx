@@ -14,6 +14,8 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+  const [isEmailVerified, setEmailVerified] = useState(false);
+  const [emailVerificationMessage, setEmailVerificationMessage] = useState('');
   const [isRegistrationSuccess, setRegistrationSuccess] = useState(false);
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
   const [user_type, _setUserType] = useState(localStorage.getItem('USER_TYPE'));
@@ -117,6 +119,8 @@ export const AuthProvider = ({ children }) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
+        setEmailVerified(res.data.email_verified_status);
+        setEmailVerificationMessage(res.data.email_verified_status);
         setRegistrationSuccess(res.data.is_registration_done);
         if (res.status == 200) {
           setLoading(true);
@@ -201,11 +205,11 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    document.addEventListener('visibilitychange', autoLogout);
+    // document.addEventListener('visibilitychange', autoLogout);
 
-    return () => {
-      document.removeEventListener('visibilitychange', autoLogout);
-    };
+    // return () => {
+    //   document.removeEventListener('visibilitychange', autoLogout);
+    // };
   }, []);
 
   return (
@@ -217,10 +221,13 @@ export const AuthProvider = ({ children }) => {
         token,
         errors,
         user_type,
-        isRegistrationSuccess,
         modalShow,
-        setModalShow,
+        isEmailVerified,
+        emailVerificationMessage,
+        isRegistrationSuccess,
         setRegistrationSuccess,
+        setEmailVerified,
+        setModalShow,
         setErrors,
         loginBuyer,
         loginSeller,

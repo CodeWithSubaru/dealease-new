@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import useAuthContext from '../Hooks/Context/AuthContext';
@@ -8,14 +8,27 @@ import '../assets/scss/button.scss';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { EmailVerification } from '../Pages/Auth/EmailVerification';
+import useAddToCartContext from '../Hooks/Context/AddToCartContext';
+
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthBuyerLayout() {
-  const { user, user_type, logout } = useAuthContext();
+  const { user, token, user_type, logout } = useAuthContext();
+  const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
+
   const closeMobileMenu = () => setClick(false);
   const handleLogout = () => {
     logout();
   };
+
+  if (!user.email_verified_at && token) {
+    return <EmailVerification />;
+  }
+
+  useEffect(() => {
+    fetchCountInItemsCart();
+  }, []);
 
   return (
     <>
@@ -32,8 +45,24 @@ export function AuthBuyerLayout() {
           </Link>
         </li>
         <li className='nav-item'>
-          <Link to='/donation' className='nav-links'>
-            Donasyon
+          <Link to='/withdraw' className='nav-links'>
+            Withdraw
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link to='/transactions' className='nav-links'>
+            Transactions
+          </Link>
+        </li>
+        <li className='nav-item'>
+          <Link to='/add-to-cart' className='nav-links'>
+            Cart{' '}
+            <span
+              className='badge rounded-pill text-bg-danger position-relative'
+              style={{ top: '-5px' }}
+            >
+              {countItemsInCart === 9 ? '9+' : countItemsInCart}
+            </span>
           </Link>
         </li>
         <li className='nav-item'>

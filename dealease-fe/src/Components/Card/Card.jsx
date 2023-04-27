@@ -1,20 +1,20 @@
-// export function Card({ className, children }) {
-//   return <div className={className}>{children}</div>;
-// }
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Row, Col, Container } from 'react-bootstrap';
+import { Modal, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { CardItem } from './CardItem';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
-import axiosClient from '../../api/axios';
 import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 export function Card() {
   const { user, token } = useAuthContext();
   const { products, fetchProduct, fetchPublicProducts } = useProductContext();
+
+  const { msgStatus, status } = useAddToCartContext();
 
   useEffect(() => {
     fetchPublicProducts();
@@ -40,6 +40,20 @@ export function Card() {
             </Col>
           </Row>
         </Container>
+
+        {msgStatus && (
+          <div
+            className={
+              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-absolute ' +
+              (status ? 'alert-primary' : 'alert-danger')
+            }
+            style={{ top: '100px' }}
+            role='alert'
+          >
+            {msgStatus}
+          </div>
+        )}
+
         <div className='cards_wrapper'>
           {/* Card for Seller */}
           <Row className='mx-2'>
@@ -49,10 +63,13 @@ export function Card() {
                     <Col className='mb-4 card-card'>
                       <CardItem
                         key={data}
+                        id={product.id}
                         src={'http://localhost:8000/images/' + product.image}
+                        createdAt={product.created_at}
                         text={product.description}
+                        seller={product.user}
                         label='Sold'
-                        button='Make a Deal'
+                        button='Add to cart'
                         editbutton='Edit'
                         delbutton='Delete'
                         path='/services'

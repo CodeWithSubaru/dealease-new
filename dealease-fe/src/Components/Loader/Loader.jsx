@@ -15,6 +15,7 @@ export function Loader({ visibility }) {
           backgroundColor: 'white',
           position: 'absolute',
           zIndex: 1,
+          alignText: 'center',
           justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',

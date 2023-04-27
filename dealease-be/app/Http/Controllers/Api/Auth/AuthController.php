@@ -97,7 +97,9 @@ class AuthController extends Controller
                 'user_id' => $user->user_id,
             ]);
 
-            return response()->json(['message' => 'User Created Successfully', 'is_registration_done' => true], 200);
+            $user->sendEmailVerificationNotification();
+
+            return response()->json(['message' => 'User Created Successfully', 'email_verified' => false, 'email_verified_status' => "Please verify your email. We've sent you an email verification to your account", 'is_registration_done' => true], 200);
         }
     }
 
@@ -110,9 +112,8 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        $user->update(['coin_owner_type' => $user->coin_owner_type ? 0 : 1]);
-
         $wallet = $user->coin_owner_type ? BuyerWallet::class : SellerWallet::class;
+
         $wallet::create([
             'shell_coin_amount' => 0,
             'user_id' => $user->user_id,

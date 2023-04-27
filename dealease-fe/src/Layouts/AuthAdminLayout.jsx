@@ -34,6 +34,12 @@ export function AuthAdminLayout() {
             </li>
 
             <li className='nav-item'>
+              <Link to='/admin/transactions' className='nav-links'>
+                Transactions
+              </Link>
+            </li>
+
+            <li className='nav-item'>
               <Link to='/admin/announcement' className='nav-links'>
                 Announcement
               </Link>

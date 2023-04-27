@@ -19,17 +19,10 @@ import { LoginAdmin } from '../../Pages/Auth/LoginAdmin';
 
 export function MydModalWithGrid(props) {
   return (
-    <Modal
-      className='modal'
-      dialogClassName='modal-container'
-      show={props.show}
-      keyboard
-      onHide={props.onHide}
-      aria-labelledby='contained-modal-title-vcenter'
-    >
+    <Modal className='modal' show={props.show} keyboard onHide={props.onHide}>
       <div className='box'>
+        <i></i>
         <Modal.Body>
-          <i></i>
           <Container>
             <Row>
               <Col>

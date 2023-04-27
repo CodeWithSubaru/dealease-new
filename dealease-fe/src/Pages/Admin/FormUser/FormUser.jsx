@@ -1,6 +1,7 @@
 import Form from 'react-bootstrap/Form';
 import useAddressContext from '../../../Hooks/Context/AddressContext';
 import PUBLIC_URL from '../../../api/public_url';
+import { useEffect } from 'react';
 
 export const FormUser = ({
   submitHook,
@@ -26,9 +27,14 @@ export const FormUser = ({
     edit
       ? setUpdateUserDetails({
           ...updateUserDetails,
-          region: e.target.selectedOptions[0].text,
+          // region: e.target.selectedOptions[0].text,
+          region: 'Region III (Central Luzon)',
         })
-      : setUser({ ...user, region: e.target.selectedOptions[0].text });
+      : setUser({
+          ...user,
+          // region: e.target.selectedOptions[0].text
+          region: 'Region III (Central Luzon)',
+        });
 
     getProvince(e);
   };
@@ -37,9 +43,14 @@ export const FormUser = ({
     edit
       ? setUpdateUserDetails({
           ...updateUserDetails,
-          province: e.target.selectedOptions[0].text,
+          // province: e.target.selectedOptions[0].text,
+          province: 'Bulacan',
         })
-      : setUser({ ...user, province: e.target.selectedOptions[0].text });
+      : setUser({
+          ...user,
+          // province: e.target.selectedOptions[0].text
+          province: 'Bulacan',
+        });
     getCity(e);
   };
 
@@ -47,9 +58,10 @@ export const FormUser = ({
     edit
       ? setUpdateUserDetails({
           ...updateUserDetails,
-          city: e.target.selectedOptions[0].text,
+          // city: e.target.selectedOptions[0].text,
+          city: 'Obando',
         })
-      : setUser({ ...user, city: e.target.selectedOptions[0].text });
+      : setUser({ ...user, city: 'Obando' });
     getBarangay(e);
   };
 
@@ -73,6 +85,10 @@ export const FormUser = ({
       : updateUserDetails.is_buyer
     : 'Select User type';
 
+  useEffect(() => {
+    region();
+  }, []);
+
   return (
     <>
       <h1>{edit ? 'Edit' : 'New'} User</h1>
@@ -90,8 +106,8 @@ export const FormUser = ({
                     ? typeof updateUserDetails.prof_img === 'object'
                       ? URL.createObjectURL(updateUserDetails.prof_img)
                       : PUBLIC_URL + 'images/' + updateUserDetails.prof_img
-                    : typeof user.profile_image === 'object'
-                    ? URL.createObjectURL(user.profile_image)
+                    : typeof user.prof_img === 'object'
+                    ? URL.createObjectURL(user.prof_img)
                     : PUBLIC_URL + 'images/' + 'default_profile.jpg'
                 }
                 className='rounded-circle'
@@ -100,10 +116,8 @@ export const FormUser = ({
             </div>
           }
 
-          <Form.Group class='mb-3'>
-            <Form.Label for='formFile' class='form-label'>
-              Select Profile Image
-            </Form.Label>
+          <Form.Group className='mb-3'>
+            <Form.Label className='text-dark'>Select Profile Image</Form.Label>
             <Form.Control
               type='file'
               id='formFile'
@@ -114,14 +128,11 @@ export const FormUser = ({
                       ...updateUserDetails,
                       prof_img: e.target.files[0],
                     })
-                  : setUser({ ...user, profile_image: e.target.files[0] });
+                  : setUser({ ...user, prof_img: e.target.files[0] });
               }}
-              isInvalid={edit ? !!errors.prof_img : !!errors.profile_image}
+              isInvalid={!!errors.prof_img}
             />
             <Form.Control.Feedback type='invalid'>
-              {errors.profile_image &&
-                errors.profile_image.length > 0 &&
-                errors.profile_image[0]}
               {errors.prof_img &&
                 errors.prof_img.length > 0 &&
                 errors.prof_img[0]}
@@ -129,7 +140,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className='mb-3'>
-            <Form.Label>First Name *</Form.Label>
+            <Form.Label className='text-dark'>First Name *</Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter First Name'
@@ -152,7 +163,7 @@ export const FormUser = ({
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Middle Name *</Form.Label>
+            <Form.Label className='text-dark'>Middle Name *</Form.Label>
             <Form.Control
               type='text'
               placeholder={edit ? '' : 'Enter Middle Name'}
@@ -168,7 +179,7 @@ export const FormUser = ({
             />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Last Name *</Form.Label>
+            <Form.Label className='text-dark'>Last Name *</Form.Label>
             <Form.Control
               type='text'
               placeholder={edit ? '' : 'Enter Last Name'}
@@ -190,7 +201,7 @@ export const FormUser = ({
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Extension Name</Form.Label>
+            <Form.Label className='text-dark'>Extension Name</Form.Label>
             <Form.Control
               type='text'
               placeholder={edit ? '' : 'Enter Extension Name'}
@@ -206,7 +217,7 @@ export const FormUser = ({
             />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Birthday *</Form.Label>
+            <Form.Label className='text-dark'>Birthday *</Form.Label>
             <Form.Control
               type='date'
               name='birth_date'
@@ -231,7 +242,7 @@ export const FormUser = ({
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Contact Number</Form.Label>
+            <Form.Label className='text-dark'>Contact Number</Form.Label>
             <Form.Control
               type='text'
               name='contact_number'
@@ -262,7 +273,7 @@ export const FormUser = ({
           <hr />
 
           <Form.Group className=''>
-            <Form.Label className=''>Region *</Form.Label>
+            <Form.Label className='text-dark'>Region *</Form.Label>
             <Form.Select
               onSelect={region}
               onChange={province}
@@ -278,12 +289,15 @@ export const FormUser = ({
               <option value={'default'} disabled>
                 {edit ? updateUserDetails.region : 'Select Region'}
               </option>
-              {regionData &&
-                regionData.map((item) => (
-                  <option key={item.region_code} value={item.region_code}>
-                    {item.region_name}
-                  </option>
-                ))}
+              {regionData && (
+                // regionData.map((item) => (
+                <option
+                  key={regionData.region_code}
+                  value={regionData.region_code}
+                >
+                  {regionData.region_name}
+                </option>
+              )}
             </Form.Select>
             {errors && errors.region ? (
               <Form.Control.Feedback type='invalid'>
@@ -293,7 +307,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className=''>
-            <Form.Label className=''>Province *</Form.Label>
+            <Form.Label className='text-dark'>Province *</Form.Label>
             <Form.Select
               onChange={city}
               value={
@@ -308,13 +322,16 @@ export const FormUser = ({
               <option value={'default'} disabled>
                 {edit ? updateUserDetails.region : 'Select Province'}
               </option>
-              {provinceData &&
-                provinceData.length > 0 &&
-                provinceData.map((item) => (
-                  <option key={item.province_code} value={item.province_code}>
-                    {item.province_name}
-                  </option>
-                ))}
+              {provinceData && (
+                // provinceData.length > 0 &&
+                // provinceData.map((item) => (
+                <option
+                  key={provinceData.province_code}
+                  value={provinceData.province_code}
+                >
+                  {provinceData.province_name}
+                </option>
+              )}
             </Form.Select>
             {errors && errors.province ? (
               <Form.Control.Feedback type='invalid'>
@@ -324,7 +341,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className=''>
-            <Form.Label className=''>City/Town *</Form.Label>
+            <Form.Label className='text-dark'>City/Town *</Form.Label>
             <Form.Select
               onChange={barangay}
               value={
@@ -340,13 +357,13 @@ export const FormUser = ({
                 {edit ? updateUserDetails.city : 'Select City/Town'}
               </option>
 
-              {cityData &&
-                cityData.length > 0 &&
-                cityData.map((item) => (
-                  <option key={item.city_code} value={item.city_code}>
-                    {item.city_name}
-                  </option>
-                ))}
+              {cityData && (
+                // cityData.length > 0 &&
+                // cityData.map((item) => (
+                <option key={cityData.city_code} value={cityData.city_code}>
+                  {cityData.city_name}
+                </option>
+              )}
             </Form.Select>
             {errors && errors.city ? (
               <Form.Control.Feedback type='invalid'>
@@ -356,7 +373,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className=''>
-            <Form.Label className=''>Barangay *</Form.Label>
+            <Form.Label className='text-dark'>Barangay *</Form.Label>
             <Form.Select
               value={
                 user.barangay
@@ -390,7 +407,7 @@ export const FormUser = ({
           </Form.Group>
 
           <Form.Group className='mb-3'>
-            <Form.Label>Street *</Form.Label>
+            <Form.Label className='text-dark'>Street *</Form.Label>
             <Form.Control
               type='text'
               name='street'
@@ -419,7 +436,7 @@ export const FormUser = ({
           <hr />
 
           <Form.Group className='mb-3'>
-            <Form.Label>Email *</Form.Label>
+            <Form.Label className='text-dark'>Email *</Form.Label>
             <Form.Control
               type='email'
               name='email'
@@ -445,7 +462,7 @@ export const FormUser = ({
           {edit ? null : (
             <>
               <Form.Group className='mb-3'>
-                <Form.Label>Password *</Form.Label>
+                <Form.Label className='text-dark'>Password *</Form.Label>
                 <Form.Control
                   type='password'
                   name='password'
@@ -464,7 +481,9 @@ export const FormUser = ({
               </Form.Group>
 
               <Form.Group className='mb-3'>
-                <Form.Label>Confirm Password *</Form.Label>
+                <Form.Label className='text-dark'>
+                  Confirm Password *
+                </Form.Label>
                 <Form.Control
                   type='password'
                   name='password_confirmation'
@@ -485,7 +504,7 @@ export const FormUser = ({
           )}
 
           <Form.Group className=''>
-            <Form.Label className=''>User type *</Form.Label>
+            <Form.Label className='text-dark'>User type *</Form.Label>
             <Form.Select
               value={
                 user.user_type

@@ -7,6 +7,7 @@ import { MessageProvider } from './Hooks/Context/MessageContext';
 import { AddressProvider } from './Hooks/Context/AddressContext';
 import App from './App';
 import { ProductProvider } from './Hooks/Context/ProductContext';
+import { AddToCartProvider } from './Hooks/Context/AddToCartContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <MessageProvider>
           <AddressProvider>
             <ProductProvider>
-              <App />
+              <AddToCartProvider>
+                <App />
+              </AddToCartProvider>
             </ProductProvider>
           </AddressProvider>
         </MessageProvider>

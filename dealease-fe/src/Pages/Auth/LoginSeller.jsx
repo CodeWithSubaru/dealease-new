@@ -23,8 +23,8 @@ export const LoginSeller = () => {
     loginSeller,
     errors,
     setErrors,
-    isRegistrationSuccess,
-    setRegistrationSuccess,
+    isEmailVerified,
+    emailVerificationMessage,
   } = useAuthContext();
 
   useEffect(() => {
@@ -45,9 +45,12 @@ export const LoginSeller = () => {
 
   return (
     <>
-      {isRegistrationSuccess && (
-        <div className='fadeInDown alert alert-primary' role='alert'>
-          Your account registered successfully! You can now log in.
+      {isEmailVerified && (
+        <div
+          className='fadeInDown alert alert-primary text-capitalize'
+          role='alert'
+        >
+          {emailVerificationMessage}
         </div>
       )}
       <div className='Auth-form-container'>

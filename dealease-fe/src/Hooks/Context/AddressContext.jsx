@@ -16,13 +16,13 @@ export const AddressProvider = ({ children }) => {
 
   const region = () => {
     regions().then((response) => {
-      setRegion(response);
+      setRegion(response[2]);
     });
   };
 
   const getProvince = (e) => {
     provinces(e.target.value).then((response) => {
-      setProvince(response);
+      setProvince(response[1]);
       setCity([]);
       setBarangay([]);
     });
@@ -30,9 +30,10 @@ export const AddressProvider = ({ children }) => {
 
   const getCity = (e) => {
     cities(e.target.value).then((response) => {
-      setCity(response);
+      setCity(response[13]);
     });
   };
+
   const getBarangay = (e) => {
     barangays(e.target.value).then((response) => {
       setBarangay(response);

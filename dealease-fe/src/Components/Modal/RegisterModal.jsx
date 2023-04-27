@@ -2,7 +2,6 @@ import React from 'react';
 import '../../assets/scss/global.scss';
 import '../../assets/scss/modal.scss';
 import { Register } from '../../Pages/Auth/Register';
-
 import {
   Modal,
   Form,
@@ -26,14 +25,38 @@ export function RegisterModal(props) {
       aria-labelledby='contained-modal-title-vcenter'
     >
       <div className='boxregister'>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <h1 className='text-white fw-bold'>Register</h1>
+          </Modal.Title>
+        </Modal.Header>{' '}
+        <i></i>
         <Modal.Body>
-          <i></i>
           <Container>
             <Row>
               <Register />
             </Row>
           </Container>
         </Modal.Body>
+        <Modal.Footer>
+          <div className='d-flex mx-2 w-100 justify-content-center mx-5'>
+            <Button
+              variant='light'
+              className='btn-close-footer me-3'
+              onHideRegister={() => setRegisterModalShow(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant='light'
+              className='btn-submit'
+              type='submit'
+              form='registerForm'
+            >
+              Submit
+            </Button>
+          </div>
+        </Modal.Footer>
       </div>
     </Modal>
   );
