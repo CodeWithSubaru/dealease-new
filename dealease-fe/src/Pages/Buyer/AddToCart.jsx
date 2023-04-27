@@ -11,22 +11,18 @@ import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 export function AddToCart() {
   const [data, setData] = useState([]);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const { fetchCountInItemsCart } = useAddToCartContext();
-
-  function decrement() {
-    return count <= 0 ? 0 : setCount(count - 1);
-  }
-
-  function increment() {
-    setCount(count + 1);
-  }
 
   function fetchOrders() {
     axiosClient
       .get('/orders')
       .then((res) => {
-        console.log(res);
+        const userIds = [];
+        Object.values(res.data).map(({ product }) =>
+          userIds.push(product.user.user_id)
+        );
+
         setData(res.data);
       })
       .catch((e) => console.log(e));
@@ -39,6 +35,26 @@ export function AddToCart() {
     });
   }
 
+  function increment(id) {
+    axiosClient
+      .get('/orders/increment/' + id)
+      .then((res) => {
+        console.log(res);
+        fetchOrders();
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function decrement(id) {
+    axiosClient
+      .get('/orders/decrement/' + id)
+      .then((res) => {
+        console.log(res);
+        fetchOrders();
+      })
+      .catch((e) => console.log(e));
+  }
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -49,80 +65,126 @@ export function AddToCart() {
         <Card>
           <div className='p-5'>
             <H1>Add to Cart</H1>
-            <div className='primary-bg rounded p-5'>
+            <div className=' primary-bg rounded p-5'>
               <Link to='/'>Choose another product</Link>
-              <div className='d-flex flex-wrap'>
-                {data && data.length > 0
-                  ? data.map((item) =>
-                      item ? (
-                        <Card
-                          className='d-flex flex-row flex-xs-column w-100 p-2 mt-2'
-                          key={item.order_number}
-                        >
-                          <div
-                            className='flex-shrink-1'
-                            style={{ width: '150px' }}
+              <div className='d-flex'>
+                <div className='d-flex flex-wrap me-2'>
+                  {data && data.length > 0
+                    ? data.map((item) =>
+                        item ? (
+                          <Card
+                            className='d-flex flex-row flex-xs-column w-100 p-2 mt-2'
+                            key={item.id}
                           >
-                            <img
-                              src={PUBLIC_URL + 'images/' + item.product.image}
-                              alt={item.product.image ? item.product.image : ''}
-                              className='w-100'
-                              style={{
-                                height: '150px',
-                                objectFit: 'cover',
-                              }}
-                            />
-                          </div>
-                          <div className='flex-grow-1 d-flex justify-content-between ms-3'>
-                            <div>
-                              <H3 className='fs-3'>{item.product.title}</H3>
-                              <p>{item.product.description}</p>
-                              <p>Price {item.product.price_per_kg}</p>
-                              <p>Stocks: {item.product.stocks_per_kg}</p>
-                              <p>Sub Total {item.total_price}</p>
+                            <div
+                              className='flex-shrink-1'
+                              style={{ width: '150px' }}
+                            >
+                              <img
+                                src={
+                                  PUBLIC_URL + 'images/' + item.product.image
+                                }
+                                alt={
+                                  item.product.image ? item.product.image : ''
+                                }
+                                className='w-100'
+                                style={{
+                                  height: '150px',
+                                  objectFit: 'cover',
+                                }}
+                              />
                             </div>
-                            <div className='flex-shrink-0 align-self-end'>
-                              <div className='d-flex align-items-end'>
-                                <Button
-                                  variant='primary'
-                                  className='w-25 py-2 px-0 me-2'
-                                  onClick={decrement}
-                                >
-                                  -
-                                </Button>
-                                <input
-                                  type='text'
-                                  className='w-25 py-1 text-center'
-                                  min='0'
-                                  value={count}
-                                  disabled
-                                />
-                                <Button
-                                  variant='primary'
-                                  className='w-25 py-2 px-0 ms-2 me-3'
-                                  onClick={increment}
-                                >
-                                  +
-                                </Button>
+                            <div className='flex-grow-1 d-flex justify-content-between ms-3'>
+                              <div>
+                                <H3 className='fs-3 mb-1'>
+                                  {item.product.title}
+                                </H3>
+                                <p>Description: {item.product.description}</p>
+                                <div className='d-flex flex-column mt-4 pt-3'>
+                                  <span>
+                                    Price: Php {item.product.price_per_kg}
+                                  </span>
+                                  <span>
+                                    Available Stocks / (kg):{' '}
+                                    {item.product.stocks_per_kg}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className='flex-shrink-0 align-self-end'>
+                                <div className='d-flex align-items-end'>
+                                  <Button
+                                    variant='primary'
+                                    className='w-25 py-2 px-0 me-2 rounded'
+                                    onClick={() => decrement(item.id)}
+                                    disabled={item.quantity == 1}
+                                  >
+                                    -
+                                  </Button>
+                                  <input
+                                    type='text'
+                                    className='w-25 py-1 text-center'
+                                    value={item.quantity}
+                                    disabled
+                                  />
+                                  <Button
+                                    variant='primary'
+                                    className='w-25 py-2 px-0 ms-2 me-3 rounded'
+                                    onClick={() => increment(item.id)}
+                                    disabled={
+                                      item.product.stocks_per_kg <=
+                                      item.quantity
+                                    }
+                                  >
+                                    +
+                                  </Button>
 
-                                <Button
-                                  variant='danger'
-                                  className='me-2'
-                                  onClick={() =>
-                                    removeFromCart(item.order_number)
-                                  }
-                                >
-                                  Remove
-                                </Button>
+                                  <Button
+                                    variant='danger'
+                                    className='me-2 rounded'
+                                    onClick={() => removeFromCart(item.id)}
+                                  >
+                                    Remove
+                                  </Button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </Card>
-                      ) : (
-                        ''
+                          </Card>
+                        ) : (
+                          ''
+                        )
                       )
-                    )
-                  : 'No data'}
+                    : 'No data'}
+                </div>
+                {data.length > 0 && (
+                  <Card className='mt-2 w-100 align-self-baseline'>
+                    <Form
+                      className='mt-2 p-2 px-3'
+                      onSubmit={() => {
+                        axiosClient
+                          .get('/orders/user-id')
+                          .then((res) => console.log(res.data))
+                          .catch((e) => console.log(e));
+                      }}
+                    >
+                      <h3>Summary Details</h3>
+                      <p> Sub total: </p>
+                      <div className='text-end'>
+                        <Button
+                          variant='warning'
+                          className='text-light rounded'
+                          onClick={() => {
+                            axiosClient
+                              .post('', {})
+                              .then((res) => console.log(res))
+                              .catch((e) => console.log(e));
+                          }}
+                        >
+                          Place Order
+                        </Button>
+                      </div>
+                    </Form>
+                  </Card>
+                )}
               </div>
             </div>
 

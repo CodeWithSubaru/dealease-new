@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -22,7 +23,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Order::with('product')->where('order_by', auth()->id())->get();
+        return Cart::with('product', 'product.user', 'user.user_detail')->where('order_by', auth()->id())->get();
+    }
+
+    public function fetchCartGroupById()
+    {
+        return Cart::with('product', 'product.user', 'user.user_detail')->where('order_by', auth()->id())->get();
     }
 
     /**
@@ -32,21 +38,21 @@ class OrderController extends Controller
     {
 
         // generates order number
-        $lastOrderItem = Order::all()->last();
-
+        $lastOrderItem = Cart::all()->last();
 
         $product = Product::find($request->id);
 
         // find and validate of product already exists
-        $order = Order::where('order_by', auth()->id())->where('product_id', $request->id)->first();
+        $order = Cart::where('order_by', auth()->id())->where('product_id', $request->id)->first();
 
         if ($order) {
             return response()->json(['status' => 'Item already added to cart'], 422);
         }
 
         $generatedIdSample = $lastOrderItem ? $lastOrderItem->order_number + 1 : 1;
-        Order::create([
-            'order_number' => $generatedIdSample,
+
+        Cart::create([
+            // 'order_number' => $generatedIdSample,
             'product_id' => $product->id,
             'order_by' => auth()->id(),
             'weight' => $product->weight ? 0 : 1,
@@ -72,12 +78,43 @@ class OrderController extends Controller
         //
     }
 
+    public function increment($id)
+    {
+
+        $cart = Cart::with('product')->find($id);
+
+        if ($cart->quantity >= $cart->product->stocks_per_kg) {
+            return;
+        }
+
+        $cart->update([
+            'quantity' => $cart->quantity + 1,
+        ]);
+
+        $cart->update([
+            'total_price' => ($cart->product->price_per_kg  * $cart->quantity)
+        ]);
+    }
+
+    public function decrement($id)
+    {
+        $cart = Cart::with('product')->find($id);
+        $cart->update([
+            'quantity' => $cart->quantity - 1,
+        ]);
+
+        $cart->update([
+            'total_price' => ($cart->product->price_per_kg  * $cart->quantity)
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $order = Order::find($id);
-        $order->delete();
+        $cart = Cart::find($id);
+        $cart->quantity = 0;
+        $cart->delete();
     }
 }

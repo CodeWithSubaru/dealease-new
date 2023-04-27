@@ -61,7 +61,7 @@ export function AuthBuyerLayout() {
               className='badge rounded-pill text-bg-danger position-relative'
               style={{ top: '-5px' }}
             >
-              {countItemsInCart}
+              {countItemsInCart === 9 ? '9+' : countItemsInCart}
             </span>
           </Link>
         </li>

@@ -14,7 +14,7 @@ class ProductContoller extends Controller
     // display publicly
     public function getProductsForPublic()
     {
-        $product = Product::all();
+        $product = Product::with('user')->get();
         return $product;
     }
 
@@ -111,6 +111,5 @@ class ProductContoller extends Controller
     {
         $product = Product::find($id)->delete();
         return response()->json(['message' => 'Deleted Successfully'], 200);
-
     }
 }

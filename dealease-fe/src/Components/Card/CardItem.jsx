@@ -10,6 +10,7 @@ import { Edit } from '../Modal/Editmodal';
 import { MydModalWithGrid } from '../Modal/Signupmoda';
 import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+import API_URI from '../../api/public_url';
 
 export function CardItem(props) {
   const { token } = useAuthContext();
@@ -34,6 +35,22 @@ export function CardItem(props) {
       });
   }
 
+  function dateFormat(date) {
+    const convertedDate = new Date(date);
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+
+    const formattedDate = convertedDate.toLocaleDateString('en-US', options);
+    return formattedDate;
+  }
+
   return (
     <>
       <div className=''>
@@ -43,6 +60,7 @@ export function CardItem(props) {
           </figure>
           <div className='cards_item_info'>
             <h5 className='cards_item_text'>{props.text}</h5>
+            <div className='text-center mt-2'></div>
             {userType === 'Seller' || userType === 'Buyer_seller2' ? (
               <Container>
                 <Row>

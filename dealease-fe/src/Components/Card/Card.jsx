@@ -65,7 +65,9 @@ export function Card() {
                         key={data}
                         id={product.id}
                         src={'http://localhost:8000/images/' + product.image}
+                        createdAt={product.created_at}
                         text={product.description}
+                        seller={product.user}
                         label='Sold'
                         button='Add to cart'
                         editbutton='Edit'
