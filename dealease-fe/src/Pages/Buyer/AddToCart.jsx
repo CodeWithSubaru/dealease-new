@@ -183,7 +183,7 @@ export function AddToCart() {
                       {orderHistoryBySellerId.map((item, index) => (
                         <p key={index}>
                           {console.log(index, item[index].total_price)}
-                          Total Amount:
+                          Sub Total:
                           {calculateTotalPrice(item[index].total_price)}
                         </p>
                       ))}
