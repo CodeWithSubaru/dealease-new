@@ -82,7 +82,7 @@ export const Home = () => {
             <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>
-        <main className='w-100'>
+        <main className='w-100 '>
           <button className='btn btn-dark' to={'/recharge'}>
             Recharge
           </button>

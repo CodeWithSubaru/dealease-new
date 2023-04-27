@@ -63,11 +63,8 @@ export function WithdrawBuyer() {
         </Sidebar>
         <main className='w-100'>
           <div style={{ height: '80vh' }}>
-            <Container>
-              <button onClick={() => collapseSidebar()}>Collapse</button>
-              <button className='btn btn-dark'>Recharge</button>
-              <Withdraw />
-            </Container>
+            <button className='btn btn-dark'>Recharge</button>
+            <Withdraw />
           </div>
         </main>
         <Footer />

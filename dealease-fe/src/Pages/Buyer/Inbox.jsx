@@ -99,7 +99,6 @@ export const InboxBuyer = () => {
           </Menu>
         </Sidebar>
         <main className='w-100'>
-          <button onClick={() => collapseSidebar()}>Collapse</button>
           <div className='inbox-container' style={{ height: '80vh' }}>
             <div className='inbox-header'>
               <Container>
