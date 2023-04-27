@@ -36,7 +36,7 @@ export function AuthBuyerLayout() {
     <>
       <Header>
         {/* Modified Solla */}
-        <li className='nav-item'>
+        {/* <li className='nav-item'>
           <Link to='/' className='nav-links'>
             Home
           </Link>
@@ -50,7 +50,7 @@ export function AuthBuyerLayout() {
           <Link to='/withdraw' className='nav-links'>
             Withdraw
           </Link>
-        </li>
+        </li> */}
         <li className='nav-item'>
           <Link to='/transactions' className='nav-links'>
             Transactions

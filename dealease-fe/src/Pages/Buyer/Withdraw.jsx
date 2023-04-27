@@ -62,7 +62,7 @@ export function WithdrawBuyer() {
           </Menu>
         </Sidebar>
         <main className='w-100'>
-          <div style={{ height: '80vh' }}>
+          <div style={{ height: '100vh' }}>
             <button className='btn btn-dark'>Recharge</button>
             <Withdraw />
           </div>
