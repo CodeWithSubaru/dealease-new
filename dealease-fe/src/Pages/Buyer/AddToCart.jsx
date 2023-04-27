@@ -42,6 +42,7 @@ export function AddToCart() {
     axiosClient.delete('/orders/' + id).then((res) => {
       fetchOrders();
       fetchCountInItemsCart();
+      fetchCartHistoryBySellerId();
     });
   }
 
@@ -182,9 +183,12 @@ export function AddToCart() {
                       {console.log(orderHistoryBySellerId)}
                       {orderHistoryBySellerId.map((item, index) => (
                         <p key={index}>
-                          {console.log(index, item[index].total_price)}
-                          Sub Total:
-                          {calculateTotalPrice(item[index].total_price)}
+                          {console.log(index.length)}
+                          {item.length} item{item.length > 1 && "'s"} Sub Total:{' '}
+                          {calculateTotalPrice(
+                            item[index] ? item[index].total_price : ''
+                          )}{' '}
+                          {/* {item[index] ? item[index].product.title : ''} */}
                         </p>
                       ))}
                       <div className='text-end'>

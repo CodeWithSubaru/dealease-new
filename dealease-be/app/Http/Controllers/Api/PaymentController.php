@@ -62,7 +62,7 @@ class PaymentController extends Controller
                     "line_items" => [
                         [
                             "currency" => "PHP",
-                            "amount" => 10000,
+                            "amount" => (int) $amount,
                             "description" => "withdraw",
                             "name" => "Withdraw",
                             "quantity" => 1
