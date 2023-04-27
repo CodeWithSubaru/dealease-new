@@ -7,6 +7,7 @@ import { LoginAdmin } from './Pages/Auth/LoginAdmin';
 
 // Buyer Components
 import { AuthBuyerLayout } from './Layouts/AuthBuyerLayout';
+import { Recharge } from './Pages/Buyer/Recharge';
 import { ChangePasswordBuyer } from './Pages/Buyer/ChangePassword';
 import { Home } from './Pages/Buyer/Home';
 import { InboxBuyer } from './Pages/Buyer/Inbox';
@@ -38,7 +39,7 @@ import { TransactionsAdmin } from './Pages/Admin/Transactions';
 
 // solla
 import { Mainpage } from './Pages';
-import { Recharge } from './Pages/Recharge';
+// import { Recharge } from './Pages/Recharge';
 // ramos
 import { Test } from './Components/Header/Header';
 
@@ -70,6 +71,7 @@ function App() {
             <Route path='/profile' element={<ProfileBuyer />} />
             <Route path='/change-password' element={<ChangePasswordBuyer />} />
             <Route path='/donation' element={<DonationBuyer />} />
+            <Route path='/recharge' element={<Recharge />} />
             <Route path='/transactions' element={<TransactionsBuyer />} />
             <Route path='/add-to-cart' element={<AddToCart />} />
             <Route path='/withdraw' element={<WithdrawBuyer />} />

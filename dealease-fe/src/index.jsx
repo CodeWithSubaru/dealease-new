@@ -8,6 +8,7 @@ import { AddressProvider } from './Hooks/Context/AddressContext';
 import App from './App';
 import { ProductProvider } from './Hooks/Context/ProductContext';
 import { AddToCartProvider } from './Hooks/Context/AddToCartContext';
+import { ProSidebarProvider } from 'react-pro-sidebar';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <AddressProvider>
             <ProductProvider>
               <AddToCartProvider>
-                <App />
+                <ProSidebarProvider>
+                  <App />
+                </ProSidebarProvider>
               </AddToCartProvider>
             </ProductProvider>
           </AddressProvider>

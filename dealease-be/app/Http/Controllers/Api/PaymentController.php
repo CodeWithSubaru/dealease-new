@@ -45,6 +45,29 @@ class PaymentController extends Controller
         // return $this->payment($authUser->first_name, $authUser->email, $request->shell_coin_amount, $authUser->user_details->contact_number);
     }
 
+    public function recharge(Request $request) {
+        $typeOfWallet = !$request->wallet ?
+        BuyerWallet::class :
+        SellerWallet::class;
+
+        $wallet = $typeOfWallet::where('user_id', auth()->id());
+
+        $request->validate([
+            'amount_coin_shell' => [
+                'required', 'numeric', 'max:' . $wallet->get()[0]->amount_coin_shell . '',
+            ],
+        ]);
+
+        // return $request->all();
+        PaymentTransaction::create([
+            'user_id' => auth()->id(),
+            'payment_status' => 1,
+            'payment_description' => auth()->user()->first_name . " request to Recharge for " . $request->amount_coin_shell . ' Shells',
+            'payment_total_amount' => $request->amount_coin_shell,
+        ]);
+
+    }
+    
     public function payment($firstName, $email, $amount, $contactNumber)
     {
         $client = new \GuzzleHttp\Client();

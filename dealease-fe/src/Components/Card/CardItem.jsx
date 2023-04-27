@@ -5,7 +5,13 @@ import { Row, Col, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Modal, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faImage,
+  faEdit,
+  faTrash,
+  faCartShopping,
+  faCartPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { Edit } from '../Modal/Editmodal';
 import { MydModalWithGrid } from '../Modal/Signupmoda';
 import axiosClient from '../../api/axios';
@@ -101,6 +107,7 @@ export function CardItem(props) {
                   }
                 >
                   {props.button}
+                  <FontAwesomeIcon icon={faCartPlus} className='ms-1' />
                 </button>
               </>
             )}

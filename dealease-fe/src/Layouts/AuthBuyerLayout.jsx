@@ -10,7 +10,9 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { EmailVerification } from '../Pages/Auth/EmailVerification';
 import useAddToCartContext from '../Hooks/Context/AddToCartContext';
-
+import Image from 'react-bootstrap/Image';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthBuyerLayout() {
@@ -34,7 +36,7 @@ export function AuthBuyerLayout() {
     <>
       <Header>
         {/* Modified Solla */}
-        <li className='nav-item'>
+        {/* <li className='nav-item'>
           <Link to='/' className='nav-links'>
             Home
           </Link>
@@ -48,7 +50,7 @@ export function AuthBuyerLayout() {
           <Link to='/withdraw' className='nav-links'>
             Withdraw
           </Link>
-        </li>
+        </li> */}
         <li className='nav-item'>
           <Link to='/transactions' className='nav-links'>
             Transactions
@@ -56,7 +58,7 @@ export function AuthBuyerLayout() {
         </li>
         <li className='nav-item'>
           <Link to='/add-to-cart' className='nav-links'>
-            Cart{' '}
+            <FontAwesomeIcon icon={faCartShopping} className='navs-icon' />{' '}
             <span
               className='badge rounded-pill text-bg-danger position-relative'
               style={{ top: '-5px' }}
@@ -65,13 +67,21 @@ export function AuthBuyerLayout() {
             </span>
           </Link>
         </li>
+        <div class='outer'>
+          <div class='inner'></div>
+        </div>
         <li className='nav-item'>
           <p className='nav-links'>
+            <img
+              src='/images/seashell.png'
+              className='me-2'
+              style={{ height: '30px' }}
+            ></img>
             {user.buyer_wallet ? user.buyer_wallet.shell_coin_amount : null}
           </p>
         </li>
         <li className='nav-item'>
-          <div className='div-dropdown'>
+          <div className='div-dropdown me-3'>
             {user ? (
               <>
                 <Dropdown as={ButtonGroup} className='dropdown-button'>

@@ -33,6 +33,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
+Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
+Route::post('/recharge', [PaymentController::class, 'recharge']);
+Route::post('/payment', [PaymentController::class, 'payment']);
+Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
+    ->middleware('throttle:5,1');
 
 
 // Seller Route

@@ -35,13 +35,13 @@ export const TableComponent = ({ header, body, button }) => {
           lg={4}
           className='d-flex flex-col justify-content-end align-items-end mb-2'
         >
-          <Filter />
+          <Filter placeholder='Search...'></Filter>
         </Col>
         <Col
           xs={12}
           sm={12}
           lg={8}
-          className='d-flex flex-col justify-content-end align-items-end'
+          className='d-flex flex-col justify-content-end align-items-end mb-2'
         >
           {button}
         </Col>

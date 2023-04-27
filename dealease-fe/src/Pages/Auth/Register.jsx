@@ -108,7 +108,7 @@ export function Register() {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
     } else {
-      setImage('../../assets/img/default_image.jpg');
+      setImage('../assets/img/default_image.jpg');
     }
   };
 
@@ -240,7 +240,7 @@ export function Register() {
               </Col>
             </Row>
 
-            <Row className='px-4 pb-4'>
+            <Row className='px-4'>
               <Col lg={6}>
                 <div>
                   <div className='mt-2 text-white reg-label'> Birthday </div>
@@ -322,10 +322,10 @@ export function Register() {
           <div className='address-details'>
             {/* <h3>Address Details</h3> */}
             {/* <hr /> */}
-            <Row className='px-4 pt-2'>
+            <Row className='px-4'>
               <Col lg={6}>
                 <div>
-                  <div className='text-white reg-label'>Region</div>
+                  <div className='mt-2 text-white reg-label'>Region</div>
                   <div>
                     <select
                       onChange={province}
@@ -351,7 +351,7 @@ export function Register() {
               </Col>
               <Col lg={6}>
                 <div>
-                  <div className='text-white reg-label'>Province</div>
+                  <div className='mt-2 text-white reg-label'>Province</div>
                   <div>
                     <select
                       onChange={city}
@@ -432,7 +432,7 @@ export function Register() {
                 </small>
               </Col>
             </Row>
-            <Row className='px-4 pb-4'>
+            <Row className='px-4'>
               <Col>
                 <div>
                   <div className='mt-2 text-white reg-label'>Street</div>

@@ -1,7 +1,7 @@
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
-import { Footer } from '../../Components/Footer/footer';
+import { Footer } from '../../Components/Footer/Footer';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
