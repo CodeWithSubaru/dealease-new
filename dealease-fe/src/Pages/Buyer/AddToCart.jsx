@@ -12,6 +12,7 @@ import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 export function AddToCart() {
   const [data, setData] = useState([]);
   const [orderHistoryBySellerId, setOrderHistoryBySellerId] = useState([]);
+  const [total, setTotal] = useState(0);
   const { fetchCountInItemsCart } = useAddToCartContext();
 
   function fetchCartHistoryBySellerId() {
@@ -178,14 +179,13 @@ export function AddToCart() {
                       }}
                     >
                       <h3>Summary Details</h3>
-                      {orderHistoryBySellerId.map((item) =>
-                        item.map((cartItem, index) => (
-                          <p key={index}>
-                            Sub total:
-                            {calculateTotalPrice(cartItem.total_price)}
-                          </p>
-                        ))
-                      )}
+                      {console.log(orderHistoryBySellerId)}
+                      {orderHistoryBySellerId.map((item, index) => (
+                        <p key={index}>
+                          Total Amount:
+                          {calculateTotalPrice(item[index].total_price)}
+                        </p>
+                      ))}
                       <div className='text-end'>
                         <Button
                           variant='warning'
