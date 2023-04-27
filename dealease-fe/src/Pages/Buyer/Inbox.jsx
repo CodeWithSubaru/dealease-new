@@ -5,6 +5,7 @@ import { Button, Row, Col, Container, Badge, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowAltCircleLeft,
+  faBars,
   faTable,
 } from '@fortawesome/free-solid-svg-icons';
 import { Footer } from '../../Components/Footer/Footer';
@@ -78,8 +79,8 @@ export const InboxBuyer = () => {
               },
             }}
           >
-            <button className='btn btn-dark' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faTable} className='navs-icon' />
+            <button className='btn ' onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className='navs-icon' />
             </button>
 
             <MenuItem
@@ -91,10 +92,15 @@ export const InboxBuyer = () => {
               Home
             </MenuItem>
             <SubMenu label='Transactions'>
-              <MenuItem> Withdraw </MenuItem>
-              <MenuItem> Recharge </MenuItem>
+              <MenuItem component={<Link to='/withdraw' />}>
+                {' '}
+                Withdraw{' '}
+              </MenuItem>
+              <MenuItem component={<Link to='/recharge' />}>
+                {' '}
+                Recharge{' '}
+              </MenuItem>
             </SubMenu>
-            <MenuItem component={<Link to='/withdraw' />}> Withdraw</MenuItem>
             <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>
