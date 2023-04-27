@@ -120,8 +120,8 @@ export function AddToCart() {
                                     Price: Php {item.product.price_per_kg}
                                   </span>
                                   <span>
-                                    Available Stocks / (kg):{' '}
-                                    {item.product.stocks_per_kg}
+                                    Available Stocks :{' '}
+                                    {item.product.stocks_per_kg} kg
                                   </span>
                                 </div>
                               </div>
@@ -182,6 +182,7 @@ export function AddToCart() {
                       {console.log(orderHistoryBySellerId)}
                       {orderHistoryBySellerId.map((item, index) => (
                         <p key={index}>
+                          {console.log(index, item[index].total_price)}
                           Total Amount:
                           {calculateTotalPrice(item[index].total_price)}
                         </p>
