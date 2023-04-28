@@ -63,6 +63,11 @@ class OrderController extends Controller
         return response()->json(['status' => 'Item added to cart'], 200);
     }
 
+    public function FunctionName()
+    {
+        # code...
+    }
+
     /**
      * Display the specified resource.
      */

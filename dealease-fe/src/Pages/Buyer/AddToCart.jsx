@@ -182,9 +182,6 @@ export function AddToCart() {
                                     <H3 className='fs-3'>
                                       {item.product.title}
                                     </H3>
-                                    <p className='mb-0'>
-                                      Description: {item.product.description}
-                                    </p>
                                     <div className='d-flex flex-column'>
                                       <span>
                                         Price: Php {item.product.price_per_kg}
@@ -235,7 +232,7 @@ export function AddToCart() {
                                       >
                                         <FontAwesomeIcon
                                           icon={faClose}
-                                          className='fw-bold'
+                                          className='text-center'
                                         />
                                       </span>
                                     </div>
@@ -249,29 +246,37 @@ export function AddToCart() {
                         : 'No data'}
                     </div>
                     {data.length > 0 && (
-                      <Card className='mt-2 w-50 align-self-baseline'>
+                      <Card className='mt-2 w-50 align-self-baseline '>
                         <Form
-                          className='mt-2 p-2 px-3'
+                          className=' mt-2 p-2 px-3'
                           onSubmit={(e) => {
                             e.preventDefault();
-                            axiosClient.post('/orders/').then().catch();
+                            axiosClient
+                              .post('/orders/')
+                              .then((res) => console.log(res))
+                              .catch((e) => console.log(e));
                           }}
                         >
-                          <h3>Summary Details</h3>
+                          <h3 className='mb-3'>Summary Details</h3>
                           {console.log(orderHistoryBySellerId)}
                           {orderHistoryBySellerId.map((item, index) => (
                             <p key={index}>
                               {console.log(index, item[index]?.total_price)}
-                              Sub Total:
+                              {item.length} items Sub Total:
                               {calculateTotalPrice(
                                 item[index] ? item[index].total_price : 0
                               )}
                             </p>
                           ))}
-                          <div className='text-end'>
+                          <hr />
+                          <p className='fs-4 fw-bold text-end'>
+                            {' '}
+                            Grand Total: 0
+                          </p>
+                          <div className='d-flex text-end'>
                             <Button
                               variant='warning'
-                              className='text-light rounded'
+                              className='text-light rounded flex-grow-1 '
                               type='submit'
                             >
                               Place Order
