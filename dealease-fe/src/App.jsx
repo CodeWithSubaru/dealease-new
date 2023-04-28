@@ -13,7 +13,6 @@ import { InboxBuyer } from './Pages/Buyer/Inbox';
 import { MessageBuyer } from './Pages/Buyer/Message';
 import { ProfileBuyer } from './Pages/Buyer/Profile';
 import { DonationBuyer } from './Pages/Buyer/Donation';
-import { WithdrawBuyer } from './Pages/Buyer/Withdraw';
 
 // Seller Components
 import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
@@ -24,6 +23,7 @@ import { InboxSeller } from './Pages/Seller/Inbox';
 import { MessageSeller } from './Pages/Seller/Message';
 import { ProfileSeller } from './Pages/Seller/Profile';
 import { DonationSeller } from './Pages/Seller/Donation';
+import { WithdrawSeller } from './Pages/Seller/Withdraw';
 
 // Admin Components
 import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
@@ -38,7 +38,7 @@ import { TransactionsAdmin } from './Pages/Admin/Transactions';
 
 // solla
 import { Mainpage } from './Pages';
-import { Recharge } from './Pages/Recharge';
+import { Recharge } from './Pages/Buyer/Recharge';
 // ramos
 import { Test } from './Components/Header/Header';
 
@@ -67,13 +67,16 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/inbox' element={<InboxBuyer />} />
             <Route path='/message/:message_id' element={<MessageBuyer />} />
+            <Route path='/recharge' element={<Recharge />} />
+            <Route path='/transactions' element={<TransactionsBuyer />} />
+            <Route path='/add-to-cart' element={<AddToCart />} />
             <Route path='/profile' element={<ProfileBuyer />} />
             <Route path='/change-password' element={<ChangePasswordBuyer />} />
             <Route path='/donation' element={<DonationBuyer />} />
             <Route path='/transactions' element={<TransactionsBuyer />} />
             <Route path='/add-to-cart' element={<AddToCart />} />
-            <Route path='/withdraw' element={<WithdrawBuyer />} />
           </Route>
+
           {/* Seller Route */}
           <Route element={<AuthSellerLayout />}>
             <Route path='/seller/home' element={<HomeSeller />} />
@@ -89,6 +92,7 @@ function App() {
               element={<ChangePasswordSeller />}
             />
             <Route path='/seller/donation' element={<DonationSeller />} />
+            <Route path='/seller/withdraw' element={<WithdrawSeller />} />
           </Route>
           {/* Admin Route */}
           <Route element={<AuthAdminLayout />}>
@@ -109,7 +113,6 @@ function App() {
           </Route>
           <Route element={<GuestLayout />}>
             {/*Solla */}
-            <Route path='/recharge' element={<Recharge />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
             <Route path='/home' element={<Mainpage />} />

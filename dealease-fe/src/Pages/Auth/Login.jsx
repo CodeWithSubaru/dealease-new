@@ -22,6 +22,7 @@ export const Login = () => {
     errors,
     setErrors,
     isEmailVerified,
+    isLogin,
     emailVerificationMessage,
   } = useAuthContext();
 
@@ -117,6 +118,7 @@ export const Login = () => {
                 type='submit'
                 className='btn btn-submit'
                 form='loginBuyer'
+                disabled={isLogin}
               >
                 Sign in
               </button>

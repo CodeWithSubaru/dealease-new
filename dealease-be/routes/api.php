@@ -33,6 +33,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
+Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
+Route::post('/recharge', [PaymentController::class, 'recharge']);
+Route::post('/payment', [PaymentController::class, 'payment']);
+Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
+    ->middleware('throttle:5,1');
 
 
 // Seller Route
@@ -81,5 +86,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
     Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
     Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
+    Route::get('/admin/transactions/show/transactions/{payment_status}', [AdminPaymentController::class, 'index']);
     Route::apiResource('/admin/transactions', AdminPaymentController::class);
+    Route::put('/admin/accept/{id}', [AdminPaymentController::class, 'accept']);
 });

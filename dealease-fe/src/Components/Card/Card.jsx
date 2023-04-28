@@ -69,7 +69,7 @@ export function Card() {
                         text={product.description}
                         seller={product.user}
                         label='Sold'
-                        button='Add to cart'
+                        button='Add to cart '
                         editbutton='Edit'
                         delbutton='Delete'
                         path='/services'

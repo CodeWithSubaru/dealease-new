@@ -25,11 +25,6 @@ export function RegisterModal(props) {
       aria-labelledby='contained-modal-title-vcenter'
     >
       <div className='boxregister'>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <h1 className='text-white fw-bold'>Register</h1>
-          </Modal.Title>
-        </Modal.Header>{' '}
         <i></i>
         <Modal.Body>
           <Container>
@@ -40,11 +35,7 @@ export function RegisterModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <div className='d-flex mx-2 w-100 justify-content-center mx-5'>
-            <Button
-              variant='light'
-              className='btn-close-footer me-3'
-              onHideRegister={() => setRegisterModalShow(false)}
-            >
+            <Button variant='light' className='btn-close-footer me-3' onHide>
               Cancel
             </Button>
             <Button

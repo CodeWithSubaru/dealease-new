@@ -11,11 +11,10 @@ class AdminPaymentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($payment_status)
     {
-        return PaymentTransaction::with('user')->where('payment_status', 1)->latest('created_at')->get();
+        return PaymentTransaction::with('user')->where('payment_status', $payment_status)->latest('created_at')->get();
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -29,7 +28,6 @@ class AdminPaymentController extends Controller
      */
     public function show(string $id)
     {
-        //
     }
 
     /**
@@ -39,7 +37,12 @@ class AdminPaymentController extends Controller
     {
         //
     }
-
+    // Accept withdraw Shell to Peso
+    public function accept($id)
+    {
+        PaymentTransaction::find($id)->update(['payment_status' => 2]);
+        return response()->json(['status' => 'Transaction successfully'], 200);
+    }
     /**
      * Remove the specified resource from storage.
      */

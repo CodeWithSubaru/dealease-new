@@ -407,19 +407,17 @@ label {
     border-radius: 15px;
     width: 100%;
     top: 0;
-    left: 50%;
-    transform: translate(-50%, -30%);
     position: absolute;
     padding: 10px 10px;
     display: inline-block;
   }
 
   .boxregister i {
-    z-index: -1;
+    // z-index: -1;
     left: 0;
     top: 100%;
     transform: translateY(-30%);
-    width: 90%;
+    width: 100%;
     height: 200px;
     background-color: inherit;
     box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
@@ -432,11 +430,8 @@ label {
     content: '';
     position: absolute;
     width: 300%;
-    height: 170%;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -75%);
-    z-index: -1;
+    height: 250%;
+    // z-index: -1;
   }
   // .modal-content {
   //   width: 90%;

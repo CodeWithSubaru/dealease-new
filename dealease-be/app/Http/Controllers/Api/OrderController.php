@@ -63,6 +63,11 @@ class OrderController extends Controller
         return response()->json(['status' => 'Item added to cart'], 200);
     }
 
+    public function FunctionName()
+    {
+        # code...
+    }
+
     /**
      * Display the specified resource.
      */
@@ -100,6 +105,9 @@ class OrderController extends Controller
     public function decrement($id)
     {
         $cart = Cart::with('product')->find($id);
+        if ($cart->quantity == 1) {
+            return;
+        }
         $cart->update([
             'quantity' => $cart->quantity - 1,
         ]);

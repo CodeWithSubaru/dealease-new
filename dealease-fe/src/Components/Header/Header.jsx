@@ -88,7 +88,7 @@ export function Header(props) {
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
           {!token ? (
             <>
-              <li className='nav-item'>
+              <li className='nav-item '>
                 <Link to='/' className='nav-links' onClick={closeMobileMenu}>
                   <FontAwesomeIcon icon={faHouse} className='navs-icon' />
                   Home

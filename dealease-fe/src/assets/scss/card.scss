@@ -1,4 +1,67 @@
-backgrnd {
+// for recharge
+.recharge-card {
+  flex-direction: row;
+  align-items: center;
+}
+.card-img-wave {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-image: url('/images/wave.png');
+}
+.recharge-card-img {
+  width: 40%;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: calc(0.25rem - 1px);
+}
+.recharge-card-wave {
+  position: absolute;
+  width: 40%;
+  object-fit: cover;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: calc(0.25rem - 1px);
+}
+
+.recharge-card-title {
+  font-weight: bold;
+}
+@media only screen and (max-width: 768px) {
+  .recharge-card-img {
+    height: 300px;
+    width: 50%;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .recharge-card {
+    flex-direction: column;
+    align-items: center;
+  }
+  a {
+    display: none;
+  }
+  .recharge-card-body {
+    padding: 0.5em 1.2em;
+  }
+  .recharge-card-body .recharge-card-text {
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .recharge-card-img {
+    width: 70%;
+  }
+  .recharge-card {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .recharge-card-img {
+    width: 100%;
+  }
+}
+// for recharge
+.background {
   background-color: #1f98f4;
   height: 20px;
   margin-top: 30px;
