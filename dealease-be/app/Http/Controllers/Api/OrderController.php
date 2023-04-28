@@ -23,7 +23,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Cart::with('product', 'product.user', 'user.user_detail')->where('order_by', auth()->id())->get();
+        return Cart::with('product', 'product.user', 'product.user.user_details')->where('order_by', auth()->id())->get();
     }
 
     public function fetchCartGroupById()

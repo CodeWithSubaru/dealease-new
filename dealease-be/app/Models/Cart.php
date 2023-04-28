@@ -21,8 +21,8 @@ class Cart extends Model
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
-    public function user_detail()
+    public function user_details()
     {
-        return $this->belongsTo(User::class, 'user_details_id', 'user_details_id');
+        return $this->belongsTo(UserDetail::class, 'user_details_id', 'user_details_id');
     }
 }

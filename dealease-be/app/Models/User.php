@@ -44,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function user_details()
     {
-        return  $this->hasOne(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
+        return  $this->belongsTo(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
     }
 
     public function buyerWallet()

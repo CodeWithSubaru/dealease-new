@@ -158,6 +158,7 @@ export function AddToCart() {
                     Add More
                   </Link>
                   <div className='d-flex'>
+                    {console.log(cartHistoryBySellerId)}
                     <div className='d-flex flex-wrap me-2'>
                       {cartHistoryBySellerId.length > 0 ? (
                         cartHistoryBySellerId.map((item, index) => {
