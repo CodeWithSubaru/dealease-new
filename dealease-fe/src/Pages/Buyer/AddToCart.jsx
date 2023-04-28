@@ -17,6 +17,7 @@ import {
   faSheqel,
   faTable,
   faBars,
+  faClose,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   Sidebar,
@@ -69,6 +70,7 @@ export function AddToCart() {
       .get('/orders/increment/' + id)
       .then((res) => {
         fetchOrders();
+        fetchCartHistoryBySellerId();
       })
       .catch((e) => console.log(e));
   }
@@ -78,6 +80,7 @@ export function AddToCart() {
       .get('/orders/decrement/' + id)
       .then((res) => {
         fetchOrders();
+        fetchCartHistoryBySellerId();
       })
       .catch((e) => console.log(e));
   }
@@ -149,7 +152,9 @@ export function AddToCart() {
               <div className='p-5'>
                 <H1>Add to Cart</H1>
                 <div className='primary-bg rounded p-5'>
-                  <Link to='/'>Choose another product</Link>
+                  <Link className='btn btn-primary rounded' to='/'>
+                    Choose another product
+                  </Link>
                   <div className='d-flex'>
                     <div className='d-flex flex-wrap me-2'>
                       {data && data.length > 0
@@ -167,19 +172,20 @@ export function AddToCart() {
                                     item.product.image ? item.product.image : ''
                                   }
                                   style={{
-                                    height: '150px',
+                                    height: '120px',
                                     objectFit: 'cover',
                                   }}
+                                  className='rounded'
                                 />
                                 <div className='flex-grow-1 d-flex justify-content-between ms-3'>
                                   <div>
-                                    <H3 className='fs-3 mb-1'>
+                                    <H3 className='fs-3'>
                                       {item.product.title}
                                     </H3>
-                                    <p>
+                                    <p className='mb-0'>
                                       Description: {item.product.description}
                                     </p>
-                                    <div className='d-flex flex-column mt-4 pt-3'>
+                                    <div className='d-flex flex-column'>
                                       <span>
                                         Price: Php {item.product.price_per_kg}
                                       </span>
@@ -189,8 +195,8 @@ export function AddToCart() {
                                       </span>
                                     </div>
                                   </div>
-                                  <div className='flex-shrink-0 align-self-end'>
-                                    <div className='d-flex align-items-end'>
+                                  <div className='flex-shrink-0 align-self-end justify-content-end'>
+                                    <div className='d-flex align-items-end justify-content-end'>
                                       <Button
                                         variant='primary'
                                         className='w-25 py-2 px-0 me-2 rounded'
@@ -207,7 +213,7 @@ export function AddToCart() {
                                       />
                                       <Button
                                         variant='primary'
-                                        className='w-25 py-2 px-0 ms-2 me-3 rounded'
+                                        className='w-25 py-2 px-0 ms-2 rounded'
                                         onClick={() => increment(item.id)}
                                         disabled={
                                           item.product.stocks_per_kg <=
@@ -217,13 +223,21 @@ export function AddToCart() {
                                         +
                                       </Button>
 
-                                      <Button
-                                        variant='danger'
-                                        className='me-2 rounded'
+                                      <span
+                                        className='btn btn-danger rounded-circle d-flex justify-content-center align-items-center p-1 position-absolute'
+                                        style={{
+                                          width: '25px',
+                                          height: '25px',
+                                          top: '-12px',
+                                          right: '-8px',
+                                        }}
                                         onClick={() => removeFromCart(item.id)}
                                       >
-                                        Remove
-                                      </Button>
+                                        <FontAwesomeIcon
+                                          icon={faClose}
+                                          className='fw-bold'
+                                        />
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
@@ -235,20 +249,23 @@ export function AddToCart() {
                         : 'No data'}
                     </div>
                     {data.length > 0 && (
-                      <Card className='mt-2 w-100 align-self-baseline'>
+                      <Card className='mt-2 w-50 align-self-baseline'>
                         <Form
                           className='mt-2 p-2 px-3'
                           onSubmit={(e) => {
                             e.preventDefault();
+                            axiosClient.post('/orders/').then().catch();
                           }}
                         >
                           <h3>Summary Details</h3>
                           {console.log(orderHistoryBySellerId)}
                           {orderHistoryBySellerId.map((item, index) => (
                             <p key={index}>
-                              {console.log(index, item[index].total_price)}
+                              {console.log(index, item[index]?.total_price)}
                               Sub Total:
-                              {calculateTotalPrice(item[index].total_price)}
+                              {calculateTotalPrice(
+                                item[index] ? item[index].total_price : 0
+                              )}
                             </p>
                           ))}
                           <div className='text-end'>
