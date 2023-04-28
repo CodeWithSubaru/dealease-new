@@ -39,15 +39,10 @@ Route::post('/payment', [PaymentController::class, 'payment']);
 Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
-
-// Seller Route
-Route::post('/seller/product/{id}', [ProductContoller::class, 'update']);
-Route::apiResource('/seller/product', ProductContoller::class);
-Route::post('product/{id}', [ProductContoller::class, 'destroy']);
-
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
     Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
@@ -60,10 +55,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/increment/{id}', [OrderController::class, 'increment']);
     Route::get('/orders/decrement/{id}', [OrderController::class, 'decrement']);
     Route::get('/orders/seller-id', [OrderController::class, 'fetchCartGroupById']);
+    Route::post('/orders/place-order', [OrderController::class, 'placeOrder']);
     Route::apiResource('/orders', OrderController::class);
     Route::post('/payment', [PaymentController::class, 'payment']);
     Route::post('/request-withdrawal', [PaymentController::class, 'withdraw'])
         ->middleware('throttle:5,1');
+
+    // Seller Route
+    Route::post('/seller/product/{id}', [ProductContoller::class, 'update']);
+    Route::apiResource('/seller/product', ProductContoller::class);
+    Route::post('product/{id}', [ProductContoller::class, 'destroy']);
 
 
     Route::get('/users', [UsersController::class, 'index']);

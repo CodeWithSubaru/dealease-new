@@ -73,7 +73,7 @@ export function AddToCart() {
     for (let i = 0; i < item.length; i++) {
       totalPrice += Number(item[i].total_price);
     }
-    return totalPrice;
+    return Number(totalPrice).toLocaleString('en-US');
   }
 
   function calculateGrandTotalPrice(cart) {
@@ -85,7 +85,7 @@ export function AddToCart() {
       }
     });
 
-    return totalPrice;
+    return Number(totalPrice).toLocaleString('en-US');
   }
 
   useEffect(() => {
@@ -301,7 +301,7 @@ export function AddToCart() {
                     </div>
                     {cartHistoryBySellerId.length > 0 && (
                       <div className='mt-2 d-flex'>
-                        <Card className='mt-5 align-self-baseline flex-shrink-0'>
+                        <Card className='mt-5 p-3 align-self-baseline flex-shrink-0'>
                           <Form
                             className=' mt-2 p-2 px-3'
                             onSubmit={(e) => {
@@ -330,7 +330,7 @@ export function AddToCart() {
                               </p>
                             ))}
                             <hr />
-                            <p className='fs-4 fw-bold text-end'>
+                            <p className='fs-4 fw-bold'>
                               {' '}
                               Grand Total:{' '}
                               {calculateGrandTotalPrice(cartHistoryBySellerId)}
