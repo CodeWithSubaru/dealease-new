@@ -56,16 +56,18 @@ class OrderController extends Controller
             // 'order_number' => $generatedIdSample,
             'product_id' => $product->id,
             'order_by' => auth()->id(),
-            'weight' => $product->weight ? 0 : 1,
-            'total_price' => $product->price * ($product->weight ? $request->weight : 1),
+            'weight' => 1,
+            'total_price' => $product->price_per_kg * ($product->stocks_per_kg ? $product->stocks_per_kg : 1),
         ]);
 
         return response()->json(['status' => 'Item added to cart'], 200);
     }
 
-    public function FunctionName()
+    public function placeOrder(Request $request)
     {
-        # code...
+        Order::create([
+            'order_number' => $request->order_number,
+        ]);
     }
 
     /**
@@ -89,31 +91,31 @@ class OrderController extends Controller
 
         $cart = Cart::with('product')->find($id);
 
-        if ($cart->quantity >= $cart->product->stocks_per_kg) {
+        if ($cart->weight >= $cart->product->stocks_per_kg) {
             return;
         }
 
         $cart->update([
-            'quantity' => $cart->quantity + 1,
+            'weight' => $cart->weight + 1,
         ]);
 
         $cart->update([
-            'total_price' => ($cart->product->price_per_kg  * $cart->quantity)
+            'total_price' => ($cart->product->price_per_kg  * $cart->weight)
         ]);
     }
 
     public function decrement($id)
     {
         $cart = Cart::with('product')->find($id);
-        if ($cart->quantity == 1) {
+        if ($cart->weight == 1) {
             return;
         }
         $cart->update([
-            'quantity' => $cart->quantity - 1,
+            'weight' => $cart->weight - 1,
         ]);
 
         $cart->update([
-            'total_price' => ($cart->product->price_per_kg  * $cart->quantity)
+            'total_price' => ($cart->product->price_per_kg  * $cart->weight)
         ]);
     }
 
@@ -123,7 +125,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $cart = Cart::find($id);
-        $cart->quantity = 0;
+        $cart->weight = 0;
         $cart->delete();
     }
 }

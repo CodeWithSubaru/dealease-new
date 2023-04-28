@@ -31,7 +31,7 @@ import {
 
 export function AddToCart() {
   const [data, setData] = useState([]);
-  const [orderHistoryBySellerId, setOrderHistoryBySellerId] = useState([]);
+  const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
   const [total, setTotal] = useState(0);
   const { fetchCountInItemsCart } = useAddToCartContext();
 
@@ -39,7 +39,7 @@ export function AddToCart() {
     axiosClient
       .get('orders/seller-id')
       .then((res) => {
-        setOrderHistoryBySellerId(Object.values(res.data));
+        setCartHistoryBySellerId(Object.values(res.data));
       })
       .catch((e) => console.log(e));
   }
@@ -62,6 +62,7 @@ export function AddToCart() {
     axiosClient.delete('/orders/' + id).then((res) => {
       fetchOrders();
       fetchCountInItemsCart();
+      fetchCartHistoryBySellerId();
     });
   }
 
@@ -86,9 +87,10 @@ export function AddToCart() {
   }
 
   function calculateTotalPrice(price) {
-    let totalPrice = 0;
-    totalPrice = totalPrice + Number(price);
-    return totalPrice;
+    // const subTotal = orders.reduce((accumulator, currentValue) => {
+    //   return accumulator + parseFloat(currentValue.total_price);
+    // }, 0);
+    // return subTotal;
   }
 
   useEffect(() => {
@@ -153,137 +155,189 @@ export function AddToCart() {
                 <H1>Add to Cart</H1>
                 <div className='primary-bg rounded p-5'>
                   <Link className='btn btn-primary rounded' to='/'>
-                    Choose another product
+                    Add More
                   </Link>
                   <div className='d-flex'>
                     <div className='d-flex flex-wrap me-2'>
-                      {data && data.length > 0
+                      {cartHistoryBySellerId.length > 0 ? (
+                        cartHistoryBySellerId.map((item, index) => {
+                          return (
+                            <>
+                              <p className='mb-0 mt-4'>
+                                Seller{' '}
+                                <span className='badge rounded-pill text-bg-primary'>
+                                  {item.length > 1
+                                    ? item[index]
+                                      ? item[index].product.user.first_name
+                                      : ''
+                                    : item[0].product.user.first_name}
+                                </span>
+                              </p>
+                              {item.map((cartItem) => (
+                                <>
+                                  <Card
+                                    className='d-flex flex-row flex-xs-column w-100 p-2 mb-2 mt-2'
+                                    key={cartItem.id}
+                                  >
+                                    <div
+                                      style={{
+                                        width: '120px',
+                                        height: '120px',
+                                        overflow: 'hidden',
+                                      }}
+                                    >
+                                      <img
+                                        src={
+                                          PUBLIC_URL +
+                                          'images/' +
+                                          cartItem.product.image
+                                        }
+                                        alt={
+                                          cartItem.product.image
+                                            ? cartItem.product.image
+                                            : ''
+                                        }
+                                        style={{
+                                          objectFit: 'cover',
+                                        }}
+                                        className='rounded w-100 h-100'
+                                      />
+                                    </div>
+                                    <div className='flex-grow-1 d-flex justify-content-between ms-3'>
+                                      <div>
+                                        <H3 className='fs-3'>
+                                          {cartItem.product.title}
+                                        </H3>
+                                        <div className='d-flex flex-column'>
+                                          <span>
+                                            Price: Php{' '}
+                                            {cartItem.product.price_per_kg}
+                                          </span>
+                                          <span>
+                                            Available Stocks :{' '}
+                                            {cartItem.product.stocks_per_kg} kg
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className='flex-shrink-0 align-self-end justify-content-end'>
+                                        <div className='d-flex align-items-end justify-content-end'>
+                                          <Button
+                                            variant='primary'
+                                            className='w-25 py-2 px-0 me-2 rounded'
+                                            onClick={() =>
+                                              decrement(cartItem.id)
+                                            }
+                                            disabled={cartItem.weight == 1}
+                                          >
+                                            -
+                                          </Button>
+                                          <input
+                                            type='text'
+                                            className='w-25 py-1 text-center'
+                                            value={cartItem.weight}
+                                            disabled
+                                          />
+                                          <Button
+                                            variant='primary'
+                                            className='w-25 py-2 px-0 ms-2 rounded'
+                                            onClick={() =>
+                                              increment(cartItem.id)
+                                            }
+                                            disabled={
+                                              cartItem.product.stocks_per_kg <=
+                                              cartItem.weight
+                                            }
+                                          >
+                                            +
+                                          </Button>
+
+                                          <span
+                                            className='btn btn-danger rounded-circle d-flex justify-content-center align-items-center p-1 position-absolute'
+                                            style={{
+                                              width: '25px',
+                                              height: '25px',
+                                              top: '-12px',
+                                              right: '-8px',
+                                            }}
+                                            onClick={() =>
+                                              removeFromCart(cartItem.id)
+                                            }
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faClose}
+                                              className='text-center'
+                                            />
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Card>
+                                </>
+                              ))}
+                            </>
+                          );
+                        })
+                      ) : (
+                        <div className='text-center'>No Data</div>
+                      )}
+                      {/* {data && data.length > 0
                         ? data.map((item) =>
                             item ? (
-                              <Card
-                                className='d-flex flex-row flex-xs-column w-100 p-2 mt-2'
-                                key={item.order_number}
-                              >
-                                <img
-                                  src={
-                                    PUBLIC_URL + 'images/' + item.product.image
-                                  }
-                                  alt={
-                                    item.product.image ? item.product.image : ''
-                                  }
-                                  style={{
-                                    height: '120px',
-                                    objectFit: 'cover',
-                                  }}
-                                  className='rounded'
-                                />
-                                <div className='flex-grow-1 d-flex justify-content-between ms-3'>
-                                  <div>
-                                    <H3 className='fs-3'>
-                                      {item.product.title}
-                                    </H3>
-                                    <div className='d-flex flex-column'>
-                                      <span>
-                                        Price: Php {item.product.price_per_kg}
-                                      </span>
-                                      <span>
-                                        Available Stocks :{' '}
-                                        {item.product.stocks_per_kg} kg
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className='flex-shrink-0 align-self-end justify-content-end'>
-                                    <div className='d-flex align-items-end justify-content-end'>
-                                      <Button
-                                        variant='primary'
-                                        className='w-25 py-2 px-0 me-2 rounded'
-                                        onClick={() => decrement(item.id)}
-                                        disabled={item.quantity == 1}
-                                      >
-                                        -
-                                      </Button>
-                                      <input
-                                        type='text'
-                                        className='w-25 py-1 text-center'
-                                        value={item.quantity}
-                                        disabled
-                                      />
-                                      <Button
-                                        variant='primary'
-                                        className='w-25 py-2 px-0 ms-2 rounded'
-                                        onClick={() => increment(item.id)}
-                                        disabled={
-                                          item.product.stocks_per_kg <=
-                                          item.quantity
-                                        }
-                                      >
-                                        +
-                                      </Button>
-
-                                      <span
-                                        className='btn btn-danger rounded-circle d-flex justify-content-center align-items-center p-1 position-absolute'
-                                        style={{
-                                          width: '25px',
-                                          height: '25px',
-                                          top: '-12px',
-                                          right: '-8px',
-                                        }}
-                                        onClick={() => removeFromCart(item.id)}
-                                      >
-                                        <FontAwesomeIcon
-                                          icon={faClose}
-                                          className='text-center'
-                                        />
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </Card>
+                              
                             ) : (
                               ''
                             )
                           )
-                        : 'No data'}
+                        } */}
                     </div>
                     {data.length > 0 && (
-                      <Card className='mt-2 w-50 align-self-baseline '>
-                        <Form
-                          className=' mt-2 p-2 px-3'
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            axiosClient
-                              .post('/orders/')
-                              .then((res) => console.log(res))
-                              .catch((e) => console.log(e));
-                          }}
-                        >
-                          <h3 className='mb-3'>Summary Details</h3>
-                          {console.log(orderHistoryBySellerId)}
-                          {orderHistoryBySellerId.map((item, index) => (
-                            <p key={index}>
-                              {console.log(index, item[index]?.total_price)}
-                              {item.length} items Sub Total:
-                              {calculateTotalPrice(
-                                item[index] ? item[index].total_price : 0
-                              )}
+                      <div className='mt-2 w-75'>
+                        <Card className='mt-5 align-self-baseline '>
+                          <Form
+                            className=' mt-2 p-2 px-3'
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              axiosClient
+                                .post('/orders/', { orderNumber })
+                                .then((res) => console.log(res))
+                                .catch((e) => console.log(e));
+                            }}
+                          >
+                            <h3 className='mb-0 fw-bolder'>Summary Details</h3>
+                            <hr />
+                            {cartHistoryBySellerId.map((item, index) => (
+                              <p key={index} className='p-2'>
+                                <strong>{item.length}</strong> item
+                                {item.length > 1 ? "'s" : ''} on Seller{' '}
+                                <strong>
+                                  {item.length > 1
+                                    ? item[index]
+                                      ? item[index].product.user.first_name
+                                      : ''
+                                    : item[0].product.user.first_name}
+                                </strong>{' '}
+                                <br />
+                                Sub Total:{' '}
+                                {item.map((cartItem) => cartItem.total_price)},
+                              </p>
+                            ))}
+                            <hr />
+                            <p className='fs-4 fw-bold text-end'>
+                              {' '}
+                              Grand Total: 0
                             </p>
-                          ))}
-                          <hr />
-                          <p className='fs-4 fw-bold text-end'>
-                            {' '}
-                            Grand Total: 0
-                          </p>
-                          <div className='d-flex text-end'>
-                            <Button
-                              variant='warning'
-                              className='text-light rounded flex-grow-1 '
-                              type='submit'
-                            >
-                              Place Order
-                            </Button>
-                          </div>
-                        </Form>
-                      </Card>
+                            <div className='d-flex text-end'>
+                              <Button
+                                variant='warning'
+                                className='text-light rounded flex-grow-1 '
+                                type='submit'
+                              >
+                                Place Order
+                              </Button>
+                            </div>
+                          </Form>
+                        </Card>
+                      </div>
                     )}
                   </div>
                 </div>
