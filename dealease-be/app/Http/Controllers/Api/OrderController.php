@@ -57,7 +57,8 @@ class OrderController extends Controller
             'product_id' => $product->id,
             'order_by' => auth()->id(),
             'weight' => 1,
-            'total_price' => $product->price_per_kg * ($product->stocks_per_kg ? $product->stocks_per_kg : 1),
+            'total_price' => $product->price_per_kg,
+            // calculation of total_price in orders_table $product->price_per_kg * ($product->stocks_per_kg ? $product->stocks_per_kg : 1)
         ]);
 
         return response()->json(['status' => 'Item added to cart'], 200);

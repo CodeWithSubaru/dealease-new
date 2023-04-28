@@ -30,9 +30,7 @@ import {
 } from 'react-pro-sidebar';
 
 export function AddToCart() {
-  const [data, setData] = useState([]);
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
-  const [total, setTotal] = useState(0);
   const { fetchCountInItemsCart } = useAddToCartContext();
 
   function fetchCartHistoryBySellerId() {
@@ -44,25 +42,11 @@ export function AddToCart() {
       .catch((e) => console.log(e));
   }
 
-  function fetchOrders() {
-    axiosClient
-      .get('/orders')
-      .then((res) => {
-        const userIds = [];
-        Object.values(res.data).map(({ product }) =>
-          userIds.push(product.user.user_id)
-        );
-
-        setData(res.data);
-      })
-      .catch((e) => console.log(e));
-  }
-
   function removeFromCart(id) {
     axiosClient.delete('/orders/' + id).then((res) => {
-      fetchOrders();
-      fetchCountInItemsCart();
       fetchCartHistoryBySellerId();
+
+      fetchCountInItemsCart();
     });
   }
 
@@ -70,7 +54,6 @@ export function AddToCart() {
     axiosClient
       .get('/orders/increment/' + id)
       .then((res) => {
-        fetchOrders();
         fetchCartHistoryBySellerId();
       })
       .catch((e) => console.log(e));
@@ -80,23 +63,35 @@ export function AddToCart() {
     axiosClient
       .get('/orders/decrement/' + id)
       .then((res) => {
-        fetchOrders();
         fetchCartHistoryBySellerId();
       })
       .catch((e) => console.log(e));
   }
 
-  function calculateTotalPrice(price) {
-    // const subTotal = orders.reduce((accumulator, currentValue) => {
-    //   return accumulator + parseFloat(currentValue.total_price);
-    // }, 0);
-    // return subTotal;
+  function calculateSubTotalPrice(item) {
+    let totalPrice = 0;
+    for (let i = 0; i < item.length; i++) {
+      totalPrice += Number(item[i].total_price);
+    }
+    return totalPrice;
+  }
+
+  function calculateGrandTotalPrice(cart) {
+    let totalPrice = 0;
+
+    cart.forEach((cartItem) => {
+      for (let i = 0; i < cartItem.length; i++) {
+        totalPrice += Number(cartItem[i].total_price);
+      }
+    });
+
+    return totalPrice;
   }
 
   useEffect(() => {
-    fetchOrders();
     fetchCartHistoryBySellerId();
   }, []);
+  const [subTotal, setSubTotal] = useState(0);
 
   return (
     <>
@@ -149,17 +144,16 @@ export function AddToCart() {
           </Menu>
         </Sidebar>
         <main className='w-100'>
-          <div className='mx-auto w-75' style={{ height: '100vh' }}>
-            <Card>
-              <div className='p-5'>
+          <div className='mx-auto w-75 d-flex' style={{ height: '100vh' }}>
+            <Card className='flex-grow-1'>
+              <div className='p-5 '>
                 <H1>Add to Cart</H1>
                 <div className='primary-bg rounded p-5'>
                   <Link className='btn btn-primary rounded' to='/'>
                     Add More
                   </Link>
                   <div className='d-flex'>
-                    {console.log(cartHistoryBySellerId)}
-                    <div className='d-flex flex-wrap me-2'>
+                    <div className='flex-grow-1 me-2'>
                       {cartHistoryBySellerId.length > 0 ? (
                         cartHistoryBySellerId.map((item, index) => {
                           return (
@@ -169,15 +163,29 @@ export function AddToCart() {
                                 <span className='badge rounded-pill text-bg-primary'>
                                   {item.length > 1
                                     ? item[index]
-                                      ? item[index].product.user.first_name
+                                      ? item[index].product.user.first_name +
+                                        ' ' +
+                                        item[index].product.user.user_details
+                                          .middle_name[0] +
+                                        '.' +
+                                        ' ' +
+                                        item[index].product.user.user_details
+                                          .last_name
                                       : ''
-                                    : item[0].product.user.first_name}
+                                    : item[0].product.user.first_name +
+                                      ' ' +
+                                      item[0].product.user.user_details
+                                        .middle_name[0] +
+                                      '.' +
+                                      ' ' +
+                                      item[0].product.user.user_details
+                                        .last_name}
                                 </span>
                               </p>
                               {item.map((cartItem) => (
                                 <>
                                   <Card
-                                    className='d-flex flex-row flex-xs-column w-100 p-2 mb-2 mt-2'
+                                    className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
                                     key={cartItem.id}
                                   >
                                     <div
@@ -291,9 +299,9 @@ export function AddToCart() {
                           )
                         } */}
                     </div>
-                    {data.length > 0 && (
-                      <div className='mt-2 w-75'>
-                        <Card className='mt-5 align-self-baseline '>
+                    {cartHistoryBySellerId.length > 0 && (
+                      <div className='mt-2 d-flex'>
+                        <Card className='mt-5 align-self-baseline flex-shrink-0'>
                           <Form
                             className=' mt-2 p-2 px-3'
                             onSubmit={(e) => {
@@ -318,14 +326,14 @@ export function AddToCart() {
                                     : item[0].product.user.first_name}
                                 </strong>{' '}
                                 <br />
-                                Sub Total:{' '}
-                                {item.map((cartItem) => cartItem.total_price)},
+                                Sub Total: {calculateSubTotalPrice(item)}
                               </p>
                             ))}
                             <hr />
                             <p className='fs-4 fw-bold text-end'>
                               {' '}
-                              Grand Total: 0
+                              Grand Total:{' '}
+                              {calculateGrandTotalPrice(cartHistoryBySellerId)}
                             </p>
                             <div className='d-flex text-end'>
                               <Button
