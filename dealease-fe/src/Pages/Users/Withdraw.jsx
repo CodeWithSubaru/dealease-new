@@ -1,5 +1,5 @@
-import { Withdraw } from "../../Components/Pages/Withdraw";
+import { Withdraw } from '../../Components/Pages/Withdraw';
 
-export function WithdrawSeller() {
+export function WithdrawUser() {
   return <Withdraw />;
 }

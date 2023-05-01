@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
+use App\Models\Wallet;
 use App\Models\UserDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
-use App\Models\BuyerWallet;
-use App\Models\SellerWallet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -22,8 +21,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        $wallet = Auth::user()->coin_owner_type == '0' ? 'buyerWallet' : 'sellerWallet';
-        $auth_user = User::with('user_details', $wallet)->where('user_id', Auth::id())->get();
+        $auth_user = User::with('user_details', 'wallet')->where('user_id', Auth::id())->get();
         return $auth_user;
     }
 
@@ -91,8 +89,7 @@ class AuthController extends Controller
                 'contact_number' =>  $request->contact_number,
             ]);
 
-            $wallet = $is_buyer ? BuyerWallet::class : SellerWallet::class;
-            $wallet::create([
+            Wallet::create([
                 'shell_coin_amount' => 0,
                 'user_id' => $user->user_id,
             ]);

@@ -1,20 +1,9 @@
-// import { Adsense } from '@ctrl/react-adsense';
 import React, { useEffect } from 'react';
 import useAuthContext from '../../Hooks/Context/AuthContext';
-import HeroSection from '../../Components/Section/HeroSection';
 import { Card } from '../../Components/Card/Card';
 import { Footer } from '../../Components/Footer/Footer';
-import { Modal, Row, Col, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBars,
-  faBurger,
-  faHamburger,
-  faHouse,
-  faSliders,
-  faTable,
-  faToggleOn,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 import {
   Sidebar,
@@ -23,11 +12,10 @@ import {
   SubMenu,
   useProSidebar,
   sidebarClasses,
-  menuClasses,
 } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 
-export const Home = () => {
+export const HomeUser = () => {
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
   const { collapseSidebar } = useProSidebar();
 

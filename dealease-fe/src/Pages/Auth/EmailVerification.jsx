@@ -9,10 +9,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Footer } from '../../Components/Footer/Footer';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function EmailVerification() {
   const { user, logout } = useAuthContext();
-
+  const navigate = useNavigate();
   const [message, setMessage] = useState('');
 
   function handleSubmit(e) {
@@ -23,6 +24,10 @@ export function EmailVerification() {
   const handleLogout = () => {
     logout();
   };
+
+  if (user.email_verified_at && token) {
+    navigate('/home');
+  }
 
   return (
     <>

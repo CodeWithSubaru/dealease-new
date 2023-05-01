@@ -63,7 +63,7 @@ const header = [
   },
   { title: 'Action', prop: 'action' },
 ];
-export const ProductSeller = () => {
+export const ProductUser = () => {
   const [errors, setErrors] = useState([]);
   const [body, setBody] = useState([]);
   const { fetchProduct } = useProductContext();

@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function wallet()
     {
-        return $this->hasOne(\App\Models\Wallet::class, 'user_id', 'user_id');
+        return $this->hasOne(\App\Models\Wallet::class, 'wallet_id', 'wallet_id');
     }
 
     public function product()

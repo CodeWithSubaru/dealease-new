@@ -4,7 +4,8 @@ import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Form, Container } from 'react-bootstrap';
-export function ChangePasswordSeller() {
+
+export function ChangePasswordUser() {
   const [errors, setErrors] = useState({});
   const [password, setPassword] = useState({});
   const { logout } = useAuthContext();

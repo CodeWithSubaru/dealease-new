@@ -8,7 +8,7 @@ import { FaUserEdit } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import PUBLIC_PATH from '../../api/public_url';
 
-export const ProfileSeller = () => {
+export const ProfileUser = () => {
   const { user } = useAuthContext();
   const [show, setShow] = useState(false);
 
