@@ -150,7 +150,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('USER_TYPE');
         setLoading(false);
       });
-
     setErrors([]);
   }, [user.user_id]);
 

@@ -18,6 +18,7 @@ import Card from 'react-bootstrap/Card';
 import {
   Delete,
   Notification,
+  Finalize,
 } from '../../Components/Notification/Notification';
 
 const header = [
@@ -64,12 +65,16 @@ export function Users() {
 
   // verify user
   function verifyUser(user_id) {
-    axiosClient.post('/admin/verify-user/' + user_id).then((res) => {
-      Notification({
-        title: 'Success',
-        message: res.data.message,
-        icon: 'success',
-      }).catch((e) => console.log(e));
+    Finalize({
+      confirmButton: 'Yes, Update User',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/admin/verify-user/' + user_id)
+          .then((res) => console.log(e))
+          .catch((e) => console.log(e));
+        setUserDataTable();
+      }
     });
   }
 
