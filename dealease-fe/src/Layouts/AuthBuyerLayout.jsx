@@ -67,8 +67,8 @@ export function AuthBuyerLayout() {
             </span>
           </Link>
         </li>
-        <div class='outer'>
-          <div class='inner'></div>
+        <div className='outer'>
+          <div className='inner'></div>
         </div>
         <li className='nav-item'>
           <p className='nav-links'>

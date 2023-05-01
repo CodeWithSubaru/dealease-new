@@ -28,6 +28,7 @@ import {
   sidebarClasses,
   menuClasses,
 } from 'react-pro-sidebar';
+import { Notification } from '../../Components/Notification/Notification';
 
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
@@ -91,7 +92,6 @@ export function AddToCart() {
   useEffect(() => {
     fetchCartHistoryBySellerId();
   }, []);
-  const [subTotal, setSubTotal] = useState(0);
 
   return (
     <>
@@ -158,7 +158,7 @@ export function AddToCart() {
                         cartHistoryBySellerId.map((item, index) => {
                           return (
                             <>
-                              <p className='mb-0 mt-4'>
+                              <p className='mb-0 mt-4' key={index}>
                                 Seller{' '}
                                 <span className='badge rounded-pill text-bg-primary'>
                                   {item.length > 1
@@ -182,11 +182,11 @@ export function AddToCart() {
                                         .last_name}
                                 </span>
                               </p>
-                              {item.map((cartItem) => (
+                              {item.map((cartItem, index) => (
                                 <>
                                   <Card
                                     className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
-                                    key={cartItem.id}
+                                    key={index}
                                   >
                                     <div
                                       style={{
@@ -248,7 +248,7 @@ export function AddToCart() {
                                           />
                                           <Button
                                             variant='primary'
-                                            className='w-25 py-2 px-0 ms-2 rounded'
+                                            className='w-25 py-2 px-0 ms-2 rounded me-2'
                                             onClick={() =>
                                               increment(cartItem.id)
                                             }
@@ -260,23 +260,14 @@ export function AddToCart() {
                                             +
                                           </Button>
 
-                                          <span
-                                            className='btn btn-danger rounded-circle d-flex justify-content-center align-items-center p-1 position-absolute'
-                                            style={{
-                                              width: '25px',
-                                              height: '25px',
-                                              top: '-12px',
-                                              right: '-8px',
-                                            }}
+                                          <Button
+                                            className='btn btn-danger rounded'
                                             onClick={() =>
                                               removeFromCart(cartItem.id)
                                             }
                                           >
-                                            <FontAwesomeIcon
-                                              icon={faClose}
-                                              className='text-center'
-                                            />
-                                          </span>
+                                            Remove
+                                          </Button>
                                         </div>
                                       </div>
                                     </div>
@@ -306,9 +297,42 @@ export function AddToCart() {
                             className=' mt-2 p-2 px-3'
                             onSubmit={(e) => {
                               e.preventDefault();
+                              const orders = [];
+
+                              for (
+                                let i = 0;
+                                i < cartHistoryBySellerId.length;
+                                i++
+                              ) {
+                                let startFromOrderNumber = 1;
+                                for (
+                                  let j = 0;
+                                  j < cartHistoryBySellerId[i].length;
+                                  j++
+                                ) {
+                                  orders.push({
+                                    id: i,
+                                    product_id:
+                                      cartHistoryBySellerId[i][j].product_id,
+                                    order_by:
+                                      cartHistoryBySellerId[i][j].order_by,
+                                    weight: cartHistoryBySellerId[i][j].weight,
+                                    total_price:
+                                      cartHistoryBySellerId[i][j].total_price,
+                                  });
+                                }
+                              }
+
                               axiosClient
-                                .post('/orders/', { orderNumber })
-                                .then((res) => console.log(res))
+                                .post('/orders/place-order', orders)
+                                .then((res) => {
+                                  console.log(res);
+                                  Notification({
+                                    title: 'Success',
+                                    message: res.data.status,
+                                    icon: 'success',
+                                  });
+                                })
                                 .catch((e) => console.log(e));
                             }}
                           >

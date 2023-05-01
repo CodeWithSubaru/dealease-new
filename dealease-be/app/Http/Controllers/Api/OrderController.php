@@ -66,9 +66,17 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
-        Order::create([
-            'order_number' => $request->order_number,
-        ]);
+        for ($i = 0; $i < count($request->all()); $i++) {
+            Order::create([
+                'order_number' => $i,
+                'product_id' => $request->all()[$i]['product_id'],
+                'order_by' => $request->all()[$i]['order_by'],
+                'weight' => $request->all()[$i]['weight'],
+                'total_price' => $request->all()[$i]['total_price'],
+            ]);
+        }
+
+        return response()->json(['status' => 'Order placed Successfully'], 200);
     }
 
     /**
