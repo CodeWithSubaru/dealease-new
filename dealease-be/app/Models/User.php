@@ -49,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function wallet()
     {
-        return $this->hasOne(\App\Models\Wallet::class, 'wallet_id', 'wallet_id');
+        return $this->hasOne(\App\Models\UsersWallet::class, 'wallet_id', 'wallet_id');
     }
 
     public function product()
@@ -61,6 +61,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->attributes['role_type'] == 1) {
             return $this->attributes['role_type'] = 'User';
+        }
+
+        if ($this->attributes['role_type'] == 2) {
+            return $this->attributes['role_type'] = 'Rider';
         }
 
         if ($this->attributes['role_type'] == 3) {

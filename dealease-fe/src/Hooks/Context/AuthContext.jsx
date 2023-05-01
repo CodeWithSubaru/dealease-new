@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }) => {
           icon: 'success',
         }).then(() => {
           setUser(res.data.user[0]);
+          setLoading(false);
           navigate(redirect);
         });
         setLoginDisabled(false);
@@ -71,6 +72,8 @@ export const AuthProvider = ({ children }) => {
           title: 'Error',
           message: 'Something went wrong',
           icon: 'error',
+        }).then(() => {
+          setLoading(false);
         });
         setErrors(e.response.data.errors);
       });
@@ -136,21 +139,20 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      axiosClient
-        .get('/user')
-        .then((res) => {
-          setLoading(false);
-          setUser(res.data[0]);
-        })
-        .catch((e) => {
-          if (e.status === 401) {
-            localStorage.removeItem('ACCESS_TOKEN');
-            localStorage.removeItem('USER_TYPE');
-          }
-          setLoading(false);
-        });
-    }
+    axiosClient
+      .get('/user')
+      .then((res) => {
+        setLoading(false);
+        setUser(res.data[0]);
+      })
+      .catch((e) => {
+        localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('USER_TYPE');
+        navigate('/');
+
+        setLoading(false);
+      });
+
     setErrors([]);
   }, [user.user_id]);
 

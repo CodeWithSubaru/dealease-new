@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('account_verification_requirements', function (Blueprint $table) {
-            $table->id();
+            $table->id('avr_id');
+            $table->string('valid_id_1');
+            $table->string('valid_id_2');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\ments\web-dev\thesis\dealease-new\dealease-be\database\factories;
+namespace Database\Factories;
 
 use Carbon\Carbon;
 use App\Models\User;
