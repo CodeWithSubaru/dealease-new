@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\ments\web-dev\thesis\dealease-new\dealease-be\database\factories;
 
 use Carbon\Carbon;
 use App\Models\User;
@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'email_verified_at' => Carbon::now(),
             'user_details_id' => $increment,
             'wallet_id' => $increment,
-            'role_type' => rand(1, 3),
+            'role_type' => rand(1, 2),
             'remember_token' => Str::random(10),
         ];
     }

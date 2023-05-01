@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }) => {
             title: 'Success',
             message: res.data.message,
             icon: 'success',
-          }).then((res) => {
+          }).then(() => {
             setLoading(false);
             setUser({});
             setErrors([]);
