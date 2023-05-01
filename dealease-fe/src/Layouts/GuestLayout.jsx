@@ -9,7 +9,7 @@ export function GuestLayout() {
   const localStoreUserType = localStorage.getItem('USER_TYPE');
   if (token) {
     if (user_type == 'User') {
-      return <Navigate to='/' />;
+      return <Navigate to='/home' />;
     } else if (user_type == 'Admin') {
       return <Navigate to='/admin/dashboard' />;
     }

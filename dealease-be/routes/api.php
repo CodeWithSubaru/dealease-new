@@ -34,22 +34,25 @@ Route::post('/update-access', [AuthController::class, 'updateAccess']);
 Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
+
+// Payment
 Route::post('/recharge', [PaymentController::class, 'recharge']);
 Route::post('/payment', [PaymentController::class, 'payment']);
 Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
+// Login 
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+    // User
     Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth');
 
-    // Buyer
     Route::apiResource('/transactions', PaymentController::class);
     Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
     Route::get('/orders/increment/{id}', [OrderController::class, 'increment']);
@@ -61,7 +64,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/request-withdrawal', [PaymentController::class, 'withdraw'])
         ->middleware('throttle:5,1');
 
-    // Seller Route
     Route::post('/seller/product/{id}', [ProductContoller::class, 'update']);
     Route::apiResource('/seller/product', ProductContoller::class);
     Route::post('product/{id}', [ProductContoller::class, 'destroy']);

@@ -19,6 +19,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import {
   faEye,
   faEnvelope,
+  faHandshake,
   faUser,
   faUserLargeSlash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -292,9 +293,9 @@ export function Dashboard() {
         />
 
         <CardDetails
-          title='Messages'
+          title='Transactions'
           totalNumber={calculateTotal(countOfMessages)}
-          icon={faEnvelope}
+          icon={faHandshake}
         />
 
         <CardDetails

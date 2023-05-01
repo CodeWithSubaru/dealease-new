@@ -23,9 +23,6 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Link } from 'react-router-dom';
 import '../../assets/scss/header.scss';
 import '../../assets/scss/global.scss';
-import { H3 } from '../../Components/Helpers/index.style';
-import { Login } from '../../Pages/Auth/Login';
-import { LoginSeller } from '../../Pages/Auth/LoginSeller';
 import { MydModalWithGrid } from '../Modal/Signupmoda';
 import { RegisterModal } from '../Modal/RegisterModal';
 

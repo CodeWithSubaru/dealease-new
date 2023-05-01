@@ -80,10 +80,6 @@ export const AuthProvider = ({ children }) => {
     login(data, '/home', 1);
   };
 
-  const loginSeller = (data) => {
-    login(data, '/seller/home', 2);
-  };
-
   const loginAdmin = (data) => {
     login(data, '/admin/dashboard');
   };
@@ -194,7 +190,6 @@ export const AuthProvider = ({ children }) => {
         setModalShow,
         setErrors,
         loginBuyer,
-        loginSeller,
         loginAdmin,
         register,
         logout,

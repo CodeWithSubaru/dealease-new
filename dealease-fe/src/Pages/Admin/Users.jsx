@@ -183,23 +183,12 @@ export function Users() {
   }
 
   function switchUserType(user) {
-    if (user.role_type === 'Admin') {
+    if (user.role_type === 'User') {
       return user.role_type;
     }
 
-    if (user.is_buyer === 'Buyer') {
-      return user.is_buyer;
-    }
-
-    if (user.is_seller === 'Seller') {
-      return user.is_seller;
-    }
-
-    if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
-    ) {
-      return 'Buyer + Seller';
+    if (user.role_type === 'Admin') {
+      return user.role_type;
     }
   }
 
@@ -213,7 +202,7 @@ export function Users() {
             <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
               <img
                 src={PUBLIC_URL + 'images/' + user.prof_img}
-                className='rounded-circle pr-5'
+                className='rounded-circle pr-5 border border-2 border-info'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>

@@ -18,7 +18,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $listOfUsers = User::with('user_details')->where('role_type', '!=', 1)->latest()->get();
+        $listOfUsers = User::with('user_details')->where('role_type', '!=', 3)->latest()->get();
         return response()->json(['listOfUser' => $listOfUsers], 200);
     }
 
