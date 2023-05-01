@@ -76,6 +76,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Admin route
     Route::post('/admin/users/{id}', [UsersController::class, 'update']);
+    Route::post('/admin/verify-user/{id}', [UsersController::class, 'verifyUser']);
     Route::apiResource('/admin/users', UsersController::class);
     Route::get('/admin/users-by-10', [UsersController::class, 'getTenUsers']);
     Route::post('/messages/inbox/delete/{id}', [MessageController::class, 'softDelete']);

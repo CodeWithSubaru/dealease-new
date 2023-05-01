@@ -62,6 +62,17 @@ export function Users() {
     });
   };
 
+  // verify user
+  function verifyUser(user_id) {
+    axiosClient.post('/admin/verify-user/' + user_id).then((res) => {
+      Notification({
+        title: 'Success',
+        message: res.data.message,
+        icon: 'success',
+      }).catch((e) => console.log(e));
+    });
+  }
+
   // Show Create User Modal
   const [showCreateUser, setShowCreateUser] = useState(false);
   const showCreateUserModal = () => setShowCreateUser(true);
@@ -248,9 +259,15 @@ export function Users() {
                 style={{ cursor: 'pointer' }}
               >
                 <FontAwesomeIcon icon={faTrash} className='mx-2' />
-
-                <FontAwesomeIcon icon={faCheck} className='mx-2' />
               </span>
+              {!user.verified_user && user.role_type === 'User' && (
+                <span
+                  onClick={() => verifyUser(user.user_id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <FontAwesomeIcon icon={faCheck} className='mx-2' />
+                </span>
+              )}
             </div>
           ),
         };

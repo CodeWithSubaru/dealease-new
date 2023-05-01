@@ -51,22 +51,12 @@ class UsersController extends Controller
 
         $explodedUserType = explode(' ', $request->user_type);
 
-        if ($explodedUserType[0] === 'buyer') {
-            $is_buyer = 1;
-            $is_seller = 0;
-            $role_type = 0;
-        } elseif ($explodedUserType[0] === 'seller') {
-            $is_buyer = 0;
-            $is_seller = 1;
-            $role_type = 0;
-        } elseif ($explodedUserType[0] === 'buyer_seller') {
-            $is_buyer = 1;
-            $is_seller = 1;
-            $role_type = 0;
-        } elseif ($explodedUserType[0] === 'admin') {
-            $is_seller = 0;
-            $is_buyer = 0;
+        if ($explodedUserType[0] === 'User') {
             $role_type = 1;
+        } elseif ($explodedUserType[0] === 'Rider') {
+            $role_type = 2;
+        } elseif ($explodedUserType[0] === 'Admin') {
+            $role_type = 3;
         }
 
         $imageName = 'default_profile.jpg';
@@ -83,8 +73,6 @@ class UsersController extends Controller
         $user->first_name = $request->first_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->is_buyer = $is_buyer;
-        $user->is_seller = $is_seller;
         $user->role_type = $role_type;
         $user->user_details_id = $user->user_id;
 
@@ -141,22 +129,12 @@ class UsersController extends Controller
             $role_type = $user->role_type == 'Admin' ? 1 : 0;
         }
 
-        if ($request->user_type === 'admin') {
-            $is_buyer = 0;
-            $is_seller = 0;
+        if ($request->user_type === 'User') {
             $role_type = 1;
-        } elseif ($request->user_type === 'buyer_seller') {
-            $role_type = 0;
-            $is_buyer = 1;
-            $is_seller = 1;
-        } elseif ($request->user_type === 'buyer') {
-            $role_type = 0;
-            $is_buyer = 1;
-            $is_seller = 0;
-        } elseif ($request->user_type === 'seller') {
-            $role_type = 0;
-            $is_buyer = 0;
-            $is_seller = 1;
+        } elseif ($request->user_type === 'Rider') {
+            $role_type = 2;
+        } elseif ($request->user_type === 'Admin') {
+            $role_type = 3;
         }
 
         $imageName = User::find($request->user_id)->prof_img;
@@ -172,8 +150,6 @@ class UsersController extends Controller
             'prof_img' => $imageName,
             'first_name' => $request->first_name,
             'email' => $request->email,
-            'is_buyer' => $is_buyer,
-            'is_seller' => $is_seller,
             'role_type' => $role_type,
         ]);
 
@@ -191,6 +167,13 @@ class UsersController extends Controller
         ]);
 
         return response()->json(['message' => 'User Updated Successfully'], 200);
+    }
+
+    public function verifyUser(Request $request, $id)
+    {
+        User::find($id)->update(['verified_user' => 1]);
+
+        return response()->json(['message' => 'User Verified Successfully'], 200);
     }
 
     /**
