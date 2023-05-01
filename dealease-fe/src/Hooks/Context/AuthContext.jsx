@@ -52,20 +52,9 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (res.data.user[0].role_type === 'User') {
-          if (
-            res.data.user[0].is_buyer === 'Buyer' ||
-            (res.data.user[0].is_buyer === 'Buyer_seller1' && loginAs === 1)
-          ) {
-            setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
-          }
-
-          if (
-            res.data.user[0].is_seller === 'Seller' ||
-            (res.data.user[0].is_seller === 'Buyer_seller2' && loginAs === 2)
-          ) {
-            setTokenAndUType(res.data.token, res.data.user[0].is_seller);
-          }
+          setTokenAndUType(res.data.token, res.data.user[0].role_type);
         }
+
         Notification({
           title: 'Success',
           message: res.data.message,
@@ -83,13 +72,12 @@ export const AuthProvider = ({ children }) => {
           message: 'Something went wrong',
           icon: 'error',
         });
-        console.log(e);
         setErrors(e.response.data.errors);
       });
   };
 
   const loginBuyer = (data) => {
-    login(data, '/', 1);
+    login(data, '/home', 1);
   };
 
   const loginSeller = (data) => {
@@ -151,33 +139,6 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const updateAccess = ({ ...data }) => {
-    axiosClient
-      .post('/update-access', data)
-      .then((res) => {
-        if (res.status == 200) {
-          setLoading(true);
-          Notification({
-            title: 'Success',
-            message: res.data.message,
-            icon: 'success',
-          }).then(() => {
-            navigate('/home');
-            setLoading(false);
-          });
-          setErrors([]);
-        }
-      })
-      .catch((e) => {
-        Notification({
-          title: 'Error',
-          message: 'Errors Found',
-          icon: 'error',
-        });
-        setErrors(e.response.data.errors);
-      });
-  };
-
   useEffect(() => {
     if (user) {
       axiosClient
@@ -208,9 +169,7 @@ export const AuthProvider = ({ children }) => {
     //     window.clearTimeout(logoutTimerIdRef.current);
     //   }
     // };
-
     // document.addEventListener('visibilitychange', autoLogout);
-
     // return () => {
     //   document.removeEventListener('visibilitychange', autoLogout);
     // };
@@ -238,7 +197,6 @@ export const AuthProvider = ({ children }) => {
         loginSeller,
         loginAdmin,
         register,
-        updateAccess,
         logout,
       }}
     >

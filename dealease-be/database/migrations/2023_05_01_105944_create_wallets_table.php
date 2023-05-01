@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('inboxes', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::create('wallets', function (Blueprint $table) {
+            $table->id('wallet_id');
+            $table->decimal('shell_coin_amount', 50);
+            $table->foreignId('user_id')->constrained('users', 'user_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('inboxes', function (Blueprint $table) {
-             $table->dropSoftDeletes();
-        });
+        Schema::dropIfExists('wallets');
     }
 };

@@ -207,7 +207,7 @@ export function AnnouncementAdmin() {
       <Card className='w-75 mx-auto'>
         <div className='p-5'>
           <H1>Announcement</H1>
-          <div className='primary-bg rounded p-5'>
+          <div className='rounded p-5'>
             {/* Create Modal */}
             <Button variant='primary' onClick={handleShow} className='mb-3'>
               Create Announcement

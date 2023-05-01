@@ -270,8 +270,8 @@ export function Users() {
 
   return (
     <Card className='w-75 mx-auto px-4 h-100'>
-      <div className='rounded primary-bg p-4  my-5 border-0'>
-        <div>
+      <div className='rounded p-4  my-5 border-0'>
+        <Card className='p-5'>
           <div className='d-flex align-items-center mb-3'>
             <H1>Users</H1>
           </div>
@@ -301,10 +301,19 @@ export function Users() {
             </Modal.Body>
 
             <Modal.Footer>
-              <Button variant='secondary' onClick={closeCreateUserModal}>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeCreateUserModal}
+              >
                 Close
               </Button>
-              <Button variant='primary' type='submit' form='createUserForm'>
+              <Button
+                variant='primary'
+                className='rounded'
+                type='submit'
+                form='createUserForm'
+              >
                 Save Changes
               </Button>
             </Modal.Footer>
@@ -314,7 +323,11 @@ export function Users() {
             header={header}
             body={body}
             button={
-              <Button variant='primary' onClick={showCreateUserModal}>
+              <Button
+                variant='primary'
+                className='rounded'
+                onClick={showCreateUserModal}
+              >
                 New User
               </Button>
             }
@@ -352,15 +365,24 @@ export function Users() {
               />
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='secondary' onClick={closeEditUserModal}>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeEditUserModal}
+              >
                 Close
               </Button>
-              <Button variant='primary' type='submit' form='createUserForm'>
+              <Button
+                variant='primary'
+                className='rounded'
+                type='submit'
+                form='createUserForm'
+              >
                 Save Changes
               </Button>
             </Modal.Footer>
           </Modal>
-        </div>
+        </Card>
       </div>
     </Card>
   );

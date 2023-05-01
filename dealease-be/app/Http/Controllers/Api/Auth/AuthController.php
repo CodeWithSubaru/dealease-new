@@ -150,16 +150,13 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password', 'is_buyer', 'is_seller', 'role_type'))) {
+        if (!Auth::attempt($request->only('email', 'password', 'role_type'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        $wallet = $request->coin_owner_type == '0' ? 'buyerWallet' : 'sellerWallet';
-        $auth_user = User::with('user_details', $wallet)->where('email', $request->email);
-
-        $auth_user->update(['coin_owner_type' => $request->coin_owner_type]);
+        $auth_user = User::with('user_details', 'wallet')->where('email', $request->email);
 
         $token = $request->user()->createToken($auth_user->get()[0]->email)->plainTextToken;
 

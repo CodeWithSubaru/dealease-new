@@ -3,29 +3,23 @@ import { Loader } from './Components/Loader/Loader';
 import { GlobalStyles } from './GlobalStyle.style';
 import { NotFound } from './Pages/NotFound';
 
-import { LoginAdmin } from './Pages/Auth/LoginAdmin';
-
-// Buyer Components
-import { AuthBuyerLayout } from './Layouts/AuthBuyerLayout';
-import { ChangePasswordBuyer } from './Pages/Buyer/ChangePassword';
-import { Home } from './Pages/Buyer/Home';
-import { InboxBuyer } from './Pages/Buyer/Inbox';
-import { MessageBuyer } from './Pages/Buyer/Message';
-import { ProfileBuyer } from './Pages/Buyer/Profile';
-import { DonationBuyer } from './Pages/Buyer/Donation';
+// User Components
+import { AuthUserLayout } from './Layouts/AuthUserLayout';
+// import { ChangePasswordBuyer } from './Pages/Buyer/ChangePassword';
+// import { ProfileBuyer } from './Pages/Users/Profile';
 
 // Seller Components
 import { AuthSellerLayout } from './Layouts/AuthSellerLayout';
-import { ChangePasswordSeller } from './Pages/Seller/ChangePassword';
-import { ProductSeller } from './Pages/Seller/Product';
-import { HomeSeller } from './Pages/Seller/Home';
-import { InboxSeller } from './Pages/Seller/Inbox';
-import { MessageSeller } from './Pages/Seller/Message';
-import { ProfileSeller } from './Pages/Seller/Profile';
-import { DonationSeller } from './Pages/Seller/Donation';
-import { WithdrawSeller } from './Pages/Seller/Withdraw';
+import { HomeUser } from './Pages/Users/Home';
+// import { ChangePasswordSeller } from './Pages/Users/ChangePassword';
+// import { ProductSeller } from './Pages/Users/Product';
+// import { InboxSeller } from './Pages/Users/Inbox';
+// import { MessageSeller } from './Pages/Users/Message';
+// import { ProfileSeller } from './Pages/Users/Profile';
+// import { WithdrawSeller } from './Pages/Users/Withdraw';
 
 // Admin Components
+import { LoginAdmin } from './Pages/Auth/LoginAdmin';
 import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
 import { ChangePasswordAdmin } from './Pages/Admin/ChangePassword';
 import { Dashboard } from './Pages/Admin/Dashboard';
@@ -61,49 +55,28 @@ function App() {
     <>
       <div>
         <GlobalStyles />
-        {/* Buyer Route */}
+        {/* User Route */}
         <Routes>
-          <Route element={<AuthBuyerLayout />}>
-            <Route path='/' element={<Home />} />
-            <Route path='/inbox' element={<InboxBuyer />} />
-            <Route path='/message/:message_id' element={<MessageBuyer />} />
-            <Route path='/recharge' element={<Recharge />} />
-            <Route path='/transactions' element={<TransactionsBuyer />} />
+          <Route element={<AuthUserLayout />}>
+            <Route path='/home' element={<HomeUser />} />
+            {/* <Route path='/recharge' element={<Recharge />} /> */}
+            {/* <Route path='/transactions' element={<TransactionsUser />} />
             <Route path='/add-to-cart' element={<AddToCart />} />
-            <Route path='/profile' element={<ProfileBuyer />} />
-            <Route path='/change-password' element={<ChangePasswordBuyer />} />
-            <Route path='/donation' element={<DonationBuyer />} />
-            <Route path='/transactions' element={<TransactionsBuyer />} />
+            <Route path='/profile' element={<ProfileUser />} />
+            <Route path='/change-password' element={<ChangePasswordUser />} />
+            <Route path='/transactions' element={<TransactionsUser />} />
             <Route path='/add-to-cart' element={<AddToCart />} />
+            <Route path='/Product' element={<ProductUser />} />
+            <Route path='/profile' element={<ProfileUser />} />
+            <Route path='/change-password' element={<ChangePasswordUser />} />
+            <Route path='/withdraw' element={<WithdrawUser />} /> */}
           </Route>
 
-          {/* Seller Route */}
-          <Route element={<AuthSellerLayout />}>
-            <Route path='/seller/home' element={<HomeSeller />} />
-            <Route path='/seller/Product' element={<ProductSeller />} />
-            <Route path='/seller/inbox' element={<InboxSeller />} />
-            <Route
-              path='/seller/message/:message_id'
-              element={<MessageSeller />}
-            />
-            <Route path='/seller/profile' element={<ProfileSeller />} />
-            <Route
-              path='/seller/change-password'
-              element={<ChangePasswordSeller />}
-            />
-            <Route path='/seller/donation' element={<DonationSeller />} />
-            <Route path='/seller/withdraw' element={<WithdrawSeller />} />
-          </Route>
           {/* Admin Route */}
           <Route element={<AuthAdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/users' element={<Users />} />
             <Route path='/admin/transactions' element={<TransactionsAdmin />} />
-            <Route path='/admin/inbox' element={<InboxAdmin />} />
-            <Route
-              path='/admin/message/:message_id'
-              element={<MessageAdmin />}
-            />
             <Route path='/admin/profile' element={<ProfileAdmin />} />
             <Route
               path='/admin/change-password'
@@ -113,10 +86,9 @@ function App() {
           </Route>
           <Route element={<GuestLayout />}>
             {/*Solla */}
+            <Route path='/' element={<Mainpage />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
-            <Route path='/home' element={<Mainpage />} />
-            <Route path='/update-access' element={<UpdateAccess />} />
           </Route>
 
           <Route path='/admin/login' element={<LoginAdmin />} />

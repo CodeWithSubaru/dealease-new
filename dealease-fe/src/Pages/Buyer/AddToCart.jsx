@@ -17,7 +17,9 @@ import {
   faSheqel,
   faTable,
   faBars,
+  faPlus,
   faClose,
+  faCartPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   Sidebar,
@@ -147,10 +149,10 @@ export function AddToCart() {
           <div className='mx-auto w-75 d-flex' style={{ height: '100vh' }}>
             <Card className='flex-grow-1'>
               <div className='p-5 '>
-                <H1>Add to Cart</H1>
-                <div className='primary-bg rounded p-5'>
+                <H1 className='mb-4'>Add to Cart</H1>
+                <div className=' rounded p-5 pt-0'>
                   <Link className='btn btn-primary rounded' to='/'>
-                    Add More
+                    <FontAwesomeIcon icon={faPlus} /> Add More
                   </Link>
                   <div className='d-flex'>
                     <div className='flex-grow-1 me-2'>
@@ -365,6 +367,7 @@ export function AddToCart() {
                                 className='text-light rounded flex-grow-1 '
                                 type='submit'
                               >
+                                <FontAwesomeIcon icon={faCartPlus} /> &nbsp;
                                 Place Order
                               </Button>
                             </div>

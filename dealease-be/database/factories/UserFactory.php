@@ -29,12 +29,10 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'email_verified_at' => Carbon::now(),
-            'remember_token' => Str::random(10),
             'user_details_id' => $increment,
-            'coin_owner_type' => 0,
-            'is_buyer' => 1,
-            'is_seller' => 0,
-            'role_type' => 0,
+            'wallet_id' => $increment,
+            'role_type' => rand(1, 3),
+            'remember_token' => Str::random(10),
         ];
     }
 

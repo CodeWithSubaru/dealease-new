@@ -21,7 +21,7 @@ export const ProfileAdmin = () => {
       <div className='userprofile'>
         <Card className='mx-auto w-75' style={{ height: '85vh' }}>
           <Card className='m-auto p-4 '>
-            <div className='d-flex justify-content-between align-items-center mb-4 py-4 px-3 primary-bg rounded'>
+            <div className='d-flex justify-content-between align-items-center mb-4 py-4 px-3 rounded'>
               <img
                 className='w-25 rounded-circle'
                 src={PUBLIC_URL + 'images/' + user.prof_img}
@@ -30,7 +30,7 @@ export const ProfileAdmin = () => {
 
               <div className='d-flex flex-column justify-content-end align-items-end align-self-end'>
                 <h1 className='mb-0'>{user ? user.first_name : ''} </h1>
-                <p className='text-light'>{user ? user.email : ''} </p>
+                <p className='lead'>{user ? user.email : ''} </p>
               </div>
             </div>
             <div className='d-flex justify-content-between mb-3'>

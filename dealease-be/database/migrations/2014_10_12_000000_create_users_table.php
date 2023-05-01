@@ -17,10 +17,8 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
-            $table->boolean('is_buyer', 1);
-            $table->boolean('is_seller', 1);
             $table->char('role_type', 1);
-            $table->char('coin_owner_type', 1);
+            $table->foreignId('wallet_id');
             $table->string('prof_img')->default('default_profile.jpg');
             $table->foreignId('user_details_id')->unsigned();
             $table->rememberToken();
