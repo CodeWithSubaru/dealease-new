@@ -148,8 +148,6 @@ export const AuthProvider = ({ children }) => {
       .catch((e) => {
         localStorage.removeItem('ACCESS_TOKEN');
         localStorage.removeItem('USER_TYPE');
-        navigate('/');
-
         setLoading(false);
       });
 

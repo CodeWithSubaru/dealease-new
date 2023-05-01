@@ -43,15 +43,6 @@ class AuthController extends Controller
             'user_type' => ['required'],
         ]);
 
-        $explodedUserType = explode(' ', $request->user_type);
-        if ($explodedUserType[0] === 'is_buyer') {
-            $is_buyer = $explodedUserType[1];
-            $is_seller = 0;
-        } elseif ($explodedUserType[0] === 'is_seller') {
-            $is_seller = $explodedUserType[1];
-            $is_buyer = 0;
-        }
-
         $imageName = 'default_profile.jpg';
 
         if ($request->has('profile_image')) {

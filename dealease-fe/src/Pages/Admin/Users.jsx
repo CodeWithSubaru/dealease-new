@@ -8,7 +8,12 @@ import { ViewSingleUser } from './ViewSingleUser';
 import { H1 } from '../../Components/Helpers/index.style';
 import PUBLIC_URL from '../../api/public_url';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEye,
+  faEdit,
+  faTrash,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons';
 import Card from 'react-bootstrap/Card';
 import {
   Delete,
@@ -243,6 +248,8 @@ export function Users() {
                 style={{ cursor: 'pointer' }}
               >
                 <FontAwesomeIcon icon={faTrash} className='mx-2' />
+
+                <FontAwesomeIcon icon={faCheck} className='mx-2' />
               </span>
             </div>
           ),
