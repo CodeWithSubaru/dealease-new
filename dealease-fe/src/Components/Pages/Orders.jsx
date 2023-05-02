@@ -62,9 +62,27 @@ export function OrdersTable(props) {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Accepted';
+      return 'Processing';
     }
-    return '';
+    if (status === '3') {
+      return 'Delivered';
+    }
+  }
+
+  function switchColor(status) {
+    if (status === 0) {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
+    }
+
+    if (status === '1') {
+      return 'border-warning bg-warning bg-opacity-75 text-light';
+    }
+    if (status === '2') {
+      return 'border-secondary bg-secondary bg-opacity-75 text-light';
+    }
+    if (status === '3') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
   }
 
   function accept(id) {
@@ -83,7 +101,9 @@ export function OrdersTable(props) {
     });
   }
 
-  function decline(id) {
+  function decline(id) {}
+
+  function cancel(id) {
     Finalize({
       text: 'You want decline this order request',
       confirmButton: 'Yes',
@@ -94,23 +114,7 @@ export function OrdersTable(props) {
           .put('/orders/' + id, { status: 0 })
           .then((resp) => console.log(resp))
           .catch((e) => console.log(e));
-        setUserOrdersTable('/orders/orders-user/seller', 2);
-      }
-    });
-  }
-
-  function cancel(id) {
-    Finalize({
-      text: 'You want decline this order request',
-      confirmButton: 'Yes',
-      successMsg: 'Order Cancelled Successfully.',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        axiosClient
-          .put('/orders/' + id, { status: 0 })
-          .then((resp) => console.log(resp))
-          .catch((e) => console.log(e));
-        setUserOrdersTable('/orders/orders-user/seller', 2);
+        setUserOrdersTable('/orders/orders-user/buyer', 1);
       }
     });
   }
@@ -147,7 +151,12 @@ export function OrdersTable(props) {
               </div>
             ),
             order_status: (
-              <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-75 text-light'>
+              <span
+                className={
+                  'rounded px-2 text-uppercase border border-2 ' +
+                  switchColor(order.order_status)
+                }
+              >
                 {status(order.order_status)}
               </span>
             ),
@@ -213,14 +222,14 @@ export function OrdersTable(props) {
                 >
                   <FontAwesomeIcon icon={faCheck} className='mx-2' />
                 </Button>
-                <Button
+                {/* <Button
                   variant='danger'
                   onClick={() => decline(order.order_id)}
                   style={{ cursor: 'pointer' }}
                   className='p-2 2 rounded'
                 >
                   <FontAwesomeIcon icon={faClose} className='mx-2' />
-                </Button>
+                </Button> */}
               </div>
             ),
           };
@@ -247,12 +256,23 @@ export function OrdersTable(props) {
                     setUserOrdersTable('/orders/orders-user/buyer', 1)
                   }
                 >
-                  Your Orders (Buyer)
+                  My Orders (Buyer)
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link
                   eventKey='second'
+                  onClick={() =>
+                    setUserOrdersTable('/orders/orders-user/buyer', 2)
+                  }
+                >
+                  My Processing Orders (Buyer)
+                </Nav.Link>
+              </Nav.Item>
+
+              <Nav.Item>
+                <Nav.Link
+                  eventKey='third'
                   onClick={() =>
                     setUserOrdersTable('/orders/orders-user/seller', 2)
                   }
@@ -269,6 +289,12 @@ export function OrdersTable(props) {
                 </Card>
               </Tab.Pane>
               <Tab.Pane eventKey='second'>
+                <Card className='p-5 pb-1 rounded'>
+                  <h1 className='mb-4'>Orders</h1>
+                  <TableComponent header={header} body={body} />;
+                </Card>
+              </Tab.Pane>
+              <Tab.Pane eventKey='third'>
                 <Card className='p-5 pb-1 rounded'>
                   <h1 className='mb-4'>Orders</h1>
                   <TableComponent header={header} body={body} />;

@@ -111,9 +111,9 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $order)
     {
-        return Order::find($id)->update(['order_status' => $request->status]);
+        return Order::where('order_id', $order)->update(['order_status' => $request->status]);
     }
 
     public function increment($id)
