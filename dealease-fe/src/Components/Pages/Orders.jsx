@@ -253,7 +253,7 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='first'
                   onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/buyer', 1)
+                    setUserOrdersTable('/orders/orders-user/buyer/1', 1)
                   }
                 >
                   My Orders (Buyer)
@@ -263,7 +263,7 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='second'
                   onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/buyer', 2)
+                    setUserOrdersTable('/orders/orders-user/buyer/2', 1)
                   }
                 >
                   My Processing Orders (Buyer)
@@ -274,7 +274,7 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='third'
                   onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/seller', 2)
+                    setUserOrdersTable('/orders/orders-user/seller/1', 2)
                   }
                 >
                   Pending Orders (Seller)

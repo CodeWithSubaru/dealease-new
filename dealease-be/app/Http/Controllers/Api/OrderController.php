@@ -12,21 +12,21 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
-    public function fetchOrdersBuyer()
+    public function fetchOrdersBuyer($order_status)
     {
         return Order::with('order_by', 'order_by.user_details')
             ->where('order_by', auth()->id())
-            ->where('order_status', 1)
+            ->where('order_status', $order_status)
             ->latest('created_at')->get();
     }
 
-    public function fetchOrdersSeller()
+    public function fetchOrdersSeller($order_status)
     {
         return Order::with('order_by', 'order_by.user_details')
             ->join('products', 'product_id', 'id')
             ->where('products.user_id', auth()->id())
             ->where('orders.order_by', '!=', auth()->id())
-            ->where('orders.order_status', 1)
+            ->where('orders.order_status', $order_status)
             ->latest('orders.created_at')->get();
     }
 
@@ -82,18 +82,19 @@ class OrderController extends Controller
         return response()->json(['status' => 'Item added to cart'], 200);
     }
 
-    private function generateOrderNumber() {
+    private function generateOrderNumber()
+    {
         $orderNumber = Order::all()->last();
 
         if ($orderNumber > 0) {
-			$lastOrderNumber = $orderNumber->product_id;
-			$getNumbers = str_replace("ORD", "", $lastOrderNumber);
-			$idIncrease = $getNumbers + 1;
-			$getString = str_pad($idIncrease, 7, 0, STR_PAD_LEFT);
-			$newOrderNumber = "ORD" . $getString;
-		} else {
-			$newOrderNumber = 'ORD0000001';
-		}
+            $lastOrderNumber = $orderNumber->product_id;
+            $getNumbers = str_replace("ORD", "", $lastOrderNumber);
+            $idIncrease = $getNumbers + 1;
+            $getString = str_pad($idIncrease, 7, 0, STR_PAD_LEFT);
+            $newOrderNumber = "ORD" . $getString;
+        } else {
+            $newOrderNumber = 'ORD0000001';
+        }
 
         return $newOrderNumber;
     }
