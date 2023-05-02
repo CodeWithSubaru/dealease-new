@@ -12,12 +12,22 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
-    public function fetchOrders($order_status, $operator)
+    public function fetchOrdersBuyer()
     {
-        return Order::with('product', 'product.user', 'product.user.user_details')
-            ->where('order_status', $order_status)
-            ->where('order_by', $operator, auth()->id())
+        return Order::with('order_by', 'order_by.user_details')
+            ->where('order_by', auth()->id())
+            ->where('order_status', 1)
             ->latest('created_at')->get();
+    }
+
+    public function fetchOrdersSeller()
+    {
+        return Order::with('order_by', 'order_by.user_details')
+            ->join('products', 'product_id', 'id')
+            ->where('products.user_id', auth()->id())
+            ->where('orders.order_by', '!=', auth()->id())
+            ->where('orders.order_status', 1)
+            ->latest('orders.created_at')->get();
     }
 
     public function fetchCountOfOrders()

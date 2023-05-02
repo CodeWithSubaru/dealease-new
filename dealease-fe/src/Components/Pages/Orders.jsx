@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { TableComponent } from '../Table/Table';
 import { Footer } from '../Footer/Footer';
 import Card from 'react-bootstrap/Card';
-import { Nav, Tab, Row, Col } from 'react-bootstrap';
+import { Nav, Tab, Row, Col, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axiosClient from '../../api/axios';
 import PUBLIC_URL from '../../api/public_url';
+import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 
 export function OrdersTable(props) {
   const [body, setBody] = useState([]);
@@ -35,7 +37,7 @@ export function OrdersTable(props) {
       prop: 'created_at',
       isSortable: true,
     },
-    // { title: 'Action', prop: 'action' },
+    { title: 'Action', prop: 'action' },
   ];
 
   function dateFormat(date) {
@@ -64,33 +66,32 @@ export function OrdersTable(props) {
     return '';
   }
 
-  function setUserOrdersTable(id, operator) {
-    axiosClient
-      .get('/orders/orders-user/' + id + '/' + operator)
-      .then((resp) => {
-        console.log(resp);
-        const orders = resp.data.map((order, i) => {
+  function setUserOrdersTable(url, set) {
+    axiosClient.get(url).then((resp) => {
+      let orders;
+      if (set == 1) {
+        orders = resp.data.map((order, i) => {
           return {
             payment_number: i + 1,
             fullname: (
               <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
                 <img
-                  src={PUBLIC_URL + 'images/' + order.product.user.prof_img}
+                  src={PUBLIC_URL + 'images/' + order.order_by.prof_img}
                   className='rounded-circle pr-5'
                   style={{ width: '50px', height: '50px' }}
                 />
                 <div>
                   <p className='mb-0'>
-                    {order.product.user.first_name}{' '}
-                    {order.product.user.user_details
-                      ? order.product.user.user_details.middle_name[0]
+                    {order.order_by.first_name}{' '}
+                    {order.order_by.user_details
+                      ? order.order_by.user_details.middle_name[0]
                       : ''}
                     {'. '}
-                    {order.product.user.user_details
-                      ? order.product.user.user_details.last_name
+                    {order.order_by.user_details
+                      ? order.order_by.user_details.last_name
                       : ' '}{' '}
-                    {order.product.user.user_details
-                      ? order.product.user.user_details.ext_name
+                    {order.order_by.user_details
+                      ? order.order_by.user_details.ext_name
                       : ''}
                   </p>
                 </div>
@@ -103,35 +104,73 @@ export function OrdersTable(props) {
             ),
             payment_total_amount: 'Php ' + order.total_price,
             created_at: dateFormat(order.created_at),
-            //   action: (
-            //     <div key={i} className='button-actions text-light d-flex'>
-            //       <Button
-            //         variant='primary'
-            //         onClick={() => accept(transaction.payment_number)}
-            //         style={{ cursor: 'pointer' }}
-            //         className='p-2 me-2 rounded'
-            //       >
-            //         <FontAwesomeIcon icon={faCheck} className='mx-2' />
-            //       </Button>
-            //       <Button
-            //         variant='danger'
-            //         onClick={() => decline(user.user_id)}
-            //         style={{ cursor: 'pointer' }}
-            //         className='p-2 2 rounded'
-            //       >
-            //         <FontAwesomeIcon icon={faClose} className='mx-2' />
-            //       </Button>
-            //     </div>
-            //   ),
           };
         });
-
-        setBody(orders);
-      });
+      } else {
+        orders = resp.data.map((order, i) => {
+          console.log(order);
+          return {
+            payment_number: i + 1,
+            fullname: (
+              <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
+                <img
+                  src={PUBLIC_URL + 'images/' + order.order_by.prof_img}
+                  className='rounded-circle pr-5'
+                  style={{ width: '50px', height: '50px' }}
+                />
+                <div>
+                  <p className='mb-0'>
+                    {order.order_by.first_name}{' '}
+                    {order.order_by.user_details
+                      ? order.order_by.user_details.middle_name[0]
+                      : ''}
+                    {'. '}
+                    {order.order_by.user_details
+                      ? order.order_by.user_details.last_name
+                      : ' '}{' '}
+                    {order.order_by.user_details
+                      ? order.order_by.user_details.ext_name
+                      : ''}
+                  </p>
+                </div>
+              </div>
+            ),
+            order_status: (
+              <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-75 text-light'>
+                {status(order.order_status)}
+              </span>
+            ),
+            payment_total_amount: 'Php ' + order.total_price,
+            created_at: dateFormat(order.created_at),
+            action: (
+              <div key={i} className='button-actions text-light d-flex'>
+                <Button
+                  variant='primary'
+                  onClick={() => accept(transaction.payment_number)}
+                  style={{ cursor: 'pointer' }}
+                  className='p-2 me-2 rounded'
+                >
+                  <FontAwesomeIcon icon={faCheck} className='mx-2' />
+                </Button>
+                <Button
+                  variant='danger'
+                  onClick={() => decline(user.user_id)}
+                  style={{ cursor: 'pointer' }}
+                  className='p-2 2 rounded'
+                >
+                  <FontAwesomeIcon icon={faClose} className='mx-2' />
+                </Button>
+              </div>
+            ),
+          };
+        });
+      }
+      setBody(orders);
+    });
   }
 
   useEffect(() => {
-    setUserOrdersTable(1, '==');
+    setUserOrdersTable('/orders/orders-user/buyer', 1);
   }, []);
 
   return (
@@ -143,7 +182,9 @@ export function OrdersTable(props) {
               <Nav.Item>
                 <Nav.Link
                   eventKey='first'
-                  onClick={() => setUserOrdersTable(1, '==')}
+                  onClick={() =>
+                    setUserOrdersTable('/orders/orders-user/buyer', 1)
+                  }
                 >
                   Your Pending Orders (Buyer)
                 </Nav.Link>
@@ -151,7 +192,9 @@ export function OrdersTable(props) {
               <Nav.Item>
                 <Nav.Link
                   eventKey='second'
-                  onClick={() => setUserOrdersTable(1, '!=')}
+                  onClick={() =>
+                    setUserOrdersTable('/orders/orders-user/seller', 2)
+                  }
                 >
                   Pending Orders (Seller)
                 </Nav.Link>

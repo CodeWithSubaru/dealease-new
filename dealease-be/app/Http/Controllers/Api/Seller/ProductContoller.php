@@ -14,8 +14,7 @@ class ProductContoller extends Controller
     // display publicly
     public function getProductsForPublic()
     {
-        $product = Product::with('user')->where('user_id', '!=', auth()->id())->get();
-        return $product;
+        return Product::where('user_id', '!=', auth()->id())->latest('created_at')->get();
     }
 
     /**

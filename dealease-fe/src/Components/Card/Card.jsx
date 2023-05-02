@@ -23,6 +23,7 @@ export function Card() {
   return (
     <div className='cards' id='products'>
       <div className='cards_container'>
+        {console.log(products)}
         <Container className='mt-5 px-5'>
           <Row>
             <Col>
