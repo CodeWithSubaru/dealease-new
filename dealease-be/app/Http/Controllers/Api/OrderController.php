@@ -14,7 +14,7 @@ class OrderController extends Controller
 
     public function fetchOrdersBuyer($order_status)
     {
-        return Order::with('order_by', 'order_by.user_details')
+        return Order::with('order_by', 'order_by.user_details', 'product')
             ->where('order_by', auth()->id())
             ->where('order_status', $order_status)
             ->latest('created_at')->get();
@@ -22,7 +22,7 @@ class OrderController extends Controller
 
     public function fetchOrdersSeller($order_status)
     {
-        return Order::with('order_by', 'order_by.user_details')
+        return Order::with('order_by', 'order_by.user_details', 'product')
             ->join('products', 'product_id', 'id')
             ->where('products.user_id', auth()->id())
             ->where('orders.order_by', '!=', auth()->id())

@@ -23,6 +23,18 @@ export function OrdersTable(props) {
       prop: 'fullname',
     },
     {
+      title: 'Product',
+      prop: 'title',
+    },
+    {
+      title: 'Stocks',
+      prop: 'stocks',
+    },
+    {
+      title: 'Weight',
+      prop: 'weight',
+    },
+    {
       title: 'Status',
       prop: 'order_status',
       isFilterable: true,
@@ -70,7 +82,7 @@ export function OrdersTable(props) {
   }
 
   function switchColor(status) {
-    if (status === 0) {
+    if (status === '0') {
       return 'border-danger bg-danger bg-opacity-75 text-light';
     }
 
@@ -123,6 +135,7 @@ export function OrdersTable(props) {
     axiosClient.get(url).then((resp) => {
       let orders;
       if (set == 1) {
+        console.log(resp);
         orders = resp.data.map((order, i) => {
           return {
             payment_number: i + 1,
@@ -150,6 +163,9 @@ export function OrdersTable(props) {
                 </div>
               </div>
             ),
+            title: order.product.title,
+            weight: order.weight,
+            stocks: order.product.stocks_per_kg,
             order_status: (
               <span
                 className={
@@ -164,14 +180,18 @@ export function OrdersTable(props) {
             created_at: dateFormat(order.created_at),
             action: (
               <div key={i} className='button-actions text-light d-flex'>
-                <Button
-                  variant='danger'
-                  onClick={() => cancel(order.order_id)}
-                  style={{ cursor: 'pointer' }}
-                  className='p-2 2 rounded'
-                >
-                  <FontAwesomeIcon icon={faClose} className='mx-2' />
-                </Button>
+                {order.order_status === '1' ? (
+                  <Button
+                    variant='danger'
+                    onClick={() => cancel(order.order_id)}
+                    style={{ cursor: 'pointer' }}
+                    className='p-2 2 rounded'
+                  >
+                    <FontAwesomeIcon icon={faClose} className='mx-2' />
+                  </Button>
+                ) : (
+                  ''
+                )}
               </div>
             ),
           };
@@ -240,7 +260,7 @@ export function OrdersTable(props) {
   }
 
   useEffect(() => {
-    setUserOrdersTable('/orders/orders-user/buyer', 1);
+    setUserOrdersTable('/orders/orders-user/buyer/1', 1);
   }, []);
 
   return (
@@ -256,7 +276,7 @@ export function OrdersTable(props) {
                     setUserOrdersTable('/orders/orders-user/buyer/1', 1)
                   }
                 >
-                  My Orders (Buyer)
+                  My Pending Orders (Buyer)
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
@@ -274,6 +294,17 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='third'
                   onClick={() =>
+                    setUserOrdersTable('/orders/orders-user/buyer/3', 1)
+                  }
+                >
+                  My Delivered Orders (Buyer)
+                </Nav.Link>
+              </Nav.Item>
+
+              <Nav.Item>
+                <Nav.Link
+                  eventKey='fourth'
+                  onClick={() =>
                     setUserOrdersTable('/orders/orders-user/seller/1', 2)
                   }
                 >
@@ -284,17 +315,25 @@ export function OrdersTable(props) {
             <Tab.Content>
               <Tab.Pane eventKey='first'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>Orders</h1>
+                  <h1 className='mb-4'>My Pending Orders</h1>
                   <TableComponent header={header} body={body} />;
                 </Card>
               </Tab.Pane>
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>Orders</h1>
+                  <h1 className='mb-4'>My Processing Orders</h1>
                   <TableComponent header={header} body={body} />;
                 </Card>
               </Tab.Pane>
+
               <Tab.Pane eventKey='third'>
+                <Card className='p-5 pb-1 rounded'>
+                  <h1 className='mb-4'>My Delivered Orders</h1>
+                  <TableComponent header={header} body={body} />;
+                </Card>
+              </Tab.Pane>
+
+              <Tab.Pane eventKey='fourth'>
                 <Card className='p-5 pb-1 rounded'>
                   <h1 className='mb-4'>Orders</h1>
                   <TableComponent header={header} body={body} />;
