@@ -12,6 +12,11 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
+    public function numberOfOrdersByStatus($order_status)
+    {
+        return Order::where('status', $order_status)->count();
+    }
+
     public function fetchOrdersBuyer($order_status)
     {
         return Order::with('order_by', 'order_by.user_details', 'product')
@@ -86,8 +91,8 @@ class OrderController extends Controller
     {
         $orderNumber = Order::all()->last();
 
-        if ($orderNumber > 0) {
-            $lastOrderNumber = $orderNumber->product_id;
+        if ($orderNumber) {
+            $lastOrderNumber = $orderNumber->order_number;
             $getNumbers = str_replace("ORD", "", $lastOrderNumber);
             $idIncrease = $getNumbers + 1;
             $getString = str_pad($idIncrease, 7, 0, STR_PAD_LEFT);

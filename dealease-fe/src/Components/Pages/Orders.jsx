@@ -8,9 +8,11 @@ import axiosClient from '../../api/axios';
 import PUBLIC_URL from '../../api/public_url';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 import { Finalize } from '../Notification/Notification';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function OrdersTable(props) {
   const [body, setBody] = useState([]);
+  const { user } = useAuthContext();
 
   const header = [
     {
@@ -259,7 +261,17 @@ export function OrdersTable(props) {
     });
   }
 
+  function fetchNumberOrdersByStatus() {
+    axiosClient
+      .get('/orders/order-status/' + 1)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.log(error));
+  }
+
   useEffect(() => {
+    fetchNumberOrdersByStatus();
     setUserOrdersTable('/orders/orders-user/buyer/1', 1);
   }, []);
 
@@ -300,17 +312,18 @@ export function OrdersTable(props) {
                   My Delivered Orders (Buyer)
                 </Nav.Link>
               </Nav.Item>
-
-              <Nav.Item>
-                <Nav.Link
-                  eventKey='fourth'
-                  onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/seller/1', 2)
-                  }
-                >
-                  Pending Orders (Seller)
-                </Nav.Link>
-              </Nav.Item>
+              {user.verified_user == 1 && (
+                <Nav.Item>
+                  <Nav.Link
+                    eventKey='fourth'
+                    onClick={() =>
+                      setUserOrdersTable('/orders/orders-user/seller/1', 2)
+                    }
+                  >
+                    Pending Orders (Seller)
+                  </Nav.Link>
+                </Nav.Item>
+              )}
             </Nav>
             <Tab.Content>
               <Tab.Pane eventKey='first'>
@@ -332,13 +345,14 @@ export function OrdersTable(props) {
                   <TableComponent header={header} body={body} />;
                 </Card>
               </Tab.Pane>
-
-              <Tab.Pane eventKey='fourth'>
-                <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>Orders</h1>
-                  <TableComponent header={header} body={body} />;
-                </Card>
-              </Tab.Pane>
+              {user.verified_user == 1 && (
+                <Tab.Pane eventKey='fourth'>
+                  <Card className='p-5 pb-1 rounded'>
+                    <h1 className='mb-4'>Pending Orders</h1>
+                    <TableComponent header={header} body={body} />;
+                  </Card>
+                </Tab.Pane>
+              )}
             </Tab.Content>
           </Tab.Container>
         </Card>

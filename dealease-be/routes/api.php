@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->middleware('auth');
 
     Route::apiResource('/transactions', PaymentController::class);
+    Route::get('/orders/order-status/{order_status}', [OrderController::class, 'numberOfOrdersByStatus']);
     Route::get('/orders/orders-user/buyer/{order_status}', [OrderController::class, 'fetchOrdersBuyer']);
     Route::get('/orders/orders-user/seller/{order_status}', [OrderController::class, 'fetchOrdersSeller']);
     Route::get('/orders/items-in-cart-count', [OrderController::class, 'fetchCountOfOrders']);
