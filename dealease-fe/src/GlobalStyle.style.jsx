@@ -43,4 +43,8 @@ export const GlobalStyles = createGlobalStyle`
   .form-control {
     box-shadow: unset;
   }
+  
+  .nav-item {
+    height: 100%;
+  }
 `;

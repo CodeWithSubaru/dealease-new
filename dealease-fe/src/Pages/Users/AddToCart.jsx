@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 import {
   faEye,
   faEdit,
@@ -38,7 +39,8 @@ import {
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
-
+  const navigate = useNavigate();
+  
   function fetchCartHistoryBySellerId() {
     axiosClient
       .get('orders/seller-id')
@@ -338,6 +340,7 @@ export function AddToCart() {
                                     .catch((e) => console.log(e));
                                   fetchCountInItemsCart();
                                   fetchCartHistoryBySellerId();
+                                  navigate('/orders');
                                 }
                               });
                             }}

@@ -109,10 +109,6 @@ export function Recharge() {
             <MenuItem component={<Link to='/withdraw' />}> Withdraw </MenuItem>
             <MenuItem component={<Link to='/recharge' />}> Recharge </MenuItem>
           </SubMenu>
-          <MenuItem className='text-black' component={<Link to='/inbox' />}>
-            <FontAwesomeIcon icon={faInbox} className='navs-icon' />
-            Inbox
-          </MenuItem>
         </Menu>
       </Sidebar>
       <main className='w-100'>

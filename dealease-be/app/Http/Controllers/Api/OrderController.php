@@ -12,9 +12,12 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
-    public function fetchOrders()
+    public function fetchOrders($order_status, $operator)
     {
-        return Order::with('product', 'product.user', 'product.user.user_details')->where('order_by', auth()->id())->get();
+        return Order::with('product', 'product.user', 'product.user.user_details')
+            ->where('order_status', $order_status)
+            ->where('order_by', $operator, auth()->id())
+            ->latest('created_at')->get();
     }
 
     public function fetchCountOfOrders()
