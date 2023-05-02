@@ -12,6 +12,7 @@ import { ProductUser } from './Pages/Users/Product';
 import { WithdrawUser } from './Pages/Users/Withdraw';
 import { Recharge } from './Pages/Users/Recharge';
 import { AddToCart } from './Pages/Users/AddToCart';
+import { OrdersUser } from './Pages/Users/Orders';
 
 // Admin Components
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
@@ -52,12 +53,12 @@ function App() {
             <Route path='/add-to-cart' element={<AddToCart />} />
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
-            {/* <Route path='/transactions' element={<TransactionsUser />} /> */}
             <Route path='/add-to-cart' element={<AddToCart />} />
             <Route path='/Product' element={<ProductUser />} />
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/withdraw' element={<WithdrawUser />} />
+            <Route path='/orders' element={<OrdersUser />} />
           </Route>
 
           {/* Admin Route */}

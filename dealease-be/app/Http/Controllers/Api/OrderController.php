@@ -12,6 +12,11 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
+    public function fetchOrders()
+    {
+        return Order::with('product', 'product.user', 'product.user.user_details')->where('order_by', auth()->id())->get();
+    }
+
     public function fetchCountOfOrders()
     {
         $countAddedToCart = $this->index()->count();
@@ -67,13 +72,16 @@ class OrderController extends Controller
     public function placeOrder(Request $request)
     {
         for ($i = 0; $i < count($request->all()); $i++) {
-            Order::create([
+            $order = Order::create([
                 'order_number' => $i,
                 'product_id' => $request->all()[$i]['product_id'],
                 'order_by' => $request->all()[$i]['order_by'],
                 'weight' => $request->all()[$i]['weight'],
                 'total_price' => $request->all()[$i]['total_price'],
+                'order_status' => 1,
             ]);
+
+            Cart::where('order_by', $order->order_by)->delete();
         }
 
         return response()->json(['status' => 'Order placed Successfully'], 200);

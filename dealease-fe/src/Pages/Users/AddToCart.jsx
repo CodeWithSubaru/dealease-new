@@ -30,7 +30,10 @@ import {
   sidebarClasses,
   menuClasses,
 } from 'react-pro-sidebar';
-import { Notification } from '../../Components/Notification/Notification';
+import {
+  Notification,
+  Finalize,
+} from '../../Components/Notification/Notification';
 
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
@@ -142,7 +145,6 @@ export function AddToCart() {
                 Recharge{' '}
               </MenuItem>
             </SubMenu>
-            <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>
         <main className='w-100'>
@@ -324,18 +326,20 @@ export function AddToCart() {
                                   });
                                 }
                               }
-
-                              axiosClient
-                                .post('/orders/place-order', orders)
-                                .then((res) => {
-                                  console.log(res);
-                                  Notification({
-                                    title: 'Success',
-                                    message: res.data.status,
-                                    icon: 'success',
-                                  });
-                                })
-                                .catch((e) => console.log(e));
+                              Finalize({
+                                confirmButton: 'Yes, Place my order',
+                                text: "You won't be able to revert this!",
+                                successMsg: 'Your Order Placed Successfully.',
+                              }).then((res) => {
+                                if (res.isConfirmed) {
+                                  axiosClient
+                                    .post('/orders/place-order', orders)
+                                    .then((res) => console.log(res))
+                                    .catch((e) => console.log(e));
+                                  fetchCountInItemsCart();
+                                  fetchCartHistoryBySellerId();
+                                }
+                              });
                             }}
                           >
                             <h3 className='mb-0 fw-bolder'>Summary Details</h3>

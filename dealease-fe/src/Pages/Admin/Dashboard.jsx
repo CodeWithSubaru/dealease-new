@@ -287,21 +287,15 @@ export function Dashboard() {
         />
 
         <CardDetails
-          title='Messages'
-          totalNumber={calculateTotal(countOfMessages)}
-          icon={faEnvelope}
-        />
-
-        <CardDetails
-          title='Transactions'
+          title='Pending Transactions'
           totalNumber={calculateTotal(countOfMessages)}
           icon={faHandshake}
         />
 
         <CardDetails
-          title='Reported Users'
-          totalNumber={2}
-          icon={faUserLargeSlash}
+          title='Total Amount Transactions'
+          totalNumber={calculateTotal(countOfMessages)}
+          icon={faHandshake}
         />
       </div>
 

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('order_by');
             $table->integer('weight')->unsigned();
             $table->decimal('total_price');
+            $table->char('order_status', 1);
             $table->timestamps();
         });
     }

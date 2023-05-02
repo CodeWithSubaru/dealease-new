@@ -37,7 +37,7 @@ export function Finalize(props) {
 
   return MySwal.fire({
     title: 'Are you sure?',
-    text: "You won't be able to revert this!",
+    text: props.text,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -45,7 +45,7 @@ export function Finalize(props) {
     confirmButtonText: props.confirmButton,
   }).then((result) => {
     if (result.isConfirmed) {
-      MySwal.fire('Success!', 'Data has been updated Successfully.', 'success');
+      MySwal.fire('Success!', props.successMsg, 'success');
     }
     return result;
   });

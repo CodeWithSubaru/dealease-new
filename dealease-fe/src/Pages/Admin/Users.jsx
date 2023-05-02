@@ -66,7 +66,9 @@ export function Users() {
   // verify user
   function verifyUser(user_id) {
     Finalize({
+      text: "You won't be able to revert this!",
       confirmButton: 'Yes, Update User',
+      successMsg: 'Data has been updated Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
