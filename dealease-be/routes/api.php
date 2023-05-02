@@ -31,7 +31,7 @@ use App\Http\Controllers\Api\Admin\AdminPaymentController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/update-access', [AuthController::class, 'updateAccess']);
-Route::get('/public/product', [ProductContoller::class, 'getProductsForPublic']);
+Route::get('/public/product/{id}', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
 

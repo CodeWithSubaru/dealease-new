@@ -111,6 +111,7 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
+        return $request->cartHistoryBySellerId;
         for ($i = 0; $i < count($request->all()); $i++) {
             $orderNumber = $this->generateOrderNumber();
             $order = Order::create([

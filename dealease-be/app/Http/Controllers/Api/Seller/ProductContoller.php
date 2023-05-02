@@ -12,9 +12,9 @@ use App\Models\User;
 class ProductContoller extends Controller
 {
     // display publicly
-    public function getProductsForPublic()
+    public function getProductsForPublic($id)
     {
-        return Product::where('user_id', '!=', auth()->id())->latest('created_at')->get();
+        return Product::where('user_id', '!=', $id)->latest('created_at')->get();
     }
 
     /**

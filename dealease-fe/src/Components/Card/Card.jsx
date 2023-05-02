@@ -17,7 +17,7 @@ export function Card() {
   const { msgStatus, status } = useAddToCartContext();
 
   useEffect(() => {
-    fetchPublicProducts();
+    fetchPublicProducts(user.user_id);
   }, []);
 
   return (

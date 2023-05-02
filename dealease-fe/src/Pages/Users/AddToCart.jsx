@@ -45,7 +45,7 @@ export function AddToCart() {
     axiosClient
       .get('orders/seller-id')
       .then((res) => {
-        setCartHistoryBySellerId(Object.values(res.data));
+        setCartHistoryBySellerId(res.data);
       })
       .catch((e) => console.log(e));
   }
@@ -87,7 +87,7 @@ export function AddToCart() {
   function calculateGrandTotalPrice(cart) {
     let totalPrice = 0;
 
-    cart.forEach((cartItem) => {
+    Object.values(cart).forEach((cartItem) => {
       for (let i = 0; i < cartItem.length; i++) {
         totalPrice += Number(cartItem[i].total_price);
       }
@@ -160,129 +160,133 @@ export function AddToCart() {
                   </Link>
                   <div className='d-flex'>
                     <div className='flex-grow-1 me-2'>
-                      {cartHistoryBySellerId.length > 0 ? (
-                        cartHistoryBySellerId.map((item, index) => {
-                          return (
-                            <>
-                              <p className='mb-0 mt-4' key={index}>
-                                Seller{' '}
-                                <span className='badge rounded-pill text-bg-primary'>
-                                  {item.length > 1
-                                    ? item[index]
-                                      ? item[index].product.user.first_name +
+                      {Object.values(cartHistoryBySellerId).length > 0 ? (
+                        Object.values(cartHistoryBySellerId).map(
+                          (item, index) => {
+                            return (
+                              <>
+                                <p className='mb-0 mt-4' key={index}>
+                                  Seller{' '}
+                                  <span className='badge rounded-pill text-bg-primary'>
+                                    {item.length > 1
+                                      ? item[index]
+                                        ? item[index].product.user.first_name +
+                                          ' ' +
+                                          item[index].product.user.user_details
+                                            .middle_name[0] +
+                                          '.' +
+                                          ' ' +
+                                          item[index].product.user.user_details
+                                            .last_name
+                                        : ''
+                                      : item[0].product.user.first_name +
                                         ' ' +
-                                        item[index].product.user.user_details
+                                        item[0].product.user.user_details
                                           .middle_name[0] +
                                         '.' +
                                         ' ' +
-                                        item[index].product.user.user_details
-                                          .last_name
-                                      : ''
-                                    : item[0].product.user.first_name +
-                                      ' ' +
-                                      item[0].product.user.user_details
-                                        .middle_name[0] +
-                                      '.' +
-                                      ' ' +
-                                      item[0].product.user.user_details
-                                        .last_name}
-                                </span>
-                              </p>
-                              {item.map((cartItem, index) => (
-                                <>
-                                  <Card
-                                    className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
-                                    key={index}
-                                  >
-                                    <div
-                                      style={{
-                                        width: '120px',
-                                        height: '120px',
-                                        overflow: 'hidden',
-                                      }}
+                                        item[0].product.user.user_details
+                                          .last_name}
+                                  </span>
+                                </p>
+                                {item.map((cartItem, index) => (
+                                  <>
+                                    <Card
+                                      className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
+                                      key={index}
                                     >
-                                      <img
-                                        src={
-                                          PUBLIC_URL +
-                                          'images/' +
-                                          cartItem.product.image
-                                        }
-                                        alt={
-                                          cartItem.product.image
-                                            ? cartItem.product.image
-                                            : ''
-                                        }
+                                      <div
                                         style={{
-                                          objectFit: 'cover',
+                                          width: '120px',
+                                          height: '120px',
+                                          overflow: 'hidden',
                                         }}
-                                        className='rounded w-100 h-100'
-                                      />
-                                    </div>
-                                    <div className='flex-grow-1 d-flex justify-content-between ms-3'>
-                                      <div>
-                                        <H3 className='fs-3'>
-                                          {cartItem.product.title}
-                                        </H3>
-                                        <div className='d-flex flex-column'>
-                                          <span>
-                                            Price: Php{' '}
-                                            {cartItem.product.price_per_kg}
-                                          </span>
-                                          <span>
-                                            Available Stocks :{' '}
-                                            {cartItem.product.stocks_per_kg} kg
-                                          </span>
-                                        </div>
+                                      >
+                                        <img
+                                          src={
+                                            PUBLIC_URL +
+                                            'images/' +
+                                            cartItem.product.image
+                                          }
+                                          alt={
+                                            cartItem.product.image
+                                              ? cartItem.product.image
+                                              : ''
+                                          }
+                                          style={{
+                                            objectFit: 'cover',
+                                          }}
+                                          className='rounded w-100 h-100'
+                                        />
                                       </div>
-                                      <div className='flex-shrink-0 align-self-end justify-content-end'>
-                                        <div className='d-flex align-items-end justify-content-end'>
-                                          <Button
-                                            variant='primary'
-                                            className='w-25 py-2 px-0 me-2 rounded'
-                                            onClick={() =>
-                                              decrement(cartItem.id)
-                                            }
-                                            disabled={cartItem.weight == 1}
-                                          >
-                                            -
-                                          </Button>
-                                          <input
-                                            type='text'
-                                            className='w-25 py-1 text-center'
-                                            value={cartItem.weight}
-                                            disabled
-                                          />
-                                          <Button
-                                            variant='primary'
-                                            className='w-25 py-2 px-0 ms-2 rounded me-2'
-                                            onClick={() =>
-                                              increment(cartItem.id)
-                                            }
-                                            disabled={
-                                              cartItem.product.stocks_per_kg <=
-                                              cartItem.weight
-                                            }
-                                          >
-                                            +
-                                          </Button>
+                                      <div className='flex-grow-1 d-flex justify-content-between ms-3'>
+                                        <div>
+                                          <H3 className='fs-3'>
+                                            {cartItem.product.title}
+                                          </H3>
+                                          <div className='d-flex flex-column'>
+                                            <span>
+                                              Price: Php{' '}
+                                              {cartItem.product.price_per_kg}
+                                            </span>
+                                            <span>
+                                              Available Stocks :{' '}
+                                              {cartItem.product.stocks_per_kg}{' '}
+                                              kg
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div className='flex-shrink-0 align-self-end justify-content-end'>
+                                          <div className='d-flex align-items-end justify-content-end'>
+                                            <Button
+                                              variant='primary'
+                                              className='w-25 py-2 px-0 me-2 rounded'
+                                              onClick={() =>
+                                                decrement(cartItem.id)
+                                              }
+                                              disabled={cartItem.weight == 1}
+                                            >
+                                              -
+                                            </Button>
+                                            <input
+                                              type='text'
+                                              className='w-25 py-1 text-center'
+                                              value={cartItem.weight}
+                                              disabled
+                                            />
+                                            <Button
+                                              variant='primary'
+                                              className='w-25 py-2 px-0 ms-2 rounded me-2'
+                                              onClick={() =>
+                                                increment(cartItem.id)
+                                              }
+                                              disabled={
+                                                cartItem.product
+                                                  .stocks_per_kg <=
+                                                cartItem.weight
+                                              }
+                                            >
+                                              +
+                                            </Button>
 
-                                          <Button
-                                            className='btn btn-danger rounded'
-                                            onClick={() =>
-                                              removeFromCart(cartItem.id)
-                                            }
-                                          >
-                                            Remove
-                                          </Button>
+                                            <Button
+                                              className='btn btn-danger rounded'
+                                              onClick={() =>
+                                                removeFromCart(cartItem.id)
+                                              }
+                                            >
+                                              Remove
+                                            </Button>
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  </Card>
-                                </>
-                              ))}
-                            </>
-                          );
-                        })
+                                    </Card>
+                                  </>
+                                ))}
+                              </>
+                            );
+                          }
+                        )
                       ) : (
                         <div className='text-center'>No Data</div>
                       )}
@@ -296,38 +300,13 @@ export function AddToCart() {
                           )
                         } */}
                     </div>
-                    {cartHistoryBySellerId.length > 0 && (
+                    {Object.values(cartHistoryBySellerId).length > 0 && (
                       <div className='mt-2 d-flex'>
                         <Card className='mt-5 p-3 align-self-baseline flex-shrink-0'>
                           <Form
                             className=' mt-2 p-2 px-3'
                             onSubmit={(e) => {
                               e.preventDefault();
-                              const orders = [];
-
-                              for (
-                                let i = 0;
-                                i < cartHistoryBySellerId.length;
-                                i++
-                              ) {
-                                let startFromOrderNumber = 1;
-                                for (
-                                  let j = 0;
-                                  j < cartHistoryBySellerId[i].length;
-                                  j++
-                                ) {
-                                  orders.push({
-                                    id: i,
-                                    product_id:
-                                      cartHistoryBySellerId[i][j].product_id,
-                                    order_by:
-                                      cartHistoryBySellerId[i][j].order_by,
-                                    weight: cartHistoryBySellerId[i][j].weight,
-                                    total_price:
-                                      cartHistoryBySellerId[i][j].total_price,
-                                  });
-                                }
-                              }
                               Finalize({
                                 confirmButton: 'Yes, Place my order',
                                 text: "You won't be able to revert this!",
@@ -335,7 +314,9 @@ export function AddToCart() {
                               }).then((res) => {
                                 if (res.isConfirmed) {
                                   axiosClient
-                                    .post('/orders/place-order', orders)
+                                    .post('/orders/place-order', {
+                                      cartHistoryBySellerId,
+                                    })
                                     .then((res) => console.log(res))
                                     .catch((e) => console.log(e));
                                   fetchCountInItemsCart();
@@ -347,21 +328,23 @@ export function AddToCart() {
                           >
                             <h3 className='mb-0 fw-bolder'>Summary Details</h3>
                             <hr />
-                            {cartHistoryBySellerId.map((item, index) => (
-                              <p key={index} className='p-2'>
-                                <strong>{item.length}</strong> item
-                                {item.length > 1 ? "'s" : ''} on Seller{' '}
-                                <strong>
-                                  {item.length > 1
-                                    ? item[index]
-                                      ? item[index].product.user.first_name
-                                      : ''
-                                    : item[0].product.user.first_name}
-                                </strong>{' '}
-                                <br />
-                                Sub Total: {calculateSubTotalPrice(item)}
-                              </p>
-                            ))}
+                            {Object.values(cartHistoryBySellerId).map(
+                              (item, index) => (
+                                <p key={index} className='p-2'>
+                                  <strong>{item.length}</strong> item
+                                  {item.length > 1 ? "'s" : ''} on Seller{' '}
+                                  <strong>
+                                    {item.length > 1
+                                      ? item[index]
+                                        ? item[index].product.user.first_name
+                                        : ''
+                                      : item[0].product.user.first_name}
+                                  </strong>{' '}
+                                  <br />
+                                  Sub Total: {calculateSubTotalPrice(item)}
+                                </p>
+                              )
+                            )}
                             <hr />
                             <p className='fs-4 fw-bold'>
                               {' '}

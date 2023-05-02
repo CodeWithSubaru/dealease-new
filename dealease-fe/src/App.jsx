@@ -14,6 +14,9 @@ import { Recharge } from './Pages/Users/Recharge';
 import { AddToCart } from './Pages/Users/AddToCart';
 import { OrdersUser } from './Pages/Users/Orders';
 
+// Rider Components
+import { HomeRider } from './Pages/Rider/Home';
+
 // Admin Components
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
 import { AuthAdminLayout } from './Layouts/AuthAdminLayout';
@@ -79,6 +82,9 @@ function App() {
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
           </Route>
+
+          {/* Rider */}
+          <Route path='/rider/home' element={<HomeRider />} />
 
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />

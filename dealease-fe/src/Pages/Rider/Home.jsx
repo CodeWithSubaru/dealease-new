@@ -15,7 +15,7 @@ import {
 } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 
-export const HomeUser = () => {
+export const HomeRider = () => {
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
   const { collapseSidebar } = useProSidebar();
 

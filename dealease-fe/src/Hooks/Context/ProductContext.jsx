@@ -13,8 +13,8 @@ export const ProductProvider = ({ children }) => {
     });
   }
 
-  function fetchPublicProducts() {
-    axiosClient.get('/public/product').then((resp) => {
+  function fetchPublicProducts(id) {
+    axiosClient.get('/public/product/' + id).then((resp) => {
       setProducts(resp.data);
     });
   }
