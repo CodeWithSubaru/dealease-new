@@ -113,7 +113,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return Order::find($id)->update(['order_status' => $request->status]);
     }
 
     public function increment($id)

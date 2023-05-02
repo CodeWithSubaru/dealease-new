@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axiosClient from '../../api/axios';
 import PUBLIC_URL from '../../api/public_url';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
+import { Finalize } from '../Notification/Notification';
 
 export function OrdersTable(props) {
   const [body, setBody] = useState([]);
@@ -66,6 +67,54 @@ export function OrdersTable(props) {
     return '';
   }
 
+  function accept(id) {
+    Finalize({
+      text: 'You want accept this order request',
+      confirmButton: 'Yes',
+      successMsg: 'Order Accepted Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/' + id, { status: 2 })
+          .then((resp) => console.log(resp))
+          .catch((e) => console.log(e));
+        setUserOrdersTable('/orders/orders-user/seller', 2);
+      }
+    });
+  }
+
+  function decline(id) {
+    Finalize({
+      text: 'You want decline this order request',
+      confirmButton: 'Yes',
+      successMsg: 'Order Declined Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/' + id, { status: 0 })
+          .then((resp) => console.log(resp))
+          .catch((e) => console.log(e));
+        setUserOrdersTable('/orders/orders-user/seller', 2);
+      }
+    });
+  }
+
+  function cancel(id) {
+    Finalize({
+      text: 'You want decline this order request',
+      confirmButton: 'Yes',
+      successMsg: 'Order Cancelled Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/' + id, { status: 0 })
+          .then((resp) => console.log(resp))
+          .catch((e) => console.log(e));
+        setUserOrdersTable('/orders/orders-user/seller', 2);
+      }
+    });
+  }
+
   function setUserOrdersTable(url, set) {
     axiosClient.get(url).then((resp) => {
       let orders;
@@ -104,6 +153,18 @@ export function OrdersTable(props) {
             ),
             payment_total_amount: 'Php ' + order.total_price,
             created_at: dateFormat(order.created_at),
+            action: (
+              <div key={i} className='button-actions text-light d-flex'>
+                <Button
+                  variant='danger'
+                  onClick={() => cancel(order.order_id)}
+                  style={{ cursor: 'pointer' }}
+                  className='p-2 2 rounded'
+                >
+                  <FontAwesomeIcon icon={faClose} className='mx-2' />
+                </Button>
+              </div>
+            ),
           };
         });
       } else {
@@ -146,7 +207,7 @@ export function OrdersTable(props) {
               <div key={i} className='button-actions text-light d-flex'>
                 <Button
                   variant='primary'
-                  onClick={() => accept(transaction.payment_number)}
+                  onClick={() => accept(order.order_id)}
                   style={{ cursor: 'pointer' }}
                   className='p-2 me-2 rounded'
                 >
@@ -154,7 +215,7 @@ export function OrdersTable(props) {
                 </Button>
                 <Button
                   variant='danger'
-                  onClick={() => decline(user.user_id)}
+                  onClick={() => decline(order.order_id)}
                   style={{ cursor: 'pointer' }}
                   className='p-2 2 rounded'
                 >
@@ -186,7 +247,7 @@ export function OrdersTable(props) {
                     setUserOrdersTable('/orders/orders-user/buyer', 1)
                   }
                 >
-                  Your Pending Orders (Buyer)
+                  Your Orders (Buyer)
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
@@ -209,6 +270,7 @@ export function OrdersTable(props) {
               </Tab.Pane>
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
+                  <h1 className='mb-4'>Orders</h1>
                   <TableComponent header={header} body={body} />;
                 </Card>
               </Tab.Pane>
