@@ -41,7 +41,7 @@ Route::post('/payment', [PaymentController::class, 'payment']);
 Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
-// Login 
+// Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 Route::middleware(['auth:sanctum'])->group(function () {

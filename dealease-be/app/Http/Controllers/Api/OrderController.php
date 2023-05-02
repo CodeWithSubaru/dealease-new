@@ -82,11 +82,28 @@ class OrderController extends Controller
         return response()->json(['status' => 'Item added to cart'], 200);
     }
 
+    private function generateOrderNumber() {
+        $orderNumber = Order::all()->last();
+
+        if ($orderNumber > 0) {
+			$lastOrderNumber = $orderNumber->product_id;
+			$getNumbers = str_replace("ORD", "", $lastOrderNumber);
+			$idIncrease = $getNumbers + 1;
+			$getString = str_pad($idIncrease, 7, 0, STR_PAD_LEFT);
+			$newOrderNumber = "ORD" . $getString;
+		} else {
+			$newOrderNumber = 'ORD0000001';
+		}
+
+        return $newOrderNumber;
+    }
+
     public function placeOrder(Request $request)
     {
         for ($i = 0; $i < count($request->all()); $i++) {
+            $orderNumber = $this->generateOrderNumber();
             $order = Order::create([
-                'order_number' => $i,
+                'order_number' => $orderNumber,
                 'product_id' => $request->all()[$i]['product_id'],
                 'order_by' => $request->all()[$i]['order_by'],
                 'weight' => $request->all()[$i]['weight'],
