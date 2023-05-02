@@ -40,7 +40,7 @@ export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
   const navigate = useNavigate();
-  
+
   function fetchCartHistoryBySellerId() {
     axiosClient
       .get('orders/seller-id')

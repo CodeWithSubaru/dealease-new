@@ -12,6 +12,10 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function OrdersTable(props) {
   const [body, setBody] = useState([]);
+  const [pendingOrderNumber, setPendingOrderNumber] = useState(0);
+  const [processingOrderNumber, setProcessingOrderNumber] = useState(0);
+  const [deliveredOrderNumber, setDeliveredOrderNumber] = useState(0);
+  const [pendingOrderNumberSeller, setPendingOrderNumberSeller] = useState(0);
   const { user } = useAuthContext();
 
   const header = [
@@ -110,7 +114,7 @@ export function OrdersTable(props) {
           .put('/orders/' + id, { status: 2 })
           .then((resp) => console.log(resp))
           .catch((e) => console.log(e));
-        setUserOrdersTable('/orders/orders-user/seller', 2);
+        setUserOrdersTable('/orders/orders-user/seller/1', 2);
       }
     });
   }
@@ -128,7 +132,7 @@ export function OrdersTable(props) {
           .put('/orders/' + id, { status: 0 })
           .then((resp) => console.log(resp))
           .catch((e) => console.log(e));
-        setUserOrdersTable('/orders/orders-user/buyer', 1);
+        setUserOrdersTable('/orders/orders-user/buyer/1', 1);
       }
     });
   }
@@ -227,6 +231,9 @@ export function OrdersTable(props) {
                 </div>
               </div>
             ),
+            title: order.product.title,
+            weight: order.weight,
+            stocks: order.product.stocks_per_kg,
             order_status: (
               <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-75 text-light'>
                 {status(order.order_status)}
@@ -261,17 +268,41 @@ export function OrdersTable(props) {
     });
   }
 
-  function fetchNumberOrdersByStatus() {
+  function fetchNumberOrdersByStatusBuyer(orderStatus) {
     axiosClient
-      .get('/orders/order-status/' + 1)
+      .get('/orders/order-status/buyer/' + orderStatus)
       .then((res) => {
-        console.log(res);
+        if (orderStatus === 1) {
+          setPendingOrderNumber(res.data);
+        } else if (orderStatus === 2) {
+          setProcessingOrderNumber(res.data);
+        } else if (orderStatus === 3) {
+          setDeliveredOrderNumber(res.data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }
+
+  function fetchNumberOrdersByStatusSeller(orderStatus) {
+    axiosClient
+      .get('/orders/order-status/seller/' + orderStatus)
+      .then((res) => {
+        if (orderStatus === 1) {
+          setPendingOrderNumberSeller(res.data);
+        } else if (orderStatus === 2) {
+          // setProcessingOrderNumberSeller(res.data);
+        } else if (orderStatus === 3) {
+          // setDeliveredOrderNumberSeller(res.data);
+        }
       })
       .catch((error) => console.log(error));
   }
 
   useEffect(() => {
-    fetchNumberOrdersByStatus();
+    fetchNumberOrdersByStatusBuyer(1);
+    fetchNumberOrdersByStatusBuyer(2);
+    fetchNumberOrdersByStatusBuyer(3);
+    fetchNumberOrdersByStatusSeller(1);
     setUserOrdersTable('/orders/orders-user/buyer/1', 1);
   }, []);
 
@@ -284,32 +315,53 @@ export function OrdersTable(props) {
               <Nav.Item>
                 <Nav.Link
                   eventKey='first'
-                  onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/buyer/1', 1)
-                  }
+                  onClick={() => {
+                    setUserOrdersTable('/orders/orders-user/buyer/1', 1);
+                    fetchNumberOrdersByStatusBuyer(1);
+                  }}
                 >
-                  My Pending Orders (Buyer)
+                  My Pending Orders (Buyer){' '}
+                  <span
+                    className='badge rounded-pill text-bg-primary position-relative'
+                    style={{ top: '-8px', left: '-5px' }}
+                  >
+                    {pendingOrderNumber}
+                  </span>
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link
                   eventKey='second'
-                  onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/buyer/2', 1)
-                  }
+                  onClick={() => {
+                    setUserOrdersTable('/orders/orders-user/buyer/2', 1);
+                    fetchNumberOrdersByStatusBuyer(2);
+                  }}
                 >
-                  My Processing Orders (Buyer)
+                  My Processing Orders (Buyer){' '}
+                  <span
+                    className='badge rounded-pill text-bg-primary position-relative'
+                    style={{ top: '-8px', left: '-5px' }}
+                  >
+                    {processingOrderNumber}
+                  </span>
                 </Nav.Link>
               </Nav.Item>
 
               <Nav.Item>
                 <Nav.Link
                   eventKey='third'
-                  onClick={() =>
-                    setUserOrdersTable('/orders/orders-user/buyer/3', 1)
-                  }
+                  onClick={() => {
+                    setUserOrdersTable('/orders/orders-user/buyer/3', 1);
+                    fetchNumberOrdersByStatusBuyer(3);
+                  }}
                 >
-                  My Delivered Orders (Buyer)
+                  My Delivered Orders (Buyer){' '}
+                  <span
+                    className='badge rounded-pill text-bg-primary position-relative'
+                    style={{ top: '-8px', left: '-5px' }}
+                  >
+                    {deliveredOrderNumber}
+                  </span>
                 </Nav.Link>
               </Nav.Item>
               {user.verified_user == 1 && (
@@ -320,7 +372,13 @@ export function OrdersTable(props) {
                       setUserOrdersTable('/orders/orders-user/seller/1', 2)
                     }
                   >
-                    Pending Orders (Seller)
+                    Pending Orders (Seller){' '}
+                    <span
+                      className='badge rounded-pill text-bg-primary position-relative'
+                      style={{ top: '-8px', left: '-5px' }}
+                    >
+                      {pendingOrderNumberSeller}
+                    </span>
                   </Nav.Link>
                 </Nav.Item>
               )}
@@ -348,7 +406,7 @@ export function OrdersTable(props) {
               {user.verified_user == 1 && (
                 <Tab.Pane eventKey='fourth'>
                   <Card className='p-5 pb-1 rounded'>
-                    <h1 className='mb-4'>Pending Orders</h1>
+                    <h1 className='mb-4'>My Pending Orders</h1>
                     <TableComponent header={header} body={body} />;
                   </Card>
                 </Tab.Pane>

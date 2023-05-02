@@ -12,9 +12,14 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
-    public function numberOfOrdersByStatus($order_status)
+    public function numberOfOrdersByStatusBuyer($order_status)
     {
-        return Order::where('status', $order_status)->count();
+        return $this->fetchOrdersBuyer($order_status)->count();
+    }
+
+    public function numberOfOrdersByStatusSeller($order_status)
+    {
+        return $this->fetchOrdersSeller($order_status)->count();
     }
 
     public function fetchOrdersBuyer($order_status)
