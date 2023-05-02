@@ -60,16 +60,21 @@ export function Withdraw() {
                 setErrors([]);
               }}
               isInvalid={
-                shellToConvert > Number(user.buyer_wallet?.shell_coin_amount) ||
-                !!errors.length > 0
+                shellToConvert >
+                  Number(
+                    user.buyer_wallet ? user.buyer_wallet.shell_coin_amount : 0
+                  ) || !!errors.length > 0
               }
             />
             <Form.Control.Feedback type='invalid'>
               {errors.length > 0
                 ? errors
                 : shellToConvert >
-                    Number(user.buyer_wallet?.shell_coin_amount) &&
-                  'Insufficient Balance!'}
+                    Number(
+                      user.buyer_wallet
+                        ? user.buyer_wallet.shell_coin_amount
+                        : 0
+                    ) && 'Insufficient Balance!'}
             </Form.Control.Feedback>
             Converted to Peso
             <br />

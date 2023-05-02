@@ -6,7 +6,7 @@ import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import PUBLIC_URL from '../../api/public_url';
 
-export function TransactionsBuyer() {
+export function TransactionsUser() {
   const [body, setBody] = useState([]);
 
   const header = [

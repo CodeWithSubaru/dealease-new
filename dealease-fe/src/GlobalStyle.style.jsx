@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import Background from "./assets/img/test.png";
+import { createGlobalStyle } from 'styled-components';
+import Background from './assets/img/test.png';
 
 export const GlobalStyles = createGlobalStyle`
   *,
@@ -38,5 +38,13 @@ export const GlobalStyles = createGlobalStyle`
       rgba(1, 197, 241, 1) 90%,
       rgba(0, 212, 255, 1) 100%
     );
+  }
+
+  .form-control {
+    box-shadow: unset;
+  }
+  
+  .nav-item {
+    height: 100%;
   }
 `;

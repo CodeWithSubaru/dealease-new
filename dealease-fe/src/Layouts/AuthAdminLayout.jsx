@@ -46,11 +46,6 @@ export function AuthAdminLayout() {
             </li>
 
             <li className='nav-item'>
-              <Link to='/admin/inbox' className='nav-links'>
-                Inbox
-              </Link>
-            </li>
-            <li className='nav-item'>
               <div className='div-dropdown'>
                 <Dropdown as={ButtonGroup} className='dropdown-button'>
                   <Button variant='dark' className='dropdown-logout'>

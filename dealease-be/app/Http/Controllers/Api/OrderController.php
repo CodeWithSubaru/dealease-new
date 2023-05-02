@@ -12,6 +12,14 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
+    public function fetchOrders($order_status, $operator)
+    {
+        return Order::with('product', 'product.user', 'product.user.user_details')
+            ->where('order_status', $order_status)
+            ->where('order_by', $operator, auth()->id())
+            ->latest('created_at')->get();
+    }
+
     public function fetchCountOfOrders()
     {
         $countAddedToCart = $this->index()->count();
@@ -23,7 +31,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Cart::with('product', 'product.user', 'user.user_detail')->where('order_by', auth()->id())->get();
+        return Cart::with('product', 'product.user', 'product.user.user_details')->where('order_by', auth()->id())->get();
     }
 
     public function fetchCartGroupById()
@@ -56,16 +64,30 @@ class OrderController extends Controller
             // 'order_number' => $generatedIdSample,
             'product_id' => $product->id,
             'order_by' => auth()->id(),
-            'weight' => $product->weight ? 0 : 1,
-            'total_price' => $product->price * ($product->weight ? $request->weight : 1),
+            'weight' => 1,
+            'total_price' => $product->price_per_kg,
+            // calculation of total_price in orders_table $product->price_per_kg * ($product->stocks_per_kg ? $product->stocks_per_kg : 1)
         ]);
 
         return response()->json(['status' => 'Item added to cart'], 200);
     }
 
-    public function FunctionName()
+    public function placeOrder(Request $request)
     {
-        # code...
+        for ($i = 0; $i < count($request->all()); $i++) {
+            $order = Order::create([
+                'order_number' => $i,
+                'product_id' => $request->all()[$i]['product_id'],
+                'order_by' => $request->all()[$i]['order_by'],
+                'weight' => $request->all()[$i]['weight'],
+                'total_price' => $request->all()[$i]['total_price'],
+                'order_status' => 1,
+            ]);
+
+            Cart::where('order_by', $order->order_by)->delete();
+        }
+
+        return response()->json(['status' => 'Order placed Successfully'], 200);
     }
 
     /**
@@ -89,31 +111,31 @@ class OrderController extends Controller
 
         $cart = Cart::with('product')->find($id);
 
-        if ($cart->quantity >= $cart->product->stocks_per_kg) {
+        if ($cart->weight >= $cart->product->stocks_per_kg) {
             return;
         }
 
         $cart->update([
-            'quantity' => $cart->quantity + 1,
+            'weight' => $cart->weight + 1,
         ]);
 
         $cart->update([
-            'total_price' => ($cart->product->price_per_kg  * $cart->quantity)
+            'total_price' => ($cart->product->price_per_kg  * $cart->weight)
         ]);
     }
 
     public function decrement($id)
     {
         $cart = Cart::with('product')->find($id);
-        if ($cart->quantity == 1) {
+        if ($cart->weight == 1) {
             return;
         }
         $cart->update([
-            'quantity' => $cart->quantity - 1,
+            'weight' => $cart->weight - 1,
         ]);
 
         $cart->update([
-            'total_price' => ($cart->product->price_per_kg  * $cart->quantity)
+            'total_price' => ($cart->product->price_per_kg  * $cart->weight)
         ]);
     }
 
@@ -123,7 +145,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $cart = Cart::find($id);
-        $cart->quantity = 0;
+        $cart->weight = 0;
         $cart->delete();
     }
 }

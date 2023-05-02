@@ -1,3 +1,9 @@
+import { useEffect, useState } from 'react';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import { Navigate } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
+import { H1 } from '../../Components/Helpers/index.style';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelope,
   faEnvelopeSquare,
@@ -5,37 +11,20 @@ import {
   faLockOpen,
   faSquareEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import { Container, Row, Col } from 'react-bootstrap';
-import { H1 } from '../../Components/Helpers/index.style';
-import useAuthContext from '../../Hooks/Context/AuthContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Navigate } from 'react-router-dom';
 
 export const LoginAdmin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const is_buyer = 0,
-    is_seller = 0,
-    role_type = 1,
-    coin_owner_type = 2;
+  const role_type = 3;
   const { loginAdmin, errors, setErrors, user_type, token } = useAuthContext();
 
   if (token) {
-    const { user_type, token } = useAuthContext();
-    const localStoreUserType = localStorage.getItem('USER_TYPE');
-    if (token) {
-      if (user_type == 'Buyer' || localStoreUserType == 'Buyer_seller1') {
-        return <Navigate to='/' />;
-      } else if (
-        user_type == 'Seller' ||
-        localStoreUserType == 'Buyer_seller2'
-      ) {
-        return <Navigate to='/seller/home' />;
-      } else if (user_type == 'Admin') {
-        return <Navigate to='/admin/dashboard' />;
-      }
+    if (user_type == 'Buyer') {
+      return <Navigate to='/home' />;
+    }
+
+    if (user_type == 'Admin') {
+      return <Navigate to='/admin/dashboard' />;
     }
   }
 
@@ -48,10 +37,7 @@ export const LoginAdmin = () => {
     loginAdmin({
       email,
       password,
-      is_buyer,
-      is_seller,
       role_type,
-      coin_owner_type,
     });
   };
 

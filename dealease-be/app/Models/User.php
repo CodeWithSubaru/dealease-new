@@ -44,27 +44,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function user_details()
     {
-        return  $this->hasOne(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
+        return  $this->belongsTo(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
     }
 
-    public function buyerWallet()
+    public function wallet()
     {
-        return $this->hasOne(\App\Models\BuyerWallet::class, 'user_id', 'user_id');
-    }
-
-    public function sellerWallet()
-    {
-        return $this->hasOne(\App\Models\SellerWallet::class, 'user_id', 'user_id');
-    }
-
-    public function messagesSender()
-    {
-        return  $this->belongsTo(\App\Models\Message::class, 'sender', 'user_id');
-    }
-
-    public function messagesReceiver()
-    {
-        return  $this->hasMany(\App\Models\Message::class, 'receiver', 'user_id');
+        return $this->hasOne(\App\Models\UsersWallet::class, 'user_id', 'user_id');
     }
 
     public function product()
@@ -72,38 +57,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return  $this->belongsTo(\App\Models\Product::class, 'user_id', 'user_id');
     }
 
-    protected function getIsBuyerAttribute()
-    {
-        if ($this->attributes['is_buyer'] && $this->attributes['is_seller']) {
-            $this->attributes['is_seller'] = 'Buyer_seller2';
-            return $this->attributes['is_buyer'] = 'Buyer_seller1';
-        }
-        if ($this->attributes['is_buyer']) {
-            return $this->attributes['is_buyer'] = 'Buyer';
-        } else {
-            return $this->attributes['is_buyer'];
-        }
-    }
-
-    protected function getIsSellerAttribute()
-    {
-        if ($this->attributes['is_seller'] && $this->attributes['is_buyer']) {
-            $this->attributes['is_buyer'] = 'Buyer_seller1';
-            return $this->attributes['is_seller'] = 'Buyer_seller2';
-        }
-        if ($this->attributes['is_seller']) {
-            return $this->attributes['is_seller'] = 'Seller';
-        } else {
-            return $this->attributes['is_seller'];
-        }
-    }
-
     protected function getRoleTypeAttribute()
     {
-        if ($this->attributes['role_type']) {
-            return $this->attributes['role_type'] = 'Admin';
-        } else {
+        if ($this->attributes['role_type'] == 1) {
             return $this->attributes['role_type'] = 'User';
+        }
+
+        if ($this->attributes['role_type'] == 2) {
+            return $this->attributes['role_type'] = 'Rider';
+        }
+
+        if ($this->attributes['role_type'] == 3) {
+            return $this->attributes['role_type'] = 'Admin';
         }
     }
 

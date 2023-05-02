@@ -29,6 +29,7 @@ import {
 } from '../../Components/Notification/Notification';
 import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const header = [
   {
@@ -63,7 +64,7 @@ const header = [
   },
   { title: 'Action', prop: 'action' },
 ];
-export const ProductSeller = () => {
+export const ProductUser = () => {
   const [errors, setErrors] = useState([]);
   const [body, setBody] = useState([]);
   const { fetchProduct } = useProductContext();
@@ -80,6 +81,9 @@ export const ProductSeller = () => {
     price_per_kg,
   };
   const [product_id, setProductId] = useState('');
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+
   // Show Create Product Modal
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const showCreateProductModal = () => {
@@ -262,6 +266,10 @@ export const ProductSeller = () => {
 
       setBody(product);
     });
+  }
+
+  if (!user.verified_user) {
+    navigate('/home');
   }
 
   useEffect(() => {

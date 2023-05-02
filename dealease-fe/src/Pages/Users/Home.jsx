@@ -73,7 +73,6 @@ export const HomeUser = () => {
                 Recharge{' '}
               </MenuItem>
             </SubMenu>
-            <MenuItem component={<Link to='/inbox' />}> Inbox</MenuItem>
           </Menu>
         </Sidebar>
         <main className='w-100 '>

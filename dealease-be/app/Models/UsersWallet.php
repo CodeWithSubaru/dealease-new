@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SellerWallet extends Model
+class UsersWallet extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'seller_wallet_id';
+    protected $primaryKey = 'wallet_id';
     protected $fillable = ['shell_coin_amount', 'user_id'];
-
 
     public function user()
     {

@@ -22,16 +22,4 @@ export const SidebarData = [
     icon: <FontAwesomeIcon icon={faShop} className='me-3 ms-4' />,
     cName: 'nav-text',
   },
-  {
-    title: 'Inbox',
-    path: '/seller/inbox',
-    icon: <FontAwesomeIcon icon={faInbox} className='me-3 ms-4' />,
-    cName: 'nav-text',
-  },
-  {
-    title: 'Donasyon',
-    path: '/seller/donation',
-    icon: <FontAwesomeIcon icon={faHeart} className='me-3 ms-4' />,
-    cName: 'nav-text',
-  },
 ];

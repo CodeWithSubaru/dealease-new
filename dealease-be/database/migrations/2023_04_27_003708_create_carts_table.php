@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id');
             $table->foreignId('order_by');
-            $table->integer('quantity', false, true)->default(1);
-            $table->integer('weight', false, true);
+            $table->integer('weight', false, true)->default(1);
             $table->decimal('total_price', 8, 2)->unsigned();
             $table->timestamps();
         });

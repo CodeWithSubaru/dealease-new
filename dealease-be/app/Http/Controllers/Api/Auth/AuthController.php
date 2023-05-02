@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
+use App\Models\Wallet;
 use App\Models\UserDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
-use App\Models\BuyerWallet;
-use App\Models\SellerWallet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -22,8 +21,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        $wallet = Auth::user()->coin_owner_type == '0' ? 'buyerWallet' : 'sellerWallet';
-        $auth_user = User::with('user_details', $wallet)->where('user_id', Auth::id())->get();
+        $auth_user = User::with('user_details', 'wallet')->where('user_id', Auth::id())->get();
         return $auth_user;
     }
 
@@ -44,15 +42,6 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'user_type' => ['required'],
         ]);
-
-        $explodedUserType = explode(' ', $request->user_type);
-        if ($explodedUserType[0] === 'is_buyer') {
-            $is_buyer = $explodedUserType[1];
-            $is_seller = 0;
-        } elseif ($explodedUserType[0] === 'is_seller') {
-            $is_seller = $explodedUserType[1];
-            $is_buyer = 0;
-        }
 
         $imageName = 'default_profile.jpg';
 
@@ -91,8 +80,7 @@ class AuthController extends Controller
                 'contact_number' =>  $request->contact_number,
             ]);
 
-            $wallet = $is_buyer ? BuyerWallet::class : SellerWallet::class;
-            $wallet::create([
+            Wallet::create([
                 'shell_coin_amount' => 0,
                 'user_id' => $user->user_id,
             ]);
@@ -150,16 +138,13 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password', 'is_buyer', 'is_seller', 'role_type'))) {
+        if (!Auth::attempt($request->only('email', 'password', 'role_type'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        $wallet = $request->coin_owner_type == '0' ? 'buyerWallet' : 'sellerWallet';
-        $auth_user = User::with('user_details', $wallet)->where('email', $request->email);
-
-        $auth_user->update(['coin_owner_type' => $request->coin_owner_type]);
+        $auth_user = User::with('user_details', 'wallet')->where('email', $request->email);
 
         $token = $request->user()->createToken($auth_user->get()[0]->email)->plainTextToken;
 

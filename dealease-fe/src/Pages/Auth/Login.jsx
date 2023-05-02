@@ -13,14 +13,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const is_buyer = 1,
-    is_seller = [0, 1],
-    role_type = 0,
-    coin_owner_type = 0;
+  const role_type = 1;
   const {
     loginBuyer,
     errors,
-    setErrors,
     isEmailVerified,
     isLogin,
     emailVerificationMessage,
@@ -31,10 +27,7 @@ export const Login = () => {
     loginBuyer({
       email,
       password,
-      is_buyer,
-      is_seller,
       role_type,
-      coin_owner_type,
     });
   };
 

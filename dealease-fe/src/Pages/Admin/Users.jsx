@@ -8,11 +8,17 @@ import { ViewSingleUser } from './ViewSingleUser';
 import { H1 } from '../../Components/Helpers/index.style';
 import PUBLIC_URL from '../../api/public_url';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEye,
+  faEdit,
+  faTrash,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons';
 import Card from 'react-bootstrap/Card';
 import {
   Delete,
   Notification,
+  Finalize,
 } from '../../Components/Notification/Notification';
 
 const header = [
@@ -56,6 +62,23 @@ export function Users() {
       }
     });
   };
+
+  // verify user
+  function verifyUser(user_id) {
+    Finalize({
+      text: "You won't be able to revert this!",
+      confirmButton: 'Yes, Update User',
+      successMsg: 'Data has been updated Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/admin/verify-user/' + user_id)
+          .then((res) => console.log(e))
+          .catch((e) => console.log(e));
+        setUserDataTable();
+      }
+    });
+  }
 
   // Show Create User Modal
   const [showCreateUser, setShowCreateUser] = useState(false);
@@ -183,23 +206,12 @@ export function Users() {
   }
 
   function switchUserType(user) {
-    if (user.role_type === 'Admin') {
+    if (user.role_type === 'User') {
       return user.role_type;
     }
 
-    if (user.is_buyer === 'Buyer') {
-      return user.is_buyer;
-    }
-
-    if (user.is_seller === 'Seller') {
-      return user.is_seller;
-    }
-
-    if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
-    ) {
-      return 'Buyer + Seller';
+    if (user.role_type === 'Admin') {
+      return user.role_type;
     }
   }
 
@@ -213,7 +225,7 @@ export function Users() {
             <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
               <img
                 src={PUBLIC_URL + 'images/' + user.prof_img}
-                className='rounded-circle pr-5'
+                className='rounded-circle pr-5 border border-2 border-info'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
@@ -255,6 +267,14 @@ export function Users() {
               >
                 <FontAwesomeIcon icon={faTrash} className='mx-2' />
               </span>
+              {!user.verified_user && user.role_type === 'User' && (
+                <span
+                  onClick={() => verifyUser(user.user_id)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <FontAwesomeIcon icon={faCheck} className='mx-2' />
+                </span>
+              )}
             </div>
           ),
         };
@@ -270,8 +290,8 @@ export function Users() {
 
   return (
     <Card className='w-75 mx-auto px-4 h-100'>
-      <div className='rounded primary-bg p-4  my-5 border-0'>
-        <div>
+      <div className='rounded p-4  my-5 border-0'>
+        <Card className='p-5'>
           <div className='d-flex align-items-center mb-3'>
             <H1>Users</H1>
           </div>
@@ -301,10 +321,19 @@ export function Users() {
             </Modal.Body>
 
             <Modal.Footer>
-              <Button variant='secondary' onClick={closeCreateUserModal}>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeCreateUserModal}
+              >
                 Close
               </Button>
-              <Button variant='primary' type='submit' form='createUserForm'>
+              <Button
+                variant='primary'
+                className='rounded'
+                type='submit'
+                form='createUserForm'
+              >
                 Save Changes
               </Button>
             </Modal.Footer>
@@ -314,7 +343,11 @@ export function Users() {
             header={header}
             body={body}
             button={
-              <Button variant='primary' onClick={showCreateUserModal}>
+              <Button
+                variant='primary'
+                className='rounded'
+                onClick={showCreateUserModal}
+              >
                 New User
               </Button>
             }
@@ -352,15 +385,24 @@ export function Users() {
               />
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='secondary' onClick={closeEditUserModal}>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeEditUserModal}
+              >
                 Close
               </Button>
-              <Button variant='primary' type='submit' form='createUserForm'>
+              <Button
+                variant='primary'
+                className='rounded'
+                type='submit'
+                form='createUserForm'
+              >
                 Save Changes
               </Button>
             </Modal.Footer>
           </Modal>
-        </div>
+        </Card>
       </div>
     </Card>
   );

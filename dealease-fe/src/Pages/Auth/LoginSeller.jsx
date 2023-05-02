@@ -19,13 +19,8 @@ export const LoginSeller = () => {
     is_seller = 1,
     role_type = 0,
     coin_owner_type = 1;
-  const {
-    loginSeller,
-    errors,
-    setErrors,
-    isEmailVerified,
-    emailVerificationMessage,
-  } = useAuthContext();
+  const { errors, setErrors, isEmailVerified, emailVerificationMessage } =
+    useAuthContext();
 
   useEffect(() => {
     setErrors([]);

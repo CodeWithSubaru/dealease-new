@@ -31,3 +31,22 @@ export function Delete() {
     return result;
   });
 }
+
+export function Finalize(props) {
+  const MySwal = withReactContent(Swal);
+
+  return MySwal.fire({
+    title: 'Are you sure?',
+    text: props.text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: props.confirmButton,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      MySwal.fire('Success!', props.successMsg, 'success');
+    }
+    return result;
+  });
+}

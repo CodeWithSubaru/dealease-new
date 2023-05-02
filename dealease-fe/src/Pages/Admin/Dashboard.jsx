@@ -19,6 +19,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import {
   faEye,
   faEnvelope,
+  faHandshake,
   faUser,
   faUserLargeSlash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -110,7 +111,7 @@ export function Dashboard() {
             <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
               <img
                 src={PUBLIC_URL + 'images/' + user.prof_img}
-                className='rounded-circle pr-5'
+                className='rounded-circle pr-5 border border-3 border-color-info'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
@@ -283,18 +284,18 @@ export function Dashboard() {
           title='Users'
           totalNumber={calculateTotal(countOfUsers)}
           icon={faUser}
-          style={{ marginLeft: '0' }}
-        />
-        <CardDetails
-          title='Messages'
-          totalNumber={calculateTotal(countOfMessages)}
-          icon={faEnvelope}
         />
 
         <CardDetails
-          title='Reported Users'
-          totalNumber={2}
-          icon={faUserLargeSlash}
+          title='Pending Transactions'
+          totalNumber={calculateTotal(countOfMessages)}
+          icon={faHandshake}
+        />
+
+        <CardDetails
+          title='Total Amount Transactions'
+          totalNumber={calculateTotal(countOfMessages)}
+          icon={faHandshake}
         />
       </div>
 
@@ -335,27 +336,30 @@ export function Dashboard() {
         </Row>
       </div>
 
-      <div className='card my-5 p-4 rounded primary-bg border-0'>
+      <Card className='card my-5 p-4 rounded bg-primary'>
         <H1 className='mb-3'>Latest Users</H1>
         <TableComponent header={header} body={body} />
-      </div>
+      </Card>
     </Card>
   );
 }
 
 function CardDetails(props) {
   return (
-    <div
-      className='card-details rounded p-4 my-4 w-25 primary-bg d-flex justify-content-between'
+    <Card
+      className='card-details rounded p-4 my-4 w-25 d-flex flex-row justify-content-between mx-2'
       style={{ backgroundColor: '#fff' }}
     >
       <div>
         <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
         <p>{props.title}</p>
       </div>
-      <div className='d-flex align-items-center'>
-        <FontAwesomeIcon icon={props.icon} className='icon mx-2' />
+      <div
+        className='bg-primary p-5 rounded-circle d-flex align-items-center justify-content-center'
+        style={{ height: '70px', width: '70px' }}
+      >
+        <FontAwesomeIcon icon={props.icon} className='icon mx-2 text-light' />
       </div>
-    </div>
+    </Card>
   );
 }

@@ -67,7 +67,11 @@ export const ViewSingleUser = (props) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant='secondary' onClick={props.closeSingleUserModal}>
+          <Button
+            variant='secondary'
+            className='rounded'
+            onClick={props.closeSingleUserModal}
+          >
             Close
           </Button>
         </Modal.Footer>

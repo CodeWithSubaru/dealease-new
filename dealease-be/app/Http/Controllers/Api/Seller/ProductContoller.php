@@ -14,7 +14,7 @@ class ProductContoller extends Controller
     // display publicly
     public function getProductsForPublic()
     {
-        $product = Product::with('user')->get();
+        $product = Product::with('user')->where('user_id', '!=', auth()->id())->get();
         return $product;
     }
 
@@ -33,8 +33,6 @@ class ProductContoller extends Controller
      */
     public function store(Request $request)
     {
-        $id = Auth::id(); //getting authenticated user id
-
         $request->validate([
             'title' => 'required', 'string', 'max:255',
             'description' => 'required', 'string', 'max:255',
@@ -53,7 +51,7 @@ class ProductContoller extends Controller
             'image' => $imageName,
             'stocks_per_kg' => $request->stocks_per_kg,
             'price_per_kg' => $request->price_per_kg,
-            'user_id' => $id, //for test only
+            'user_id' => Auth::id(), //for test only
         ]);
 
         if ($post) {

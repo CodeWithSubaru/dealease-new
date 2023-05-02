@@ -52,26 +52,16 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (res.data.user[0].role_type === 'User') {
-          if (
-            res.data.user[0].is_buyer === 'Buyer' ||
-            (res.data.user[0].is_buyer === 'Buyer_seller1' && loginAs === 1)
-          ) {
-            setTokenAndUType(res.data.token, res.data.user[0].is_buyer);
-          }
-
-          if (
-            res.data.user[0].is_seller === 'Seller' ||
-            (res.data.user[0].is_seller === 'Buyer_seller2' && loginAs === 2)
-          ) {
-            setTokenAndUType(res.data.token, res.data.user[0].is_seller);
-          }
+          setTokenAndUType(res.data.token, res.data.user[0].role_type);
         }
+
         Notification({
           title: 'Success',
           message: res.data.message,
           icon: 'success',
         }).then(() => {
           setUser(res.data.user[0]);
+          setLoading(false);
           navigate(redirect);
         });
         setLoginDisabled(false);
@@ -82,18 +72,15 @@ export const AuthProvider = ({ children }) => {
           title: 'Error',
           message: 'Something went wrong',
           icon: 'error',
+        }).then(() => {
+          setLoading(false);
         });
-        console.log(e);
         setErrors(e.response.data.errors);
       });
   };
 
   const loginBuyer = (data) => {
-    login(data, '/', 1);
-  };
-
-  const loginSeller = (data) => {
-    login(data, '/seller/home', 2);
+    login(data, '/home', 1);
   };
 
   const loginAdmin = (data) => {
@@ -132,7 +119,7 @@ export const AuthProvider = ({ children }) => {
             title: 'Success',
             message: res.data.message,
             icon: 'success',
-          }).then((res) => {
+          }).then(() => {
             setLoading(false);
             setUser({});
             setErrors([]);
@@ -151,66 +138,33 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const updateAccess = ({ ...data }) => {
+  useEffect(() => {
     axiosClient
-      .post('/update-access', data)
+      .get('/user')
       .then((res) => {
-        if (res.status == 200) {
-          setLoading(true);
-          Notification({
-            title: 'Success',
-            message: res.data.message,
-            icon: 'success',
-          }).then(() => {
-            navigate('/home');
-            setLoading(false);
-          });
-          setErrors([]);
-        }
+        setLoading(false);
+        setUser(res.data[0]);
       })
       .catch((e) => {
-        Notification({
-          title: 'Error',
-          message: 'Errors Found',
-          icon: 'error',
-        });
-        setErrors(e.response.data.errors);
+        localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('USER_TYPE');
+        setLoading(false);
       });
-  };
-
-  useEffect(() => {
-    if (user) {
-      axiosClient
-        .get('/user')
-        .then((res) => {
-          setLoading(false);
-          setUser(res.data[0]);
-        })
-        .catch((e) => {
-          if (e.status === 401) {
-            localStorage.removeItem('ACCESS_TOKEN');
-            localStorage.removeItem('USER_TYPE');
-          }
-          setLoading(false);
-        });
-    }
     setErrors([]);
   }, [user.user_id]);
 
   useEffect(() => {
-    const autoLogout = () => {
-      if (document.visibilityState === 'hidden') {
-        const timeOutId = window.setTimeout(() => {
-          logout();
-        }, 5 * 60 * 1000);
-        logoutTimerIdRef.current = timeOutId;
-      } else {
-        window.clearTimeout(logoutTimerIdRef.current);
-      }
-    };
-
+    // const autoLogout = () => {
+    //   if (document.visibilityState === 'hidden') {
+    //     const timeOutId = window.setTimeout(() => {
+    //       logout();
+    //     }, 5 * 60 * 1000);
+    //     logoutTimerIdRef.current = timeOutId;
+    //   } else {
+    //     window.clearTimeout(logoutTimerIdRef.current);
+    //   }
+    // };
     // document.addEventListener('visibilitychange', autoLogout);
-
     // return () => {
     //   document.removeEventListener('visibilitychange', autoLogout);
     // };
@@ -235,10 +189,8 @@ export const AuthProvider = ({ children }) => {
         setModalShow,
         setErrors,
         loginBuyer,
-        loginSeller,
         loginAdmin,
         register,
-        updateAccess,
         logout,
       }}
     >

@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import Form from 'react-bootstrap/Form';
 import { Navigate } from 'react-router-dom';
 import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
-import { Container } from 'react-bootstrap';
-import '../../assets/scss/changepassword.scss';
+import { Form, Container } from 'react-bootstrap';
 
-export function ChangePasswordBuyer() {
+export function ChangePasswordUser() {
   const [errors, setErrors] = useState({});
   const [password, setPassword] = useState({});
   const { logout } = useAuthContext();
@@ -21,7 +19,7 @@ export function ChangePasswordBuyer() {
           Notification({
             title: 'Success',
             message:
-              'Your password has been changed. You will be redirected to login page',
+              'Your password has been changed. You will be redirected to home page',
             icon: 'success',
           }).then(() => {
             logout();
@@ -43,11 +41,11 @@ export function ChangePasswordBuyer() {
   }, []);
 
   return (
-    <Container className='cp-container'>
+    <Container>
       <form onSubmit={handleSubmit}>
         <h3>Change Password</h3>
         <Form.Group className='mb-3'>
-          <Form.Label className='text-black'>Old Password *</Form.Label>
+          <Form.Label>Old Password *</Form.Label>
           <Form.Control
             type='password'
             placeholder='Enter Old Password'
@@ -64,7 +62,7 @@ export function ChangePasswordBuyer() {
         </Form.Group>
 
         <Form.Group className='mb-3'>
-          <Form.Label className='text-black'>New Password *</Form.Label>
+          <Form.Label>New Password *</Form.Label>
           <Form.Control
             type='password'
             placeholder='Enter New Password'
@@ -80,7 +78,7 @@ export function ChangePasswordBuyer() {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group className='mb-3'>
-          <Form.Label className='text-black'>Confirm Password *</Form.Label>
+          <Form.Label>Confirm Password *</Form.Label>
           <Form.Control
             type='password'
             placeholder='Re-Enter Confirm Password'
@@ -92,7 +90,7 @@ export function ChangePasswordBuyer() {
             }
           />
         </Form.Group>
-        <button>Submit</button>
+        <button className='btn btn-primary w-100'>Submit</button>
       </form>
     </Container>
   );
