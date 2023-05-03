@@ -6,8 +6,8 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\OrderTransaction;
 
 class OrderController extends Controller
 {
@@ -24,7 +24,7 @@ class OrderController extends Controller
 
     public function fetchOrdersBuyer($order_status)
     {
-        return Order::with('order_by', 'order_by.user_details', 'product')
+        return OrderTransaction::with('order', 'order_by.user_details', 'product')
             ->where('order_by', auth()->id())
             ->where('order_status', $order_status)
             ->latest('created_at')->get();
@@ -32,7 +32,7 @@ class OrderController extends Controller
 
     public function fetchOrdersSeller($order_status)
     {
-        return Order::with('order_by', 'order_by.user_details', 'product')
+        return OrderTransaction::with('order_by', 'order_by.user_details', 'product')
             ->join('products', 'product_id', 'id')
             ->where('products.user_id', auth()->id())
             ->where('orders.order_by', '!=', auth()->id())
@@ -78,10 +78,7 @@ class OrderController extends Controller
             return response()->json(['status' => 'Item already added to cart'], 422);
         }
 
-        $generatedIdSample = $lastOrderItem ? $lastOrderItem->order_number + 1 : 1;
-
         Cart::create([
-            // 'order_number' => $generatedIdSample,
             'product_id' => $product->id,
             'order_by' => auth()->id(),
             'weight' => 1,
@@ -111,20 +108,31 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
-        return $request->cartHistoryBySellerId;
-        for ($i = 0; $i < count($request->all()); $i++) {
-            $orderNumber = $this->generateOrderNumber();
-            $order = Order::create([
-                'order_number' => $orderNumber,
-                'product_id' => $request->all()[$i]['product_id'],
-                'order_by' => $request->all()[$i]['order_by'],
-                'weight' => $request->all()[$i]['weight'],
-                'total_price' => $request->all()[$i]['total_price'],
-                'order_status' => 1,
-            ]);
+        $sellerId = array_keys($request->cartHistoryBySellerId);
+        $orderedItems = array_values($request->cartHistoryBySellerId);
 
-            Cart::where('order_by', $order->order_by)->delete();
+        for ($i = 0; $i < count($orderedItems); $i++) {
+            $orderNumber = $this->generateOrderNumber();
+            for ($j = 0; $j < count($orderedItems[$i]); $j++) {
+                $tempOrderNumber = $orderNumber;
+                $order = Order::create([
+                    'order_number' => $tempOrderNumber,
+                    'product_id' => $orderedItems[$i][$j]['product_id'],
+                    'order_by' => $orderedItems[$i][$j]['order_by'],
+                    'weight' => $orderedItems[$i][$j]['weight'],
+                    'total_price' => $orderedItems[$i][$j]['total_price'],
+                ]);
+            }
+
+            // Cart::where('order_by', $order->order_by)->delete();
+
+            // OrderTransaction::create([
+            //     'order_number' => $orderNumber,
+            //     'total_amount' => '',
+            //     'order_trans_status' => 1,
+            // ]);
         }
+
 
         return response()->json(['status' => 'Order placed Successfully'], 200);
     }
