@@ -152,13 +152,13 @@ export function AddToCart() {
         <main className='w-100'>
           <div className='mx-auto w-75 d-flex' style={{ height: '100vh' }}>
             <Card className='flex-grow-1'>
-              <div className='p-5 '>
+              <div className='p-5 h-100'>
                 <H1 className='mb-4'>Add to Cart</H1>
-                <div className=' rounded p-5 pt-0'>
+                <div className=' rounded p-5 pt-0 h-100'>
                   <Link className='btn btn-primary rounded' to='/'>
                     <FontAwesomeIcon icon={faPlus} /> Add More
                   </Link>
-                  <div className='d-flex'>
+                  <div className='d-flex h-100'>
                     <div className='flex-grow-1 me-2'>
                       {Object.values(cartHistoryBySellerId).length > 0 ? (
                         Object.values(cartHistoryBySellerId).map(
@@ -288,7 +288,9 @@ export function AddToCart() {
                           }
                         )
                       ) : (
-                        <div className='text-center'>No Data</div>
+                        <div className='text-center d-flex justify-content-center align-items-center h-50'>
+                          No items found
+                        </div>
                       )}
                       {/* {data && data.length > 0
                         ? data.map((item) =>
@@ -346,7 +348,7 @@ export function AddToCart() {
                               )
                             )}
                             <hr />
-                            <p className='fs-4 fw-bold'>
+                            <p className='fs-4 fw-bold mt-2'>
                               {' '}
                               Grand Total:{' '}
                               {calculateGrandTotalPrice(cartHistoryBySellerId)}

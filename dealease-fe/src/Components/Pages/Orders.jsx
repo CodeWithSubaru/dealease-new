@@ -23,8 +23,8 @@ export function OrdersTable(props) {
 
   const header = [
     {
-      title: 'Id',
-      prop: 'payment_number',
+      title: 'Order Number',
+      prop: 'order_number',
       isSortable: true,
     },
     {
@@ -129,7 +129,10 @@ export function OrdersTable(props) {
   function view(orderNumber) {
     axiosClient
       .get('/orders/' + orderNumber)
-      .then((res) => setViewOrders(res.data))
+      .then((res) => {
+        setViewOrders(res.data);
+        console.log(res);
+      })
       .catch((e) => console.log(e));
   }
 
@@ -164,26 +167,30 @@ export function OrdersTable(props) {
         console.log(resp);
         orders = resp.data.map((order, i) => {
           return {
-            payment_number: i + 1,
+            order_number: order.order_number,
             fullname: (
-              <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
+              <div
+                key={order.order_trans_id}
+                className='d-flex'
+                style={{ columnGap: '10px' }}
+              >
                 <img
-                  src={PUBLIC_URL + 'images/' + order.order_by.prof_img}
+                  src={PUBLIC_URL + 'images/' + order.product.user.prof_img}
                   className='rounded-circle pr-5'
                   style={{ width: '50px', height: '50px' }}
                 />
                 <div>
                   <p className='mb-0'>
-                    {order.order_by.first_name}{' '}
-                    {order.order_by.user_details
-                      ? order.order_by.user_details.middle_name[0]
+                    {order.product.user.first_name}{' '}
+                    {order.product.user.user_details
+                      ? order.product.user.user_details.middle_name[0]
                       : ''}
                     {'. '}
-                    {order.order_by.user_details
-                      ? order.order_by.user_details.last_name
+                    {order.product.user.user_details
+                      ? order.product.user.user_details.last_name
                       : ' '}{' '}
-                    {order.order_by.user_details
-                      ? order.order_by.user_details.ext_name
+                    {order.product.user.user_details
+                      ? order.product.user.user_details.ext_name
                       : ''}
                   </p>
                 </div>
@@ -196,39 +203,36 @@ export function OrdersTable(props) {
               <span
                 className={
                   'rounded px-2 text-uppercase border border-2 ' +
-                  switchColor(order.order_status)
+                  switchColor(order.order_trans_status)
                 }
               >
-                {status(order.order_status)}
+                {status(order.order_trans_status)}
               </span>
             ),
             payment_total_amount: 'Php ' + order.total_price,
             created_at: dateFormat(order.created_at),
             action: (
               <div key={i} className='button-actions text-light d-flex'>
-                {order.order_status === '1' ? (
-                  <>
-                    <Button
-                      variant='primary'
-                      onClick={() => {
-                        view(order.order_number);
-                        setViewOrderProduct(true);
-                      }}
-                      style={{ cursor: 'pointer' }}
-                      className='badge rounded text-bg-primary px-2 me-2'
-                    >
-                      View
-                    </Button>
-
-                    <Button
-                      variant='danger'
-                      onClick={() => cancel(order.order_id)}
-                      style={{ cursor: 'pointer' }}
-                      className='badge rounded text-bg-danger px-2'
-                    >
-                      Cancel
-                    </Button>
-                  </>
+                <Button
+                  variant='primary'
+                  onClick={() => {
+                    view(order.order_number);
+                    setViewOrderProduct(true);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className='badge rounded text-bg-primary px-2 me-2'
+                >
+                  View
+                </Button>
+                {order.order_trans_status === '1' ? (
+                  <Button
+                    variant='danger'
+                    onClick={() => cancel(order.order_id)}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded text-bg-danger px-2'
+                  >
+                    Cancel
+                  </Button>
                 ) : (
                   ''
                 )}
@@ -395,6 +399,8 @@ export function OrdersTable(props) {
                   onClick={() => {
                     setUserOrdersTable('/orders/orders-user/buyer/1', 1);
                     fetchNumberOrdersByStatusBuyer(1);
+                    fetchNumberOrdersByStatusBuyer(2);
+                    fetchNumberOrdersByStatusBuyer(3);
                   }}
                 >
                   My Pending Orders (Buyer){' '}
@@ -411,7 +417,9 @@ export function OrdersTable(props) {
                   eventKey='second'
                   onClick={() => {
                     setUserOrdersTable('/orders/orders-user/buyer/2', 1);
+                    fetchNumberOrdersByStatusBuyer(1);
                     fetchNumberOrdersByStatusBuyer(2);
+                    fetchNumberOrdersByStatusBuyer(3);
                   }}
                 >
                   My Processing Orders (Buyer){' '}
@@ -429,6 +437,8 @@ export function OrdersTable(props) {
                   eventKey='third'
                   onClick={() => {
                     setUserOrdersTable('/orders/orders-user/buyer/3', 1);
+                    fetchNumberOrdersByStatusBuyer(1);
+                    fetchNumberOrdersByStatusBuyer(2);
                     fetchNumberOrdersByStatusBuyer(3);
                   }}
                 >

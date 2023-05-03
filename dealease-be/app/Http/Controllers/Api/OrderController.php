@@ -24,20 +24,22 @@ class OrderController extends Controller
 
     public function fetchOrdersBuyer($order_status)
     {
-        return OrderTransaction::with('order', 'order_by.user_details', 'product')
-            ->where('order_by', auth()->id())
-            ->where('order_status', $order_status)
-            ->latest('created_at')->get();
+        return Order::with('product', 'product.user', 'product.user.user_details')
+            ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
+            ->where('order_transactions.order_trans_status', $order_status)
+            ->where('orders.order_by', auth()->id())
+            ->get();
     }
 
     public function fetchOrdersSeller($order_status)
     {
-        return OrderTransaction::with('order_by', 'order_by.user_details', 'product')
+        return OrderTransaction::with('order', 'order_by', 'order_by.user_details', 'product')
             ->join('products', 'product_id', 'id')
             ->where('products.user_id', auth()->id())
             ->where('orders.order_by', '!=', auth()->id())
             ->where('orders.order_status', $order_status)
-            ->latest('orders.created_at')->get();
+            ->latest('orders.created_at')
+            ->get();
     }
 
     public function fetchCountOfOrders()
@@ -109,9 +111,9 @@ class OrderController extends Controller
     public function placeOrder(Request $request)
     {
         $orderedItems = array_values($request->cartHistoryBySellerId);
-
         for ($i = 0; $i < count($orderedItems); $i++) {
             $orderNumber = $this->generateOrderNumber();
+            $totalPrice = 0;
             for ($j = 0; $j < count($orderedItems[$i]); $j++) {
                 $tempOrderNumber = $orderNumber;
                 Order::create([
@@ -121,17 +123,16 @@ class OrderController extends Controller
                     'weight' => $orderedItems[$i][$j]['weight'],
                     'total_price' => $orderedItems[$i][$j]['total_price'],
                 ]);
+                $totalPrice += (float) $orderedItems[$i][$j]['total_price'];
+                Cart::where('product_id', $orderedItems[$i][$j]['product_id'])->where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
             }
-
-            Cart::where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
 
             OrderTransaction::create([
                 'order_number' => $orderNumber,
-                'total_amount' => '',
+                'total_amount' => $totalPrice,
                 'order_trans_status' => 1,
             ]);
         }
-
 
         return response()->json(['status' => 'Order placed Successfully'], 200);
     }
@@ -141,7 +142,12 @@ class OrderController extends Controller
      */
     public function show($order)
     {
-        return Order::with('order_by', 'order_by.user_details', 'product')->where('order_number', $order)->where('order_status', '!=', 0)->get();
+
+        return Order::with('order_by', 'order_by.user_details', 'product')
+            ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
+            ->where('orders.order_number', $order)
+            ->where('order_transactions.order_trans_status', '!=', 0)
+            ->get();
     }
 
     /**

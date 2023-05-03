@@ -9,11 +9,12 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'order_number';
-
-    public $incrementing = false;
-
     protected $guarded;
+
+    public function user()
+    {
+        return  $this->hasOne(\App\Models\User::class, 'user_id', 'user_id');
+    }
 
     public function product()
     {
@@ -28,5 +29,10 @@ class Order extends Model
     public function user_details()
     {
         return  $this->belongsTo(\App\Models\UserDetails::class, 'user_details_id', 'user_details_id');
+    }
+
+    public function order_transaction()
+    {
+        return  $this->belongsTo(\App\Models\OrderTransaction::class, 'order_number', 'order_number');
     }
 }
