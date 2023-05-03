@@ -132,9 +132,9 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($order)
     {
-        //
+        return Order::with('order_by', 'order_by.user_details', 'product')->where('order_number', $order)->where('order_status', '!=', 0)->get();
     }
 
     /**

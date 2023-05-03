@@ -9,6 +9,7 @@ import PUBLIC_URL from '../../api/public_url';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 import { Finalize } from '../Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import Modal from 'react-bootstrap/Modal';
 
 export function OrdersTable(props) {
   const [body, setBody] = useState([]);
@@ -16,6 +17,8 @@ export function OrdersTable(props) {
   const [processingOrderNumber, setProcessingOrderNumber] = useState(0);
   const [deliveredOrderNumber, setDeliveredOrderNumber] = useState(0);
   const [pendingOrderNumberSeller, setPendingOrderNumberSeller] = useState(0);
+  const [viewOrderProduct, setViewOrderProduct] = useState(false);
+  const [viewOrders, setViewOrders] = useState([]);
   const { user } = useAuthContext();
 
   const header = [
@@ -119,7 +122,16 @@ export function OrdersTable(props) {
     });
   }
 
-  function decline(id) {}
+  function closeViewOrderProduct() {
+    setViewOrderProduct(false);
+  }
+
+  function view(orderNumber) {
+    axiosClient
+      .get('/orders/' + orderNumber)
+      .then((res) => setViewOrders(res.data))
+      .catch((e) => console.log(e));
+  }
 
   function cancel(id) {
     Finalize({
@@ -135,6 +147,14 @@ export function OrdersTable(props) {
         setUserOrdersTable('/orders/orders-user/buyer/1', 1);
       }
     });
+  }
+  function calculateGrandTotalPrice(orders) {
+    let totalPrice = 0;
+
+    Object.values(orders).forEach((orderItem) => {
+      totalPrice += Number(orderItem.total_price);
+    });
+    return Number(totalPrice).toLocaleString('en-US');
   }
 
   function setUserOrdersTable(url, set) {
@@ -187,14 +207,28 @@ export function OrdersTable(props) {
             action: (
               <div key={i} className='button-actions text-light d-flex'>
                 {order.order_status === '1' ? (
-                  <Button
-                    variant='danger'
-                    onClick={() => cancel(order.order_id)}
-                    style={{ cursor: 'pointer' }}
-                    className='p-2 2 rounded'
-                  >
-                    <FontAwesomeIcon icon={faClose} className='mx-2' />
-                  </Button>
+                  <>
+                    <Button
+                      variant='primary'
+                      onClick={() => {
+                        view(order.order_number);
+                        setViewOrderProduct(true);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                      className='badge rounded text-bg-primary px-2 me-2'
+                    >
+                      View
+                    </Button>
+
+                    <Button
+                      variant='danger'
+                      onClick={() => cancel(order.order_id)}
+                      style={{ cursor: 'pointer' }}
+                      className='badge rounded text-bg-danger px-2'
+                    >
+                      Cancel
+                    </Button>
+                  </>
                 ) : (
                   ''
                 )}
@@ -309,6 +343,49 @@ export function OrdersTable(props) {
   return (
     <>
       <div className='mx-auto w-75' style={{ minHeight: '85vh' }}>
+        <Modal
+          size='lg'
+          show={viewOrderProduct}
+          onHide={closeViewOrderProduct}
+          animation={true}
+          aria-labelledby='contained-modal-title-vcenter'
+          scrollable
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id='contained-modal-title-vcenter'>
+              #{viewOrders[0] ? viewOrders[0].order_number : 'Loading...'}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {viewOrders.length > 0
+              ? viewOrders.map((order, index) => {
+                  return (
+                    <>
+                      <div>
+                        <p>
+                          <b> Product No. {index + 1} </b>
+                        </p>
+                        <p>Product Name: {order.product.title}</p>
+                        <p>Product Description: {order.product.description}</p>
+                        <p>Product Seller: {order.product.user_id}</p>
+                        <p>Status: {status(order.order_status)}</p>
+                        <p>Quantity: {order.product.weight} kg</p>
+                        <p>
+                          Total Price: <b>Php {order.total_price}</b>
+                        </p>
+                        {viewOrders.length > 1 && <hr />}
+                      </div>
+                    </>
+                  );
+                })
+              : 'Loading...'}
+            <h5>Grand Total: Php {calculateGrandTotalPrice(viewOrders)}</h5>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={closeViewOrderProduct}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+
         <Card className='p-5 h-100 mb-5'>
           <Tab.Container id='left-tabs-example' defaultActiveKey='first'>
             <Nav justify variant='tabs' defaultActiveKey='/home'>

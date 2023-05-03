@@ -12,7 +12,7 @@ import { ProductUser } from './Pages/Users/Product';
 import { WithdrawUser } from './Pages/Users/Withdraw';
 import { Recharge } from './Pages/Users/Recharge';
 import { AddToCart } from './Pages/Users/AddToCart';
-import { OrdersUser } from './Pages/Users/Orders';
+import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
 
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
@@ -61,7 +61,8 @@ function App() {
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/withdraw' element={<WithdrawUser />} />
-            <Route path='/orders' element={<OrdersUser />} />
+            <Route path='/orders' element={<OrdersBuyer />} />
+            <Route path='/orders/seller' element={<OrdersSeller />} />
           </Route>
 
           {/* Admin Route */}

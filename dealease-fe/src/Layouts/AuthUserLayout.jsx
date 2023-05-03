@@ -45,6 +45,11 @@ export function AuthUserLayout() {
           </Link>
         </li>
         <li className='nav-item'>
+          <Link to='/orders/seller' className='nav-links'>
+            Orders (Seller)
+          </Link>
+        </li>
+        <li className='nav-item'>
           <Link to='/add-to-cart' className='nav-links'>
             <FontAwesomeIcon icon={faCartShopping} className='navs-icon' />{' '}
             <span
