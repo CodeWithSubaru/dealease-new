@@ -108,7 +108,6 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
-        $sellerId = array_keys($request->cartHistoryBySellerId);
         $orderedItems = array_values($request->cartHistoryBySellerId);
 
         for ($i = 0; $i < count($orderedItems); $i++) {
