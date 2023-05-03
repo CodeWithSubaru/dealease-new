@@ -12,7 +12,7 @@ import { H1 } from '../../Components/Helpers/index.style';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const LoginSeller = () => {
+export const LoginRider = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const is_buyer = [0, 1],
