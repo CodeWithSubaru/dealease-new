@@ -56,11 +56,8 @@ class AuthController extends Controller
         $user->first_name = $request->first_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->is_buyer = $is_buyer;
-        $user->is_seller  = $is_seller;
         $user->role_type = 0;
         $user->prof_img = $imageName;
-        $user->coin_owner_type = $is_buyer ? 0 : 1;
         $user->user_details_id = 0;
         $user->save();
         $user->user_details_id = $user->user_id;
@@ -80,10 +77,10 @@ class AuthController extends Controller
                 'contact_number' =>  $request->contact_number,
             ]);
 
-            Wallet::create([
-                'shell_coin_amount' => 0,
-                'user_id' => $user->user_id,
-            ]);
+            // Wallet::create([
+            //     'shell_coin_amount' => 0,
+            //     'user_id' => $user->user_id,
+            // ]);
 
             $user->sendEmailVerificationNotification();
 

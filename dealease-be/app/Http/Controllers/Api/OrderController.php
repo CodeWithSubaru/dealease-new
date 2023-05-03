@@ -114,22 +114,22 @@ class OrderController extends Controller
             $orderNumber = $this->generateOrderNumber();
             for ($j = 0; $j < count($orderedItems[$i]); $j++) {
                 $tempOrderNumber = $orderNumber;
-                $order = Order::create([
+                Order::create([
                     'order_number' => $tempOrderNumber,
                     'product_id' => $orderedItems[$i][$j]['product_id'],
                     'order_by' => $orderedItems[$i][$j]['order_by'],
                     'weight' => $orderedItems[$i][$j]['weight'],
                     'total_price' => $orderedItems[$i][$j]['total_price'],
                 ]);
+
+                Cart::where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
+
+                OrderTransaction::create([
+                    'order_number' => $tempOrderNumber,
+                    'total_amount' => '',
+                    'order_trans_status' => 1,
+                ]);
             }
-
-            // Cart::where('order_by', $order->order_by)->delete();
-
-            // OrderTransaction::create([
-            //     'order_number' => $orderNumber,
-            //     'total_amount' => '',
-            //     'order_trans_status' => 1,
-            // ]);
         }
 
 
