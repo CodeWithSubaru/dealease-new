@@ -16,6 +16,7 @@ import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
 
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
+import { LoginRider } from './Pages/Auth/LoginRider';
 
 // Admin Components
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
@@ -86,7 +87,7 @@ function App() {
 
           {/* Rider */}
           <Route path='/rider/home' element={<HomeRider />} />
-
+          <Route path='/rider/login' element={<LoginAdmin />} />
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

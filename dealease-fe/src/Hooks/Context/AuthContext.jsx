@@ -87,6 +87,10 @@ export const AuthProvider = ({ children }) => {
     login(data, '/admin/dashboard');
   };
 
+  const loginRider = (data) => {
+    login(data, '/admin/dashboard');
+  };
+
   const logout = () => {
     axiosClient.post('/logout').then((res) => {
       Notification({
