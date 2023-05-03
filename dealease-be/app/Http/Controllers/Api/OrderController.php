@@ -121,15 +121,15 @@ class OrderController extends Controller
                     'weight' => $orderedItems[$i][$j]['weight'],
                     'total_price' => $orderedItems[$i][$j]['total_price'],
                 ]);
-
-                Cart::where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
-
-                OrderTransaction::create([
-                    'order_number' => $tempOrderNumber,
-                    'total_amount' => '',
-                    'order_trans_status' => 1,
-                ]);
             }
+
+            Cart::where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
+
+            OrderTransaction::create([
+                'order_number' => $orderNumber,
+                'total_amount' => '',
+                'order_trans_status' => 1,
+            ]);
         }
 
 
