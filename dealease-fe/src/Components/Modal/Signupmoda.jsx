@@ -3,7 +3,7 @@ import '../../assets/scss/global.scss';
 import '../../assets/scss/modal.scss';
 import { H3 } from '../../Components/Helpers/index.style';
 import { Login } from '../../Pages/Auth/Login';
-import { LoginSeller } from '../../Pages/Auth/LoginSeller';
+import { LoginRider } from '../../Pages/Auth/LoginRider';
 import {
   Modal,
   Form,
@@ -57,7 +57,7 @@ export function MydModalWithGrid(props) {
                           <Login />
                         </Tab.Pane>
                         <Tab.Pane eventKey='second'>
-                          <LoginSeller />
+                          <LoginRider />
                         </Tab.Pane>
                       </Tab.Content>
                     </Col>
