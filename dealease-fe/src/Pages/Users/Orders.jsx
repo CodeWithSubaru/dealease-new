@@ -306,17 +306,6 @@ export function OrdersSeller() {
     setViewOrderProduct(false);
   }
 
-  function view(orderNumber) {
-    setViewOrders([]);
-    axiosClient
-      .get('/orders/' + orderNumber)
-      .then((res) => {
-        setViewOrders(res.data);
-        console.log(res);
-      })
-      .catch((e) => console.log(e));
-  }
-
   function cancel(id) {
     Finalize({
       text: 'You want decline this order request',
@@ -354,30 +343,27 @@ export function OrdersSeller() {
               style={{ columnGap: '10px' }}
             >
               <img
-                src={PUBLIC_URL + 'images/' + order.product.user.prof_img}
+                src={PUBLIC_URL + 'images/' + order.user.prof_img}
                 className='rounded-circle pr-5'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
                 <p className='mb-0'>
-                  {order.product.user.first_name}{' '}
-                  {order.product.user.user_details
-                    ? order.product.user.user_details.middle_name[0]
+                  {order.user.first_name}{' '}
+                  {order.user.user_details
+                    ? order.user.user_details.middle_name[0]
                     : ''}
                   {'. '}
-                  {order.product.user.user_details
-                    ? order.product.user.user_details.last_name
+                  {order.user.user_details
+                    ? order.user.user_details.last_name
                     : ' '}{' '}
-                  {order.product.user.user_details
-                    ? order.product.user.user_details.ext_name
+                  {order.user.user_details
+                    ? order.user.user_details.ext_name
                     : ''}
                 </p>
               </div>
             </div>
           ),
-          title: order.product.title,
-          weight: order.weight,
-          stocks: order.product.stocks_per_kg,
           order_status: (
             <span
               className={
@@ -388,7 +374,7 @@ export function OrdersSeller() {
               {status(order.order_trans_status)}
             </span>
           ),
-          payment_total_amount: 'Php ' + order.total_price,
+          payment_total_amount: 'Php ' + order.total_amount,
           created_at: dateFormat(order.created_at),
           action: (
             <div key={i} className='button-actions text-light d-flex'>

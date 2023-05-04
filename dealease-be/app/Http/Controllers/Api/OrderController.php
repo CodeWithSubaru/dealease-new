@@ -24,10 +24,9 @@ class OrderController extends Controller
 
     public function fetchOrdersBuyer($order_status)
     {
-
         return OrderTransaction::with('user', 'user.user_details')
-            ->leftJoin('orders', 'orders.order_number', 'order_transactions.order_number')
-            ->leftJoin('products', 'products.id', 'orders.product_id')
+            ->join('orders', 'orders.order_number', 'order_transactions.order_number')
+            ->join('products', 'products.id', 'orders.product_id')
             ->where('order_transactions.order_trans_status', $order_status)
             ->where('orders.order_by', auth()->id())
             ->get();
@@ -35,8 +34,8 @@ class OrderController extends Controller
 
     public function fetchOrdersSeller($order_status)
     {
-        return Order::with('product', 'product.user', 'product.user.user_details')
-            ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
+        return OrderTransaction::with('user', 'user.user_details')
+            ->join('orders', 'orders.order_number', 'order_transactions.order_number')
             ->join('products', 'products.id', 'orders.product_id')
             ->where('order_transactions.order_trans_status', $order_status)
             ->where('orders.order_by', '!=', auth()->id())
