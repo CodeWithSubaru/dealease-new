@@ -20,14 +20,14 @@ class OrderTransaction extends Model
         return  $this->hasMany(\App\Models\Order::class, 'order_number', 'order_number');
     }
 
-    public function order_by()
+    public function user()
     {
-        return  $this->belongsTo(\App\Models\User::class, 'user_id', 'order_by');
+        return  $this->belongsTo(\App\Models\User::class, 'user_id', 'user_id');
     }
 
     public function product()
     {
-        return  $this->belongsTo(\App\Models\Product::class, 'product_id', 'product_id');
+        return  $this->belongsTo(\App\Models\Product::class, 'id', 'product_id');
     }
 
     public function user_details()

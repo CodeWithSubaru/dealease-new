@@ -26,18 +26,6 @@ export function OrdersTable(props) {
       prop: 'seller_name',
     },
     {
-      title: 'Product',
-      prop: 'title',
-    },
-    {
-      title: 'Stocks',
-      prop: 'stocks',
-    },
-    {
-      title: 'Weight',
-      prop: 'weight',
-    },
-    {
       title: 'Status',
       prop: 'order_status',
       isFilterable: true,
@@ -199,13 +187,14 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='first'
                   onClick={() => {
-                    props.setUserOrdersTable('/orders/orders-user/buyer/1', 1);
-                    props.fetchNumberOrdersByStatusBuyer(1);
-                    props.fetchNumberOrdersByStatusBuyer(2);
-                    props.fetchNumberOrdersByStatusBuyer(3);
+                    props.setUserOrdersTable(1);
+                    props.fetchNumberOrdersByStatusUser(1);
+                    props.fetchNumberOrdersByStatusUser(2);
+                    props.fetchNumberOrdersByStatusUser(3);
                   }}
                 >
-                  My Pending Orders ({props.title}){' '}
+                  {props.title == 'Buyer' ? 'My' : ''} Pending Orders (
+                  {props.title}){' '}
                   <span
                     className='badge rounded-pill text-bg-primary position-relative'
                     style={{ top: '-8px', left: '-5px' }}
@@ -218,13 +207,14 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='second'
                   onClick={() => {
-                    props.setUserOrdersTable('/orders/orders-user/buyer/2', 1);
-                    props.fetchNumberOrdersByStatusBuyer(1);
-                    props.fetchNumberOrdersByStatusBuyer(2);
-                    props.fetchNumberOrdersByStatusBuyer(3);
+                    props.setUserOrdersTable(2);
+                    props.fetchNumberOrdersByStatusUser(1);
+                    props.fetchNumberOrdersByStatusUser(2);
+                    props.fetchNumberOrdersByStatusUser(3);
                   }}
                 >
-                  My Processing Orders ({props.title}){' '}
+                  {props.title == 'Buyer' ? 'My' : ''} Processing Orders (
+                  {props.title}){' '}
                   <span
                     className='badge rounded-pill text-bg-primary position-relative'
                     style={{ top: '-8px', left: '-5px' }}
@@ -238,13 +228,14 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='third'
                   onClick={() => {
-                    props.setUserOrdersTable('/orders/orders-user/buyer/3', 1);
-                    props.fetchNumberOrdersByStatusBuyer(1);
-                    props.fetchNumberOrdersByStatusBuyer(2);
-                    props.fetchNumberOrdersByStatusBuyer(3);
+                    props.setUserOrdersTable(3);
+                    props.fetchNumberOrdersByStatusUser(1);
+                    props.fetchNumberOrdersByStatusUser(2);
+                    props.fetchNumberOrdersByStatusUser(3);
                   }}
                 >
-                  My Delivered Orders (props.title){' '}
+                  {props.title == 'Buyer' ? 'My' : ''} Delivered Orders (
+                  {props.title}){' '}
                   <span
                     className='badge rounded-pill text-bg-primary position-relative'
                     style={{ top: '-8px', left: '-5px' }}
@@ -257,20 +248,26 @@ export function OrdersTable(props) {
             <Tab.Content>
               <Tab.Pane eventKey='first'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>My Pending Orders</h1>
+                  <h1 className='mb-4'>
+                    {props.title == 'Buyer' ? 'My' : ''} Pending Orders
+                  </h1>
                   <TableComponent header={header} body={props.body} />;
                 </Card>
               </Tab.Pane>
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>My Processing Orders</h1>
+                  <h1 className='mb-4'>
+                    {props.title == 'Buyer' ? 'My' : ''} Processing Orders
+                  </h1>
                   <TableComponent header={header} body={props.body} />;
                 </Card>
               </Tab.Pane>
 
               <Tab.Pane eventKey='third'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>My Delivered Orders</h1>
+                  <h1 className='mb-4'>
+                    {props.title == 'Buyer' ? 'My' : ''} Delivered Orders
+                  </h1>
                   <TableComponent header={header} body={props.body} />;
                 </Card>
               </Tab.Pane>
