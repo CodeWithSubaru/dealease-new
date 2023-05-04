@@ -156,7 +156,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, $order)
     {
-        return Order::where('order_id', $order)->update(['order_status' => $request->status]);
+        return OrderTransaction::where('order_number', $order)->update(['order_trans_status' => $request->status]);
     }
 
     public function increment($id)

@@ -295,8 +295,11 @@ export function OrdersSeller() {
       if (res.isConfirmed) {
         axiosClient
           .put('/orders/' + orderNumber, { status: 2 })
-          .then((resp) => console.log(resp))
+          .then((resp) => {})
           .catch((e) => console.log(e));
+        fetchNumberOrdersByStatusUser(1);
+        fetchNumberOrdersByStatusUser(2);
+        fetchNumberOrdersByStatusUser(3);
         setUserOrdersTable(1);
       }
     });
@@ -378,16 +381,20 @@ export function OrdersSeller() {
           created_at: dateFormat(order.created_at),
           action: (
             <div key={i} className='button-actions text-light d-flex'>
-              <Button
-                variant='primary'
-                onClick={() => {
-                  accept(order.order_number);
-                }}
-                style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-primary px-2 me-2'
-              >
-                Accept
-              </Button>
+              {order.order_trans_status === '1' ? (
+                <Button
+                  variant='primary'
+                  onClick={() => {
+                    accept(order.order_number);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className='badge rounded text-bg-primary px-2 me-2'
+                >
+                  Accept
+                </Button>
+              ) : (
+                ''
+              )}
             </div>
           ),
         };
