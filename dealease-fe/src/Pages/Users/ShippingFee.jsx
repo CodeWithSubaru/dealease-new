@@ -76,7 +76,9 @@ export function ShippingFee() {
                       : setViewShippingAddressForm(true);
                   }}
                 >
-                  {viewShippingAddressForm ? 'Undo' : 'Change'}
+                  {viewShippingAddressForm
+                    ? 'Use Current Address'
+                    : 'Use Different Address'}
                 </Link>
               </div>
             </div>
