@@ -127,12 +127,30 @@ export function ShippingFee() {
 
                   <Form.Group className='mb-3'>
                     <Form.Label className='text-dark'>Street</Form.Label>
-                    <Form.Control type='text' />
+                    <Form.Control
+                      type='text'
+                      onChange={(e) =>
+                        setShippingFeeData({
+                          ...street,
+                          street: e.target.value,
+                        })
+                      }
+                    />
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label className='text-dark'>Cellphone</Form.Label>
-                    <Form.Control type='text' />
+                    <Form.Label className='text-dark text-secondary'>
+                      Contact Number
+                    </Form.Label>
+                    <Form.Control
+                      type='text'
+                      onChange={(e) =>
+                        setShippingFeeData({
+                          ...contact_number,
+                          contact_number: e.target.value,
+                        })
+                      }
+                    />
                   </Form.Group>
                 </Form>
               </div>

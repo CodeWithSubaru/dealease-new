@@ -23,6 +23,10 @@ export const LoginAdmin = () => {
       return <Navigate to='/home' />;
     }
 
+    if (user_type == 'Rider') {
+      return <Navigate to='/rider/home' />;
+    }
+
     if (user_type == 'Admin') {
       return <Navigate to='/admin/dashboard' />;
     }

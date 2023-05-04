@@ -19,6 +19,10 @@ export const LoginRider = () => {
   const { loginRider, errors, setErrors, user_type, token } = useAuthContext();
 
   if (token) {
+    if (user_type == 'Buyer') {
+      return <Navigate to='/home' />;
+    }
+
     if (user_type == 'Rider') {
       return <Navigate to='/rider/home' />;
     }

@@ -55,6 +55,10 @@ export const AuthProvider = ({ children }) => {
           setTokenAndUType(res.data.token, res.data.user[0].role_type);
         }
 
+        if (res.data.user[0].role_type === 'Rider') {
+          setTokenAndUType(res.data.token, res.data.user[0].role_type);
+        }
+
         Notification({
           title: 'Success',
           message: res.data.message,
