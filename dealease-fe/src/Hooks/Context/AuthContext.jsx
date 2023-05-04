@@ -88,7 +88,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginRider = (data) => {
-    login(data, '/admin/dashboard');
+    login(data, '/rider/home');
   };
 
   const logout = () => {
@@ -193,6 +193,7 @@ export const AuthProvider = ({ children }) => {
         setModalShow,
         setErrors,
         loginBuyer,
+        loginRider,
         loginAdmin,
         register,
         logout,
