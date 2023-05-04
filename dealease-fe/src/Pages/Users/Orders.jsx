@@ -174,7 +174,7 @@ export function OrdersBuyer() {
               {order.order_trans_status === '1' ? (
                 <Button
                   variant='danger'
-                  onClick={() => cancel(order.order_id)}
+                  onClick={() => cancel(order.order_number)}
                   style={{ cursor: 'pointer' }}
                   className='badge rounded text-bg-danger px-2'
                 >

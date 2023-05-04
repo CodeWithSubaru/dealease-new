@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { AuthProvider } from './Hooks/Context/AuthContext';
 import { MessageProvider } from './Hooks/Context/MessageContext';
 import { AddressProvider } from './Hooks/Context/AddressContext';
+import { OrderProvider } from './Hooks/Context/OrderContext';
 import App from './App';
 import { ProductProvider } from './Hooks/Context/ProductContext';
 import { AddToCartProvider } from './Hooks/Context/AddToCartContext';
@@ -18,9 +19,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <AddressProvider>
             <ProductProvider>
               <AddToCartProvider>
-                <ProSidebarProvider>
-                  <App />
-                </ProSidebarProvider>
+                <OrderProvider>
+                  <ProSidebarProvider>
+                    <App />
+                  </ProSidebarProvider>
+                </OrderProvider>
               </AddToCartProvider>
             </ProductProvider>
           </AddressProvider>

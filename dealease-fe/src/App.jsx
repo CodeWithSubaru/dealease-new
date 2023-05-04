@@ -12,6 +12,7 @@ import { ProductUser } from './Pages/Users/Product';
 import { WithdrawUser } from './Pages/Users/Withdraw';
 import { Recharge } from './Pages/Users/Recharge';
 import { AddToCart } from './Pages/Users/AddToCart';
+import { ShippingFee } from './Pages/Users/ShippingFee';
 import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
 
 // Rider Components
@@ -57,13 +58,14 @@ function App() {
             <Route path='/add-to-cart' element={<AddToCart />} />
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
-            <Route path='/add-to-cart' element={<AddToCart />} />
             <Route path='/Product' element={<ProductUser />} />
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/withdraw' element={<WithdrawUser />} />
             <Route path='/orders' element={<OrdersBuyer />} />
             <Route path='/orders/seller' element={<OrdersSeller />} />
+            <Route path='/add-to-cart' element={<AddToCart />} />
+            <Route path='/shipping' element={<ShippingFee />} />
           </Route>
 
           {/* Admin Route */}

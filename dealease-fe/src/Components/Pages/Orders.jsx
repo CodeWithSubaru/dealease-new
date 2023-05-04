@@ -156,8 +156,14 @@ export function OrdersTable(props) {
                         </p>
                         <p>Product Name: {order.product.title}</p>
                         <p>Product Description: {order.product.description}</p>
-                        <p>Product Seller: {order.product.user_id}</p>
-                        <p>Status: {props.status(order.order_status)}</p>
+                        <p>
+                          Product Seller: {order.order_by.first_name}{' '}
+                          {order.order_by.user_details.middle_name[0]}
+                          {'. '}
+                          {order.order_by.user_details.last_name}{' '}
+                          {order.order_by.user_details.ext_name}
+                        </p>
+                        <p>Status: {props.status(order.order_trans_status)}</p>
                         <p>Quantity: {order.product.weight} kg</p>
                         <p>
                           Total Price: <b>Php {order.total_price}</b>

@@ -35,10 +35,16 @@ import {
   Notification,
   Finalize,
 } from '../../Components/Notification/Notification';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import useOrderContext from '../../Hooks/Context/OrderContext';
 
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
+  const { setStep1, setGrandTotal } = useOrderContext();
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   function fetchCartHistoryBySellerId() {
@@ -309,23 +315,11 @@ export function AddToCart() {
                             className=' mt-2 p-2 px-3'
                             onSubmit={(e) => {
                               e.preventDefault();
-                              Finalize({
-                                confirmButton: 'Yes, Place my order',
-                                text: "You won't be able to revert this!",
-                                successMsg: 'Your Order Placed Successfully.',
-                              }).then((res) => {
-                                if (res.isConfirmed) {
-                                  axiosClient
-                                    .post('/orders/place-order', {
-                                      cartHistoryBySellerId,
-                                    })
-                                    .then((res) => console.log(res))
-                                    .catch((e) => console.log(e));
-                                  fetchCountInItemsCart();
-                                  fetchCartHistoryBySellerId();
-                                  navigate('/orders');
-                                }
-                              });
+                              setStep1(cartHistoryBySellerId);
+                              setGrandTotal(
+                                calculateGrandTotalPrice(cartHistoryBySellerId)
+                              );
+                              navigate('../shipping');
                             }}
                           >
                             <h3 className='mb-0 fw-bolder'>Summary Details</h3>
@@ -353,15 +347,48 @@ export function AddToCart() {
                               Grand Total:{' '}
                               {calculateGrandTotalPrice(cartHistoryBySellerId)}
                             </p>
-                            <div className='d-flex text-end'>
-                              <Button
-                                variant='warning'
-                                className='text-light rounded flex-grow-1 '
-                                type='submit'
+                            <div className='d-flex'>
+                              {console.log(user.wallet.shell_coin_amount)}
+                              {console.log(
+                                calculateGrandTotalPrice(cartHistoryBySellerId)
+                              )}
+                              <OverlayTrigger
+                                overlay={
+                                  calculateGrandTotalPrice(
+                                    cartHistoryBySellerId
+                                  ) <= user.wallet.shell_coin_amount ? (
+                                    <Tooltip id='tooltip-disabled'>
+                                      Insufficient Coin Amount. Please recharge
+                                    </Tooltip>
+                                  ) : (
+                                    <></>
+                                  )
+                                }
                               >
-                                <FontAwesomeIcon icon={faCartPlus} /> &nbsp;
-                                Place Order
-                              </Button>
+                                <span className='d-flex flex-grow-1'>
+                                  <Button
+                                    variant='warning'
+                                    className='text-light rounded flex-grow-1 '
+                                    type='submit'
+                                    disabled={
+                                      calculateGrandTotalPrice(
+                                        cartHistoryBySellerId
+                                      ) <= user.wallet.shell_coin_amount
+                                    }
+                                    style={{
+                                      pointerEvents:
+                                        calculateGrandTotalPrice(
+                                          cartHistoryBySellerId
+                                        ) <= user.wallet.shell_coin_amount
+                                          ? 'none'
+                                          : 'auto',
+                                    }}
+                                  >
+                                    <FontAwesomeIcon icon={faCartPlus} /> &nbsp;
+                                    Place Order
+                                  </Button>
+                                </span>
+                              </OverlayTrigger>
                             </div>
                           </Form>
                         </Card>

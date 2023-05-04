@@ -6,7 +6,7 @@ import {
   barangays,
 } from 'select-philippines-address';
 
-const AddressContext = createContext();
+const AddressContext = createContext('default');
 
 export const AddressProvider = ({ children }) => {
   const [regionData, setRegion] = useState([]);
