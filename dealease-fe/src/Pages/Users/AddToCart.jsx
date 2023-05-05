@@ -342,9 +342,16 @@ export function AddToCart() {
                               )
                             )}
                             <hr />
-                            <p className='fs-4 fw-bold mt-2'>
+                            <p className='fs-4 fw-bold mt-2 d-flex align-items-center'>
                               {' '}
                               Grand Total:{' '}
+                              <img
+                                src='/images/seashell.png'
+                                height={25}
+                                width={25}
+                                className='mx-1'
+                                alt=''
+                              />{' '}
                               {calculateGrandTotalPrice(cartHistoryBySellerId)}
                             </p>
                             <div className='d-flex'>

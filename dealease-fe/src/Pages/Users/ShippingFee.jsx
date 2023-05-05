@@ -223,7 +223,7 @@ export function ShippingFee() {
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
               <div className='d-flex justify-content-between'>
                 <span className='fw-semibold'>Total Order Amount</span>
-                <span>{grandTotal} shells</span>
+                <span>{calculateGrandTotalPrice(step1)} shells</span>
               </div>
             </div>
 
@@ -394,15 +394,32 @@ export function ShippingFee() {
                           </Card>
                         </>
                       ))}
-                      <p className='fs-5'>
-                        <span className='fw-bold'> Sub Total:</span> Php{' '}
+                      <p className='mb-1'>
+                        <span className='fw-semibold'> Sub Total:</span> Php{' '}
                         {calculateSubTotalPrice(item)}
-                        {setGrandTotal(calculateSubTotalPrice(item))}
+                      </p>
+                      <p>
+                        <span className='fw-semibold'> Delivery Fee: </span>{' '}
+                        {30}
                       </p>
                     </div>
                   );
                 })
               : ''}
+            <div className='mt-5'>
+              <hr />
+              <p className='fs-4 fw-bold mt-2 d-flex align-items-center'>
+                {' '}
+                Grand Total:{' '}
+                <img
+                  src='/images/seashell.png'
+                  height={25}
+                  width={25}
+                  alt=''
+                />{' '}
+                {calculateGrandTotalPrice(step1)}
+              </p>
+            </div>
           </div>
         </div>
       </div>
