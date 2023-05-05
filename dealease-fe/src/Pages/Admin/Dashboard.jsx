@@ -13,15 +13,34 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import axiosClient from "../../api/axios";
 import { TableComponent } from "../../Components/Table/Table";
 import { H1 } from "../../Components/Helpers/index.style";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
 import { Container, Col, Row } from "react-bootstrap";
 import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  useProSidebar,
+  sidebarClasses,
+  menuClasses,
+} from "react-pro-sidebar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faBurger,
+  faHamburger,
+  faHouse,
+  faDashboard,
+  faSliders,
+  faTable,
+  faToggleOn,
+  faInbox,
   faEye,
   faEnvelope,
   faUser,
   faUserLargeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import { ViewSingleUser } from "./ViewSingleUser";
 import PUBLIC_URL from "../../api/public_url";
 import { Footer } from "../../Components/Footer/Footer";
@@ -30,7 +49,7 @@ export function Dashboard() {
   const [countOfUsers, setCountOfUsers] = useState([]);
   const [countOfMessages, setCountOfMessages] = useState([]);
   const [body, setBody] = useState([]);
-
+  const { collapseSidebar } = useProSidebar();
   const header = [
     {
       title: "Id",
@@ -277,71 +296,129 @@ export function Dashboard() {
 
   return (
     <>
-      <Card className="dashboard w-75 mx-auto px-4">
-        <H1 className="mt-4"> Dashboard</H1>
-        <div className="cards-details-wrapper d-flex justify-content-between">
-          <CardDetails
-            title="Users"
-            totalNumber={calculateTotal(countOfUsers)}
-            icon={faUser}
-            style={{ marginLeft: "0" }}
-          />
-          <CardDetails
-            title="Messages"
-            totalNumber={calculateTotal(countOfMessages)}
-            icon={faEnvelope}
-          />
+      <div style={{ display: "flex", height: "100%" }}>
+        <Sidebar
+          width="190px"
+          collapsedWidth="65px"
+          transitionDuration="500"
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: "#1f98f4",
+              position: "fixed",
+            },
+          }}
+        >
+          <Menu
+            menuItemStyles={{
+              button: ({ level, active, disabled }) => {
+                // only apply styles on first level elements of the tree
+                if (level === 0)
+                  return {
+                    color: disabled ? "#f5d9ff" : "#white",
+                    backgroundColor: active ? "#eecef9" : undefined,
+                  };
+              },
+            }}
+          >
+            <button className="btn" onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className="navs-icon" />
+            </button>
 
-          <CardDetails
-            title="Reported Users"
-            totalNumber={2}
-            icon={faUserLargeSlash}
-          />
-        </div>
+            <MenuItem
+              className="text-black "
+              // icon={<FaHouse />}
+              component={<Link to="/admin/dashboard" />}
+            >
+              <FontAwesomeIcon icon={faDashboard} className="navs-icon" />
+              Dashboard
+            </MenuItem>
+            <SubMenu label="Transactions">
+              {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
+              <MenuItem component={<Link to="/seller/withdraw" />}>
+                Withdraw
+              </MenuItem>
+              {/* <MenuItem component={<Link to="/recharge" />}>Recharge</MenuItem> */}
+            </SubMenu>
+            <MenuItem
+              className="text-black"
+              component={<Link to="/seller/inbox" />}
+            >
+              <FontAwesomeIcon icon={faInbox} className="navs-icon" />
+              Inbox
+            </MenuItem>
+          </Menu>
+        </Sidebar>
+        <main className="w-100" style={{ minHeight: "815px" }}>
+          <Card className="dashboard w-75 mx-auto px-4">
+            <H1 className="mt-4"> Dashboard</H1>
+            <div className="cards-details-wrapper d-flex justify-content-between">
+              <CardDetails
+                title="Users"
+                totalNumber={calculateTotal(countOfUsers)}
+                icon={faUser}
+                style={{ marginLeft: "0" }}
+              />
+              <CardDetails
+                title="Messages"
+                totalNumber={calculateTotal(countOfMessages)}
+                icon={faEnvelope}
+              />
 
-        {/* View Single User */}
-        <ViewSingleUser
-          data={singleUser}
-          showSingleUser={showSingleUser}
-          closeSingleUserModal={closeSingleUserModal}
-        />
+              <CardDetails
+                title="Reported Users"
+                totalNumber={2}
+                icon={faUserLargeSlash}
+              />
+            </div>
 
-        <div className="graph-container w-100 p-0 m-0">
-          <Row>
-            <Col lg={8}>
-              <Card>
-                <Card.Body>
-                  <Bar
-                    options={options}
-                    data={data}
-                    className="mb-4 p-5 rounded"
-                    style={{ background: "white" }}
-                  />
-                </Card.Body>
-              </Card>
-            </Col>
+            {/* View Single User */}
+            <ViewSingleUser
+              data={singleUser}
+              showSingleUser={showSingleUser}
+              closeSingleUserModal={closeSingleUserModal}
+            />
 
-            <Col lg={4}>
-              <Card>
-                <Card.Body>
-                  <Doughnut
-                    data={dataChart}
-                    options={{ responsive: true, maintainAspectRatio: true }}
-                    className="my-4 p-5 rounded"
-                    style={{ background: "white" }}
-                  />
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </div>
+            <div className="graph-container w-100 p-0 m-0">
+              <Row>
+                <Col lg={8}>
+                  <Card>
+                    <Card.Body>
+                      <Bar
+                        options={options}
+                        data={data}
+                        className="mb-4 p-5 rounded"
+                        style={{ background: "white" }}
+                      />
+                    </Card.Body>
+                  </Card>
+                </Col>
 
-        <div className="card my-5 p-4 rounded primary-bg border-0">
-          <H1 className="mb-3">Latest Users</H1>
-          <TableComponent header={header} body={body} />
-        </div>
-      </Card>
-      <Footer />
+                <Col lg={4}>
+                  <Card>
+                    <Card.Body>
+                      <Doughnut
+                        data={dataChart}
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: true,
+                        }}
+                        className="my-4 p-5 rounded"
+                        style={{ background: "white" }}
+                      />
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </div>
+
+            <div className="card my-5 p-4 rounded primary-bg border-0">
+              <H1 className="mb-3">Latest Users</H1>
+              <TableComponent header={header} body={body} />
+            </div>
+          </Card>
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }
