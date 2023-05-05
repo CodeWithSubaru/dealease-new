@@ -348,15 +348,11 @@ export function AddToCart() {
                               {calculateGrandTotalPrice(cartHistoryBySellerId)}
                             </p>
                             <div className='d-flex'>
-                              {console.log(user.wallet.shell_coin_amount)}
-                              {console.log(
-                                calculateGrandTotalPrice(cartHistoryBySellerId)
-                              )}
                               <OverlayTrigger
                                 overlay={
                                   calculateGrandTotalPrice(
                                     cartHistoryBySellerId
-                                  ) <= user.wallet.shell_coin_amount ? (
+                                  ) >= Number(user.wallet.shell_coin_amount) ? (
                                     <Tooltip id='tooltip-disabled'>
                                       Insufficient Coin Amount. Please recharge
                                     </Tooltip>
@@ -373,13 +369,14 @@ export function AddToCart() {
                                     disabled={
                                       calculateGrandTotalPrice(
                                         cartHistoryBySellerId
-                                      ) <= user.wallet.shell_coin_amount
+                                      ) >= Number(user.wallet.shell_coin_amount)
                                     }
                                     style={{
                                       pointerEvents:
                                         calculateGrandTotalPrice(
                                           cartHistoryBySellerId
-                                        ) <= user.wallet.shell_coin_amount
+                                        ) >=
+                                        Number(user.wallet.shell_coin_amount)
                                           ? 'none'
                                           : 'auto',
                                     }}

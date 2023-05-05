@@ -3,7 +3,6 @@ import '../../assets/scss/global.scss';
 import '../../assets/scss/modal.scss';
 import { H3 } from '../../Components/Helpers/index.style';
 import { Login } from '../../Pages/Auth/Login';
-import { LoginRider } from '../../Pages/Auth/LoginRider';
 import {
   Modal,
   Form,
@@ -32,19 +31,7 @@ export function MydModalWithGrid(props) {
                       <Nav variant='pills' className='d-flex flex-column'>
                         <Nav.Item>
                           <Nav.Link eventKey='first' className='navName'>
-                            Buyer
-                            {/* <div class="box"> */}
-                            {/* <span>Buyer</span> */}
-                            {/* </div> */}
-                          </Nav.Link>
-                        </Nav.Item>
-                      </Nav>
-                    </Col>
-                    <Col>
-                      <Nav variant='pills' className='d-flex flex-column'>
-                        <Nav.Item>
-                          <Nav.Link eventKey='second' className='navName'>
-                            Seller
+                            User
                           </Nav.Link>
                         </Nav.Item>
                       </Nav>
@@ -55,9 +42,6 @@ export function MydModalWithGrid(props) {
                       <Tab.Content>
                         <Tab.Pane eventKey='first'>
                           <Login />
-                        </Tab.Pane>
-                        <Tab.Pane eventKey='second'>
-                          <LoginRider />
                         </Tab.Pane>
                       </Tab.Content>
                     </Col>

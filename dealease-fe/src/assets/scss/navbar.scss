@@ -3,15 +3,7 @@ ul {
   padding: 0 !important;
 }
 .nav-bar {
-  background: linear-gradient(
-    0deg,
-    rgba(7, 66, 114, 1) 0%,
-    rgba(4, 133, 179, 1) 0%,
-    rgba(3, 155, 200, 1) 16%,
-    rgba(1, 197, 241, 1) 72%,
-    rgba(1, 197, 241, 1) 90%,
-    rgba(0, 212, 255, 1) 100%
-  );
+  background-color: #1f98f4;
   height: 80px;
   display: flex;
   justify-content: space-between;

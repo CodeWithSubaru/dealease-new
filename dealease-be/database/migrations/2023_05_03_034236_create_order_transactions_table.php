@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('order_transactions', function (Blueprint $table) {
             $table->id('order_trans_id');
             $table->string('order_number');
-            $table->decimal('total_amount', 8, 2);
             $table->char('order_trans_status', 1);
+            $table->decimal('total_amount', 8, 2);
+            $table->decimal('delivery_fee', 8, 2);
+            $table->foreignId('seller_id');
+            $table->foreignId('buyer_id');
+            $table->foreignId('shipping_id');
             $table->timestamps();
         });
     }

@@ -26,18 +26,7 @@ import '../../assets/scss/global.scss';
 import { MydModalWithGrid } from '../Modal/Signupmoda';
 import { RegisterModal } from '../Modal/RegisterModal';
 
-export function Test() {
-  return (
-    <>
-      <div className='vr' />
-    </>
-  );
-}
-
-// patrick
-
 export function Header(props) {
-  // collapsible navlinks
   const {
     user,
     token,
@@ -140,15 +129,6 @@ export function Header(props) {
                   </button>
                 </div>
               </li>
-              <li className='d-flex align-items-center mb-1'>
-                <Link
-                  to='/update-access'
-                  className='signup-button p-2'
-                  role={Button}
-                >
-                  Update Access
-                </Link>
-              </li>
             </>
           ) : (
             props.children
@@ -160,41 +140,3 @@ export function Header(props) {
 }
 
 export default Header;
-{
-  /* <PrimaryBtnStyle
-                  backgroundColor="#efa726"
-                  hoverBgColor="#d69215"
-                  navigateTo="/login"
-                  btnTitle="Login"
-                  link
-                />
-                <PrimaryBtnStyle
-                  backgroundColor="#efa726"
-                  hoverBgColor="#d69215"
-                  navigateTo="/seller/login"
-                  btnTitle="LoginSeller"
-                  link
-                />
-                <PrimaryBtnStyle
-                  backgroundColor="#efa726"
-                  hoverBgColor="#d69215"
-                  navigateTo="/admin/login"
-                  btnTitle="LoginAdmin"
-                  link
-                />
-                <SecondaryBtnStyle
-                  backgroundColor="transparent"
-                  hoverBgColor="#d69215"
-                  navigateTo="/register"
-                  btnTitle="Sign Up"
-                  link
-                />
-
-                <SecondaryBtnStyle
-                  backgroundColor="transparent"
-                  hoverBgColor="#d69215"
-                  navigateTo="/register-exist"
-                  btnTitle="Sign Up with exisitng account"
-                  link
-                /> */
-}

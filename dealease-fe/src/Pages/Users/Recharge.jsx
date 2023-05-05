@@ -76,7 +76,7 @@ export function Recharge() {
         transitionDuration='500'
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
-            backgroundColor: '#19a9d0',
+            backgroundColor: '#1f98f4',
           },
         }}
       >
@@ -105,13 +105,17 @@ export function Recharge() {
             Home
           </MenuItem>
           <SubMenu label='Transactions'>
-            <FontAwesomeIcon icon={faInbox} className='navs-icon' />
-            <MenuItem component={<Link to='/withdraw' />}> Withdraw </MenuItem>
+            {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
+            {/* <MenuItem component={<Link to="/withdraw" />}> Withdraw </MenuItem> */}
             <MenuItem component={<Link to='/recharge' />}> Recharge </MenuItem>
           </SubMenu>
+          <MenuItem className='text-black' component={<Link to='/inbox' />}>
+            <FontAwesomeIcon icon={faInbox} className='navs-icon' />
+            Inbox
+          </MenuItem>
         </Menu>
       </Sidebar>
-      <main className='w-100'>
+      <main className='w-100' style={{ minHeight: '815px' }}>
         <div style={{ height: '80vh' }}>
           <button className='btn btn-dark'>Recharge</button>
           <Card className='recharge-card mx-auto w-75'>

@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react';
 import axiosClient from '../../api/axios';
 import useAuthContext from './AuthContext';
 
-const ProductContext = createContext();
+const ProductContext = createContext('default');
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState({});
@@ -14,6 +14,7 @@ export const ProductProvider = ({ children }) => {
   }
 
   function fetchPublicProducts(id) {
+    setProducts({});
     axiosClient.get('/public/product/' + id).then((resp) => {
       setProducts(resp.data);
     });

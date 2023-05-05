@@ -8,16 +8,24 @@ import PUBLIC_URL from '../../api/public_url';
 import { Button, Form } from 'react-bootstrap';
 import useAddressContext from '../../Hooks/Context/AddressContext';
 import { barangays } from 'select-philippines-address';
+import axiosClient from '../../api/axios';
+import { H3 } from '../../Components/Helpers/index.style';
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export function ShippingFee() {
-  const { step1, setStep2, grandTotal } = useOrderContext();
+  const { step1, setStep1, setStep2, grandTotal, setGrandTotal } =
+    useOrderContext();
   const navigate = useNavigate();
   const { user } = useAuthContext();
+  const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
   const [shippingFeeData, setShippingFeeData] = useState({});
   const [viewShippingAddressForm, setViewShippingAddressForm] = useState(false);
   const { cityData, getBarangay } = useAddressContext();
   const [errors, setErrors] = useState([]);
   const [barangaysData, setBarangaysData] = useState([]);
+  const { fetchCountInItemsCart } = useAddToCartContext();
   const attributes = {
     form: 'shippingForm',
   };
@@ -32,6 +40,61 @@ export function ShippingFee() {
 
   if (step1.length === 0) {
     return navigate('../add-to-cart');
+  }
+
+  function fetchCartHistoryBySellerId() {
+    axiosClient
+      .get('orders/seller-id')
+      .then((res) => {
+        setStep1(res.data);
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function removeFromCart(id) {
+    axiosClient.delete('/orders/' + id).then((res) => {
+      fetchCartHistoryBySellerId();
+
+      fetchCountInItemsCart();
+    });
+  }
+
+  function increment(id) {
+    axiosClient
+      .get('/orders/increment/' + id)
+      .then((res) => {
+        fetchCartHistoryBySellerId();
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function decrement(id) {
+    axiosClient
+      .get('/orders/decrement/' + id)
+      .then((res) => {
+        fetchCartHistoryBySellerId();
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function calculateSubTotalPrice(item) {
+    let totalPrice = 0;
+    for (let i = 0; i < item.length; i++) {
+      totalPrice += Number(item[i].total_price);
+    }
+    return Number(totalPrice).toLocaleString('en-US');
+  }
+
+  function calculateGrandTotalPrice(cart) {
+    let totalPrice = 0;
+
+    Object.values(cart).forEach((cartItem) => {
+      for (let i = 0; i < cartItem.length; i++) {
+        totalPrice += Number(cartItem[i].total_price);
+      }
+    });
+
+    return Number(totalPrice);
   }
 
   useEffect(() => {
@@ -61,7 +124,7 @@ export function ShippingFee() {
               </div>
               <hr className='border border-1 border-info rounded' />
               <div className='d-flex'>
-                <span className='w-25 text-secondary'>Shiping To</span>
+                <span className='w-25 text-secondary'>Delivery Address</span>
                 <span className='w-50'>
                   {user.user_details ? user.user_details.street : ''}{' '}
                   {user.user_details ? user.user_details.barangay : ''}{' '}
@@ -88,8 +151,10 @@ export function ShippingFee() {
                 <Form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    console.log('TRIGGERED');
-                    // setStep2(step1);
+                    axiosClient
+                      .post('')
+                      .then((res) => setStep2(step1))
+                      .catch();
                   }}
                   id='shippingForm'
                 >
@@ -157,8 +222,15 @@ export function ShippingFee() {
             )}
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
               <div className='d-flex justify-content-between'>
-                <span className='fw-semibold'>Shipping Fee</span>
-                <span>Php {Number(grandTotal).toFixed(2)}</span>
+                <span className='fw-semibold'>Total Order Amount</span>
+                <span>{grandTotal} shells</span>
+              </div>
+            </div>
+
+            <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
+              <div className='d-flex justify-content-between'>
+                <span className='fw-semibold'>Delivery Fee</span>
+                <span>{20 * 1.5 * 2} shells</span>
               </div>
             </div>
             <div className='d-flex justify-content-between'>
@@ -168,16 +240,44 @@ export function ShippingFee() {
               >
                 {'< Return to cart'}
               </Link>
-              <Button
-                variant='primary'
-                className='rounded px-3'
-                {...(viewShippingAddressForm
-                  ? { ...attributes }
-                  : console.log('HI'))}
-                type='submit'
+              {console.log(calculateGrandTotalPrice(step1))}
+              {console.log(Number(user.wallet.shell_coin_amount))}
+              <OverlayTrigger
+                overlay={
+                  calculateGrandTotalPrice(step1) >=
+                  Number(user.wallet.shell_coin_amount) ? (
+                    <Tooltip id='tooltip-disabled'>
+                      Insufficient Coin Amount. Please recharge
+                    </Tooltip>
+                  ) : (
+                    <></>
+                  )
+                }
               >
-                Continue to Payment
-              </Button>
+                <span className='d-block'>
+                  <Button
+                    variant='success'
+                    className='rounded px-3'
+                    {...(viewShippingAddressForm
+                      ? { ...attributes }
+                      : setStep2(step1))}
+                    type='submit'
+                    disabled={
+                      calculateGrandTotalPrice(step1) >=
+                      Number(user.wallet.shell_coin_amount)
+                    }
+                    style={{
+                      pointerEvents:
+                        calculateGrandTotalPrice(step1) >=
+                        Number(user.wallet.shell_coin_amount)
+                          ? 'none'
+                          : 'auto',
+                    }}
+                  >
+                    Proceed To Checkout
+                  </Button>
+                </span>
+              </OverlayTrigger>
             </div>
           </div>
           <div
@@ -241,9 +341,9 @@ export function ShippingFee() {
                             </div>
                             <div className='flex-grow-1 d-flex justify-content-between ms-3'>
                               <div>
-                                <h3 className='fs-3'>
+                                <H3 className='fs-3'>
                                   {cartItem.product.title}
-                                </h3>
+                                </H3>
                                 <div className='d-flex flex-column'>
                                   <span>
                                     Price: Php {cartItem.product.price_per_kg}
@@ -254,10 +354,51 @@ export function ShippingFee() {
                                   </span>
                                 </div>
                               </div>
+                              <div className='flex-shrink-0 align-self-end justify-content-end'>
+                                <div className='d-flex align-items-end justify-content-end'>
+                                  <Button
+                                    variant='primary'
+                                    className='w-25 py-2 px-0 me-2 rounded'
+                                    onClick={() => decrement(cartItem.id)}
+                                    disabled={cartItem.weight == 1}
+                                  >
+                                    -
+                                  </Button>
+                                  <input
+                                    type='text'
+                                    className='w-25 py-1 text-center'
+                                    value={cartItem.weight}
+                                    disabled
+                                  />
+                                  <Button
+                                    variant='primary'
+                                    className='w-25 py-2 px-0 ms-2 rounded me-2'
+                                    onClick={() => increment(cartItem.id)}
+                                    disabled={
+                                      cartItem.product.stocks_per_kg <=
+                                      cartItem.weight
+                                    }
+                                  >
+                                    +
+                                  </Button>
+
+                                  <Button
+                                    className='btn btn-danger rounded'
+                                    onClick={() => removeFromCart(cartItem.id)}
+                                  >
+                                    Remove
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </Card>
                         </>
                       ))}
+                      <p className='fs-5'>
+                        <span className='fw-bold'> Sub Total:</span> Php{' '}
+                        {calculateSubTotalPrice(item)}
+                        {setGrandTotal(calculateSubTotalPrice(item))}
+                      </p>
                     </div>
                   );
                 })

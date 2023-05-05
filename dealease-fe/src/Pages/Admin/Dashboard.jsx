@@ -7,81 +7,100 @@ import {
   LinearScale,
   Title,
   Tooltip,
-} from 'chart.js';
-import { useEffect, useState } from 'react';
-import { Bar, Doughnut } from 'react-chartjs-2';
-import axiosClient from '../../api/axios';
-import { TableComponent } from '../../Components/Table/Table';
-import { H1 } from '../../Components/Helpers/index.style';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Card from 'react-bootstrap/Card';
-import { Container, Col, Row } from 'react-bootstrap';
+} from "chart.js";
+import { useEffect, useState } from "react";
+import { Bar, Doughnut } from "react-chartjs-2";
+import axiosClient from "../../api/axios";
+import { TableComponent } from "../../Components/Table/Table";
+import { H1 } from "../../Components/Helpers/index.style";
+import Card from "react-bootstrap/Card";
+import { Container, Col, Row } from "react-bootstrap";
 import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  useProSidebar,
+  sidebarClasses,
+  menuClasses,
+} from "react-pro-sidebar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faBurger,
+  faHamburger,
+  faHouse,
+  faDashboard,
+  faSliders,
+  faTable,
+  faToggleOn,
+  faInbox,
   faEye,
   faEnvelope,
   faHandshake,
   faUser,
   faUserLargeSlash,
-} from '@fortawesome/free-solid-svg-icons';
-import { ViewSingleUser } from './ViewSingleUser';
-import PUBLIC_URL from '../../api/public_url';
-
+} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { ViewSingleUser } from "./ViewSingleUser";
+import PUBLIC_URL from "../../api/public_url";
+import { Footer } from "../../Components/Footer/Footer";
 export function Dashboard() {
   const [singleUser, setSingleUser] = useState(null);
   const [countOfUsers, setCountOfUsers] = useState([]);
   const [countOfMessages, setCountOfMessages] = useState([]);
   const [body, setBody] = useState([]);
-
+  const { collapseSidebar } = useProSidebar();
   const header = [
     {
-      title: 'Id',
-      prop: 'id',
+      title: "Id",
+      prop: "id",
       isFilterable: true,
       isSortable: true,
     },
     {
-      title: 'Full Name',
-      prop: 'fullname',
+      title: "Full Name",
+      prop: "fullname",
       isFilterable: true,
       isSortable: true,
     },
     {
-      title: 'Email Address',
-      prop: 'email',
+      title: "Email Address",
+      prop: "email",
     },
     {
-      title: 'Date Joined',
-      prop: 'date_joined',
+      title: "Date Joined",
+      prop: "date_joined",
       isFilterable: true,
       isSortable: true,
     },
-    { title: 'Action', prop: 'action', isFilterable: true },
+    { title: "Action", prop: "action", isFilterable: true },
   ];
 
   function dateFormat(date) {
     let yourDate = new Date(date);
     yourDate = yourDate.toUTCString();
-    return yourDate.split(' ').slice(1, 4).join(' ');
+    return yourDate.split(" ").slice(1, 4).join(" ");
   }
 
   function switchUserType(user) {
-    if (user.role_type === 'Admin') {
+    if (user.role_type === "Admin") {
       return user.role_type;
     }
 
-    if (user.is_buyer === 'Buyer') {
+    if (user.is_buyer === "Buyer") {
       return user.is_buyer;
     }
 
-    if (user.is_seller === 'Seller') {
+    if (user.is_seller === "Seller") {
       return user.is_seller;
     }
 
     if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
+      user.is_buyer === "Buyer_seller1" ||
+      user.is_seller === "Buyer_seller2"
     ) {
-      return 'Buyer + Seller';
+      return "Buyer + Seller";
     }
   }
 
@@ -97,35 +116,35 @@ export function Dashboard() {
 
   const viewCompleteDetails = (user_id) => {
     showSingleUserModal();
-    axiosClient.get('/admin/users/' + user_id).then((res) => {
+    axiosClient.get("/admin/users/" + user_id).then((res) => {
       setSingleUser(res.data.foundUserById[0]);
     });
   };
 
   function setUserDataTable() {
-    axiosClient.get('/admin/users-by-10').then((resp) => {
+    axiosClient.get("/admin/users-by-10").then((resp) => {
       const user = resp.data.listOfUser.map((user, i) => {
         return {
           id: i + 1,
           fullname: (
-            <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
+            <div key={i} className="d-flex" style={{ columnGap: "10px" }}>
               <img
-                src={PUBLIC_URL + 'images/' + user.prof_img}
-                className='rounded-circle pr-5 border border-3 border-color-info'
-                style={{ width: '50px', height: '50px' }}
+                src={PUBLIC_URL + "images/" + user.prof_img}
+                className="rounded-circle pr-5"
+                style={{ width: "50px", height: "50px" }}
               />
               <div>
-                <p className='mb-0'>
+                <p className="mb-0">
                   {user.first_name +
-                    ' ' +
+                    " " +
                     user.user_details.middle_name +
-                    '.' +
-                    ' ' +
+                    "." +
+                    " " +
                     user.user_details.last_name +
-                    ' ' +
+                    " " +
                     user.user_details.ext_name}
                 </p>
-                <span className='badge rounded-pill text-bg-primary'>
+                <span className="badge rounded-pill text-bg-primary">
                   {switchUserType(user)}
                 </span>
               </div>
@@ -134,12 +153,12 @@ export function Dashboard() {
           email: user.email,
           date_joined: dateFormat(user.created_at),
           action: (
-            <div key={i} className='button-actions'>
+            <div key={i} className="button-actions">
               <span
                 onClick={() => viewCompleteDetails(user.user_id)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
-                <FontAwesomeIcon icon={faEye} className='mx-2' />
+                <FontAwesomeIcon icon={faEye} className="mx-2" />
               </span>
             </div>
           ),
@@ -163,28 +182,28 @@ export function Dashboard() {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
-        text: 'Total Numbers',
+        text: "Total Numbers",
       },
     },
   };
 
   const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   function countByCategory(response, label) {
@@ -215,19 +234,19 @@ export function Dashboard() {
     labels,
     datasets: [
       {
-        label: 'Users',
+        label: "Users",
         data: countByCategory(countOfUsers, labels),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
-        label: 'Messages',
+        label: "Messages",
         data: countByCategory(countOfMessages, labels),
-        backgroundColor: 'green',
+        backgroundColor: "green",
       },
       {
-        label: 'Total Reported Users',
+        label: "Total Reported Users",
         data: [0],
-        backgroundColor: 'blue',
+        backgroundColor: "blue",
       },
     ],
   };
@@ -236,29 +255,29 @@ export function Dashboard() {
     labels,
     datasets: [
       {
-        label: '# of Users',
+        label: "# of Users",
         data: countOfUsers.map((item) => item.count),
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
         ],
         borderWidth: 1,
       },
@@ -267,98 +286,156 @@ export function Dashboard() {
 
   useEffect(() => {
     axiosClient
-      .get('/admin/get-number-of-user')
+      .get("/admin/get-number-of-user")
       .then((response) => setCountOfUsers(response.data));
 
     axiosClient
-      .get('/admin/get-number-of-message')
+      .get("/admin/get-number-of-message")
       .then((response) => setCountOfMessages(response.data));
     setUserDataTable();
   }, [countOfUsers.count, countOfMessages.count]);
 
   return (
-    <Card className='dashboard w-75 mx-auto px-4'>
-      <H1 className='mt-4'> Dashboard</H1>
-      <div className='cards-details-wrapper d-flex justify-content-between'>
-        <CardDetails
-          title='Users'
-          totalNumber={calculateTotal(countOfUsers)}
-          icon={faUser}
-        />
+    <>
+      <div style={{ display: "flex", height: "100%" }}>
+        <Sidebar
+          width="190px"
+          collapsedWidth="65px"
+          transitionDuration="500"
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: "#1f98f4",
+              position: "fixed",
+            },
+          }}
+        >
+          <Menu
+            menuItemStyles={{
+              button: ({ level, active, disabled }) => {
+                // only apply styles on first level elements of the tree
+                if (level === 0)
+                  return {
+                    color: disabled ? "#f5d9ff" : "#white",
+                    backgroundColor: active ? "#eecef9" : undefined,
+                  };
+              },
+            }}
+          >
+            <button className="btn" onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className="navs-icon" />
+            </button>
 
-        <CardDetails
-          title='Pending Transactions'
-          totalNumber={calculateTotal(countOfMessages)}
-          icon={faHandshake}
-        />
+            <MenuItem
+              className="text-black "
+              // icon={<FaHouse />}
+              component={<Link to="/admin/dashboard" />}
+            >
+              <FontAwesomeIcon icon={faDashboard} className="navs-icon" />
+              Dashboard
+            </MenuItem>
+            <SubMenu label="Transactions">
+              {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
+              <MenuItem component={<Link to="/seller/withdraw" />}>
+                Withdraw
+              </MenuItem>
+              {/* <MenuItem component={<Link to="/recharge" />}>Recharge</MenuItem> */}
+            </SubMenu>
+            <MenuItem
+              className="text-black"
+              component={<Link to="/seller/inbox" />}
+            >
+              <FontAwesomeIcon icon={faInbox} className="navs-icon" />
+              Inbox
+            </MenuItem>
+          </Menu>
+        </Sidebar>
+        <main className="w-100" style={{ minHeight: "815px" }}>
+          <Card className="dashboard w-75 mx-auto px-4">
+            <H1 className="mt-4"> Dashboard</H1>
+            <div className="cards-details-wrapper d-flex justify-content-between">
+              <CardDetails
+                title="Users"
+                totalNumber={calculateTotal(countOfUsers)}
+                icon={faUser}
+                style={{ marginLeft: "0" }}
+              />
+              <CardDetails
+                title="Messages"
+                totalNumber={calculateTotal(countOfMessages)}
+                icon={faEnvelope}
+              />
 
-        <CardDetails
-          title='Total Amount Transactions'
-          totalNumber={calculateTotal(countOfMessages)}
-          icon={faHandshake}
-        />
+              <CardDetails
+                title="Reported Users"
+                totalNumber={2}
+                icon={faUserLargeSlash}
+              />
+            </div>
+
+            {/* View Single User */}
+            <ViewSingleUser
+              data={singleUser}
+              showSingleUser={showSingleUser}
+              closeSingleUserModal={closeSingleUserModal}
+            />
+
+            <div className="graph-container w-100 p-0 m-0">
+              <Row>
+                <Col lg={8}>
+                  <Card>
+                    <Card.Body>
+                      <Bar
+                        options={options}
+                        data={data}
+                        className="mb-4 p-5 rounded"
+                        style={{ background: "white" }}
+                      />
+                    </Card.Body>
+                  </Card>
+                </Col>
+
+                <Col lg={4}>
+                  <Card>
+                    <Card.Body>
+                      <Doughnut
+                        data={dataChart}
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: true,
+                        }}
+                        className="my-4 p-5 rounded"
+                        style={{ background: "white" }}
+                      />
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </div>
+
+            <div className="card my-5 p-4 rounded primary-bg border-0">
+              <H1 className="mb-3">Latest Users</H1>
+              <TableComponent header={header} body={body} />
+            </div>
+          </Card>
+        </main>
+        <Footer />
       </div>
-
-      {/* View Single User */}
-      <ViewSingleUser
-        data={singleUser}
-        showSingleUser={showSingleUser}
-        closeSingleUserModal={closeSingleUserModal}
-      />
-
-      <div className='graph-container w-100 p-0 m-0'>
-        <Row>
-          <Col lg={8}>
-            <Card>
-              <Card.Body>
-                <Bar
-                  options={options}
-                  data={data}
-                  className='mb-4 p-5 rounded'
-                  style={{ background: 'white' }}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col lg={4}>
-            <Card>
-              <Card.Body>
-                <Doughnut
-                  data={dataChart}
-                  options={{ responsive: true, maintainAspectRatio: true }}
-                  className='my-4 p-5 rounded'
-                  style={{ background: 'white' }}
-                />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-
-      <Card className='card my-5 p-4 rounded bg-primary'>
-        <H1 className='mb-3'>Latest Users</H1>
-        <TableComponent header={header} body={body} />
-      </Card>
-    </Card>
+    </>
   );
 }
 
 function CardDetails(props) {
   return (
     <Card
-      className='card-details rounded p-4 my-4 w-25 d-flex flex-row justify-content-between mx-2'
-      style={{ backgroundColor: '#fff' }}
+      className="card-details rounded p-4 my-4 w-25 primary-bg d-flex justify-content-between"
+      style={{ backgroundColor: "#fff" }}
     >
       <div>
-        <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
+        <H1 style={{ fontSize: "50px" }}>{props.totalNumber}</H1>
         <p>{props.title}</p>
       </div>
-      <div
-        className='bg-primary p-5 rounded-circle d-flex align-items-center justify-content-center'
-        style={{ height: '70px', width: '70px' }}
-      >
-        <FontAwesomeIcon icon={props.icon} className='icon mx-2 text-light' />
+      <div className="d-flex align-items-center">
+        <FontAwesomeIcon icon={props.icon} className="icon mx-2" />
       </div>
     </Card>
   );
