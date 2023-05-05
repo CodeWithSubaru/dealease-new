@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('seller_id');
             $table->foreignId('buyer_id');
             $table->foreignId('shipping_id');
+            $table->foreignId('delivery_address_id');
             $table->timestamps();
         });
     }

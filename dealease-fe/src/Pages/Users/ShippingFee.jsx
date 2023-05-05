@@ -341,10 +341,10 @@ export function ShippingFee() {
                             </div>
                             <div className='flex-grow-1 d-flex justify-content-between ms-3'>
                               <div>
-                                <H3 className='fs-3'>
+                                <H3 className='fs-3 '>
                                   {cartItem.product.title}
                                 </H3>
-                                <div className='d-flex flex-column'>
+                                <div className='d-flex flex-column text-secondary'>
                                   <span>
                                     Price: Php {cartItem.product.price_per_kg}
                                   </span>
@@ -395,7 +395,7 @@ export function ShippingFee() {
                         </>
                       ))}
                       <p className='mb-1'>
-                        <span className='fw-semibold'> Sub Total:</span> Php{' '}
+                        <span className='fw-semibold '> Sub Total:</span> Php{' '}
                         {calculateSubTotalPrice(item)}
                       </p>
                       <p>
@@ -408,7 +408,7 @@ export function ShippingFee() {
               : ''}
             <div className='mt-5'>
               <hr />
-              <p className='fs-4 fw-bold mt-2 d-flex align-items-center'>
+              <p className='fs-4 fw-bold mt-2 d-flex align-items-center text-secondary'>
                 {' '}
                 Grand Total:{' '}
                 <img
@@ -416,6 +416,7 @@ export function ShippingFee() {
                   height={25}
                   width={25}
                   alt=''
+                  className='mx-1'
                 />{' '}
                 {calculateGrandTotalPrice(step1)}
               </p>

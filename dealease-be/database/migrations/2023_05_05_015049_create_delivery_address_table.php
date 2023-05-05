@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('order_trans_id');
             $table->foreignId('rider_id');
             $table->char('delivery_status', 1);
+            $table->string('city', 50);
+            $table->string('barangay', 50);
+            $table->string('street', 50);
             $table->timestamps();
         });
     }
