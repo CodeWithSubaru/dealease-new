@@ -359,7 +359,7 @@ export function AddToCart() {
                                 overlay={
                                   calculateGrandTotalPrice(
                                     cartHistoryBySellerId
-                                  ) >= Number(user.wallet.shell_coin_amount) ? (
+                                  ) > Number(user.wallet.shell_coin_amount) ? (
                                     <Tooltip id='tooltip-disabled'>
                                       Insufficient Coin Amount. Please recharge
                                     </Tooltip>
@@ -376,13 +376,13 @@ export function AddToCart() {
                                     disabled={
                                       calculateGrandTotalPrice(
                                         cartHistoryBySellerId
-                                      ) >= Number(user.wallet.shell_coin_amount)
+                                      ) > Number(user.wallet.shell_coin_amount)
                                     }
                                     style={{
                                       pointerEvents:
                                         calculateGrandTotalPrice(
                                           cartHistoryBySellerId
-                                        ) >=
+                                        ) >
                                         Number(user.wallet.shell_coin_amount)
                                           ? 'none'
                                           : 'auto',

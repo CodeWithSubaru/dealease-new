@@ -14,6 +14,7 @@ import {
   sidebarClasses,
 } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 export const HomeUser = () => {
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
@@ -63,16 +64,17 @@ export const HomeUser = () => {
               {/* <FontAwesomeIcon icon={faHouse} className='navs-icon' />  */}
               Home
             </MenuItem>
-            <SubMenu label='Transactions'>
-              <MenuItem component={<Link to='/withdraw' />}>
-                {' '}
-                Withdraw{' '}
-              </MenuItem>
-              <MenuItem component={<Link to='/recharge' />}>
-                {' '}
-                Recharge{' '}
-              </MenuItem>
-            </SubMenu>
+
+            <MenuItem component={<Link to='/withdraw' />}> Withdraw </MenuItem>
+            <MenuItem component={<Link to='/recharge' />}> Recharge </MenuItem>
+            {user.verified_user ? (
+              <MenuItem component={<Link to='/product' />}> Product </MenuItem>
+            ) : (
+              ''
+            )}
+            <Button className='btn btn-sm d-inline-block' onClick={() => {}}>
+              Update Access
+            </Button>
           </Menu>
         </Sidebar>
         <main className='w-100 '>

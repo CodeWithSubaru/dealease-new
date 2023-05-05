@@ -67,7 +67,7 @@ export function SuccessfulUser() {
               <span className='d-block'>
                 <Link
                   to='/home'
-                  className='btn btn-primary rounded px-3 me-3'
+                  className='rounded px-3 me-2 text-decoration-none text-success'
                   type='submit'
                 >
                   Shop Again
@@ -75,7 +75,7 @@ export function SuccessfulUser() {
 
                 <Link
                   to='/orders'
-                  className='btn btn-success text-light rounded px-3'
+                  className='btn btn-primary text-light rounded px-3'
                   type='submit'
                 >
                   My Orders

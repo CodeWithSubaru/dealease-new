@@ -19,6 +19,20 @@ class UserDetailFactory extends Factory
      */
     public function definition(): array
     {
+        $barangay = [
+            'Paliwas',
+            'Salambao',
+            'Binuangan',
+            'Pag-asa',
+            'San Pascual',
+            'Catanghalan',
+            'Hulo',
+            'Panghulo',
+            'Lawa',
+            'Paco',
+            'Tawiran'
+        ];
+
         return [
             'middle_name' => fake()->lastName(),
             'last_name' => fake()->lastName(),
@@ -27,7 +41,7 @@ class UserDetailFactory extends Factory
             'region' => 'Region III (Central Luzon)',
             'province' => 'Bulacan',
             'city' => 'Obando',
-            'barangay' => fake()->streetName(),
+            'barangay' => $barangay[rand(0, count($barangay) - 1)],
             'street' => fake()->streetAddress(),
             'contact_number' => '09298384753',
         ];

@@ -19,10 +19,8 @@ export function ShippingFee() {
     useOrderContext();
   const navigate = useNavigate();
   const { user } = useAuthContext();
-  const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
   const [shippingFeeData, setShippingFeeData] = useState({});
   const [viewShippingAddressForm, setViewShippingAddressForm] = useState(false);
-  const { cityData, getBarangay } = useAddressContext();
   const [errors, setErrors] = useState([]);
   const [barangaysData, setBarangaysData] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
@@ -30,6 +28,18 @@ export function ShippingFee() {
     form: 'shippingForm',
   };
 
+  const attributes1 = {
+    onClick: (e) => {
+      e.preventDefault();
+      const cartHistoryBySellerId = step1;
+      console.log(cartHistoryBySellerId);
+      axiosClient
+        .post('/orders/place-order', { cartHistoryBySellerId })
+        .then((res) => {})
+        .catch((e) => console.log(e));
+      setStep2(step1);
+    },
+  };
   function barangay(e) {
     console.log(e.target.selectedOptions[0].text);
     setShippingFeeData({
@@ -87,14 +97,13 @@ export function ShippingFee() {
 
   function calculateGrandTotalPrice(cart) {
     let totalPrice = 0;
-
     Object.values(cart).forEach((cartItem) => {
       for (let i = 0; i < cartItem.length; i++) {
         totalPrice += Number(cartItem[i].total_price);
       }
     });
 
-    return Number(totalPrice);
+    return Number(totalPrice + 20 * 1.5 * Object.keys(cart).length);
   }
 
   useEffect(() => {
@@ -151,10 +160,11 @@ export function ShippingFee() {
                 <Form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    axiosClient
-                      .post('')
-                      .then((res) => setStep2(step1))
-                      .catch();
+                    // console.log(step1);
+                    // axiosClient
+                    //   .post('/orders/place-order')
+                    //   .then((res) => setStep2(step1))
+                    //   .catch();
                   }}
                   id='shippingForm'
                 >
@@ -227,12 +237,6 @@ export function ShippingFee() {
               </div>
             </div>
 
-            <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
-              <div className='d-flex justify-content-between'>
-                <span className='fw-semibold'>Delivery Fee</span>
-                <span>{20 * 1.5 * 2} shells</span>
-              </div>
-            </div>
             <div className='d-flex justify-content-between'>
               <Link
                 to='../add-to-cart'
@@ -240,11 +244,10 @@ export function ShippingFee() {
               >
                 {'< Return to cart'}
               </Link>
-              {console.log(calculateGrandTotalPrice(step1))}
-              {console.log(Number(user.wallet.shell_coin_amount))}
+
               <OverlayTrigger
                 overlay={
-                  calculateGrandTotalPrice(step1) >=
+                  calculateGrandTotalPrice(step1) >
                   Number(user.wallet.shell_coin_amount) ? (
                     <Tooltip id='tooltip-disabled'>
                       Insufficient Coin Amount. Please recharge
@@ -260,15 +263,15 @@ export function ShippingFee() {
                     className='rounded px-3'
                     {...(viewShippingAddressForm
                       ? { ...attributes }
-                      : setStep2(step1))}
+                      : { ...attributes1 })}
                     type='submit'
                     disabled={
-                      calculateGrandTotalPrice(step1) >=
+                      calculateGrandTotalPrice(step1) >
                       Number(user.wallet.shell_coin_amount)
                     }
                     style={{
                       pointerEvents:
-                        calculateGrandTotalPrice(step1) >=
+                        calculateGrandTotalPrice(step1) >
                         Number(user.wallet.shell_coin_amount)
                           ? 'none'
                           : 'auto',
@@ -400,7 +403,7 @@ export function ShippingFee() {
                       </p>
                       <p>
                         <span className='fw-semibold'> Delivery Fee: </span>{' '}
-                        {30}
+                        {20 * 1.5}
                       </p>
                     </div>
                   );

@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\OrderTransaction;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -126,12 +127,33 @@ class OrderController extends Controller
                 ]);
                 $totalPrice += (float) $orderedItems[$i][$j]['total_price'];
                 Cart::where('product_id', $orderedItems[$i][$j]['product_id'])->where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
+                $sellerId = $orderedItems[$i][$j]['product']['user_id'];
+            }
+
+            $userDetails = UserDetail::find(auth()->id());
+            if ($userDetails->barangay === 'Paliwas' || $userDetails->barangay === 'Salambao' || $userDetails->barangay === 'Binuangan') {
+                $rate = 20;
+            } elseif ($userDetails->barangay === 'Pag-asa' || $userDetails->barangay === 'San Pascual') {
+                $rate = 25;
+            } elseif ($userDetails->barangay === 'Catanghalan' || $userDetails->barangay === 'Hulo') {
+                $rate = 30;
+            } elseif ($userDetails->barangay === 'Panghulo' || $userDetails->barangay === 'Lawa') {
+                $rate = 35;
+            } elseif ($userDetails->barangay === 'Paco') {
+                $rate = 40;
+            } elseif ($userDetails->barangay === 'Tawiran') {
+                $rate = 45;
             }
 
             OrderTransaction::create([
                 'order_number' => $orderNumber,
                 'total_amount' => $totalPrice,
                 'order_trans_status' => 1,
+                'delivery_fee' => 20 * $rate,
+                'seller_id' => $sellerId,
+                'buyer_id' => auth()->id(),
+                'shipping_id' => 1,
+                'delivery_address_id' => 0,
             ]);
         }
 
