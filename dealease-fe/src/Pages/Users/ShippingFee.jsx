@@ -17,8 +17,15 @@ import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function ShippingFee() {
-  const { step1, setStep1, setStep2, grandTotal, setGrandTotal } =
-    useOrderContext();
+  const {
+    step1,
+    setStep1,
+    setStep2,
+    grandTotal,
+    setGrandTotal,
+    isDoneTransaction,
+    setDoneTransaction,
+  } = useOrderContext();
   const navigate = useNavigate();
   const { user } = useAuthContext();
   const [shippingFeeData, setShippingFeeData] = useState({});
@@ -26,6 +33,11 @@ export function ShippingFee() {
   const [errors, setErrors] = useState([]);
   const [barangaysData, setBarangaysData] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
+
+  if (isDoneTransaction) {
+    navigate('../home');
+  }
+
   const attributes = {
     form: 'shippingForm',
   };
@@ -39,6 +51,7 @@ export function ShippingFee() {
         .post('/orders/place-order', { cartHistoryBySellerId })
         .then((res) => {
           setStep2(step1);
+          setDoneTransaction(true);
           navigate('../successful');
         })
         .catch((e) => console.log(e));
@@ -177,6 +190,7 @@ export function ShippingFee() {
                       .post('/orders/place-order', data)
                       .then((res) => {
                         setStep2(data);
+                        setDoneTransaction(true);
                         navigate('../successful');
                       })
                       .catch((e) => console.log(e));

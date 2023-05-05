@@ -15,12 +15,14 @@ import {
 } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import useOrderContext from '../../Hooks/Context/OrderContext';
 
 export const HomeUser = () => {
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
   const { collapseSidebar } = useProSidebar();
-
+  const { setDoneTransaction } = useOrderContext();
   useEffect(() => {
+    setDoneTransaction(false);
     return () => {
       setRegistrationSuccess(false);
       setEmailVerified(false);

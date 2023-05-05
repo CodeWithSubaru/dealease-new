@@ -11,7 +11,7 @@ export function SuccessfulUser() {
     useOrderContext();
   const navigate = useNavigate();
 
-  if (step1.length === 0 || step2.length === 0) {
+  if (step1.length == 0 && step2.length == 0) {
     return navigate('../shipping');
   }
 

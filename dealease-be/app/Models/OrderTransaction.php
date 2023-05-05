@@ -11,9 +11,7 @@ class OrderTransaction extends Model
 
     protected $guarded;
 
-    protected $primaryKey = 'order_number';
-
-    public $incrementing = false;
+    protected $primaryKey = 'order_trans_id';
 
     public function order()
     {

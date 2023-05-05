@@ -7,6 +7,7 @@ export function OrderProvider(props) {
   const [step1, setStep1] = useState([]);
   const [step2, setStep2] = useState([]);
   const [grandTotal, setGrandTotal] = useState(0);
+  const [isDoneTransaction, setDoneTransaction] = useState(false);
 
   return (
     <OrderContext.Provider
@@ -17,6 +18,8 @@ export function OrderProvider(props) {
         setStep2,
         grandTotal,
         setGrandTotal,
+        isDoneTransaction,
+        setDoneTransaction,
       }}
     >
       {props.children}

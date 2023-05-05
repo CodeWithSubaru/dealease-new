@@ -114,17 +114,6 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
-        if ($request->shippingFee) {
-            DeliveryAddress::create([
-                'order_trans_id' => '',
-                'rider_id' => '',
-                'delivery_status' => '',
-                'city' => $request->shippingFee->city,
-                'barangay' => $request->shippingFee->barangay,
-                'street' => $request->shippingFee->street,
-            ]);
-        }
-
         $orderedItems = array_values($request->cartHistoryBySellerId);
         for ($i = 0; $i < count($orderedItems); $i++) {
             $orderNumber = $this->generateOrderNumber();
@@ -159,7 +148,7 @@ class OrderController extends Controller
                 $rate = 45;
             }
 
-            OrderTransaction::create([
+            $orderTransaction = OrderTransaction::create([
                 'order_number' => $orderNumber,
                 'total_amount' => $totalPrice,
                 'order_trans_status' => 1,
@@ -169,6 +158,21 @@ class OrderController extends Controller
                 'shipping_id' => 1,
                 'delivery_address_id' => null,
             ]);
+
+            if ($request->shippingFee) {
+                $deliveryAddress = DeliveryAddress::create([
+                    'order_trans_id' => $orderTransaction->order_trans_id,
+                    'rider_id' => null,
+                    'delivery_status' => 1,
+                    'city' => 'Obando',
+                    'barangay' => $request->shippingFee['barangay'],
+                    'street' => $request->shippingFee['street'],
+                ]);
+
+                $orderTransaction->update([
+                    'delivery_address_id' => $deliveryAddress->delivery_address_id
+                ]);
+            }
         }
 
         return response()->json(['status' => 'Order placed Successfully'], 200);
