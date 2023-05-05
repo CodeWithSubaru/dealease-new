@@ -2,10 +2,18 @@ import { Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import useAuthContext from '../../Hooks/Context/AuthContext';
-import { Link } from 'react-router-dom';
+import useOrderContext from '../../Hooks/Context/OrderContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function SuccessfulUser() {
   const { user } = useAuthContext();
+  const { step1, step2, setStep1, setStep2, grandTotal, setGrandTotal } =
+    useOrderContext();
+  const navigate = useNavigate();
+
+  if (step1.length === 0 || step2.length === 0) {
+    return navigate('../shipping');
+  }
 
   return (
     <div className='mx-auto w-75'>

@@ -45,7 +45,7 @@ export function Card() {
         {msgStatus && (
           <div
             className={
-              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-absolute ' +
+              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed ' +
               (status ? 'alert-primary' : 'alert-danger')
             }
             style={{ top: '100px' }}

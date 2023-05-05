@@ -13,6 +13,8 @@ import { H3 } from '../../Components/Helpers/index.style';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export function ShippingFee() {
   const { step1, setStep1, setStep2, grandTotal, setGrandTotal } =
@@ -32,10 +34,13 @@ export function ShippingFee() {
     onClick: (e) => {
       e.preventDefault();
       const cartHistoryBySellerId = step1;
-      console.log(cartHistoryBySellerId);
+
       axiosClient
         .post('/orders/place-order', { cartHistoryBySellerId })
-        .then((res) => {})
+        .then((res) => {
+          setStep2(step1);
+          navigate('../successful');
+        })
         .catch((e) => console.log(e));
       setStep2(step1);
     },
@@ -160,11 +165,21 @@ export function ShippingFee() {
                 <Form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    // console.log(step1);
-                    // axiosClient
-                    //   .post('/orders/place-order')
-                    //   .then((res) => setStep2(step1))
-                    //   .catch();
+                    setShippingFeeData({ ...shippingFeeData, city: 'Obando' });
+                    const shippingFee = shippingFeeData;
+                    const cartHistoryBySellerId = step1;
+                    const data = {
+                      shippingFee,
+                      cartHistoryBySellerId,
+                    };
+
+                    axiosClient
+                      .post('/orders/place-order', data)
+                      .then((res) => {
+                        setStep2(data);
+                        navigate('../successful');
+                      })
+                      .catch((e) => console.log(e));
                   }}
                   id='shippingForm'
                 >
@@ -181,7 +196,7 @@ export function ShippingFee() {
                     <Form.Group className='flex-grow-1'>
                       <Form.Label className='text-dark'>Barangay *</Form.Label>
                       <Form.Select
-                        onChange={(e) => barangay(e)}
+                        onChange={barangay}
                         className='form-select'
                         isInvalid={!!errors.barangay}
                       >
@@ -206,7 +221,7 @@ export function ShippingFee() {
                       type='text'
                       onChange={(e) =>
                         setShippingFeeData({
-                          ...street,
+                          ...shippingFeeData,
                           street: e.target.value,
                         })
                       }
@@ -217,15 +232,31 @@ export function ShippingFee() {
                     <Form.Label className='text-dark text-secondary'>
                       Contact Number
                     </Form.Label>
-                    <Form.Control
-                      type='text'
-                      onChange={(e) =>
-                        setShippingFeeData({
-                          ...contact_number,
-                          contact_number: e.target.value,
-                        })
-                      }
-                    />
+                    <div className='position-relative'>
+                      <Form.Control
+                        type='text'
+                        onChange={(e) =>
+                          setShippingFeeData({
+                            ...shippingFeeData,
+                            contact_number: e.target.value,
+                          })
+                        }
+                      />
+                      <OverlayTrigger
+                        delay={{ show: 150, hide: 400 }}
+                        overlay={
+                          <Tooltip>
+                            In case we need to contact you about your order
+                          </Tooltip>
+                        }
+                      >
+                        <FontAwesomeIcon
+                          icon={faCircleQuestion}
+                          className='position-absolute text-primary'
+                          style={{ top: '10px', right: '10px' }}
+                        />
+                      </OverlayTrigger>
+                    </div>
                   </Form.Group>
                 </Form>
               </div>

@@ -99,7 +99,7 @@ export function AddToCart() {
       }
     });
 
-    return Number(totalPrice).toLocaleString('en-US');
+    return Number(totalPrice + 20 * 1.5 * Object.keys(cart).length);
   }
 
   useEffect(() => {
@@ -165,7 +165,10 @@ export function AddToCart() {
                     <FontAwesomeIcon icon={faPlus} /> Add More
                   </Link>
                   <div className='d-flex h-100'>
-                    <div className='flex-grow-1 me-2'>
+                    <div
+                      className='flex-grow-1 me-2 h-75'
+                      style={{ overflowY: 'auto' }}
+                    >
                       {Object.values(cartHistoryBySellerId).length > 0 ? (
                         Object.values(cartHistoryBySellerId).map(
                           (item, index) => {
@@ -338,6 +341,13 @@ export function AddToCart() {
                                   </strong>{' '}
                                   <br />
                                   Sub Total: {calculateSubTotalPrice(item)}
+                                  <p>
+                                    <span className='fw-semibold'>
+                                      {' '}
+                                      Delivery Fee:{' '}
+                                    </span>{' '}
+                                    {20 * 1.5}
+                                  </p>
                                 </p>
                               )
                             )}

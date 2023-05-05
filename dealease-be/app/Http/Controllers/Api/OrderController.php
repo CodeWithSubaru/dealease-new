@@ -9,6 +9,8 @@ use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use App\Models\OrderTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\DeliveryAddress;
+use App\Models\DeliveryStatus;
 
 class OrderController extends Controller
 {
@@ -112,6 +114,17 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
+        if ($request->shippingFee) {
+            DeliveryAddress::create([
+                'order_trans_id' => '',
+                'rider_id' => '',
+                'delivery_status' => '',
+                'city' => $request->shippingFee->city,
+                'barangay' => $request->shippingFee->barangay,
+                'street' => $request->shippingFee->street,
+            ]);
+        }
+
         $orderedItems = array_values($request->cartHistoryBySellerId);
         for ($i = 0; $i < count($orderedItems); $i++) {
             $orderNumber = $this->generateOrderNumber();
@@ -130,18 +143,19 @@ class OrderController extends Controller
                 $sellerId = $orderedItems[$i][$j]['product']['user_id'];
             }
 
-            $userDetails = UserDetail::find(auth()->id());
-            if ($userDetails->barangay === 'Paliwas' || $userDetails->barangay === 'Salambao' || $userDetails->barangay === 'Binuangan') {
+            $userDetails = UserDetail::where('user_details_id', auth()->id())->get();
+
+            if ($userDetails[0]->barangay === 'Paliwas' || $userDetails[0]->barangay === 'Salambao' || $userDetails[0]->barangay === 'Binuangan') {
                 $rate = 20;
-            } elseif ($userDetails->barangay === 'Pag-asa' || $userDetails->barangay === 'San Pascual') {
+            } elseif ($userDetails[0]->barangay === 'Pag-asa' || $userDetails[0]->barangay === 'San Pascual') {
                 $rate = 25;
-            } elseif ($userDetails->barangay === 'Catanghalan' || $userDetails->barangay === 'Hulo') {
+            } elseif ($userDetails[0]->barangay === 'Catanghalan' || $userDetails[0]->barangay === 'Hulo') {
                 $rate = 30;
-            } elseif ($userDetails->barangay === 'Panghulo' || $userDetails->barangay === 'Lawa') {
+            } elseif ($userDetails[0]->barangay === 'Panghulo' || $userDetails[0]->barangay === 'Lawa') {
                 $rate = 35;
-            } elseif ($userDetails->barangay === 'Paco') {
+            } elseif ($userDetails[0]->barangay === 'Paco') {
                 $rate = 40;
-            } elseif ($userDetails->barangay === 'Tawiran') {
+            } elseif ($userDetails[0]->barangay === 'Tawiran') {
                 $rate = 45;
             }
 
@@ -149,11 +163,11 @@ class OrderController extends Controller
                 'order_number' => $orderNumber,
                 'total_amount' => $totalPrice,
                 'order_trans_status' => 1,
-                'delivery_fee' => 20 * $rate,
+                'delivery_fee' => $rate,
                 'seller_id' => $sellerId,
                 'buyer_id' => auth()->id(),
                 'shipping_id' => 1,
-                'delivery_address_id' => 0,
+                'delivery_address_id' => null,
             ]);
         }
 
