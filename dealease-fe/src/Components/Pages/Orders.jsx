@@ -22,6 +22,10 @@ export function OrdersTable(props) {
       prop: 'seller_name',
     },
     {
+      title: 'Contact #',
+      prop: 'contact_number',
+    },
+    {
       title: 'Status',
       prop: 'order_status',
       isFilterable: true,
@@ -64,39 +68,92 @@ export function OrdersTable(props) {
               ? props.viewOrders.map((order, index) => {
                   return (
                     <>
-                      <div>
-                        <p>
-                          <b> Product No. {index + 1} </b>
-                        </p>
-                        <p>Product Name: {order.product.title}</p>
-                        <p>Product Description: {order.product.description}</p>
-                        <p>
-                          Product Seller: {order.order_by.first_name}{' '}
-                          {order.order_by.user_details.middle_name[0]}
-                          {'. '}
-                          {order.order_by.user_details.last_name}{' '}
-                          {order.order_by.user_details.ext_name}
-                        </p>
-                        <p>Status: {props.status(order.order_trans_status)}</p>
-                        <p>Quantity: {order.product.weight} kg</p>
-                        <p>
-                          Total Price: <b>Php {order.total_price}</b>
-                        </p>
+                      <p className='fw-bold fs-5 mb-2'>
+                        <b> Product No. {index + 1} </b>
+                      </p>
+                      <div className='d-flex'>
+                        <div className='w-50 me-5'>
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Product Name:
+                            </span>{' '}
+                            {order.product.title}
+                          </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Product Description:
+                            </span>{' '}
+                            {order.product.description}
+                          </p>
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Product Seller:
+                            </span>{' '}
+                            {order.product.user.first_name}{' '}
+                            {order.product.user.user_details.middle_name[0]}
+                            {'. '}
+                            {order.product.user.user_details.last_name}{' '}
+                            {order.product.user.user_details.ext_name}
+                          </p>
+                        </div>
+                        <div>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Status:
+                            </span>{' '}
+                            {props.status(order.order_trans_status)}
+                          </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Quantity:
+                            </span>{' '}
+                            {order.weight} kg
+                          </p>
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Total Price:
+                            </span>{' '}
+                            <span className='d-flex'>
+                              {' '}
+                              <img
+                                src='/images/seashell.png'
+                                className='me-2'
+                                style={{ height: '20px' }}
+                              />{' '}
+                              {order.total_price}
+                            </span>
+                          </p>
+                        </div>
                         {props.viewOrders.length > 1 && <hr />}
                       </div>
                     </>
                   );
                 })
               : 'Loading...'}
-            <h5>
-              Grand Total: Php{' '}
-              {props.viewOrders.length > 0
-                ? props.calculateGrandTotalPrice(props.viewOrders)
-                : '(Calculating...)'}
-            </h5>
+            <div className='d-flex'>
+              <div className='w-50 me-5'></div>
+              <div className='me-5'>
+                <h5 className='d-flex align-items-center justify-content-end'>
+                  <span className='me-2 fw-bold'> Grand Total: </span>{' '}
+                  <img
+                    src='/images/seashell.png'
+                    className='me-2'
+                    style={{ height: '30px' }}
+                  />{' '}
+                  {props.viewOrders.length > 0
+                    ? props.calculateGrandTotalPrice(props.viewOrders)
+                    : '(Calculating...)'}
+                </h5>
+              </div>
+            </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={props.closeViewOrderProduct}>Close</Button>
+            <Button onClick={props.closeViewOrderProduct} className='rounded'>
+              Close
+            </Button>
           </Modal.Footer>
         </Modal>
 

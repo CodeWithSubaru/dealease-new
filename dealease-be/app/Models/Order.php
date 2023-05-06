@@ -21,6 +21,11 @@ class Order extends Model
         return  $this->hasOne(\App\Models\Product::class, 'id', 'product_id');
     }
 
+    public function seller()
+    {
+        return  $this->belongsTo(\App\Models\User::class, 'user_id', 'user_id');
+    }
+
     public function order_by()
     {
         return  $this->belongsTo(\App\Models\User::class, 'order_by', 'user_id');

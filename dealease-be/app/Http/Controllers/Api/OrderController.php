@@ -27,7 +27,7 @@ class OrderController extends Controller
 
     public function fetchOrdersBuyer($order_status)
     {
-        return OrderTransaction::with('user', 'user.user_details')
+        return OrderTransaction::with('seller', 'seller.user_details')
             ->where('order_trans_status', $order_status)
             ->where('buyer_id', auth()->id())
             ->latest()
@@ -183,7 +183,7 @@ class OrderController extends Controller
     public function show($order)
     {
 
-        return Order::with('order_by', 'order_by.user_details', 'product')
+        return Order::with('product', 'product.user', 'product.user.user_details')
             ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
             ->where('orders.order_number', $order)
             ->where('order_transactions.order_trans_status', '!=', 0)

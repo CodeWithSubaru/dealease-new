@@ -18,7 +18,12 @@ class OrderTransaction extends Model
         return  $this->hasMany(\App\Models\Order::class, 'order_number', 'order_number');
     }
 
-    public function user()
+    public function seller()
+    {
+        return  $this->hasOne(\App\Models\User::class, 'user_id', 'seller_id');
+    }
+
+    public function buyer()
     {
         return  $this->hasOne(\App\Models\User::class, 'user_id', 'buyer_id');
     }

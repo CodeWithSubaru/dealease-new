@@ -128,27 +128,28 @@ export function OrdersBuyer() {
               style={{ columnGap: '10px' }}
             >
               <img
-                src={PUBLIC_URL + 'images/' + order.user.prof_img}
+                src={PUBLIC_URL + 'images/' + order.seller.prof_img}
                 className='rounded-circle pr-5'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
                 <p className='mb-0'>
-                  {order.user.first_name}{' '}
-                  {order.user.user_details
-                    ? order.user.user_details.middle_name[0]
+                  {order.seller.first_name}{' '}
+                  {order.seller.user_details
+                    ? order.seller.user_details.middle_name[0]
                     : ''}
                   {'. '}
-                  {order.user.user_details
-                    ? order.user.user_details.last_name
+                  {order.seller.user_details
+                    ? order.seller.user_details.last_name
                     : ' '}{' '}
-                  {order.user.user_details
-                    ? order.user.user_details.ext_name
+                  {order.seller.user_details
+                    ? order.seller.user_details.ext_name
                     : ''}
                 </p>
               </div>
             </div>
           ),
+          contact_number: order.seller.user_details.contact_number,
           order_status: (
             <span
               className={
@@ -347,29 +348,29 @@ export function OrdersSeller() {
       const orders = resp.data.map((order, i) => {
         return {
           order_number: order.order_number,
-          seller_name: (
+          buyer_name: (
             <div
               key={order.order_trans_id}
               className='d-flex'
               style={{ columnGap: '10px' }}
             >
               <img
-                src={PUBLIC_URL + 'images/' + order.user.prof_img}
+                src={PUBLIC_URL + 'images/' + order.seller.prof_img}
                 className='rounded-circle pr-5'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
                 <p className='mb-0'>
-                  {order.user.first_name}{' '}
-                  {order.user.user_details
-                    ? order.user.user_details.middle_name[0]
+                  {order.seller.first_name}{' '}
+                  {order.seller.user_details
+                    ? order.seller.user_details.middle_name[0]
                     : ''}
                   {'. '}
-                  {order.user.user_details
-                    ? order.user.user_details.last_name
+                  {order.seller.user_details
+                    ? order.seller.user_details.last_name
                     : ' '}{' '}
-                  {order.user.user_details
-                    ? order.user.user_details.ext_name
+                  {order.seller.user_details
+                    ? order.seller.user_details.ext_name
                     : ''}
                 </p>
               </div>
