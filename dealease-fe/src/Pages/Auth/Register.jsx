@@ -22,32 +22,24 @@ import {
   Tab,
   Nav,
 } from 'react-bootstrap';
-import {
-  barangays,
-  cities,
-  provinces,
-  regions,
-} from 'select-philippines-address';
+import { barangays } from 'select-philippines-address';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Register() {
   const [user, setUser] = useState({
     profile_image: null,
-    first_name: null,
-    middle_name: null,
-    last_name: null,
-    ext_name: null,
-    birth_date: null,
-    contact_number: null,
-    region: null,
-    province: null,
-    city: null,
-    barangay: null,
-    street: null,
-    email: null,
-    password: null,
-    password_confirmation: null,
-    user_type: null,
+    first_name: '',
+    middle_name: '',
+    last_name: '',
+    ext_name: '',
+    birth_date: '',
+    contact_number: '',
+    barangay: '',
+    street: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    user_type: '',
   });
 
   const { errors, setErrors, register } = useAuthContext();
@@ -57,34 +49,7 @@ export function Register() {
     register(user);
   };
 
-  const [regionData, setRegion] = useState([]);
-  const [provinceData, setProvince] = useState([]);
-  const [cityData, setCity] = useState([]);
   const [barangayData, setBarangay] = useState([]);
-
-  const region = () => {
-    regions().then((response) => {
-      setRegion(response[2]);
-    });
-  };
-
-  const province = (e) => {
-    // setUser({ ...user, region: e.target.selectedOptions[0].text });
-    setUser({ ...user, region: 'Region III (Central Luzon)' });
-    provinces(e.target.value).then((response) => {
-      setProvince(response[1]);
-      setCity([]);
-      setBarangay([]);
-    });
-  };
-
-  const city = (e) => {
-    // setUser({ ...user, province: e.target.selectedOptions[0].text });
-    setUser({ ...user, province: 'Bulacan' });
-    cities(e.target.value).then((response) => {
-      setCity(response[13]);
-    });
-  };
 
   const barangay = (e) => {
     // setUser({ ...user, city: e.target.selectedOptions[0].text });
@@ -98,19 +63,19 @@ export function Register() {
     setUser({ ...user, barangay: e.target.selectedOptions[0].text });
   };
 
-  useEffect(() => {
-    region();
-    setErrors(null);
-  }, []);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState();
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
-    } else {
-      setImage('../assets/img/default_image.jpg');
     }
   };
+
+  useEffect(() => {
+    barangays('031414').then((barangay) => setBarangay(barangay));
+    setImage('../../../images/default_image.png');
+    setErrors(null);
+  }, []);
 
   return (
     <main>
@@ -126,9 +91,9 @@ export function Register() {
             </li>
           </div>
           <Image
-            className='float-end profile-img'
-            alt='preview image'
             src={image}
+            className='float-end rounded d-flex justify-content-center p-3'
+            style={{ height: '150px', width: '150px' }}
           />
         </div>
 
@@ -139,23 +104,26 @@ export function Register() {
           encType='multipart/form-data'
         >
           {/* <div className='form-top'> */}
-
           <div className='personal-details'>
-            <div className='px-4 pt-2'>
-              <div htmlFor='upload-img' className='text-white reg-label'>
-                Upload Profile Picture
-              </div>
-              <input
-                className='form-control'
-                type='file'
-                name='upload-img'
-                onChange={onImageChange}
-                id='upload-img'
-              />
-            </div>
-            <small className='errMsg'>
-              {errors && errors.profile_image && errors.profile_image[0]}
-            </small>
+            <Row className='px-4'>
+              <Col>
+                <div className='pt-2'>
+                  <div htmlFor='upload-img' className='text-white reg-label'>
+                    Upload Profile Picture
+                  </div>
+                  <input
+                    className='form-control'
+                    type='file'
+                    name='upload-img'
+                    onChange={onImageChange}
+                    id='upload-img'
+                  />
+                </div>
+                <small className='errMsg'>
+                  {errors && errors.profile_image && errors.profile_image[0]}
+                </small>
+              </Col>
+            </Row>
             <Row className='px-4'>
               <Col lg={6}>
                 <div>
@@ -171,7 +139,6 @@ export function Register() {
                       onChange={(e) =>
                         setUser({ ...user, first_name: e.target.value })
                       }
-                      // required
                     />
                   </div>
                   <small className='errMsg'>
@@ -190,7 +157,6 @@ export function Register() {
                       onChange={(e) =>
                         setUser({ ...user, middle_name: e.target.value })
                       }
-                      // required
                     />
                   </div>
                 </div>
@@ -211,7 +177,6 @@ export function Register() {
                       onChange={(e) =>
                         setUser({ ...user, last_name: e.target.value })
                       }
-                      // required
                     />
                   </div>
                   <small className='errMsg'>
@@ -233,7 +198,6 @@ export function Register() {
                       onChange={(e) =>
                         setUser({ ...user, ext_name: e.target.value })
                       }
-                      // required
                     />
                   </div>
                 </div>
@@ -323,81 +287,12 @@ export function Register() {
             {/* <h3>Address Details</h3> */}
             {/* <hr /> */}
             <Row className='px-4'>
-              <Col lg={6}>
-                <div>
-                  <div className='mt-2 text-white reg-label'>Region</div>
-                  <div>
-                    <select
-                      onChange={province}
-                      onSelect={region}
-                      className='form-select'
-                    >
-                      <option>Select Region</option>
-                      {regionData && (
-                        // regionData.map((item) => (
-                        <option
-                          key={regionData.region_code}
-                          value={regionData.region_code}
-                        >
-                          {regionData.region_name}
-                        </option>
-                      )}
-                    </select>
-                  </div>
-                </div>
-                <small className='errMsg' v-if='errors.region'>
-                  {errors && errors.region && errors.region[0]}
-                </small>
-              </Col>
-              <Col lg={6}>
-                <div>
-                  <div className='mt-2 text-white reg-label'>Province</div>
-                  <div>
-                    <select
-                      onChange={city}
-                      defaultValue={'default'}
-                      className='form-select'
-                    >
-                      <option value='default'>Select Province</option>
-                      {provinceData && (
-                        // provinceData.length > 0 &&
-                        // provinceData.map((item) => (
-                        <option
-                          key={provinceData.province_code}
-                          value={provinceData.province_code}
-                        >
-                          {provinceData.province_name}
-                        </option>
-                      )}
-                    </select>
-                  </div>
-                </div>
-                <small className='errMsg'>
-                  {errors && errors.province && errors.province[0]}
-                </small>
-              </Col>
-            </Row>
-            <Row className='px-4'>
               <Col>
                 <div>
                   <div className='mt-2 text-white reg-label'>City/Town</div>
                   <div>
-                    <select
-                      onChange={barangay}
-                      defaultValue={'default'}
-                      className='form-select'
-                    >
-                      <option value='default'>Select City</option>
-                      {cityData && (
-                        // cityData.length > 0 &&
-                        // cityData.map((item) => (
-                        <option
-                          key={cityData.city_code}
-                          value={cityData.city_code}
-                        >
-                          {cityData.city_name}
-                        </option>
-                      )}
+                    <select defaultValue={'default'} className='form-select'>
+                      <option value='default'>Obando</option>
                     </select>
                   </div>
                 </div>
@@ -413,10 +308,10 @@ export function Register() {
                   <div>
                     <select
                       onChange={brgy}
-                      defaultValue={'default'}
+                      value={user.barangay}
                       className='form-select'
                     >
-                      <option value='default'>Select Barangay</option>
+                      <option>Select Barangay</option>
                       {barangayData &&
                         barangayData.length > 0 &&
                         barangayData.map((item) => (
@@ -501,38 +396,11 @@ export function Register() {
                       onChange={(e) =>
                         setUser({ ...user, email: e.target.value })
                       }
-                      // required
                     />
                   </div>
                 </div>
                 <small className='errMsg' v-if='errors.email'>
                   {errors && errors.email && errors.email[0]}
-                </small>
-              </Col>
-              <Col lg={4}>
-                <div>
-                  <div className='mt-2 text-white reg-label'>User type</div>
-                  <div>
-                    <select
-                      className='form-select'
-                      defaultValue={'default'}
-                      onChange={(e) =>
-                        setUser({
-                          ...user,
-                          user_type: e.target.value,
-                        })
-                      }
-                    >
-                      <option value={'default'} disabled>
-                        Choose an option
-                      </option>
-                      <option value={'is_buyer 1'}>Buyer</option>
-                      <option value={'is_seller 1'}>Seller</option>
-                    </select>
-                  </div>
-                </div>
-                <small className='errMsg'>
-                  {errors && errors.user_type && errors.user_type[0]}
                 </small>
               </Col>
             </Row>
@@ -550,7 +418,6 @@ export function Register() {
                       onChange={(e) =>
                         setUser({ ...user, password: e.target.value })
                       }
-                      // required
                     />
                   </div>
                 </div>
@@ -608,12 +475,6 @@ export function Register() {
               </Col> */}
             </div>
           </Row>
-
-          {/* <div className='back-to-home-wrapper'>
-                <router-link to='/login' className='back-to-home'>
-                  Go to Login
-                </router-link>
-              </div> */}
         </form>
       </div>
     </main>

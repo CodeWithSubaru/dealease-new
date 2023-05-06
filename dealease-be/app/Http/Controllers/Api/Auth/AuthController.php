@@ -32,15 +32,11 @@ class AuthController extends Controller
             'profile_image' => ['image'],
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
-            'region' => ['required'],
-            'province' => ['required'],
-            'city' => ['required'],
             'barangay' => ['required'],
             'birth_date' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'user_type' => ['required'],
         ]);
 
         $imageName = 'default_profile.jpg';
@@ -56,7 +52,7 @@ class AuthController extends Controller
         $user->first_name = $request->first_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->role_type = 0;
+        $user->role_type = 1;
         $user->prof_img = $imageName;
         $user->user_details_id = 0;
         $user->save();
@@ -68,9 +64,9 @@ class AuthController extends Controller
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
                 'ext_name' => $request->ext_name,
-                'region' => $request->region,
-                'province' => $request->province,
-                'city' => $request->city,
+                'region' => 'Region III (Central Luzon)',
+                'province' => 'Bulacan',
+                'city' => 'Obando',
                 'barangay' => $request->barangay,
                 'street' => $request->street,
                 'birth_date' => $request->birth_date,
