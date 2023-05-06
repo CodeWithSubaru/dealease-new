@@ -113,6 +113,39 @@ export function OrdersBuyer() {
     return Number(totalPrice).toLocaleString('en-US');
   }
 
+  const header = [
+    {
+      title: 'Order Number',
+      prop: 'order_number',
+      isSortable: true,
+    },
+    {
+      title: 'Seller Name',
+      prop: 'seller_name',
+    },
+    {
+      title: 'Contact #',
+      prop: 'contact_number',
+    },
+    {
+      title: 'Status',
+      prop: 'order_status',
+      isFilterable: true,
+      isSortable: true,
+    },
+    {
+      title: 'Total Amount',
+      prop: 'payment_total_amount',
+      isSortable: true,
+    },
+    {
+      title: 'Date Request',
+      prop: 'created_at',
+      isSortable: true,
+    },
+    { title: 'Action', prop: 'action' },
+  ];
+
   function setUserOrdersTable(number) {
     setLoading(true);
     setBody([]);
@@ -208,6 +241,7 @@ export function OrdersBuyer() {
       <OrdersTable
         loading={loading}
         setLoading={setLoading}
+        header={header}
         body={body}
         title={title}
         pendingOrderNumber={pendingOrderNumber}
@@ -341,6 +375,39 @@ export function OrdersSeller() {
     return Number(totalPrice).toLocaleString('en-US');
   }
 
+  const header = [
+    {
+      title: 'Order Number',
+      prop: 'order_number',
+      isSortable: true,
+    },
+    {
+      title: 'Seller Name',
+      prop: 'seller_name',
+    },
+    {
+      title: 'Contact #',
+      prop: 'contact_number',
+    },
+    {
+      title: 'Status',
+      prop: 'order_status',
+      isFilterable: true,
+      isSortable: true,
+    },
+    {
+      title: 'Total Amount',
+      prop: 'payment_total_amount',
+      isSortable: true,
+    },
+    {
+      title: 'Date Request',
+      prop: 'created_at',
+      isSortable: true,
+    },
+    { title: 'Action', prop: 'action' },
+  ];
+
   function setUserOrdersTable(number) {
     setBody([]);
     setLoading(true);
@@ -425,6 +492,7 @@ export function OrdersSeller() {
       <OrdersTable
         loading={loading}
         setLoading={setLoading}
+        header={header}
         body={body}
         title={title}
         pendingOrderNumber={pendingOrderNumber}

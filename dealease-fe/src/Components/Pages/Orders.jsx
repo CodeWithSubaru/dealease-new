@@ -11,39 +11,6 @@ export function OrdersTable(props) {
   const [pendingOrderNumberSeller, setPendingOrderNumberSeller] = useState(0);
   const { user } = useAuthContext();
 
-  const header = [
-    {
-      title: 'Order Number',
-      prop: 'order_number',
-      isSortable: true,
-    },
-    {
-      title: 'Seller Name',
-      prop: 'seller_name',
-    },
-    {
-      title: 'Contact #',
-      prop: 'contact_number',
-    },
-    {
-      title: 'Status',
-      prop: 'order_status',
-      isFilterable: true,
-      isSortable: true,
-    },
-    {
-      title: 'Total Amount',
-      prop: 'payment_total_amount',
-      isSortable: true,
-    },
-    {
-      title: 'Date Request',
-      prop: 'created_at',
-      isSortable: true,
-    },
-    { title: 'Action', prop: 'action' },
-  ];
-
   return (
     <>
       <div className='mx-auto w-75' style={{ minHeight: '85vh' }}>
@@ -231,7 +198,7 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={header} body={props.body} />
+                    <TableComponent header={props.header} body={props.body} />
                   )}
                 </Card>
               </Tab.Pane>
@@ -243,7 +210,7 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={header} body={props.body} />
+                    <TableComponent header={props.header} body={props.body} />
                   )}
                 </Card>
               </Tab.Pane>
@@ -255,7 +222,7 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={header} body={props.body} />
+                    <TableComponent header={props.header} body={props.body} />
                   )}
                 </Card>
               </Tab.Pane>
