@@ -3,7 +3,8 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Card } from '../../Components/Card/Card';
 import { Footer } from '../../Components/Footer/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import Alert from 'react-bootstrap/Alert';
 
 import {
   Sidebar,
@@ -14,8 +15,12 @@ import {
   sidebarClasses,
 } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
-import { Button, Modal, Form } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 import useOrderContext from '../../Hooks/Context/OrderContext';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import axiosClient from '../../api/axios';
 
 export const HomeUser = () => {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);
@@ -25,6 +30,32 @@ export const HomeUser = () => {
 
   function closeUpdateAccessModal() {
     setUpdateAccessModal(false);
+  }
+
+  const [validIdFront, setValidIdFront] = useState('');
+  const [validIdBack, setValidIdBack] = useState('');
+  const [termsAndCondition, setTermsAndCondition] = useState(false);
+
+  const onImageChangeFront = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setValidIdFront(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
+  const onImageChangeBack = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setValidIdFront(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
+  function handleUpdateAccessForm(e) {
+    e.preventDefault();
+    const data = {
+      valid_id_front: validIdFront,
+      valid_id_back: validIdBack,
+      terms_and_conditions: termsAndCondition,
+    };
+    axiosClient.post('/auth/update-access', data);
   }
 
   useEffect(() => {
@@ -94,12 +125,78 @@ export const HomeUser = () => {
             show={updateAccessModal}
             onHide={closeUpdateAccessModal}
             animation={false}
+            size='lg'
           >
             <Modal.Header closeButton>
-              <Modal.Title className='fw-semibold'>Update Acccess</Modal.Title>
+              <Modal.Title className='fw-semibold'>
+                Request Update Acccess
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form></Form>
+              <Alert show={true} variant='success'>
+                <div className='d-flex justify-content-between'>
+                  <Alert.Heading>Instruction </Alert.Heading>
+
+                  <OverlayTrigger
+                    placement='bottom'
+                    overlay={
+                      <Tooltip id='button-tooltip-2'>
+                        <div className='p-2 text-start'>
+                          Once you didn't follow the instruction, we will
+                          automatically reject your request.
+                        </div>
+                      </Tooltip>
+                    }
+                  >
+                    <FontAwesomeIcon icon={faExclamationCircle} />
+                  </OverlayTrigger>
+                </div>
+                <ul>
+                  <li>
+                    Please make sure that both pictures of the government IDs
+                    are clear and valid.
+                  </li>
+                </ul>
+                <hr />
+                <div className='clearfix'>
+                  <p className='float-end mb-0'> - System Administator</p>
+                </div>
+              </Alert>
+              <Form onSubmit={handleUpdateAccessForm}>
+                <img
+                  src={validIdFront}
+                  className='float-end rounded d-flex justify-content-center p-3'
+                  style={{ height: '150px', width: '150px' }}
+                />
+                <Form.Group controlId='formFile' className='mb-3'>
+                  <Form.Label className='text-secondary'>
+                    Valid Government Id (Front)
+                  </Form.Label>
+                  <Form.Control type='file' id='formFile' />
+                </Form.Group>
+
+                <Form.Group controlId='formFile' className='mb-3'>
+                  <Form.Label className='text-secondary'>
+                    Valid Government Id (Back)
+                  </Form.Label>
+                  <Form.Control type='file' id='formFile' />
+                </Form.Group>
+
+                <Form.Check
+                  onChange={(e) => setTermsAndCondition(e.target.checked)}
+                  type='checkbox'
+                  id='termsAndCondition'
+                  label={
+                    <Form.Label
+                      className='text-secondary'
+                      controlId='termsAndCondition'
+                    >
+                      I agree to the{' '}
+                      <a href='/termsAndCondition'> Terms and Condition</a>
+                    </Form.Label>
+                  }
+                />
+              </Form>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -107,14 +204,14 @@ export const HomeUser = () => {
                 className='rounded'
                 onClick={closeUpdateAccessModal}
               >
-                Close
+                Cancel
               </Button>
               <Button
                 variant='primary'
                 className='rounded'
                 onClick={closeUpdateAccessModal}
               >
-                Save
+                Submit
               </Button>
             </Modal.Footer>
           </Modal>

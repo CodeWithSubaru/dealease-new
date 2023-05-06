@@ -87,8 +87,9 @@ class AuthController extends Controller
     public function updateAccess(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255', 'exists:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'valid_id_front' => ['image'],
+            'valid_id_back' => ['image'],
+            'terms_and_conditions' => ['boolean'],
         ]);
 
         $user = User::where('email', $request->email)->first();
