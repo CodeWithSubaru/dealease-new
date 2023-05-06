@@ -47,4 +47,27 @@ export const GlobalStyles = createGlobalStyle`
   .nav-item {
     height: 100%;
   }
+
+  .loader {
+    border: 2px solid blue;
+    border-radius: 50%;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    width: 80px;
+    height: 80px;
+    animation-name: loading;
+    animation-duration: 700ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  
+  @keyframes loading{
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
 `;
