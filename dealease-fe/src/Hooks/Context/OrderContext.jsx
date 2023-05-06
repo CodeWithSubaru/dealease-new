@@ -8,6 +8,7 @@ export function OrderProvider(props) {
   const [step2, setStep2] = useState([]);
   const [grandTotal, setGrandTotal] = useState(0);
   const [isDoneTransaction, setDoneTransaction] = useState(false);
+  const [otherAddress, setOtherAddress] = useState({});
 
   return (
     <OrderContext.Provider
@@ -20,6 +21,8 @@ export function OrderProvider(props) {
         setGrandTotal,
         isDoneTransaction,
         setDoneTransaction,
+        otherAddress,
+        setOtherAddress,
       }}
     >
       {props.children}
@@ -30,21 +33,3 @@ export function OrderProvider(props) {
 export default function useOrderContext() {
   return useContext(OrderContext);
 }
-
-// Finalize({
-//     confirmButton: 'Yes, Place my order',
-//     text: "You won't be able to revert this!",
-//     successMsg: 'Your Order Placed Successfully.',
-//   }).then((res) => {
-//     if (res.isConfirmed) {
-//       // axiosClient
-//       //   .post('/orders/place-order', {
-//       //     cartHistoryBySellerId,
-//       //   })
-//       //   .then((res) => console.log(res))
-//       //   .catch((e) => console.log(e));
-//       // fetchCountInItemsCart();
-//       // fetchCartHistoryBySellerId();
-//       // navigate('/orders');
-//     }
-//   });

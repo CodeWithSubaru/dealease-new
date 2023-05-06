@@ -30,7 +30,6 @@ export function CardItem(props) {
     axiosClient
       .post('/orders', { id })
       .then((res) => {
-        console.log(res.data);
         setMsgStatus(res.data.status);
         setStatus(true);
         fetchCountInItemsCart();

@@ -16,6 +16,7 @@ export function SuccessfulUser() {
     grandTotal,
     setGrandTotal,
     setDoneTransaction,
+    otherAddress,
   } = useOrderContext();
   const navigate = useNavigate();
 
@@ -30,22 +31,17 @@ export function SuccessfulUser() {
   return (
     <div className='mx-auto w-75'>
       <Card style={{ height: '85vh' }}>
-        <div className='d-flex justify-content-center align-items-center h-100 p-5'>
+        <h1 className='fw-bold mb-0 p-5 pb-0'>Payment Receipt</h1>
+        <div className='d-flex justify-content-center align-items-center h-100 p-5 pt-0'>
           <div
             className='border-end border-2 border-info pe-3 w-50'
             style={{ height: '65vh', overflowY: 'auto' }}
           >
-            <p>
-              {' '}
-              <span className='fw-bold'> Order Number :</span> #ORD000001
-            </p>
             <div className='border border-2 border-info rounded p-3 mb-5'>
               <h4 className='fw-light mb-3'> Customer Information</h4>
               <div className='d-flex justify-content-between'>
                 <div>
-                  <h6 className='fw-light mb-1 text-secondary'>
-                    Contact Information
-                  </h6>
+                  <h6 className='fw-light mb-1 text-secondary'>Information</h6>
                   <p>
                     {' '}
                     {user.first_name}{' '}
@@ -57,15 +53,31 @@ export function SuccessfulUser() {
                 </div>
                 <div>
                   <h6 className='fw-light text-secondary'>Payment Method</h6>
-                  <p> Cash on Delivery (COD) - Php 2602</p>
+                  <p> Cash on Delivery (COD) - Php {grandTotal}</p>
                 </div>
               </div>
               <div>
                 <h6 className='fw-light mb-1 text-secondary'>
                   Shipping Address
                 </h6>
-                <span className='d-block'>{user.user_details.street}</span>
-                <span className='d-block'>{user.user_details.barangay}</span>
+
+                {otherAddress ? (
+                  <>
+                    <span className='d-block'>
+                      {otherAddress.shippingFee.street}
+                    </span>
+                    <span className='d-block'>
+                      {otherAddress.shippingFee.barangay}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className='d-block'>{user.user_details.street}</span>
+                    <span className='d-block'>
+                      {user.user_details.barangay}
+                    </span>
+                  </>
+                )}
                 <span className='d-block'>Obando</span>
                 <span className='d-block'>Bulacan</span>
                 <span className='d-block'>Region III (Central Luzon)</span>
@@ -74,7 +86,7 @@ export function SuccessfulUser() {
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
               <div className='d-flex justify-content-between'>
                 <span className='fw-semibold'>Total Order Amount</span>
-                <span>{2} shells</span>
+                <span>{grandTotal} shells</span>
               </div>
             </div>
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>

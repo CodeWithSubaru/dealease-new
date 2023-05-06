@@ -6,15 +6,14 @@ import { Nav, Tab, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axiosClient from '../../api/axios';
 import PUBLIC_URL from '../../api/public_url';
-import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
-import { Finalize } from '../Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import Modal from 'react-bootstrap/Modal';
+import { Load } from '../Loader/Load';
 
 export function OrdersTable(props) {
   const [pendingOrderNumberSeller, setPendingOrderNumberSeller] = useState(0);
   const { user } = useAuthContext();
-
+  console.log(props.loading);
   const header = [
     {
       title: 'Order Number',
@@ -254,27 +253,39 @@ export function OrdersTable(props) {
             <Tab.Content>
               <Tab.Pane eventKey='first'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>
+                  <h1 className='mb-4 fw-bold'>
                     {props.title == 'Buyer' ? 'My' : ''} Pending Orders
                   </h1>
-                  <TableComponent header={header} body={props.body} />;
+                  {props.loading ? (
+                    <Load />
+                  ) : (
+                    <TableComponent header={header} body={props.body} />
+                  )}
                 </Card>
               </Tab.Pane>
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>
+                  <h1 className='mb-4 fw-bold'>
                     {props.title == 'Buyer' ? 'My' : ''} Processing Orders
                   </h1>
-                  <TableComponent header={header} body={props.body} />;
+                  {props.loading ? (
+                    <Load />
+                  ) : (
+                    <TableComponent header={header} body={props.body} />
+                  )}
                 </Card>
               </Tab.Pane>
-
+              {console.log(props.loading)}
               <Tab.Pane eventKey='third'>
                 <Card className='p-5 pb-1 rounded'>
-                  <h1 className='mb-4'>
+                  <h1 className='mb-4 fw-bold'>
                     {props.title == 'Buyer' ? 'My' : ''} Delivered Orders
                   </h1>
-                  <TableComponent header={header} body={props.body} />;
+                  {props.loading ? (
+                    <Load />
+                  ) : (
+                    <TableComponent header={header} body={props.body} />
+                  )}
                 </Card>
               </Tab.Pane>
             </Tab.Content>

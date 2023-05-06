@@ -115,7 +115,6 @@ export function TransactionsAdmin() {
     axiosClient
       .get('/admin/transactions/show/transactions/' + $id)
       .then((resp) => {
-        console.log(resp);
         const transactions = resp.data.map((transaction, i) => {
           return {
             payment_number: i + 1,

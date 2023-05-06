@@ -15,7 +15,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Load } from '../../Components/Loader/Load';
+import { Finalize } from '../../Components/Notification/Notification';
 
 export function ShippingFee() {
   const {
@@ -24,6 +25,7 @@ export function ShippingFee() {
     setStep2,
     grandTotal,
     setGrandTotal,
+    setOtherAddress,
     isDoneTransaction,
     setDoneTransaction,
   } = useOrderContext();
@@ -47,21 +49,30 @@ export function ShippingFee() {
   const attributes1 = {
     onClick: (e) => {
       e.preventDefault();
-      const cartHistoryBySellerId = step1;
-      setLoading(true);
-      axiosClient
-        .post('/orders/place-order', { cartHistoryBySellerId })
-        .then((res) => {
+
+      Finalize({
+        confirmButton: 'Yes, Place my order',
+        text: "You won't be able to revert this!",
+        successMsg: 'Your Order Placed Successfully.',
+      }).then((res) => {
+        if (res.isConfirmed) {
+          const cartHistoryBySellerId = step1;
+          setLoading(true);
+          axiosClient
+            .post('/orders/place-order', { cartHistoryBySellerId })
+            .then((res) => {
+              setStep2(step1);
+              setDoneTransaction(true);
+              setLoading(false);
+              navigate('../successful');
+            })
+            .catch((e) => {
+              console.log(e);
+              setLoading(false);
+            });
           setStep2(step1);
-          setDoneTransaction(true);
-          setLoading(false);
-          navigate('../successful');
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoading(false);
-        });
-      setStep2(step1);
+        }
+      });
     },
   };
   function barangay(e) {
@@ -137,9 +148,7 @@ export function ShippingFee() {
   return (
     <Card className='mx-auto w-75' style={{ height: '85vh' }}>
       {loading ? (
-        <div className='d-flex justify-content-center align-items-center h-100'>
-          <div class='loader'></div>
-        </div>
+        <Load />
       ) : (
         <div className='p-5'>
           <h1 className='fw-bolder fs-1 mb-4'>Shipping</h1>
@@ -196,30 +205,39 @@ export function ShippingFee() {
                   <Form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      setLoading(true);
-                      setShippingFeeData({
-                        ...shippingFeeData,
-                        city: 'Obando',
-                      });
-                      const shippingFee = shippingFeeData;
-                      const cartHistoryBySellerId = step1;
-                      const data = {
-                        shippingFee,
-                        cartHistoryBySellerId,
-                      };
+                      Finalize({
+                        confirmButton: 'Yes, Place my order',
+                        text: "You won't be able to revert this!",
+                        successMsg: 'Your Order Placed Successfully.',
+                      }).then((res) => {
+                        if (res.isConfirmed) {
+                          setLoading(true);
+                          setShippingFeeData({
+                            ...shippingFeeData,
+                            city: 'Obando',
+                          });
+                          const shippingFee = shippingFeeData;
+                          const cartHistoryBySellerId = step1;
+                          const data = {
+                            shippingFee,
+                            cartHistoryBySellerId,
+                          };
 
-                      axiosClient
-                        .post('/orders/place-order', data)
-                        .then((res) => {
-                          setStep2(data);
-                          setDoneTransaction(true);
-                          setLoading(false);
-                          navigate('../successful');
-                        })
-                        .catch((e) => {
-                          console.log(e);
-                          setLoading(false);
-                        });
+                          setOtherAddress(data);
+                          axiosClient
+                            .post('/orders/place-order', data)
+                            .then((res) => {
+                              setStep2(data);
+                              setDoneTransaction(true);
+                              setLoading(false);
+                              navigate('../successful');
+                            })
+                            .catch((e) => {
+                              console.log(e);
+                              setLoading(false);
+                            });
+                        }
+                      });
                     }}
                     id='shippingForm'
                   >

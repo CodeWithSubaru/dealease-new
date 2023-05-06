@@ -8,6 +8,7 @@ import { Finalize } from '../../Components/Notification/Notification';
 export function OrdersBuyer() {
   const title = 'Buyer';
   const [body, setBody] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [pendingOrderNumber, setPendingOrderNumber] = useState(0);
   const [processingOrderNumber, setProcessingOrderNumber] = useState(0);
   const [deliveredOrderNumber, setDeliveredOrderNumber] = useState(0);
@@ -113,6 +114,7 @@ export function OrdersBuyer() {
   }
 
   function setUserOrdersTable(number) {
+    setLoading(true);
     setBody([]);
     axiosClient.get('/orders/orders-user/buyer/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
@@ -188,6 +190,7 @@ export function OrdersBuyer() {
         };
       });
       setBody(orders);
+      setLoading(false);
     });
   }
 
@@ -201,6 +204,8 @@ export function OrdersBuyer() {
   return (
     <div>
       <OrdersTable
+        loading={loading}
+        setLoading={setLoading}
         body={body}
         title={title}
         pendingOrderNumber={pendingOrderNumber}
@@ -226,6 +231,7 @@ export function OrdersSeller() {
   const [deliveredOrderNumber, setDeliveredOrderNumber] = useState(0);
   const [viewOrderProduct, setViewOrderProduct] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
     axiosClient
@@ -335,6 +341,7 @@ export function OrdersSeller() {
 
   function setUserOrdersTable(number) {
     setBody([]);
+    setLoading(true);
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
@@ -399,6 +406,7 @@ export function OrdersSeller() {
           ),
         };
       });
+      setLoading(false);
       setBody(orders);
     });
   }
@@ -413,6 +421,8 @@ export function OrdersSeller() {
   return (
     <div>
       <OrdersTable
+        loading={loading}
+        setLoading={setLoading}
         body={body}
         title={title}
         pendingOrderNumber={pendingOrderNumber}

@@ -23,7 +23,6 @@ const MessageForm = () => {
     axiosClient
       .post('/messages', chat)
       .then((resp) => {
-        console.log(resp);
         setSenderMessage('');
       })
       .catch((e) => {
