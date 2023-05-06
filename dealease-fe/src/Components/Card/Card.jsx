@@ -23,7 +23,6 @@ export function Card() {
   return (
     <div className='cards' id='products'>
       <div className='cards_container'>
-        {console.log(products)}
         <Container className='mt-5 px-5'>
           <Row>
             <Col>
@@ -45,10 +44,10 @@ export function Card() {
         {msgStatus && (
           <div
             className={
-              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed ' +
+              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed bg-opacity-100 ' +
               (status ? 'alert-primary' : 'alert-danger')
             }
-            style={{ top: '100px' }}
+            style={{ top: '100px', zIndex: '10' }}
             role='alert'
           >
             {msgStatus}

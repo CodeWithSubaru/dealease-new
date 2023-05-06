@@ -156,19 +156,19 @@ export function AddToCart() {
           </Menu>
         </Sidebar>
         <main className='w-100'>
-          <div className='mx-auto w-75 d-flex' style={{ height: '100vh' }}>
+          <div className='mx-auto w-75 d-flex'>
             <Card className='flex-grow-1'>
               <div className='p-5 h-100'>
                 <H1 className='mb-4'>Add to Cart</H1>
-                <div className=' rounded p-5 pt-0 h-100'>
+                <div
+                  className=' rounded p-5 pt-0'
+                  style={{ height: '70vh', overflowY: 'auto' }}
+                >
                   <Link className='btn btn-primary rounded' to='/'>
                     <FontAwesomeIcon icon={faPlus} /> Add More
                   </Link>
                   <div className='d-flex h-100'>
-                    <div
-                      className='flex-grow-1 me-2 h-75'
-                      style={{ overflowY: 'auto' }}
-                    >
+                    <div className='flex-grow-1 me-2 h-75'>
                       {Object.values(cartHistoryBySellerId).length > 0 ? (
                         Object.values(cartHistoryBySellerId).map(
                           (item, index) => {

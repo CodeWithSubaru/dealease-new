@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
@@ -7,13 +8,24 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export function SuccessfulUser() {
   const { user } = useAuthContext();
-  const { step1, step2, setStep1, setStep2, grandTotal, setGrandTotal } =
-    useOrderContext();
+  const {
+    step1,
+    step2,
+    setStep1,
+    setStep2,
+    grandTotal,
+    setGrandTotal,
+    setDoneTransaction,
+  } = useOrderContext();
   const navigate = useNavigate();
 
   if (step1.length == 0 && step2.length == 0) {
     return navigate('../shipping');
   }
+
+  useEffect(() => {
+    setDoneTransaction(true);
+  }, []);
 
   return (
     <div className='mx-auto w-75'>
@@ -52,8 +64,8 @@ export function SuccessfulUser() {
                 <h6 className='fw-light mb-1 text-secondary'>
                   Shipping Address
                 </h6>
-                <span className='d-block'>Street</span>
-                <span className='d-block'>Barangay</span>
+                <span className='d-block'>{user.user_details.street}</span>
+                <span className='d-block'>{user.user_details.barangay}</span>
                 <span className='d-block'>Obando</span>
                 <span className='d-block'>Bulacan</span>
                 <span className='d-block'>Region III (Central Luzon)</span>
