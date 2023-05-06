@@ -84,7 +84,6 @@ export function OrdersBuyer() {
       .get('/orders/' + orderNumber)
       .then((res) => {
         setViewOrders(res.data);
-        console.log(res);
       })
       .catch((e) => console.log(e));
   }
@@ -151,7 +150,6 @@ export function OrdersBuyer() {
     setBody([]);
     axiosClient.get('/orders/orders-user/buyer/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
-        console.log(order);
         return {
           order_number: order.order_number,
           seller_name: (
@@ -248,8 +246,8 @@ export function OrdersBuyer() {
         processingOrderNumber={processingOrderNumber}
         deliveredOrderNumber={deliveredOrderNumber}
         viewOrderProduct={viewOrderProduct}
-        viewOrders={viewOrders}
         closeViewOrderProduct={closeViewOrderProduct}
+        viewOrders={viewOrders}
         status={status}
         calculateGrandTotalPrice={calculateGrandTotalPrice}
         setUserOrdersTable={setUserOrdersTable}
@@ -265,9 +263,9 @@ export function OrdersSeller() {
   const [pendingOrderNumber, setPendingOrderNumber] = useState(0);
   const [processingOrderNumber, setProcessingOrderNumber] = useState(0);
   const [deliveredOrderNumber, setDeliveredOrderNumber] = useState(0);
-  const [viewOrderProduct, setViewOrderProduct] = useState(false);
-  const [viewOrders, setViewOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
+  const [viewOrders, setViewOrders] = useState([]);
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
     axiosClient
@@ -305,7 +303,7 @@ export function OrdersSeller() {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Processing';
+      return 'Finding Rider';
     }
     if (status === '3') {
       return 'Delivered';
@@ -330,7 +328,7 @@ export function OrdersSeller() {
 
   function accept(orderNumber) {
     Finalize({
-      text: 'You want accept this order request',
+      text: 'You want accept this order request and Find Rider',
       confirmButton: 'Yes',
       successMsg: 'Order Accepted Successfully.',
     }).then((res) => {
@@ -347,25 +345,20 @@ export function OrdersSeller() {
     });
   }
 
-  function closeViewOrderProduct() {
-    setViewOrderProduct(false);
+  function closeViewOrderBuyerModal() {
+    setViewOrderBuyerModal(false);
   }
 
-  function cancel(id) {
-    Finalize({
-      text: 'You want decline this order request',
-      confirmButton: 'Yes',
-      successMsg: 'Order Declined Successfully.',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        axiosClient
-          .put('/orders/' + id, { status: 0 })
-          .then((resp) => console.log(resp))
-          .catch((e) => console.log(e));
-        setUserOrdersTable(1);
-      }
-    });
+  function viewByOrderNumberBuyer(orderNumber) {
+    setViewOrders([]);
+    axiosClient
+      .get('/orders/' + orderNumber)
+      .then((res) => {
+        setViewOrders(res.data);
+      })
+      .catch((e) => console.log(e));
   }
+
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
 
@@ -382,8 +375,8 @@ export function OrdersSeller() {
       isSortable: true,
     },
     {
-      title: 'Seller Name',
-      prop: 'seller_name',
+      title: 'Buyer Name',
+      prop: 'buyer_name',
     },
     {
       title: 'Contact #',
@@ -422,31 +415,32 @@ export function OrdersSeller() {
               style={{ columnGap: '10px' }}
             >
               <img
-                src={PUBLIC_URL + 'images/' + order.seller.prof_img}
+                src={PUBLIC_URL + 'images/' + order.buyer.prof_img}
                 className='rounded-circle pr-5'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
                 <p className='mb-0'>
-                  {order.seller.first_name}{' '}
-                  {order.seller.user_details
-                    ? order.seller.user_details.middle_name[0]
+                  {order.buyer.first_name}{' '}
+                  {order.buyer.user_details
+                    ? order.buyer.user_details.middle_name[0]
                     : ''}
                   {'. '}
-                  {order.seller.user_details
-                    ? order.seller.user_details.last_name
+                  {order.buyer.user_details
+                    ? order.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.seller.user_details
-                    ? order.seller.user_details.ext_name
+                  {order.buyer.user_details
+                    ? order.buyer.user_details.ext_name
                     : ''}
                 </p>
               </div>
             </div>
           ),
+          contact_number: order.buyer.user_details.contact_number,
           order_status: (
             <span
               className={
-                'rounded px-2 text-uppercase border border-2 ' +
+                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
                 switchColor(order.order_trans_status)
               }
             >
@@ -457,16 +451,27 @@ export function OrdersSeller() {
           created_at: dateFormat(order.created_at),
           action: (
             <div key={i} className='button-actions text-light d-flex'>
+              <Button
+                variant='primary'
+                onClick={() => {
+                  viewByOrderNumberBuyer(order.order_number);
+                  setViewOrderBuyerModal(true);
+                }}
+                style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-primary px-2 me-2'
+              >
+                View
+              </Button>
               {order.order_trans_status === '1' ? (
                 <Button
-                  variant='primary'
+                  variant='success'
                   onClick={() => {
                     accept(order.order_number);
                   }}
                   style={{ cursor: 'pointer' }}
-                  className='badge rounded text-bg-primary px-2 me-2'
+                  className='badge rounded px-2 me-2'
                 >
-                  Accept
+                  Find Rider
                 </Button>
               ) : (
                 ''
@@ -498,9 +503,9 @@ export function OrdersSeller() {
         pendingOrderNumber={pendingOrderNumber}
         processingOrderNumber={processingOrderNumber}
         deliveredOrderNumber={deliveredOrderNumber}
-        viewOrderProduct={viewOrderProduct}
         viewOrders={viewOrders}
-        closeViewOrderProduct={closeViewOrderProduct}
+        viewOrderBuyerModal={viewOrderBuyerModal}
+        closeViewOrderBuyerModal={closeViewOrderBuyerModal}
         status={status}
         calculateGrandTotalPrice={calculateGrandTotalPrice}
         setUserOrdersTable={setUserOrdersTable}
