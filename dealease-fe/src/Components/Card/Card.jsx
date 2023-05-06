@@ -9,10 +9,12 @@ import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+import { Load } from '../../Components/Loader/Load';
 
 export function Card() {
   const { user, token } = useAuthContext();
-  const { products, fetchProduct, fetchPublicProducts } = useProductContext();
+  const { products, fetchProduct, fetchPublicProducts, loading } =
+    useProductContext();
 
   const { msgStatus, status } = useAddToCartContext();
 
@@ -54,33 +56,37 @@ export function Card() {
           </div>
         )}
 
-        <div className='cards_wrapper'>
+        <div className='cards_wrapper' style={{ minHeight: '85vh' }}>
           {/* Card for Seller */}
-          <Row className='mx-2'>
-            {products.length > 0
-              ? products.map((product, data) =>
-                  product ? (
-                    <Col className='mb-4 card-card'>
-                      <CardItem
-                        key={data}
-                        id={product.id}
-                        src={'http://localhost:8000/images/' + product.image}
-                        createdAt={product.created_at}
-                        text={product.description}
-                        seller={product.user}
-                        label='Sold'
-                        button='Add to cart '
-                        editbutton='Edit'
-                        delbutton='Delete'
-                        path='/services'
-                      />
-                    </Col>
-                  ) : (
-                    ''
+          {loading ? (
+            <Load />
+          ) : (
+            <Row className='mx-2'>
+              {products.length > 0
+                ? products.map((product, data) =>
+                    product ? (
+                      <Col className='mb-4 card-card'>
+                        <CardItem
+                          key={data}
+                          id={product.id}
+                          src={'http://localhost:8000/images/' + product.image}
+                          createdAt={product.created_at}
+                          text={product.description}
+                          seller={product.user}
+                          label='Sold'
+                          button='Add to cart '
+                          editbutton='Edit'
+                          delbutton='Delete'
+                          path='/services'
+                        />
+                      </Col>
+                    ) : (
+                      ''
+                    )
                   )
-                )
-              : ''}
-          </Row>
+                : ''}
+            </Row>
+          )}
         </div>
       </div>
     </div>

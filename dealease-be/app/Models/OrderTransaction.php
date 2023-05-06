@@ -20,7 +20,7 @@ class OrderTransaction extends Model
 
     public function user()
     {
-        return  $this->belongsTo(\App\Models\User::class, 'user_id', 'user_id');
+        return  $this->hasOne(\App\Models\User::class, 'user_id', 'buyer_id');
     }
 
     public function product()

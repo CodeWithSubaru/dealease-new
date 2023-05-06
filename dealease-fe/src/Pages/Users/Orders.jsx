@@ -118,6 +118,7 @@ export function OrdersBuyer() {
     setBody([]);
     axiosClient.get('/orders/orders-user/buyer/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
+        console.log(order);
         return {
           order_number: order.order_number,
           seller_name: (

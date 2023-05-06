@@ -6,6 +6,7 @@ const ProductContext = createContext('default');
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState({});
+  const [loading, setLoading] = useState(false);
 
   function fetchProduct() {
     axiosClient.get('/seller/product').then((resp) => {
@@ -15,8 +16,10 @@ export const ProductProvider = ({ children }) => {
 
   function fetchPublicProducts(id) {
     setProducts({});
+    setLoading(true);
     axiosClient.get('/public/product/' + id).then((resp) => {
       setProducts(resp.data);
+      setLoading(false);
     });
   }
 
@@ -26,6 +29,8 @@ export const ProductProvider = ({ children }) => {
         products,
         fetchProduct,
         fetchPublicProducts,
+        loading,
+        setLoading,
       }}
     >
       {children}
