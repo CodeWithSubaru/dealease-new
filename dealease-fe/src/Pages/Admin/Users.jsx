@@ -20,6 +20,10 @@ import {
   Notification,
   Finalize,
 } from '../../Components/Notification/Notification';
+import { Load } from '../../Components/Loader/Load';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import Nav from 'react-bootstrap/Nav';
 
 const header = [
   {
@@ -50,6 +54,7 @@ export function Users() {
   const [user, setUser] = useState({});
   const [singleUser, setSingleUser] = useState(null);
   const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // delete user
   const deleteUser = (user_id) => {
@@ -119,7 +124,7 @@ export function Users() {
           message: res.data.message,
           icon: 'success',
         }).then(() => {
-          setUserDataTable();
+          setUserDataTable('/admin/users');
           closeCreateUserModal();
         });
       })
@@ -210,14 +215,19 @@ export function Users() {
       return user.role_type;
     }
 
+    if (user.role_type === 'Rider') {
+      return user.role_type;
+    }
+
     if (user.role_type === 'Admin') {
       return user.role_type;
     }
   }
 
   // display user details in table
-  function setUserDataTable() {
-    axiosClient.get('/admin/users').then((resp) => {
+  function setUserDataTable(uri) {
+    setLoading(true);
+    axiosClient.get(uri).then((resp) => {
       const user = resp.data.listOfUser.map((user, i) => {
         return {
           id: i + 1,
@@ -225,21 +235,26 @@ export function Users() {
             <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
               <img
                 src={PUBLIC_URL + 'images/' + user.prof_img}
-                className='rounded-circle pr-5 border border-2 border-info'
+                className='rounded-circle pr-5 border border-2 border-secondary border-opacity-50'
                 style={{ width: '50px', height: '50px' }}
               />
               <div>
                 <p className='mb-0'>
-                  {user.first_name +
-                    ' ' +
-                    user.user_details.middle_name +
-                    '.' +
-                    ' ' +
-                    user.user_details.last_name +
-                    ' ' +
-                    user.user_details.ext_name}
+                  {user.first_name + ' '}
+                  {user.user_details.middle_name
+                    ? user.user_details.middle_name + '. '
+                    : ''}
+                  {' ' + user.user_details.last_name
+                    ? user.user_details.last_name
+                    : ' '}{' '}
+                  {user.user_details.ext_name}
                 </p>
-                <span className='badge rounded-pill text-bg-primary'>
+                <span
+                  className={
+                    'badge rounded-pill text-bg-' +
+                    (switchUserType(user) == 'User' ? 'primary' : 'secondary')
+                  }
+                >
                   {switchUserType(user)}
                 </span>
               </div>
@@ -248,161 +263,216 @@ export function Users() {
           email: user.email,
           date_joined: dateFormat(user.created_at),
           action: (
-            <div key={i} className='button-actions'>
+            <div key={i} className='button-actions w-100 text-nowrap'>
               <span
                 onClick={() => viewCompleteDetails(user.user_id)}
                 style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-primary px-2 me-2'
               >
-                <FontAwesomeIcon icon={faEye} className='mx-2' />
+                View
               </span>
               <span
                 onClick={() => findUser(user.user_id)}
                 style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-success px-2 me-2'
               >
-                <FontAwesomeIcon icon={faEdit} className='mx-2' />
+                Edit
               </span>
               <span
                 onClick={() => deleteUser(user.user_id)}
                 style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-danger px-2 me-2'
               >
-                <FontAwesomeIcon icon={faTrash} className='mx-2' />
+                Delete
               </span>
-              {!user.verified_user && user.role_type === 'User' && (
+              {!user.verified_user && (
                 <span
                   onClick={() => verifyUser(user.user_id)}
                   style={{ cursor: 'pointer' }}
+                  className='badge rounded text-bg-secondary px-2 me-2'
                 >
-                  <FontAwesomeIcon icon={faCheck} className='mx-2' />
+                  {' '}
+                  Accept
                 </span>
               )}
             </div>
           ),
         };
       });
-
+      setLoading(false);
       setBody(user);
     });
   }
 
   useEffect(() => {
-    setUserDataTable();
+    setUserDataTable('/admin/users');
   }, [body.id]);
 
   return (
     <Card className='w-75 mx-auto px-4 h-100'>
       <div className='rounded p-4  my-5 border-0'>
-        <Card className='p-5'>
-          <div className='d-flex align-items-center mb-3'>
-            <H1>Users</H1>
-          </div>
+        <Modal
+          size='lg'
+          show={showCreateUser}
+          onHide={closeCreateUserModal}
+          centered
+          keyboard
+          scrollable
+          contentClassName={'mt-0'}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Create New User</Modal.Title>
+          </Modal.Header>
 
-          <Modal
-            size='lg'
-            show={showCreateUser}
-            onHide={closeCreateUserModal}
-            centered
-            keyboard
-            scrollable
-            contentClassName={'mt-0'}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Create New User</Modal.Title>
-            </Modal.Header>
+          <Modal.Body>
+            {/* Creating User */}
+            <FormUser
+              submitHook={createUser}
+              user={user}
+              setUser={setUser}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          </Modal.Body>
 
-            <Modal.Body>
-              {/* Creating User */}
-              <FormUser
-                submitHook={createUser}
-                user={user}
-                setUser={setUser}
-                errors={errors}
-                setErrors={setErrors}
-              />
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button
-                variant='secondary'
-                className='rounded'
-                onClick={closeCreateUserModal}
+          <Modal.Footer>
+            <Button
+              variant='secondary'
+              className='rounded'
+              onClick={closeCreateUserModal}
+            >
+              Close
+            </Button>
+            <Button
+              variant='primary'
+              className='rounded'
+              type='submit'
+              form='createUserForm'
+            >
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Tab.Container id='left-tabs-example' defaultActiveKey='first'>
+          <Nav justify variant='tabs' defaultActiveKey='/admin/users'>
+            <Nav.Item>
+              <Nav.Link
+                eventKey='first'
+                onClick={() => {
+                  setUserDataTable('/admin/users');
+                }}
               >
-                Close
-              </Button>
-              <Button
-                variant='primary'
-                className='rounded'
-                type='submit'
-                form='createUserForm'
+                All
+                <span
+                  className='badge rounded-pill text-bg-primary position-relative'
+                  style={{ top: '-8px', left: '0px' }}
+                >
+                  1
+                </span>
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                eventKey='second'
+                onClick={() => {
+                  setUserDataTable('/admin/users/unverified');
+                }}
               >
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
+                Unverified Users
+                <span
+                  className='badge rounded-pill text-bg-primary position-relative'
+                  style={{ top: '-8px', left: '0px' }}
+                >
+                  2
+                </span>
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+          <Tab.Content>
+            <Tab.Pane eventKey='first'>
+              <Card className='p-5 pb-1 rounded'>
+                <h1 className='mb-4 fw-bold'>All Users</h1>
+                {loading ? (
+                  <Load />
+                ) : (
+                  <TableComponent
+                    header={header}
+                    body={body}
+                    button={
+                      <Button
+                        variant='primary'
+                        className='rounded'
+                        onClick={showCreateUserModal}
+                      >
+                        Add New User
+                      </Button>
+                    }
+                  />
+                )}
+              </Card>
+            </Tab.Pane>
+            <Tab.Pane eventKey='second'>
+              <Card className='p-5 pb-1 rounded'>
+                <h1 className='mb-4 fw-bold'>Unverified Users</h1>
+                {loading ? (
+                  <Load />
+                ) : (
+                  <TableComponent header={header} body={body} />
+                )}
+              </Card>
+            </Tab.Pane>
+          </Tab.Content>
+        </Tab.Container>
 
-          <TableComponent
-            header={header}
-            body={body}
-            button={
-              <Button
-                variant='primary'
-                className='rounded'
-                onClick={showCreateUserModal}
-              >
-                New User
-              </Button>
-            }
-          />
+        {/* View Single User */}
+        <ViewSingleUser
+          data={singleUser}
+          showSingleUser={showSingleUser}
+          closeSingleUserModal={closeSingleUserModal}
+        />
 
-          {/* View Single User */}
-          <ViewSingleUser
-            data={singleUser}
-            showSingleUser={showSingleUser}
-            closeSingleUserModal={closeSingleUserModal}
-          />
-
-          {/* Edit and Update User */}
-          <Modal
-            show={showEditUser}
-            onHide={closeEditUserModal}
-            size='lg'
-            centered
-            keyboard
-            scrollable
-            contentClassName={'mt-0'}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Update User</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <FormUser
-                submitHook={editUser}
-                user={user}
-                updateUserDetails={updateUserDetails}
-                setUpdateUserDetails={setUpdateUserDetails}
-                errors={errors}
-                setErrors={setErrors}
-                edit
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant='secondary'
-                className='rounded'
-                onClick={closeEditUserModal}
-              >
-                Close
-              </Button>
-              <Button
-                variant='primary'
-                className='rounded'
-                type='submit'
-                form='createUserForm'
-              >
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </Card>
+        {/* Edit and Update User */}
+        <Modal
+          show={showEditUser}
+          onHide={closeEditUserModal}
+          size='lg'
+          centered
+          keyboard
+          scrollable
+          contentClassName={'mt-0'}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Update User</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <FormUser
+              submitHook={editUser}
+              user={user}
+              updateUserDetails={updateUserDetails}
+              setUpdateUserDetails={setUpdateUserDetails}
+              errors={errors}
+              setErrors={setErrors}
+              edit
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant='secondary'
+              className='rounded'
+              onClick={closeEditUserModal}
+            >
+              Close
+            </Button>
+            <Button
+              variant='primary'
+              className='rounded'
+              type='submit'
+              form='createUserForm'
+            >
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </Card>
   );

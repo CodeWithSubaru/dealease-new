@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\AccountVerificationRequirement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -130,25 +131,21 @@ class AuthController extends Controller
 
         if ($request->has('valid_id_front') && $request->has('valid_id_back')) {
             // uploading image
-            $imageName = time() . '.' . $request->file('valid_id_front')->getClientOriginalExtension();
+            $imageNameFront = Str::random() . '.' . $request->file('valid_id_front')->getClientOriginalExtension();
 
-            $request->file('valid_id_front')->move(public_path('images'), $imageName);
+            $request->file('valid_id_front')->move(public_path('images'), $imageNameFront);
 
-            $imageName = time() . '.' . $request->file('valid_id_back')->getClientOriginalExtension();
+            $imageNameBack = Str::random() . '.' . $request->file('valid_id_back')->getClientOriginalExtension();
 
-            $request->file('valid_id_back')->move(public_path('images'), $imageName);
+            $request->file('valid_id_back')->move(public_path('images'), $imageNameBack);
         }
 
-        // $user = User::where('email', $request->email)->first();
+        AccountVerificationRequirement::create([
+            'valid_id_1' => $imageNameFront,
+            'valid_id_2' => $imageNameBack
+        ]);
 
-        // $wallet = $user->coin_owner_type ? BuyerWallet::class : SellerWallet::class;
-
-        // $wallet::create([
-        //     'shell_coin_amount' => 0,
-        //     'user_id' => $user->user_id,
-        // ]);
-
-
+        return response()->json(['status' => 'Request Submitted Successfully'], 200);
     }
     /**
      * Login for each user

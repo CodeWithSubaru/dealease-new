@@ -82,6 +82,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Route::apiResource('/report-user', ReportUserController::class);
 
     // Admin route
+    Route::get('/admin/users/unverified', [UsersController::class, 'unverifiedUsers']);
     Route::post('/admin/users/{id}', [UsersController::class, 'update']);
     Route::post('/admin/verify-user/{id}', [UsersController::class, 'verifyUser']);
     Route::apiResource('/admin/users', UsersController::class);

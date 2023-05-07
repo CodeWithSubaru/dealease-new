@@ -321,7 +321,9 @@ export function OrdersTable(props) {
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
                   <h1 className='mb-4 fw-bold'>
-                    {props.title == 'Buyer' ? 'My Processing Orders' : 'Find Rider'} 
+                    {props.title == 'Buyer'
+                      ? 'My Processing Orders'
+                      : 'Find Rider'}
                   </h1>
                   {props.loading ? (
                     <Load />

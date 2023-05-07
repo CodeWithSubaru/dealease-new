@@ -40,6 +40,7 @@ import {
   faHandshake,
   faUser,
   faUserLargeSlash,
+  faHourglass1,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { ViewSingleUser } from './ViewSingleUser';
@@ -351,24 +352,27 @@ export function Dashboard() {
         </Sidebar>
         <main className='w-100' style={{ minHeight: '815px' }}>
           <Card className='dashboard w-75 mx-auto px-4'>
-            <H1 className='mt-4'> Dashboard</H1>
+            <H1 className='mt-4'>Dashboard</H1>
             <div className='cards-details-wrapper d-flex justify-content-between'>
               <CardDetails
                 title='Users'
                 totalNumber={calculateTotal(countOfUsers)}
                 icon={faUser}
                 style={{ marginLeft: '0' }}
+                color='bg-primary'
               />
               <CardDetails
-                title='Messages'
+                title='Pending Transactions'
                 totalNumber={calculateTotal(countOfMessages)}
-                icon={faEnvelope}
+                icon={faHourglass1}
+                color='bg-success'
               />
 
               <CardDetails
                 title='Reported Users'
                 totalNumber={2}
                 icon={faUserLargeSlash}
+                color='bg-secondary'
               />
             </div>
 
@@ -412,7 +416,7 @@ export function Dashboard() {
               </Row>
             </div>
 
-            <div className='card my-5 p-4 rounded primary-bg border-0'>
+            <div className='card my-5 p-4 rounded border-0'>
               <H1 className='mb-3'>Latest Users</H1>
               <TableComponent header={header} body={body} />
             </div>
@@ -427,15 +431,21 @@ export function Dashboard() {
 function CardDetails(props) {
   return (
     <Card
-      className='card-details rounded p-4 my-4 w-25 primary-bg d-flex justify-content-between'
-      style={{ backgroundColor: '#fff' }}
+      className='card-details rounded p-4 my-4 d-flex justify-content-between'
+      style={{ backgroundColor: '#fff', width: '28%' }}
     >
-      <div>
-        <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
-        <p>{props.title}</p>
-      </div>
-      <div className='d-flex align-items-center'>
-        <FontAwesomeIcon icon={props.icon} className='icon mx-2' />
+      <div className='d-flex justify-content-between flex-grow-1'>
+        <div>
+          <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
+          <p>{props.title}</p>
+        </div>
+        <div className='d-flex align-items-center mb-5'>
+          <FontAwesomeIcon
+            icon={props.icon}
+            className={'mx-2 rounded-circle text-white p-3 ' + props.color}
+            style={{ width: '45px', height: '45px' }}
+          />
+        </div>
       </div>
     </Card>
   );

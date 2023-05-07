@@ -28,6 +28,11 @@ class UsersController extends Controller
         return response()->json(['listOfUser' => $listOfUsers], 200);
     }
 
+    public function unverifiedUsers()
+    {
+        $listOfUsers = User::with('user_details')->where('role_type', '!=', 3)->where('verified_user', 0)->latest()->get();
+        return response()->json(['listOfUser' => $listOfUsers], 200);
+    }
 
     /**
      * Store a newly created resource in storage.

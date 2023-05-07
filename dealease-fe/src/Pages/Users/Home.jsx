@@ -5,6 +5,7 @@ import { Footer } from '../../Components/Footer/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import Alert from 'react-bootstrap/Alert';
+import { Notification } from '../../Components/Notification/Notification';
 
 import {
   Sidebar,
@@ -66,7 +67,15 @@ export const HomeUser = () => {
       .post('/update-access', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        Notification({
+          title: 'Success',
+          message: res.data.status,
+          icon: 'success',
+        }).then(() => {
+          closeUpdateAccessModal();
+        });
+      })
       .catch((e) => setErrors(e.response.data.errors));
   }
 

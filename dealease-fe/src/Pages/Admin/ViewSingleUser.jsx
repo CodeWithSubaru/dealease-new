@@ -29,7 +29,11 @@ export const ViewSingleUser = (props) => {
               <h4> Full Name</h4>
               <p>
                 {props.data ? props.data.first_name : ''}{' '}
-                {props.data ? props.data.user_details.middle_name[0] + '.' : ''}{' '}
+                {props.data
+                  ? props.data.user_details.middle_name
+                    ? props.data.user_details.middle_name.length[0] + '.'
+                    : ''
+                  : ''}{' '}
                 {props.data ? props.data.user_details.last_name : ''}{' '}
                 {props.data ? props.data.user_details.ext_name : ''}
               </p>
