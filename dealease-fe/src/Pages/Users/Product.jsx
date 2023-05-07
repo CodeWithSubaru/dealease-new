@@ -200,7 +200,7 @@ export const ProductUser = () => {
           }).then(() => {
             setTitle('');
             setDescription('');
-            setImage(e.target.files);
+            setImage('');
             setStocks('');
             setPrice('');
           });
@@ -282,6 +282,7 @@ export const ProductUser = () => {
   function onImageChange(e) {
     if (e.target.files && e.target.files[0]) {
       setImageDefault(URL.createObjectURL(e.target.files[0]));
+      setImage(e.target.files[0]);
     }
   }
 

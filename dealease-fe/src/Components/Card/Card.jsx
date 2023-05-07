@@ -13,8 +13,15 @@ import { Load } from '../../Components/Loader/Load';
 
 export function Card() {
   const { user, token } = useAuthContext();
-  const { products, fetchProduct, fetchPublicProducts, loading } =
-    useProductContext();
+  const {
+    products,
+    fetchProduct,
+    fetchPublicProducts,
+    loading,
+    fetchThisWeek,
+    fetchThisDay,
+    fetchAvailable,
+  } = useProductContext();
 
   const { msgStatus, status } = useAddToCartContext();
 
@@ -41,13 +48,13 @@ export function Card() {
                   <div>
                     <span
                       className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
-                      onClick={() => {}}
+                      onClick={() => fetchThisDay()}
                     >
                       This Day
                     </span>
                     <span
                       className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
-                      onClick={() => {}}
+                      onClick={() => fetchThisWeek()}
                     >
                       This Week
                     </span>
@@ -57,7 +64,7 @@ export function Card() {
                   <small className='fw-bold mb-1'>STATUS</small>
                   <span
                     className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
-                    onClick={() => {}}
+                    onClick={() => fetchAvailable()}
                   >
                     Available
                   </span>
@@ -95,30 +102,34 @@ export function Card() {
           {loading ? (
             <Load />
           ) : (
-            <Row className='mx-2'>
-              {products.length > 0
-                ? products.map((product, data) =>
-                    product ? (
-                      <Col className='mb-4 card-card'>
-                        <CardItem
-                          key={data}
-                          id={product.id}
-                          src={'http://localhost:8000/images/' + product.image}
-                          createdAt={product.created_at}
-                          text={product.description}
-                          seller={product.user}
-                          label='Sold'
-                          button='Add to cart '
-                          editbutton='Edit'
-                          delbutton='Delete'
-                          path='/services'
-                        />
-                      </Col>
-                    ) : (
-                      ''
-                    )
+            <Row className='mx-2 h-100'>
+              {products.length > 0 ? (
+                products.map((product, data) =>
+                  product && !product.deleted_at ? (
+                    <Col className='mb-4 card-card'>
+                      <CardItem
+                        key={product.id}
+                        id={product.id}
+                        src={'http://localhost:8000/images/' + product.image}
+                        createdAt={product.created_at}
+                        text={product.description}
+                        seller={product.user}
+                        label='Sold'
+                        button='Add to cart '
+                        editbutton='Edit'
+                        delbutton='Delete'
+                        path='/services'
+                      />
+                    </Col>
+                  ) : (
+                    ''
                   )
-                : ''}
+                )
+              ) : (
+                <div className='h-100 d-flex align-items-center'>
+                  No Products Found
+                </div>
+              )}
             </Row>
           )}
         </div>

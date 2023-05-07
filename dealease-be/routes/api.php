@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\Admin\AdminPaymentController;
+use App\Http\Controllers\Api\ProductFilterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/public/product/{id}', [ProductContoller::class, 'getProductsForPublic']);
 Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
+
+// Product Filter
+Route::get('/product/this-week', [ProductFilterController::class, 'thisWeek']);
+Route::get('/product/this-day', [ProductFilterController::class, 'thisDay']);
+Route::get('/product/available', [ProductFilterController::class, 'availableProducts']);
 
 // Payment
 Route::post('/recharge', [PaymentController::class, 'recharge']);

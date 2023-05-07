@@ -26,7 +26,7 @@ export const ProductProvider = ({ children }) => {
   function fetchThisWeek() {
     setProducts({});
     setLoading(true);
-    axiosClient.get('/public/product/' + id).then((resp) => {
+    axiosClient.get('/product/this-week').then((resp) => {
       setProducts(resp.data);
       setLoading(false);
     });
@@ -35,7 +35,7 @@ export const ProductProvider = ({ children }) => {
   function fetchThisDay() {
     setProducts({});
     setLoading(true);
-    axiosClient.get('/public/product/' + id).then((resp) => {
+    axiosClient.get('/product/this-day').then((resp) => {
       setProducts(resp.data);
       setLoading(false);
     });
@@ -44,7 +44,7 @@ export const ProductProvider = ({ children }) => {
   function fetchAvailable() {
     setProducts({});
     setLoading(true);
-    axiosClient.get('/public/product/' + id).then((resp) => {
+    axiosClient.get('/product/available').then((resp) => {
       setProducts(resp.data);
       setLoading(false);
     });
@@ -58,6 +58,9 @@ export const ProductProvider = ({ children }) => {
         fetchPublicProducts,
         loading,
         setLoading,
+        fetchThisWeek,
+        fetchThisDay,
+        fetchAvailable,
       }}
     >
       {children}
