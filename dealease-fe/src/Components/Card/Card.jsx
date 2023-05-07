@@ -21,6 +21,7 @@ export function Card() {
     fetchThisWeek,
     fetchThisDay,
     fetchAvailable,
+    searchProduct,
   } = useProductContext();
 
   const { msgStatus, status } = useAddToCartContext();
@@ -44,7 +45,7 @@ export function Card() {
                   All
                 </span>
                 <div className='d-flex flex-column'>
-                  <small className='fw-bold mb-1'>DATE</small>
+                  <small className='fw-bold mb-1 ms-2'>DATE</small>
                   <div>
                     <span
                       className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
@@ -61,7 +62,7 @@ export function Card() {
                   </div>
                 </div>
                 <div className='d-flex flex-column'>
-                  <small className='fw-bold mb-1'>STATUS</small>
+                  <small className='fw-bold mb-1 ms-2'>STATUS</small>
                   <span
                     className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
                     onClick={() => fetchAvailable()}
@@ -69,17 +70,18 @@ export function Card() {
                     Available
                   </span>
                 </div>
+                <div className='flex-grow-1'>
+                  <Form className='w-100 d-flex justify-content-end'>
+                    <Form.Control
+                      type='search'
+                      placeholder='Search...'
+                      className='w-50 rounded-pill'
+                      aria-label='Search'
+                      onChange={searchProduct}
+                    />
+                  </Form>
+                </div>
               </div>
-            </Col>
-            <Col>
-              <Form>
-                <Form.Control
-                  type='search'
-                  placeholder='Search...'
-                  className='search-post w-50'
-                  aria-label='Search'
-                />
-              </Form>
             </Col>
           </Row>
         </Container>
@@ -114,7 +116,6 @@ export function Card() {
                         createdAt={product.created_at}
                         text={product.description}
                         seller={product.user}
-                        label='Sold'
                         button='Add to cart '
                         editbutton='Edit'
                         delbutton='Delete'

@@ -60,7 +60,7 @@ export function CardItem(props) {
     <>
       <div className=''>
         <div className='cards_item_link' to={props.path}>
-          <figure className='cards_item_pic-wrap' data-category={props.label}>
+          <figure className='cards_item_pic-wrap'>
             <img src={props.src} alt='Fish' className='cards_item_img' />
           </figure>
           <div className='cards_item_info'>

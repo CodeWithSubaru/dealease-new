@@ -50,6 +50,18 @@ export const ProductProvider = ({ children }) => {
     });
   }
 
+  function searchProduct(e) {
+    setProducts({});
+    setLoading(true);
+    setTimeout(() => {
+      axiosClient.get('product/search/' + e.target.value).then((res) => {
+        setProducts(res.data);
+        setLoading(false);
+      }, 1500);
+    });
+    clearTimeout(timeout);
+  }
+
   return (
     <ProductContext.Provider
       value={{
@@ -61,6 +73,7 @@ export const ProductProvider = ({ children }) => {
         fetchThisWeek,
         fetchThisDay,
         fetchAvailable,
+        searchProduct,
       }}
     >
       {children}

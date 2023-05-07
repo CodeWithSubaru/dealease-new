@@ -39,6 +39,7 @@ Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update'
 Route::get('/product/this-week', [ProductFilterController::class, 'thisWeek']);
 Route::get('/product/this-day', [ProductFilterController::class, 'thisDay']);
 Route::get('/product/available', [ProductFilterController::class, 'availableProducts']);
+Route::get('/product/search/{product}', [ProductFilterController::class, 'searchProduct']);
 
 // Payment
 Route::post('/recharge', [PaymentController::class, 'recharge']);

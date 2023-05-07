@@ -28,4 +28,18 @@ class ProductFilterController extends Controller
     {
         return Product::where('stocks_per_kg', '>', '0')->get();
     }
+
+    public function searchProduct($product)
+    {
+        $startWeek = Carbon::now()->startOfWeek();
+        $endWeek   = Carbon::now()->endOfWeek();
+
+        return Product::query()
+            ->where('stocks_per_kg', '>', '0')
+            ->whereBetween('created_at', [$startWeek, $endWeek])
+            ->where('title', 'like', '%' . $product . '%')
+            ->orWhere('description', 'like', '%' . $product . '%')
+            ->orWhere('price_per_kg', 'like', '%' . $product . '%')
+            ->get();
+    }
 }
