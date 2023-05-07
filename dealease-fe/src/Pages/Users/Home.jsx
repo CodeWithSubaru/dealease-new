@@ -27,44 +27,53 @@ export const HomeUser = () => {
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
   const { collapseSidebar } = useProSidebar();
   const { setDoneTransaction } = useOrderContext();
+  const [errors, setErrors] = useState([]);
 
   function closeUpdateAccessModal() {
     setUpdateAccessModal(false);
   }
 
-  const [validIdFront, setValidIdFront] = useState('');
-  const [validIdBack, setValidIdBack] = useState('');
+  const [validIdFront, setValidIdFront] = useState(null);
+  const [validIdBack, setValidIdBack] = useState(null);
+  const [imgFront, setImgFront] = useState(null);
+  const [imgBack, setImgBack] = useState(null);
   const [termsAndCondition, setTermsAndCondition] = useState(false);
 
   const onImageChangeFront = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setValidIdFront(URL.createObjectURL(event.target.files[0]));
+      setImgFront(URL.createObjectURL(event.target.files[0]));
+      setValidIdFront(event.target.files[0]);
     }
   };
 
   const onImageChangeBack = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setValidIdBack(URL.createObjectURL(event.target.files[0]));
+      setImgBack(URL.createObjectURL(event.target.files[0]));
+      setValidIdBack(event.target.files[0]);
     }
   };
 
   function handleUpdateAccessForm(e) {
     e.preventDefault();
+
     const data = {
       valid_id_front: validIdFront,
       valid_id_back: validIdBack,
       terms_and_conditions: termsAndCondition,
     };
+
     axiosClient
-      .post('/auth/update-access', data)
+      .post('/update-access', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
       .then((res) => console.log(res))
-      .catch((e) => console.log(e));
+      .catch((e) => setErrors(e.response.data.errors));
   }
 
   useEffect(() => {
     setDoneTransaction(false);
-    setValidIdFront('../../../images/default_image.png');
-    setValidIdBack('../../../images/default_image.png');
+    setImgFront('../../../images/default_image.png');
+    setImgBack('../../../images/default_image.png');
     return () => {
       setRegistrationSuccess(false);
       setEmailVerified(false);
@@ -167,7 +176,7 @@ export const HomeUser = () => {
                   <p className='float-end mb-0'> - System Administator</p>
                 </div>
               </Alert>
-              <Form onSubmit={handleUpdateAccessForm}>
+              <Form onSubmit={handleUpdateAccessForm} id='updateAccessForm'>
                 <div className='d-flex align-items-center clearfix mb-3'>
                   <Form.Group controlId='formFile' className='mb-3 w-100'>
                     <Form.Label className='text-secondary'>
@@ -177,13 +186,18 @@ export const HomeUser = () => {
                       type='file'
                       id='formFile'
                       onChange={onImageChangeFront}
+                      isInvalid={!!errors.valid_id_front}
                     />
+                    {console.log(errors)}
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.valid_id_front}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <div className='w-50'>
                     <div className='float-end'>
                       <p className='mb-0'>ID Preview (Front)</p>
                       <img
-                        src={validIdFront}
+                        src={imgFront}
                         className='rounded p-3 float-end'
                         style={{
                           height: '150px',
@@ -203,13 +217,17 @@ export const HomeUser = () => {
                       type='file'
                       id='formFile'
                       onChange={onImageChangeBack}
+                      isInvalid={!!errors.valid_id_back}
                     />
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.valid_id_back}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <div className='w-50'>
                     <div className='float-end'>
                       <p className='mb-0'>ID Preview (Back)</p>
                       <img
-                        src={validIdBack}
+                        src={imgBack}
                         className='rounded p-3 float-end'
                         style={{
                           height: '150px',
@@ -220,27 +238,42 @@ export const HomeUser = () => {
                   </div>
                 </div>
 
-                <Form.Check
-                  onChange={(e) => setTermsAndCondition(e.target.checked)}
-                  type='checkbox'
-                  id='termsAndCondition'
-                  label={
-                    <Form.Label
-                      className='text-secondary fw-light'
-                      controlId='termsAndCondition'
-                    >
-                      I agree to the{' '}
-                      <a
-                        href='/termsAndCondition'
-                        target='_blank'
-                        className='fw-bold'
+                <Form.Group>
+                  <Form.Check
+                    label={
+                      <Form.Label
+                        className='text-secondary fw-light mb-0'
+                        controlId='termsAndCondition'
                       >
-                        {' '}
-                        Terms and Condition
-                      </a>
-                    </Form.Label>
-                  }
-                />
+                        I agree to the{' '}
+                        <a
+                          href='/termsAndCondition'
+                          target='_blank'
+                          className='fw-bold'
+                        >
+                          {' '}
+                          Terms and Condition
+                        </a>
+                      </Form.Label>
+                    }
+                    type='checkbox'
+                    id='termsAndCondition'
+                    isInvalid={!!errors.terms_and_conditions}
+                    onChange={(e) => setTermsAndCondition(e.target.checked)}
+                    feedbackType='invalid'
+                    feedback={
+                      errors.terms_and_conditions &&
+                      errors.terms_and_conditions.length > 0 &&
+                      errors.terms_and_conditions[0]
+                    }
+                  />
+
+                  {/* <Form.Control.Feedback type='invalid' className='text-danger'>
+                    {errors.length > 0 &&
+                      errors.terms_and_conditions.length > 0 &&
+                      errors.terms_and_conditions[0]}
+                  </Form.Control.Feedback> */}
+                </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
@@ -254,7 +287,8 @@ export const HomeUser = () => {
               <Button
                 variant='primary'
                 className='rounded'
-                onClick={closeUpdateAccessModal}
+                form='updateAccessForm'
+                type='submit'
               >
                 Submit
               </Button>

@@ -86,40 +86,70 @@ class AuthController extends Controller
 
     public function updateAccess(Request $request)
     {
+        $isInvalidFront = false;
+        $isInvalidBack = false;
+
+        if (!$request->has('valid_id_front')) {
+            $isInvalidFront = true;
+        }
+
+        if (!$request->has('valid_id_back')) {
+            $isInvalidBack = true;
+        }
+
+        if ($isInvalidFront && $isInvalidBack) {
+            return response()->json([
+                'errors' => [
+                    'valid_id_front' => ['Please put a valid picture (front)'],
+                    'valid_id_back' => ['Please put a valid picture (back)']
+                ],
+            ], 422);
+        }
+
+        if ($isInvalidFront) {
+            return response()->json([
+                'errors' => [
+                    'valid_id_front' => 'Please put a valid picture (front)',
+                ]
+            ], 422);
+        }
+
+        if ($isInvalidBack) {
+            return response()->json([
+                'errors' => [
+                    'valid_id_back' => 'Please put a valid picture (back)'
+                ]
+            ], 422);
+        }
+
         $request->validate([
             'valid_id_front' => ['image'],
             'valid_id_back' => ['image'],
-            'terms_and_conditions' => ['boolean'],
+            'terms_and_conditions' => ['accepted'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        if ($request->has('valid_id_front') && $request->has('valid_id_back')) {
+            // uploading image
+            $imageName = time() . '.' . $request->file('valid_id_front')->getClientOriginalExtension();
 
-        $wallet = $user->coin_owner_type ? BuyerWallet::class : SellerWallet::class;
+            $request->file('valid_id_front')->move(public_path('images'), $imageName);
 
-        $wallet::create([
-            'shell_coin_amount' => 0,
-            'user_id' => $user->user_id,
-        ]);
+            $imageName = time() . '.' . $request->file('valid_id_back')->getClientOriginalExtension();
 
-        if ($user->role_type == 'Admin') {
-            return response()->json(['errors' => ['email' => ['Account update failed. This action is not allowed.!']]], 422);
+            $request->file('valid_id_back')->move(public_path('images'), $imageName);
         }
 
-        if ($user->is_buyer && $user->is_seller) {
-            return response()->json(['errors' => ['email' => ['User updated already']]], 422);
-        }
+        // $user = User::where('email', $request->email)->first();
 
-        if ($user->is_buyer) {
-            User::where('email', $request->email)->update(['is_seller' => '1']);
-            return response()->json(['message' => 'User Updated to Seller Successfully'], 200);
-        }
+        // $wallet = $user->coin_owner_type ? BuyerWallet::class : SellerWallet::class;
 
-        if ($user->is_seller) {
-            User::where('email', $request->email)->update(['is_buyer' => '1']);
-            return response()->json(['message' => 'User Update To Buyer Successfully'], 200);
-        }
+        // $wallet::create([
+        //     'shell_coin_amount' => 0,
+        //     'user_id' => $user->user_id,
+        // ]);
+
+
     }
-
     /**
      * Login for each user
      */
