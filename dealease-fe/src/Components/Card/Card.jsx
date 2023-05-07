@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { CardItem } from './CardItem';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
@@ -28,14 +28,48 @@ export function Card() {
         <Container className='mt-5 px-5'>
           <Row>
             <Col>
-              <h1 className='text-home'>{token ? 'Home' : 'Products'}</h1>
+              <h1 className='text-home mb-5'>{token ? 'Home' : 'Products'}</h1>
+              <div className='d-flex align-items-end'>
+                <span
+                  className='rounded-pill btn btn-sm btn-primary me-3 fw-semibold'
+                  onClick={() => fetchPublicProducts(user.user_id)}
+                >
+                  All
+                </span>
+                <div className='d-flex flex-column'>
+                  <small className='fw-bold mb-1'>DATE</small>
+                  <div>
+                    <span
+                      className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
+                      onClick={() => {}}
+                    >
+                      This Day
+                    </span>
+                    <span
+                      className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
+                      onClick={() => {}}
+                    >
+                      This Week
+                    </span>
+                  </div>
+                </div>
+                <div className='d-flex flex-column'>
+                  <small className='fw-bold mb-1'>STATUS</small>
+                  <span
+                    className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
+                    onClick={() => {}}
+                  >
+                    Available
+                  </span>
+                </div>
+              </div>
             </Col>
             <Col>
               <Form>
                 <Form.Control
                   type='search'
                   placeholder='Search...'
-                  className='search-post'
+                  className='search-post w-50'
                   aria-label='Search'
                 />
               </Form>

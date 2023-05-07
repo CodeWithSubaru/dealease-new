@@ -23,6 +23,33 @@ export const ProductProvider = ({ children }) => {
     });
   }
 
+  function fetchThisWeek() {
+    setProducts({});
+    setLoading(true);
+    axiosClient.get('/public/product/' + id).then((resp) => {
+      setProducts(resp.data);
+      setLoading(false);
+    });
+  }
+
+  function fetchThisDay() {
+    setProducts({});
+    setLoading(true);
+    axiosClient.get('/public/product/' + id).then((resp) => {
+      setProducts(resp.data);
+      setLoading(false);
+    });
+  }
+
+  function fetchAvailable() {
+    setProducts({});
+    setLoading(true);
+    axiosClient.get('/public/product/' + id).then((resp) => {
+      setProducts(resp.data);
+      setLoading(false);
+    });
+  }
+
   return (
     <ProductContext.Provider
       value={{
