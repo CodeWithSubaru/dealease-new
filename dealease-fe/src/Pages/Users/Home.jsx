@@ -44,7 +44,7 @@ export const HomeUser = () => {
 
   const onImageChangeBack = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setValidIdFront(URL.createObjectURL(event.target.files[0]));
+      setValidIdBack(URL.createObjectURL(event.target.files[0]));
     }
   };
 
@@ -55,11 +55,16 @@ export const HomeUser = () => {
       valid_id_back: validIdBack,
       terms_and_conditions: termsAndCondition,
     };
-    axiosClient.post('/auth/update-access', data);
+    axiosClient
+      .post('/auth/update-access', data)
+      .then((res) => console.log(res))
+      .catch((e) => console.log(e));
   }
 
   useEffect(() => {
     setDoneTransaction(false);
+    setValidIdFront('../../../images/default_image.png');
+    setValidIdBack('../../../images/default_image.png');
     return () => {
       setRegistrationSuccess(false);
       setEmailVerified(false);
@@ -163,24 +168,57 @@ export const HomeUser = () => {
                 </div>
               </Alert>
               <Form onSubmit={handleUpdateAccessForm}>
-                <img
-                  src={validIdFront}
-                  className='float-end rounded d-flex justify-content-center p-3'
-                  style={{ height: '150px', width: '150px' }}
-                />
-                <Form.Group controlId='formFile' className='mb-3'>
-                  <Form.Label className='text-secondary'>
-                    Valid Government Id (Front)
-                  </Form.Label>
-                  <Form.Control type='file' id='formFile' />
-                </Form.Group>
+                <div className='d-flex align-items-center clearfix mb-3'>
+                  <Form.Group controlId='formFile' className='mb-3 w-100'>
+                    <Form.Label className='text-secondary'>
+                      Valid Government Id (Front)
+                    </Form.Label>
+                    <Form.Control
+                      type='file'
+                      id='formFile'
+                      onChange={onImageChangeFront}
+                    />
+                  </Form.Group>
+                  <div className='w-50'>
+                    <div className='float-end'>
+                      <p className='mb-0'>ID Preview (Front)</p>
+                      <img
+                        src={validIdFront}
+                        className='rounded p-3 float-end'
+                        style={{
+                          height: '150px',
+                          width: '150px',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-                <Form.Group controlId='formFile' className='mb-3'>
-                  <Form.Label className='text-secondary'>
-                    Valid Government Id (Back)
-                  </Form.Label>
-                  <Form.Control type='file' id='formFile' />
-                </Form.Group>
+                <div className='d-flex align-items-center clearfix'>
+                  <Form.Group controlId='formFile' className='w-100 mb-3'>
+                    <Form.Label className='text-secondary'>
+                      Valid Government Id (Back)
+                    </Form.Label>
+                    <Form.Control
+                      type='file'
+                      id='formFile'
+                      onChange={onImageChangeBack}
+                    />
+                  </Form.Group>
+                  <div className='w-50'>
+                    <div className='float-end'>
+                      <p className='mb-0'>ID Preview (Back)</p>
+                      <img
+                        src={validIdBack}
+                        className='rounded p-3 float-end'
+                        style={{
+                          height: '150px',
+                          width: '150px',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
 
                 <Form.Check
                   onChange={(e) => setTermsAndCondition(e.target.checked)}
@@ -188,11 +226,18 @@ export const HomeUser = () => {
                   id='termsAndCondition'
                   label={
                     <Form.Label
-                      className='text-secondary'
+                      className='text-secondary fw-light'
                       controlId='termsAndCondition'
                     >
                       I agree to the{' '}
-                      <a href='/termsAndCondition'> Terms and Condition</a>
+                      <a
+                        href='/termsAndCondition'
+                        target='_blank'
+                        className='fw-bold'
+                      >
+                        {' '}
+                        Terms and Condition
+                      </a>
                     </Form.Label>
                   }
                 />
