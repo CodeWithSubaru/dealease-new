@@ -240,24 +240,27 @@ export const ProductUser = () => {
           price: product.price_per_kg,
           date_joined: dateFormat(product.created_at),
           action: (
-            <div key={i} className='button-actions'>
+            <div key={i} className='button-actions d-flex'>
               <span
                 onClick={() => viewProductDetails(product.id)}
                 style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-primary px-2 me-2'
               >
-                <FontAwesomeIcon icon={faEye} className='mx-2' />
+                View
               </span>
               <span
                 onClick={() => ShowEditProductModal(product.id)}
                 style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-success px-2 me-2'
               >
-                <FontAwesomeIcon icon={faEdit} className='mx-2' />
+                Edit
               </span>
               <span
                 onClick={() => deleteProduct(product.id)}
                 style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-danger px-2 me-2'
               >
-                <FontAwesomeIcon icon={faTrash} className='mx-2' />
+                Delete
               </span>
             </div>
           ),
