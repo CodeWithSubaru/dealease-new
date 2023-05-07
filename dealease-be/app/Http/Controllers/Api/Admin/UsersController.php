@@ -79,16 +79,18 @@ class UsersController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_type = $role_type;
+        $user->save();
         $user->user_details_id = $user->user_id;
+        $user->save();
 
         if ($user) {
-            $user = UserDetail::create([
+            $userDetails = UserDetail::create([
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
                 'ext_name' => $request->ext_name,
-                'region' => $request->region,
-                'province' => $request->province,
-                'city' => $request->city,
+                'region' => 'Region III (Central Luzon)',
+                'province' => 'Bulacan',
+                'city' => 'Obando',
                 'barangay' => $request->barangay,
                 'street' => $request->street,
                 'birth_date' => $request->birth_date,
@@ -158,13 +160,10 @@ class UsersController extends Controller
             'role_type' => $role_type,
         ]);
 
-        UserDetail::where('user_id', $request->user_id)->update([
+        UserDetail::where('user_details_id', $request->user_id)->update([
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
             'ext_name' => $request->ext_name,
-            'region' => $request->region,
-            'province' => $request->province,
-            'city' => $request->province,
             'barangay' => $request->barangay,
             'street' => $request->street,
             'birth_date' => $request->birth_date,

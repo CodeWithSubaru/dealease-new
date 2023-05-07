@@ -20,7 +20,7 @@ export const ViewSingleUser = (props) => {
         contentClassName={'mt-0'}
       >
         <Modal.Header closeButton>
-          <Modal.Title>View User</Modal.Title>
+          <Modal.Title className='fw-bold'>View User</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

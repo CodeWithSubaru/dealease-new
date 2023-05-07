@@ -55,6 +55,7 @@ export const AddressProvider = ({ children }) => {
         getProvince,
         getCity,
         getBarangay,
+        setBarangay,
       }}
     >
       {children}

@@ -191,7 +191,7 @@ export function Users() {
           icon: 'success',
         }).then(() => {
           closeEditUserModal();
-          setUserDataTable();
+          setUserDataTable('/admin/users');
         });
       })
       .catch((e) => {
@@ -264,28 +264,7 @@ export function Users() {
           date_joined: dateFormat(user.created_at),
           action: (
             <div key={i} className='button-actions w-100 text-nowrap'>
-              <span
-                onClick={() => viewCompleteDetails(user.user_id)}
-                style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-primary px-2 me-2'
-              >
-                View
-              </span>
-              <span
-                onClick={() => findUser(user.user_id)}
-                style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-success px-2 me-2'
-              >
-                Edit
-              </span>
-              <span
-                onClick={() => deleteUser(user.user_id)}
-                style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-danger px-2 me-2'
-              >
-                Delete
-              </span>
-              {!user.verified_user && (
+              {!user.verified_user ? (
                 <span
                   onClick={() => verifyUser(user.user_id)}
                   style={{ cursor: 'pointer' }}
@@ -294,6 +273,30 @@ export function Users() {
                   {' '}
                   Accept
                 </span>
+              ) : (
+                <>
+                  <span
+                    onClick={() => viewCompleteDetails(user.user_id)}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded text-bg-primary px-2 me-2'
+                  >
+                    View
+                  </span>
+                  <span
+                    onClick={() => findUser(user.user_id)}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded text-bg-success px-2 me-2'
+                  >
+                    Edit
+                  </span>
+                  <span
+                    onClick={() => deleteUser(user.user_id)}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded text-bg-danger px-2 me-2'
+                  >
+                    Delete
+                  </span>
+                </>
               )}
             </div>
           ),
@@ -349,7 +352,7 @@ export function Users() {
               type='submit'
               form='createUserForm'
             >
-              Save Changes
+              Save
             </Button>
           </Modal.Footer>
         </Modal>
@@ -469,7 +472,7 @@ export function Users() {
               type='submit'
               form='createUserForm'
             >
-              Save Changes
+              Save
             </Button>
           </Modal.Footer>
         </Modal>

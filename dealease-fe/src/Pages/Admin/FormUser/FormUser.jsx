@@ -2,6 +2,7 @@ import Form from 'react-bootstrap/Form';
 import useAddressContext from '../../../Hooks/Context/AddressContext';
 import PUBLIC_URL from '../../../api/public_url';
 import { useEffect } from 'react';
+import { barangays } from 'select-philippines-address';
 
 export const FormUser = ({
   submitHook,
@@ -12,58 +13,7 @@ export const FormUser = ({
   errors,
   edit,
 }) => {
-  const {
-    regionData,
-    provinceData,
-    cityData,
-    barangayData,
-    getProvince,
-    getCity,
-    getBarangay,
-    region,
-  } = useAddressContext();
-
-  const province = (e) => {
-    edit
-      ? setUpdateUserDetails({
-          ...updateUserDetails,
-          // region: e.target.selectedOptions[0].text,
-          region: 'Region III (Central Luzon)',
-        })
-      : setUser({
-          ...user,
-          // region: e.target.selectedOptions[0].text
-          region: 'Region III (Central Luzon)',
-        });
-
-    getProvince(e);
-  };
-
-  const city = (e) => {
-    edit
-      ? setUpdateUserDetails({
-          ...updateUserDetails,
-          // province: e.target.selectedOptions[0].text,
-          province: 'Bulacan',
-        })
-      : setUser({
-          ...user,
-          // province: e.target.selectedOptions[0].text
-          province: 'Bulacan',
-        });
-    getCity(e);
-  };
-
-  const barangay = (e) => {
-    edit
-      ? setUpdateUserDetails({
-          ...updateUserDetails,
-          // city: e.target.selectedOptions[0].text,
-          city: 'Obando',
-        })
-      : setUser({ ...user, city: 'Obando' });
-    getBarangay(e);
-  };
+  const { barangayData, setBarangay } = useAddressContext();
 
   const brgy = (e) => {
     edit
@@ -86,7 +36,7 @@ export const FormUser = ({
     : 'Select User type';
 
   useEffect(() => {
-    region();
+    barangays('031414').then((barangay) => setBarangay(barangay));
   }, []);
 
   return (
@@ -130,7 +80,7 @@ export const FormUser = ({
                     })
                   : setUser({ ...user, prof_img: e.target.files[0] });
               }}
-              isInvalid={!!errors.prof_img}
+              isInvalid={!!errors?.prof_img}
             />
             <Form.Control.Feedback type='invalid'>
               {errors.prof_img &&
@@ -271,106 +221,6 @@ export const FormUser = ({
         <div className='address-details'>
           <h3>Address Details</h3>
           <hr />
-
-          <Form.Group className=''>
-            <Form.Label className='text-dark'>Region *</Form.Label>
-            <Form.Select
-              onSelect={region}
-              onChange={province}
-              value={
-                user.region
-                  ? user.region
-                  : updateUserDetails
-                  ? updateUserDetails.region
-                  : 'default'
-              }
-              isInvalid={!!errors.region}
-            >
-              <option value={'default'} disabled>
-                {edit ? updateUserDetails.region : 'Select Region'}
-              </option>
-              {regionData && (
-                // regionData.map((item) => (
-                <option
-                  key={regionData.region_code}
-                  value={regionData.region_code}
-                >
-                  {regionData.region_name}
-                </option>
-              )}
-            </Form.Select>
-            {errors && errors.region ? (
-              <Form.Control.Feedback type='invalid'>
-                {errors.region}
-              </Form.Control.Feedback>
-            ) : null}
-          </Form.Group>
-
-          <Form.Group className=''>
-            <Form.Label className='text-dark'>Province *</Form.Label>
-            <Form.Select
-              onChange={city}
-              value={
-                user.province
-                  ? user.province
-                  : updateUserDetails
-                  ? updateUserDetails.province
-                  : 'default'
-              }
-              isInvalid={!!errors.province}
-            >
-              <option value={'default'} disabled>
-                {edit ? updateUserDetails.region : 'Select Province'}
-              </option>
-              {provinceData && (
-                // provinceData.length > 0 &&
-                // provinceData.map((item) => (
-                <option
-                  key={provinceData.province_code}
-                  value={provinceData.province_code}
-                >
-                  {provinceData.province_name}
-                </option>
-              )}
-            </Form.Select>
-            {errors && errors.province ? (
-              <Form.Control.Feedback type='invalid'>
-                {errors.province}
-              </Form.Control.Feedback>
-            ) : null}
-          </Form.Group>
-
-          <Form.Group className=''>
-            <Form.Label className='text-dark'>City/Town *</Form.Label>
-            <Form.Select
-              onChange={barangay}
-              value={
-                user.city
-                  ? user.city
-                  : updateUserDetails
-                  ? updateUserDetails.city
-                  : 'default'
-              }
-              isInvalid={!!errors.city}
-            >
-              <option value={'default'} disabled>
-                {edit ? updateUserDetails.city : 'Select City/Town'}
-              </option>
-
-              {cityData && (
-                // cityData.length > 0 &&
-                // cityData.map((item) => (
-                <option key={cityData.city_code} value={cityData.city_code}>
-                  {cityData.city_name}
-                </option>
-              )}
-            </Form.Select>
-            {errors && errors.city ? (
-              <Form.Control.Feedback type='invalid'>
-                {errors.city}
-              </Form.Control.Feedback>
-            ) : null}
-          </Form.Group>
 
           <Form.Group className=''>
             <Form.Label className='text-dark'>Barangay *</Form.Label>
