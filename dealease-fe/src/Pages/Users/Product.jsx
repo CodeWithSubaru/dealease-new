@@ -99,6 +99,21 @@ export const ProductUser = () => {
     setErrors([]);
   };
 
+  // Show specific Product Modal
+  const [showSpecificProduct, setShowSpecificProduct] = useState(false);
+  const [showSpecificProductData, setShowSpecificProductData] = useState(false);
+
+  const viewProductDetails = (id) => {
+    axiosClient.get('/seller/product/' + id).then((res) => {
+      setShowSpecificProductData(res.data.data);
+      setShowSpecificProduct(true);
+    });
+  };
+
+  const closeSpecificProductModal = () => {
+    setShowSpecificProduct(false);
+  };
+
   // Show Edit Product Modal
   const [showEditProduct, setShowEditProduct] = useState(false);
   const ShowEditProductModal = (id) => {
@@ -108,7 +123,6 @@ export const ProductUser = () => {
       })
       .then((res) => {
         if (res) {
-          console.log(res.data.data);
           setTitle(res.data.data.title);
           setDescription(res.data.data.description);
           setImage(res.data.data.image);
@@ -119,6 +133,7 @@ export const ProductUser = () => {
         }
       });
   };
+
   const closeEditProductModal = () => {
     setShowEditProduct(false);
     setErrors([]);
@@ -127,26 +142,14 @@ export const ProductUser = () => {
   // Soft Delete Product
 
   const deleteProduct = (product_id) => {
-    console.log(product_id);
-    axiosClient
-      .post('product/' + product_id, data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          Delete();
-          setProductDataTable();
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        Notification({
-          title: 'Error',
-          message: 'Errors Found',
-          icon: 'error',
-        });
-        setErrors(e.response.data.errors);
-      });
+    Delete().then((resp) => {
+      if (resp.isConfirmed) {
+        axiosClient
+          .delete('/seller/product/' + product_id)
+          .catch((e) => console.log(e));
+        setProductDataTable();
+      }
+    });
   };
 
   // Submit Edit Form
@@ -277,13 +280,79 @@ export const ProductUser = () => {
 
   useEffect(() => {
     setProductDataTable();
-  }, [body.id]);
+  }, []);
 
   return (
     <>
       <div className='post_container mb-5'>
         <Container className='container_item px-5'>
-          <H1>PRODUCTS</H1>
+          <H1>Products</H1>
+          {/* Single View Product */}
+          <Modal
+            size='lg'
+            show={showSpecificProduct}
+            onHide={closeSpecificProductModal}
+            centered
+            keyboard
+            scrollable
+            contentClassName={'mt-0'}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title className='fw-bold'>View Product</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <Row>
+                <div className='text-center mb-5'>
+                  <img
+                    src={PUBLIC_URL + 'images/' + showSpecificProductData.image}
+                    style={{ width: '100px' }}
+                    className='rounded'
+                  />
+                </div>
+                <div className='d-flex justify-content-center'>
+                  <div className='d-flex flex-column mx-auto'>
+                    <div>
+                      <p className='text-secondary mb-0'>Product Name</p>
+                      <p className='text-black'>
+                        {showSpecificProductData.title}
+                      </p>
+                    </div>
+                    <div>
+                      <p className='text-secondary mb-0'>Product Description</p>
+                      <p className='text-black'>
+                        {showSpecificProductData.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className='d-flex flex-column mx-auto'>
+                    <div>
+                      <p className='text-secondary mb-0'>Stocks (in kg)</p>
+                      <p className='text-black'>
+                        {showSpecificProductData.stocks_per_kg}
+                      </p>
+                    </div>
+                    <div>
+                      <p className='text-secondary mb-0'> Price (per kg)</p>
+                      <p className='text-black'>
+                        {showSpecificProductData.price_per_kg}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeSpecificProductModal}
+              >
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
           <Modal
             size='lg'
             show={showCreateProduct}
@@ -393,10 +462,19 @@ export const ProductUser = () => {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='secondary' onClick={closeCreateProductModal}>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeCreateProductModal}
+              >
                 Close
               </Button>
-              <Button variant='primary' type='submit' form='createProductForm'>
+              <Button
+                variant='primary'
+                className='rounded'
+                type='submit'
+                form='createProductForm'
+              >
                 Add
               </Button>
             </Modal.Footer>
@@ -532,7 +610,11 @@ export const ProductUser = () => {
             header={header}
             body={body}
             button={
-              <Button variant='primary' onClick={showCreateProductModal}>
+              <Button
+                variant='primary'
+                className='rounded'
+                onClick={showCreateProductModal}
+              >
                 Add Product
               </Button>
             }
