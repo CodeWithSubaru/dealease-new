@@ -71,6 +71,7 @@ export const ProductUser = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
+  const [imageDefault, setImageDefault] = useState('');
   const [stocks_per_kg, setStocks] = useState('');
   const [price_per_kg, setPrice] = useState('');
   const data = {
@@ -247,21 +248,21 @@ export const ProductUser = () => {
               <span
                 onClick={() => viewProductDetails(product.id)}
                 style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-primary px-2 me-2'
+                className='badge rounded text-bg-primary px-2 me-2 btn btn-primary'
               >
                 View
               </span>
               <span
                 onClick={() => ShowEditProductModal(product.id)}
                 style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-success px-2 me-2'
+                className='badge rounded text-bg-success px-2 me-2 btn'
               >
                 Edit
               </span>
               <span
                 onClick={() => deleteProduct(product.id)}
                 style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-danger px-2 me-2'
+                className='badge rounded text-bg-danger px-2 me-2 btn'
               >
                 Delete
               </span>
@@ -278,8 +279,15 @@ export const ProductUser = () => {
     navigate('/home');
   }
 
+  function onImageChange(e) {
+    if (e.target.files && e.target.files[0]) {
+      setImageDefault(URL.createObjectURL(e.target.files[0]));
+    }
+  }
+
   useEffect(() => {
     setProductDataTable();
+    setImageDefault(PUBLIC_URL + 'images/' + 'default_profile.jpg');
   }, []);
 
   return (
@@ -313,13 +321,17 @@ export const ProductUser = () => {
                 <div className='d-flex justify-content-center'>
                   <div className='d-flex flex-column mx-auto'>
                     <div>
-                      <p className='text-secondary mb-0'>Product Name</p>
+                      <p className='text-secondary mb-0 fw-bold'>
+                        Product Name
+                      </p>
                       <p className='text-black'>
                         {showSpecificProductData.title}
                       </p>
                     </div>
                     <div>
-                      <p className='text-secondary mb-0'>Product Description</p>
+                      <p className='text-secondary mb-0 fw-bold'>
+                        Product Description
+                      </p>
                       <p className='text-black'>
                         {showSpecificProductData.description}
                       </p>
@@ -327,13 +339,18 @@ export const ProductUser = () => {
                   </div>
                   <div className='d-flex flex-column mx-auto'>
                     <div>
-                      <p className='text-secondary mb-0'>Stocks (in kg)</p>
+                      <p className='text-secondary mb-0 fw-bold'>
+                        Stocks (in kg)
+                      </p>
                       <p className='text-black'>
                         {showSpecificProductData.stocks_per_kg}
                       </p>
                     </div>
                     <div>
-                      <p className='text-secondary mb-0'> Price (per kg)</p>
+                      <p className='text-secondary mb-0 fw-bold'>
+                        {' '}
+                        Price (per kg)
+                      </p>
                       <p className='text-black'>
                         {showSpecificProductData.price_per_kg}
                       </p>
@@ -375,15 +392,6 @@ export const ProductUser = () => {
                 className='mb-5'
               >
                 <Row>
-                  {/* <Col>
-                <div className='image-container'>
-                  <img
-                    src='/images/1.jpg'
-                    alt=''
-                    className='imagepost float-end mb-4'
-                  />
-                </div>
-              </Col> */}
                   <Col>
                     <Form.Group className='mt-2'>
                       <Form.Label className='text-black'>
@@ -420,11 +428,11 @@ export const ProductUser = () => {
                         type='file'
                         className='form-control mb-3'
                         autoComplete='none'
-                        onChange={(e) => setImage(e.target.files[0])}
+                        onChange={onImageChange}
                       />
                     </Form.Group>
                     <Form.Group className='mt-2'>
-                      <img src={image} />
+                      <img src={imageDefault} width={100} className='rounded' />
                     </Form.Group>
 
                     <Row>
@@ -491,7 +499,7 @@ export const ProductUser = () => {
             contentClassName={'mt-0'}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Edit Product</Modal.Title>
+              <Modal.Title className='fw-bold'>Edit Product</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -503,18 +511,9 @@ export const ProductUser = () => {
                 className='mb-5'
               >
                 <Row>
-                  {/* <Col>
-                <div className='image-container'>
-                  <img
-                    src='/images/1.jpg'
-                    alt=''
-                    className='imagepost float-end mb-4'
-                  />
-                </div>
-              </Col> */}
                   <Col>
                     <Form.Group className='mt-2'>
-                      <Form.Label className='text-black'>
+                      <Form.Label className='text-secondary fw-bold'>
                         Product Name
                       </Form.Label>
                       <Form.Control
@@ -526,7 +525,7 @@ export const ProductUser = () => {
                       />
                     </Form.Group>
                     <Form.Group className='mt-2'>
-                      <Form.Label className='text-black'>
+                      <Form.Label className='text-secondary fw-bold'>
                         Product Description
                       </Form.Label>
                       <Form.Control
@@ -541,25 +540,28 @@ export const ProductUser = () => {
                       />
                     </Form.Group>
                     <Form.Group className='mt-2'>
-                      <Form.Label className='text-black'>
+                      <Form.Label className='text-secondary fw-bold'>
                         Product Image
                       </Form.Label>
                       <Form.Control
                         type='file'
                         className='form-control mb-3'
                         autoComplete='none'
-                        // value={image ? image : ''}
-                        onChange={(e) => setImage(e.target.files[0])}
+                        onChange={() => {}}
                       />
                     </Form.Group>
                     <Form.Group className='mt-2'>
-                      <img src={image} />
+                      <img
+                        src={PUBLIC_URL + 'images/' + image}
+                        width={100}
+                        className='rounded'
+                      />
                     </Form.Group>
 
                     <Row>
                       <Col>
                         <Form.Group className=''>
-                          <Form.Label className='text-black'>
+                          <Form.Label className='text-secondary fw-bold'>
                             Stocks (in kg)
                           </Form.Label>
                           <Form.Control
@@ -573,7 +575,7 @@ export const ProductUser = () => {
                       </Col>
                       <Col>
                         <Form.Group className=''>
-                          <Form.Label className='text-black'>
+                          <Form.Label className='text-secondary fw-bold'>
                             Price (per kg)
                           </Form.Label>
                           <Form.Control
@@ -597,10 +599,19 @@ export const ProductUser = () => {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='secondary' onClick={closeEditProductModal}>
+              <Button
+                variant='secondary'
+                className='rounded'
+                onClick={closeEditProductModal}
+              >
                 Close
               </Button>
-              <Button variant='primary' type='submit' form='editProductForm'>
+              <Button
+                variant='primary'
+                className='rounded'
+                type='submit'
+                form='editProductForm'
+              >
                 Update
               </Button>
             </Modal.Footer>
