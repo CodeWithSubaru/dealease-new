@@ -140,10 +140,14 @@ class AuthController extends Controller
             $request->file('valid_id_back')->move(public_path('images'), $imageNameBack);
         }
 
-        AccountVerificationRequirement::create([
+        $AccountVerificationRequirement =  AccountVerificationRequirement::create([
             'valid_id_1' => $imageNameFront,
             'valid_id_2' => $imageNameBack
         ]);
+
+        if ($AccountVerificationRequirement) {
+            User::where('user_id', auth()->id())->update(['avr_id' => $AccountVerificationRequirement->avr_id]);
+        }
 
         return response()->json(['status' => 'Request Submitted Successfully'], 200);
     }

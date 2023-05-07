@@ -55,21 +55,37 @@ export function Users() {
   const [singleUser, setSingleUser] = useState(null);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState('');
+  const [numberOfUsers, setNumberOfUsers] = useState(0);
+  const [numberOfUnverifiedUser, setNumberOfUnverifiedUser] = useState(0);
+
+  function fetchNumberOfUsers() {
+    axiosClient.get('/admin/users/number-users').then((res) => {
+      setNumberOfUsers(res.data);
+      console.log(res);
+    });
+  }
+
+  function fetchNumberOfUnverifiedUsers() {
+    axiosClient
+      .get('/admin/users/number-unverified-user')
+      .then((res) => setNumberOfUnverifiedUser(res.data));
+  }
 
   // delete user
-  const deleteUser = (user_id) => {
+  const deleteUser = (user_id, uri) => {
     Delete().then((resp) => {
       if (resp.isConfirmed) {
         axiosClient
           .delete('/admin/users/' + user_id)
           .catch((e) => console.log(e));
-        setUserDataTable();
+        setUserDataTable(uri);
       }
     });
   };
 
   // verify user
-  function verifyUser(user_id) {
+  function verifyUser(user_id, uri) {
     Finalize({
       text: "You won't be able to revert this!",
       confirmButton: 'Yes, Update User',
@@ -80,7 +96,7 @@ export function Users() {
           .post('/admin/verify-user/' + user_id)
           .then((res) => console.log(e))
           .catch((e) => console.log(e));
-        setUserDataTable();
+        setUserDataTable(uri);
       }
     });
   }
@@ -100,18 +116,14 @@ export function Users() {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
-        setErrors([]);
         setUser({
-          profile_image: '',
+          prof_img: '',
           first_name: '',
           middle_name: '',
           last_name: '',
           ext_name: '',
           birth_date: '',
           contact_number: '',
-          region: '',
-          province: '',
-          city: '',
           barangay: '',
           street: '',
           email: '',
@@ -124,7 +136,7 @@ export function Users() {
           message: res.data.message,
           icon: 'success',
         }).then(() => {
-          setUserDataTable('/admin/users');
+          setUserDataTable(url);
           closeCreateUserModal();
         });
       })
@@ -136,6 +148,7 @@ export function Users() {
         });
         setErrors(e.response.data.errors);
       });
+    setErrors([]);
   };
 
   // Display single user details
@@ -177,7 +190,7 @@ export function Users() {
     });
   };
 
-  const editUser = (e) => {
+  const editUser = (e, uri) => {
     e.preventDefault();
 
     axiosClient
@@ -191,7 +204,7 @@ export function Users() {
           icon: 'success',
         }).then(() => {
           closeEditUserModal();
-          setUserDataTable('/admin/users');
+          setUserDataTable(url);
         });
       })
       .catch((e) => {
@@ -227,6 +240,7 @@ export function Users() {
   // display user details in table
   function setUserDataTable(uri) {
     setLoading(true);
+    setUrl(uri);
     axiosClient.get(uri).then((resp) => {
       const user = resp.data.listOfUser.map((user, i) => {
         return {
@@ -241,13 +255,21 @@ export function Users() {
               <div>
                 <p className='mb-0'>
                   {user.first_name + ' '}
-                  {user.user_details.middle_name
-                    ? user.user_details.middle_name + '. '
+                  {user.user_details
+                    ? user.user_details.middle_name
+                      ? user.user_details.middle_name + '. '
+                      : ' '
                     : ''}
-                  {' ' + user.user_details.last_name
+                  {user.user_details
                     ? user.user_details.last_name
+                      ? user.user_details.last_name
+                      : ' '
                     : ' '}{' '}
-                  {user.user_details.ext_name}
+                  {user.user_details
+                    ? user.user_details.ext_name
+                      ? user.user_details.ext_name
+                      : ' '
+                    : ' '}
                 </p>
                 <span
                   className={
@@ -264,17 +286,9 @@ export function Users() {
           date_joined: dateFormat(user.created_at),
           action: (
             <div key={i} className='button-actions w-100 text-nowrap'>
-              {!user.verified_user ? (
-                <span
-                  onClick={() => verifyUser(user.user_id)}
-                  style={{ cursor: 'pointer' }}
-                  className='badge rounded text-bg-secondary px-2 me-2'
-                >
-                  {' '}
-                  Accept
-                </span>
-              ) : (
+              {uri == '/admin/users' ? (
                 <>
+                  {' '}
                   <span
                     onClick={() => viewCompleteDetails(user.user_id)}
                     style={{ cursor: 'pointer' }}
@@ -283,25 +297,36 @@ export function Users() {
                     View
                   </span>
                   <span
-                    onClick={() => findUser(user.user_id)}
+                    onClick={() => findUser(user.user_id, uri)}
                     style={{ cursor: 'pointer' }}
                     className='badge rounded text-bg-success px-2 me-2'
                   >
                     Edit
                   </span>
                   <span
-                    onClick={() => deleteUser(user.user_id)}
+                    onClick={() => deleteUser(user.user_id, uri)}
                     style={{ cursor: 'pointer' }}
                     className='badge rounded text-bg-danger px-2 me-2'
                   >
                     Delete
                   </span>
                 </>
+              ) : (
+                <span
+                  onClick={() => verifyUser(user.user_id, uri)}
+                  style={{ cursor: 'pointer' }}
+                  className='badge rounded text-bg-secondary px-2 me-2'
+                >
+                  {' '}
+                  Accept
+                </span>
               )}
             </div>
           ),
         };
       });
+      fetchNumberOfUsers();
+      fetchNumberOfUnverifiedUsers();
       setLoading(false);
       setBody(user);
     });
@@ -309,6 +334,8 @@ export function Users() {
 
   useEffect(() => {
     setUserDataTable('/admin/users');
+    fetchNumberOfUsers();
+    fetchNumberOfUnverifiedUsers();
   }, [body.id]);
 
   return (
@@ -370,7 +397,7 @@ export function Users() {
                   className='badge rounded-pill text-bg-primary position-relative'
                   style={{ top: '-8px', left: '0px' }}
                 >
-                  1
+                  {numberOfUsers}
                 </span>
               </Nav.Link>
             </Nav.Item>
@@ -386,7 +413,7 @@ export function Users() {
                   className='badge rounded-pill text-bg-primary position-relative'
                   style={{ top: '-8px', left: '0px' }}
                 >
-                  2
+                  {numberOfUnverifiedUser}
                 </span>
               </Nav.Link>
             </Nav.Item>
@@ -445,7 +472,7 @@ export function Users() {
           contentClassName={'mt-0'}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Update User</Modal.Title>
+            <Modal.Title className='fw-bold'>Update User</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <FormUser

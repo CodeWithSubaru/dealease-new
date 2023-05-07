@@ -27,8 +27,8 @@ export const FormUser = ({
   const userTypeValue = edit
     ? updateUserDetails.role_type === 'Admin'
       ? updateUserDetails.role_type
-      : updateUserDetails.is_seller === 'Buyer_Seller' &&
-        updateUserDetails.is_buyer === 'Buyer_Seller'
+      : updateUserDetails.is_seller === 'Rider' &&
+        updateUserDetails.is_buyer === 'Rider'
       ? updateUserDetails.role_type
       : updateUserDetails.is_seller === 'Seller'
       ? updateUserDetails.is_seller
@@ -41,8 +41,6 @@ export const FormUser = ({
 
   return (
     <>
-      <h1>{edit ? 'Edit' : 'New'} User</h1>
-
       <Form onSubmit={submitHook} id='createUserForm'>
         <div className='personal-details'>
           <h3>Personal Details</h3>
@@ -80,7 +78,7 @@ export const FormUser = ({
                     })
                   : setUser({ ...user, prof_img: e.target.files[0] });
               }}
-              isInvalid={!!errors?.prof_img}
+              isInvalid={!!errors.prof_img}
             />
             <Form.Control.Feedback type='invalid'>
               {errors.prof_img &&
@@ -356,30 +354,22 @@ export const FormUser = ({
           <Form.Group className=''>
             <Form.Label className='text-dark'>User type *</Form.Label>
             <Form.Select
-              value={
-                user.user_type
-                  ? user.user_type
-                  : updateUserDetails
-                  ? updateUserDetails.user_type
-                  : 'default'
-              }
               onChange={(e) => {
                 edit
                   ? setUpdateUserDetails({
                       ...updateUserDetails,
-                      user_type: String(e.target.value).toLowerCase(),
+                      user_type: e.target.value,
                     })
                   : setUser({ ...user, user_type: e.target.value });
               }}
               isInvalid={!!errors.user_type}
             >
               <option value={'default'} disabled>
-                {userTypeValue}
+                Select User Type
               </option>
-              <option value={'admin'}>Admin</option>
-              <option value={'buyer_seller'}>Buyer + Seller</option>
-              <option value={'buyer'}>Buyer</option>
-              <option value={'seller'}>Seller</option>
+              <option value={3}>Admin</option>
+              <option value={2}>Rider</option>
+              <option value={1}>User</option>
             </Form.Select>
             {errors && errors.user_type ? (
               <Form.Control.Feedback type='invalid'>

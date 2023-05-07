@@ -19,14 +19,4 @@ class AnalyticsControllers extends Controller
             ->get();
         return $usersCountByMonth;
     }
-
-    public function getNumOfMessages()
-    {
-        $messageCountByMonth = Message::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, COUNT(*) count'))
-            ->groupBy('year', 'month')
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
-        return $messageCountByMonth;
-    }
 }

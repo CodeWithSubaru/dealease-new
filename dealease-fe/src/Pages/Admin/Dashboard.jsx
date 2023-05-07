@@ -136,14 +136,22 @@ export function Dashboard() {
               />
               <div>
                 <p className='mb-0'>
-                  {user.first_name +
-                    ' ' +
-                    user.user_details.middle_name +
-                    '.' +
-                    ' ' +
-                    user.user_details.last_name +
-                    ' ' +
-                    user.user_details.ext_name}
+                {user.first_name + ' '}
+                  {user.user_details
+                    ? user.user_details.middle_name
+                      ? user.user_details.middle_name + '. '
+                      : ' '
+                    : ''}
+                  {user.user_details
+                    ? user.user_details.last_name
+                      ? user.user_details.last_name
+                      : ' '
+                    : ' '}{' '}
+                  {user.user_details
+                    ? user.user_details.ext_name
+                      ? user.user_details.ext_name
+                      : ' '
+                    : ' '}
                 </p>
                 <span className='badge rounded-pill text-bg-primary'>
                   {switchUserType(user)}
@@ -240,12 +248,12 @@ export function Dashboard() {
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
-        label: 'Messages',
+        label: 'Pending Transactions',
         data: countByCategory(countOfMessages, labels),
         backgroundColor: 'green',
       },
       {
-        label: 'Total Reported Users',
+        label: 'Total Transactions',
         data: [0],
         backgroundColor: 'blue',
       },
@@ -369,7 +377,7 @@ export function Dashboard() {
               />
 
               <CardDetails
-                title='Reported Users'
+                title='Total Transactions'
                 totalNumber={2}
                 icon={faUserLargeSlash}
                 color='bg-secondary'
@@ -432,19 +440,19 @@ function CardDetails(props) {
   return (
     <Card
       className='card-details rounded p-4 my-4 d-flex justify-content-between'
-      style={{ backgroundColor: '#fff', width: '28%' }}
+      style={{ backgroundColor: '#fff', width: '32%' }}
     >
-      <div className='d-flex justify-content-between flex-grow-1'>
-        <div>
-          <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
-          <p>{props.title}</p>
-        </div>
-        <div className='d-flex align-items-center mb-5'>
+      <div className='d-flex justify-content-between'>
+        <div className='d-flex mb-5'>
           <FontAwesomeIcon
             icon={props.icon}
             className={'mx-2 rounded-circle text-white p-3 ' + props.color}
             style={{ width: '45px', height: '45px' }}
           />
+        </div>
+        <div className='d-flex flex-column align-items-end'>
+          <p className='text-nowrap'>{props.title}</p>
+          <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
         </div>
       </div>
     </Card>

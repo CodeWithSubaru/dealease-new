@@ -1,5 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import PUBLIC_URL from '../../api/public_url';
 
 export const ViewSingleUser = (props) => {
   function dateFormat(date) {
@@ -26,16 +27,29 @@ export const ViewSingleUser = (props) => {
         <Modal.Body>
           {props.data ? (
             <div key={props.data.user_id}>
+              <div>
+                Submitted Id (Front):{' '}
+                <img src={PUBLIC_URL + 'images/' + props.img} alt='' />
+              </div>
+
+              <div>
+                Submitted Id (Back):{' '}
+                <img src={PUBLIC_URL + 'images/' + props.img} alt='' />
+              </div>
               <h4> Full Name</h4>
               <p>
                 {props.data ? props.data.first_name : ''}{' '}
-                {props.data
+                {props.data.user_details
                   ? props.data.user_details.middle_name
-                    ? props.data.user_details.middle_name.length[0] + '.'
+                    ? props.data.user_details.middle_name[0] + '.'
                     : ''
                   : ''}{' '}
-                {props.data ? props.data.user_details.last_name : ''}{' '}
-                {props.data ? props.data.user_details.ext_name : ''}
+                {props.data.user_details
+                  ? props.data.user_details.last_name
+                  : ''}{' '}
+                {props.data.user_details
+                  ? props.data.user_details.ext_name
+                  : ''}
               </p>
               <h4>User Account Details</h4>
               <p>{props.data ? props.data.email : ''}</p>
@@ -57,7 +71,6 @@ export const ViewSingleUser = (props) => {
                   ? props.data.user_details.contact_number
                   : ''}
               </p>
-
               <h4>Birthday</h4>
               <p>
                 {props.data.user_details

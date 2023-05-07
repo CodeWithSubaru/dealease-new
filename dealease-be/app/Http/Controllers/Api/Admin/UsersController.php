@@ -13,6 +13,18 @@ use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
+    public function numberOfUsers()
+    {
+        $listOfUsers = User::with('user_details')->where('role_type', '!=', 3)->latest()->get();
+        return $listOfUsers->count();
+    }
+
+    public function numberOfUnverifiedUser()
+    {
+        $listOfUsers = User::with('user_details')->where('role_type', '!=', 3)->where('avr_id', '!=', null)->where('verified_user', 0)->latest()->get();
+        return $listOfUsers->count();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -24,13 +36,13 @@ class UsersController extends Controller
 
     public function getTenUsers()
     {
-        $listOfUsers = User::with('user_details')->take('10')->where('role_type', '!=', 1)->latest('created_at')->get();
+        $listOfUsers = User::with('user_details')->take('10')->where('role_type', '!=', 1)->latest()->get();
         return response()->json(['listOfUser' => $listOfUsers], 200);
     }
 
     public function unverifiedUsers()
     {
-        $listOfUsers = User::with('user_details')->where('role_type', '!=', 3)->where('verified_user', 0)->latest()->get();
+        $listOfUsers = User::with('user_details')->where('role_type', '!=', 3)->where('avr_id', '!=', null)->where('verified_user', 0)->latest()->get();
         return response()->json(['listOfUser' => $listOfUsers], 200);
     }
 
@@ -43,9 +55,6 @@ class UsersController extends Controller
             'prof_img' => ['image'],
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
-            'region' => ['required'],
-            'province' => ['required'],
-            'city' => ['required'],
             'barangay' => ['required'],
             'birth_date' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
@@ -53,16 +62,6 @@ class UsersController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'user_type' => ['required'],
         ]);
-
-        $explodedUserType = explode(' ', $request->user_type);
-
-        if ($explodedUserType[0] === 'User') {
-            $role_type = 1;
-        } elseif ($explodedUserType[0] === 'Rider') {
-            $role_type = 2;
-        } elseif ($explodedUserType[0] === 'Admin') {
-            $role_type = 3;
-        }
 
         $imageName = 'default_profile.jpg';
 
@@ -78,10 +77,10 @@ class UsersController extends Controller
         $user->first_name = $request->first_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->role_type = $role_type;
+        $user->role_type = $request->user_type;
+        $user->user_details_id = 0;
         $user->save();
-        $user->user_details_id = $user->user_id;
-        $user->save();
+        $user->update(['user_details_id' => $user->user_id]);
 
         if ($user) {
             $userDetails = UserDetail::create([
@@ -120,29 +119,11 @@ class UsersController extends Controller
             'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'region' => ['required'],
-            'province' => ['required'],
-            'city' => ['required'],
             'barangay' => ['required'],
             'street' => ['required'],
             'birth_date' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
         ]);
-
-        if (!isset($request->user_type)) {
-            $user = User::find($request->user_id);
-            $is_buyer = ($user->is_buyer == 'Buyer' ? 1 : $user->is_buyer == 'Buyer_seller1') ? 1 : 0;
-            $is_seller = ($user->is_seller == 'Seller' ? 1 : $user->is_seller == 'Buyer_seller2') ? 1 : 0;
-            $role_type = $user->role_type == 'Admin' ? 1 : 0;
-        }
-
-        if ($request->user_type === 'User') {
-            $role_type = 1;
-        } elseif ($request->user_type === 'Rider') {
-            $role_type = 2;
-        } elseif ($request->user_type === 'Admin') {
-            $role_type = 3;
-        }
 
         $imageName = User::find($request->user_id)->prof_img;
 
@@ -151,6 +132,17 @@ class UsersController extends Controller
             $imageName = time() . '.' . $request->file('prof_img')->getClientOriginalExtension();
 
             $request->file('prof_img')->move(public_path('images'), $imageName);
+        }
+
+        $role_type = User::where('user_id', $request->user_id)->get(['role_type'])[0]->role_type;
+
+        if ($request->user_type === 'User' || $request->user_type == 1 || $role_type == 'User') {
+            $role_type = 1;
+        }
+        if ($request->user_type === 'Rider' || $request->user_type == 2 || $role_type == 'Rider') {
+            $role_type = 2;
+        } elseif ($request->user_type === 'Admin' || $request->user_type == 3 || $role_type == 'Admin') {
+            $role_type = 3;
         }
 
         User::where('user_id', $request->user_id)->update([
