@@ -11,7 +11,7 @@ class ProductFilterController extends Controller
 
     public function thisDay()
     {
-        return Product::whereDate('created_at', Carbon::now())->get();
+        return Product::whereDate('created_at', Carbon::now())->latest('created_at')->get();
     }
 
     public function availableProducts()

@@ -41,7 +41,9 @@ export function SuccessfulUser() {
               <h4 className='fw-light mb-3'> Customer Information</h4>
               <div className='d-flex justify-content-between'>
                 <div>
-                  <h6 className='fw-light mb-1 text-secondary'>Information</h6>
+                  <h6 className='fw-light mb-1 text-secondary'>
+                    Customer Details
+                  </h6>
                   <p>
                     {' '}
                     {user.first_name}{' '}
@@ -57,11 +59,19 @@ export function SuccessfulUser() {
                 </div>
               </div>
               <div>
+                <h6 className='fw-light mb-1 text-secondary'>Contact Number</h6>
+                <p>
+                  {Object.keys(otherAddress).length > 0
+                    ? otherAddress.shippingFee.contact_number
+                    : ''}
+                </p>
+              </div>
+              <div>
                 <h6 className='fw-light mb-1 text-secondary'>
                   Shipping Address
                 </h6>
 
-                {otherAddress ? (
+                {Object.keys(otherAddress).length > 0 ? (
                   <>
                     <span className='d-block'>
                       {otherAddress.shippingFee.street}
@@ -72,9 +82,19 @@ export function SuccessfulUser() {
                   </>
                 ) : (
                   <>
-                    <span className='d-block'>{user.user_details.street}</span>
                     <span className='d-block'>
-                      {user.user_details.barangay}
+                      {user.user_details
+                        ? user.user_details.street
+                          ? user.user_details.street
+                          : ''
+                        : ''}
+                    </span>
+                    <span className='d-block'>
+                      {user.user_details
+                        ? user.user_details.barangay
+                          ? user.user_details.barangay
+                          : ''
+                        : ''}
                     </span>
                   </>
                 )}

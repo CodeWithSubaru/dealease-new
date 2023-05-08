@@ -114,6 +114,11 @@ export function OrdersBuyer() {
 
   const header = [
     {
+      title: 'Id',
+      prop: 'id',
+      isSortable: true,
+    },
+    {
       title: 'Order Number',
       prop: 'order_number',
       isSortable: true,
@@ -151,6 +156,7 @@ export function OrdersBuyer() {
     axiosClient.get('/orders/orders-user/buyer/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
+          id: i + 1,
           order_number: order.order_number,
           seller_name: (
             <div
@@ -370,6 +376,11 @@ export function OrdersSeller() {
 
   const header = [
     {
+      title: 'Id',
+      prop: 'id',
+      isSortable: true,
+    },
+    {
       title: 'Order Number',
       prop: 'order_number',
       isSortable: true,
@@ -407,6 +418,7 @@ export function OrdersSeller() {
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
+          id: i + 1,
           order_number: order.order_number,
           buyer_name: (
             <div

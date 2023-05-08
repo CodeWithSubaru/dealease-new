@@ -30,7 +30,7 @@ class OrderController extends Controller
         return OrderTransaction::with('seller', 'seller.user_details')
             ->where('order_trans_status', $order_status)
             ->where('buyer_id', auth()->id())
-            ->latest()
+            ->latest('order_number')
             ->get();
     }
 
@@ -39,6 +39,7 @@ class OrderController extends Controller
         return OrderTransaction::with('buyer', 'buyer.user_details',)
             ->where('order_trans_status', $order_status)
             ->where('seller_id', auth()->id())
+            ->latest('order_number')
             ->get();
     }
 
@@ -110,6 +111,12 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
+        $request->validate([
+            'shippingFee.barangay' => 'required',
+            'shippingFee.street' => 'required',
+            'shippingFee.contact_number' => ['required', 'min:11', 'max:11'],
+        ]);
+
         $orderedItems = array_values($request->cartHistoryBySellerId);
         for ($i = 0; $i < count($orderedItems); $i++) {
             $orderNumber = $this->generateOrderNumber();

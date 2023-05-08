@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('shell_transactions', function (Blueprint $table) {
             $table->id('shells_trans_id');
             $table->foreignId('user_id');
-            $table->string('checkout_url')->nullable();
             $table->string('payment_number');
             $table->char('payment_status', 1);
             $table->text('payment_description');
