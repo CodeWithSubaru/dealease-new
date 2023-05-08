@@ -9,7 +9,7 @@ export function Transactions(props) {
   return (
     <>
       <div className='mx-auto w-75' style={{ minHeight: '85vh' }}>
-        <Card className='p-5 h-100 mb-5'>
+        <Card className='p-5 h-100 my-5 mb-5'>
           <Tab.Container id='left-tabs-example' defaultActiveKey='first'>
             <Nav justify variant='tabs' defaultActiveKey='/home'>
               <Nav.Item className='mb-0'>

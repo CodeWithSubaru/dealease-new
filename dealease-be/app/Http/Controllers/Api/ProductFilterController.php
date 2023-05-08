@@ -8,20 +8,10 @@ use App\Http\Controllers\Controller;
 
 class ProductFilterController extends Controller
 {
-    public function thisWeek()
-    {
-        $startWeek = Carbon::now()->startOfWeek();
-        $endWeek   = Carbon::now()->endOfWeek();
-
-        return Product::query()
-            ->whereBetween('created_at', [$startWeek, $endWeek])
-            ->where('stocks_per_kg', '>', '0')
-            ->get();
-    }
 
     public function thisDay()
     {
-        return Product::whereDate('created_at', date("Y/m/d"))->where('stocks_per_kg', '>', '0')->get();
+        return Product::whereDate('created_at', Carbon::now())->get();
     }
 
     public function availableProducts()
