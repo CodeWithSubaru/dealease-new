@@ -388,8 +388,6 @@ export const ProductUser = () => {
               <Form
                 id='createProductForm'
                 onSubmit={handlePost}
-                errors={errors}
-                setErrors={setErrors}
                 className='mb-5'
               >
                 <Row>
@@ -404,7 +402,11 @@ export const ProductUser = () => {
                         autoComplete='none'
                         value={title ? title : ''}
                         onChange={(e) => setTitle(e.target.value)}
+                        isInvalid={!!errors.title}
                       />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.title}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className='mt-2'>
                       <Form.Label className='text-black'>
@@ -419,7 +421,11 @@ export const ProductUser = () => {
                         autoComplete='none'
                         value={description ? description : ''}
                         onChange={(e) => setDescription(e.target.value)}
+                        isInvalid={!!errors.description}
                       />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.description}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className='mt-2'>
                       <Form.Label className='text-black'>
@@ -430,7 +436,11 @@ export const ProductUser = () => {
                         className='form-control mb-3'
                         autoComplete='none'
                         onChange={onImageChange}
+                        isInvalid={!!errors.image}
                       />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.image}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className='mt-2'>
                       <img src={imageDefault} width={100} className='rounded' />
@@ -448,7 +458,11 @@ export const ProductUser = () => {
                             autoComplete='none'
                             value={stocks_per_kg ? stocks_per_kg : ''}
                             onChange={(e) => setStocks(e.target.value)}
+                            isInvalid={!!errors.stocks_per_kg}
                           />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.stocks_per_kg}
+                          </Form.Control.Feedback>
                         </Form.Group>
                       </Col>
                       <Col>
@@ -462,7 +476,11 @@ export const ProductUser = () => {
                             autoComplete='none'
                             value={price_per_kg ? price_per_kg : ''}
                             onChange={(e) => setPrice(e.target.value)}
+                            isInvalid={!!errors.price_per_kg}
                           />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.price_per_kg}
+                          </Form.Control.Feedback>
                         </Form.Group>
                       </Col>
                     </Row>
@@ -507,8 +525,6 @@ export const ProductUser = () => {
               <Form
                 id='editProductForm'
                 onSubmit={handlePostEdit}
-                errors={errors}
-                setErrors={setErrors}
                 className='mb-5'
               >
                 <Row>
@@ -523,7 +539,11 @@ export const ProductUser = () => {
                         autoComplete='none'
                         value={title ? title : ''}
                         onChange={(e) => setTitle(e.target.value)}
+                        isInvalid={!!errors.title}
                       />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.title}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className='mt-2'>
                       <Form.Label className='text-secondary fw-bold'>
@@ -538,7 +558,11 @@ export const ProductUser = () => {
                         autoComplete='none'
                         value={description ? description : ''}
                         onChange={(e) => setDescription(e.target.value)}
+                        isInvalid={!!errors.description}
                       />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.description}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className='mt-2'>
                       <Form.Label className='text-secondary fw-bold'>
@@ -549,7 +573,11 @@ export const ProductUser = () => {
                         className='form-control mb-3'
                         autoComplete='none'
                         onChange={() => {}}
+                        isInvalid={!!errors.image}
                       />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.image}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group className='mt-2'>
                       <img
@@ -571,7 +599,11 @@ export const ProductUser = () => {
                             autoComplete='none'
                             value={stocks_per_kg ? stocks_per_kg : ''}
                             onChange={(e) => setStocks(e.target.value)}
+                            isInvalid={!!errors.stocks_per_kg}
                           />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.stocks_per_kg}
+                          </Form.Control.Feedback>
                         </Form.Group>
                       </Col>
                       <Col>
@@ -585,7 +617,12 @@ export const ProductUser = () => {
                             autoComplete='none'
                             value={price_per_kg ? price_per_kg : ''}
                             onChange={(e) => setPrice(e.target.value)}
+                            isInvalid={!!errors.price_per_kg}
                           />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.price_per_kg}
+                          </Form.Control.Feedback>
+
                           <Form.Control
                             type='hidden'
                             className='form-control'
