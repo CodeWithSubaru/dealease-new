@@ -143,7 +143,6 @@ export function OrdersTable(props) {
           <Modal.Body>
             {props.viewOrders.length > 0
               ? props.viewOrders.map((order, index) => {
-                  console.log('HERE', order);
                   return (
                     <>
                       <p className='fw-bold fs-5 mb-2'>

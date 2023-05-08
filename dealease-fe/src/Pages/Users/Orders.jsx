@@ -197,7 +197,16 @@ export function OrdersBuyer() {
               {status(order.order_trans_status)}
             </span>
           ),
-          payment_total_amount: 'Php ' + order.total_amount,
+          payment_total_amount: (
+            <div className='d-flex justify-content-center'>
+              <img
+                src='/images/seashell.png'
+                style={{ width: '25px' }}
+                className='me-2'
+              />{' '}
+              {order.total_amount}{' '}
+            </div>
+          ),
           created_at: dateFormat(order.created_at),
           action: (
             <div key={i} className='button-actions text-light d-flex'>

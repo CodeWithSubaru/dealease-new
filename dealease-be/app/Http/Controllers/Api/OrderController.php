@@ -111,11 +111,13 @@ class OrderController extends Controller
 
     public function placeOrder(Request $request)
     {
-        $request->validate([
-            'shippingFee.barangay' => 'required',
-            'shippingFee.street' => 'required',
-            'shippingFee.contact_number' => ['required', 'min:11', 'max:11'],
-        ]);
+        if ($request->shippingFee) {
+            $request->validate([
+                'shippingFee.barangay' => 'required',
+                'shippingFee.street' => 'required',
+                'shippingFee.contact_number' => ['required', 'min:11', 'max:11'],
+            ]);
+        }
 
         $orderedItems = array_values($request->cartHistoryBySellerId);
         for ($i = 0; $i < count($orderedItems); $i++) {
@@ -161,6 +163,7 @@ class OrderController extends Controller
                 'shipping_id' => 1,
                 'delivery_address_id' => null,
             ]);
+
 
             if ($request->shippingFee) {
                 $deliveryAddress = DeliveryAddress::create([
