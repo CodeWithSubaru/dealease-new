@@ -97,6 +97,8 @@ export function Users() {
           .then((res) => console.log(e))
           .catch((e) => console.log(e));
         setUserDataTable(uri);
+        fetchNumberOfUsers();
+        fetchNumberOfUnverifiedUsers();
       }
     });
   }
@@ -138,6 +140,8 @@ export function Users() {
         }).then(() => {
           setUserDataTable(url);
           closeCreateUserModal();
+          fetchNumberOfUsers();
+          fetchNumberOfUnverifiedUsers();
         });
       })
       .catch((e) => {
@@ -205,6 +209,8 @@ export function Users() {
         }).then(() => {
           closeEditUserModal();
           setUserDataTable(url);
+          fetchNumberOfUsers();
+          fetchNumberOfUnverifiedUsers();
         });
       })
       .catch((e) => {
@@ -292,21 +298,21 @@ export function Users() {
                   <span
                     onClick={() => viewCompleteDetails(user.user_id)}
                     style={{ cursor: 'pointer' }}
-                    className='badge rounded text-bg-primary px-2 me-2'
+                    className='badge rounded text-bg-primary px-2 me-2 btn'
                   >
                     View
                   </span>
                   <span
                     onClick={() => findUser(user.user_id, uri)}
                     style={{ cursor: 'pointer' }}
-                    className='badge rounded text-bg-success px-2 me-2'
+                    className='badge rounded text-bg-success px-2 me-2 btn'
                   >
                     Edit
                   </span>
                   <span
                     onClick={() => deleteUser(user.user_id, uri)}
                     style={{ cursor: 'pointer' }}
-                    className='badge rounded text-bg-danger px-2 me-2'
+                    className='badge rounded text-bg-danger px-2 me-2 btn'
                   >
                     Delete
                   </span>
@@ -315,7 +321,7 @@ export function Users() {
                 <span
                   onClick={() => verifyUser(user.user_id, uri)}
                   style={{ cursor: 'pointer' }}
-                  className='badge rounded text-bg-secondary px-2 me-2'
+                  className='badge rounded text-bg-secondary px-2 me-2 btn'
                 >
                   {' '}
                   Accept
@@ -325,9 +331,9 @@ export function Users() {
           ),
         };
       });
+      setLoading(false);
       fetchNumberOfUsers();
       fetchNumberOfUnverifiedUsers();
-      setLoading(false);
       setBody(user);
     });
   }

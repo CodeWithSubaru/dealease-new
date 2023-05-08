@@ -12,6 +12,11 @@ export function TransactionsUser() {
   const header = [
     {
       title: 'Id',
+      prop: 'id',
+      isSortable: true,
+    },
+    {
+      title: 'Payment Number',
       prop: 'payment_number',
       isSortable: true,
     },
@@ -28,7 +33,10 @@ export function TransactionsUser() {
     {
       title: 'Description',
       prop: 'payment_description',
-      isSortable: true,
+    },
+    {
+      title: 'Checkout Url',
+      prop: 'checkout_url',
     },
     {
       title: 'Total Amount',
@@ -89,11 +97,12 @@ export function TransactionsUser() {
     return '';
   }
 
-  function setBuyerTransactionsDataTable() {
+  function setUserTransactionsDataTable() {
     axiosClient.get('/transactions').then((resp) => {
       const transactions = resp.data.map((transaction, i) => {
         return {
-          payment_number: i + 1,
+          id: i + 1,
+          payment_number: transaction.payment_number,
           fullname: (
             <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
               <img
@@ -127,6 +136,16 @@ export function TransactionsUser() {
             </span>
           ),
           payment_description: transaction.payment_description,
+          checkout_url: (
+            <a
+              href={transaction.checkout_url}
+              className='text-wrap'
+              target='_blank'
+            >
+              {' '}
+              Checkout URL{' '}
+            </a>
+          ),
           payment_total_amount: 'Php ' + transaction.payment_total_amount,
           created_at: dateFormat(transaction.created_at),
           // action: (
@@ -157,14 +176,16 @@ export function TransactionsUser() {
   }
 
   useEffect(() => {
-    setBuyerTransactionsDataTable();
+    setUserTransactionsDataTable();
   }, [body.id]);
-
-  console.log(body);
 
   return (
     <>
-      <Transactions header={header} body={body} />
+      <Transactions
+        header={header}
+        body={body}
+        changePaymentStatus={setUserTransactionsDataTable}
+      />
     </>
   );
 }

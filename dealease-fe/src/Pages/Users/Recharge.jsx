@@ -34,9 +34,9 @@ export function Recharge() {
   };
   const { collapseSidebar } = useProSidebar();
   const [errors, setErrors] = useState([]);
-  const [shell_coin_amount, setAmountToShell] = useState(0);
+  const [amount, setAmountToShell] = useState(0);
   const data = {
-    shell_coin_amount,
+    amount,
   };
   // Submit Recharge
   const handleRecharge = (e) => {
@@ -121,7 +121,7 @@ export function Recharge() {
           <Card className='recharge-card mx-auto w-75'>
             {/* <Card.Img className='recharge-card-wave' src='/images/wave.png' /> */}
             <Card.Img
-              className='recharge-card-img'
+              className='recharge-card-img p-2 rounded'
               src='/images/shellcoins.png'
             />
             <Card.Body className='recharge-card-body'>
@@ -138,20 +138,24 @@ export function Recharge() {
                   <Form.Control
                     // className='form-control'
                     type='number'
-                    min=''
+                    min='100'
                     max='99999999'
                     placeholder='Enter your Amount'
-                    value={shell_coin_amount}
+                    value={amount}
                     onChange={(e) => setAmountToShell(e.target.value)}
+                    isInvalid={!!errors.amount}
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    {errors.amount}
+                  </Form.Control.Feedback>
                 </InputGroup>
                 <FontAwesomeIcon
-                  className='fs-3 my-2 mt-3'
+                  className='fs-3 mt-3 text-center'
                   icon={faArrowRightArrowLeft}
                 />
                 <p className='text-black fs-5'>
-                  Rate : <span className='text-primary fw-bold'>1.50</span>{' '}
-                  Shell Coins
+                  Rate : <span className='text-primary fw-bold'>1</span> Shell
+                  Coins
                 </p>
                 <InputGroup>
                   <InputGroup.Text id='basic-addon1'>
@@ -161,15 +165,11 @@ export function Recharge() {
                       style={{ width: '25px' }}
                     ></img>
                   </InputGroup.Text>
-                  <Form.Control
-                    // className='form-control'
-                    disabled
-                    value={shell_coin_amount * 1.5}
-                  />
+                  <Form.Control disabled value={amount * 1} />
                 </InputGroup>
-                <p> Converted Amount: {shell_coin_amount * 1.5}</p>
+                <p> Converted Amount: {amount * 1}</p>
                 <div className='d-flex justify-content-end'>
-                  <Button type='submit' variant='primary'>
+                  <Button type='submit' variant='primary' className='rounded'>
                     Purchase
                   </Button>
                 </div>

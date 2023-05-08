@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\UserDetail;
+use App\Models\UsersWallet;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
-use App\Models\AccountVerificationRequirement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\AccountVerificationRequirement;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -74,10 +75,10 @@ class AuthController extends Controller
                 'contact_number' =>  $request->contact_number,
             ]);
 
-            // Wallet::create([
-            //     'shell_coin_amount' => 0,
-            //     'user_id' => $user->user_id,
-            // ]);
+            UsersWallet::create([
+                'shell_coin_amount' => 0,
+                'user_id' => $user->user_id,
+            ]);
 
             $user->sendEmailVerificationNotification();
 

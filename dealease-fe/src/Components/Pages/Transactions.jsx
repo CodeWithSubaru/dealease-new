@@ -3,7 +3,7 @@ import { TableComponent } from '../Table/Table';
 import { Footer } from '../Footer/Footer';
 import Card from 'react-bootstrap/Card';
 import { Nav, Tab, Row, Col } from 'react-bootstrap';
-import axiosClient from '../../api/axios';
+import { Load } from '../../Components/Loader/Load';
 
 export function Transactions(props) {
   return (
@@ -18,6 +18,12 @@ export function Transactions(props) {
                   onClick={() => props.changePaymentStatus(1)}
                 >
                   Under Review
+                  <span
+                    className='badge rounded-pill text-bg-primary position-relative'
+                    style={{ top: '-8px', left: '0px' }}
+                  >
+                    {props.numberOfUnderReviewTransaction}
+                  </span>
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
@@ -26,18 +32,38 @@ export function Transactions(props) {
                   onClick={() => props.changePaymentStatus(2)}
                 >
                   Request Approved
+                  <span
+                    className='badge rounded-pill text-bg-primary position-relative'
+                    style={{ top: '-8px', left: '0px' }}
+                  >
+                    {props.numberOfApprovedTransaction}
+                  </span>
                 </Nav.Link>
               </Nav.Item>
             </Nav>
             <Tab.Content>
               <Tab.Pane eventKey='first'>
                 <Card className='p-5 pb-1 rounded'>
-                  <TableComponent header={props.header} body={props.body} />;
+                  {props.loading ? (
+                    <Load />
+                  ) : (
+                    <>
+                      <h1 className='mb-4 fw-bold'> Under Review</h1>
+                      <TableComponent header={props.header} body={props.body} />
+                    </>
+                  )}
                 </Card>
               </Tab.Pane>
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
-                  <TableComponent header={props.header} body={props.body} />;
+                  {props.loading ? (
+                    <Load />
+                  ) : (
+                    <>
+                      <h1 className='mb-4 fw-bold'> Request Approved</h1>
+                      <TableComponent header={props.header} body={props.body} />
+                    </>
+                  )}
                 </Card>
               </Tab.Pane>
             </Tab.Content>
