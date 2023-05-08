@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { CardItem } from './CardItem';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
@@ -70,15 +70,31 @@ export function Card() {
                     Available
                   </span>
                 </div>
+
                 <div className='flex-grow-1'>
-                  <Form className='w-100 d-flex justify-content-end'>
-                    <Form.Control
-                      type='search'
-                      placeholder='Search...'
-                      className='w-50 rounded-pill'
-                      aria-label='Search'
-                      onChange={searchProduct}
-                    />
+                  <Form className='w-100'>
+                    <div className='position-relative d-flex justify-content-end'>
+                      <Form.Control
+                        type='search'
+                        placeholder='Search...'
+                        className={'rounded-pill w-25'}
+                        style={{
+                          transition: '.5s all ease',
+                          paddingLeft: '32px',
+                        }}
+                        aria-label='Search'
+                        onChange={searchProduct}
+                      />
+                      <div
+                        className='position-absolute ms-1'
+                        style={{ top: '5px', right: '170px' }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faSearch}
+                          style={{ opacity: 0.5 }}
+                        />
+                      </div>
+                    </div>
                   </Form>
                 </div>
               </div>

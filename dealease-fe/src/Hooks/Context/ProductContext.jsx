@@ -7,6 +7,7 @@ const ProductContext = createContext('default');
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState({});
   const [loading, setLoading] = useState(false);
+  const { user } = useAuthContext();
 
   function fetchProduct() {
     axiosClient.get('/seller/product').then((resp) => {
@@ -51,15 +52,14 @@ export const ProductProvider = ({ children }) => {
   }
 
   function searchProduct(e) {
-    setProducts({});
-    setLoading(true);
-    setTimeout(() => {
+    if (e.target.value !== '') {
+      setProducts({});
+      setLoading(true);
       axiosClient.get('product/search/' + e.target.value).then((res) => {
         setProducts(res.data);
         setLoading(false);
-      }, 1500);
-    });
-    clearTimeout(timeout);
+      });
+    }
   }
 
   return (
