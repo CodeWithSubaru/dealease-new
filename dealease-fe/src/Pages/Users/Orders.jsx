@@ -53,7 +53,7 @@ export function OrdersBuyer() {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Processing';
+      return 'Preparing';
     }
     if (status === '3') {
       return 'Delivered';
@@ -236,7 +236,7 @@ export function OrdersBuyer() {
               >
                 View
               </Button>
-              {console.log(order)}
+
               {order.order_trans_status === '1' ? (
                 <Button
                   variant='danger'
@@ -408,7 +408,7 @@ export function OrdersSeller() {
 
     return Number(totalPrice) + deliveryFee;
   }
-   
+
   const header = [
     {
       title: 'Id',
