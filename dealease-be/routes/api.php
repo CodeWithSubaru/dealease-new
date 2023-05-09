@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\Admin\AdminPaymentController;
 use App\Http\Controllers\Api\ProductFilterController;
+use App\Http\Controllers\Api\Rider\RiderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,9 @@ Route::post('/payment', [PaymentController::class, 'payment']);
 Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
+// Rider
+Route::get('/rider', [RiderController::class, 'availableOrdersToDeliver']);
+Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
