@@ -94,31 +94,30 @@ export function OrdersTable(props) {
                               {order.total_price}
                             </span>
                           </p>
-
-                          <p>
-                            <span className='d-block fw-bold text-secondary'>
-                              Delivery Fee:
-                            </span>{' '}
-                            <span className='d-flex'>
-                              {' '}
-                              <img
-                                src='/images/seashell.png'
-                                className='me-2'
-                                style={{ height: '20px' }}
-                              />{' '}
-                              {order.delivery_fee}
-                            </span>
-                          </p>
                         </div>
-                        {props.viewOrders.length > 1 && <hr />}
                       </div>
                     </>
                   );
                 })
               : 'Loading...'}
+            <hr />
             <div className='d-flex'>
               <div className='w-50 me-5'></div>
               <div className='me-5'>
+                <p className='d-flex'>
+                  <span className='fw-bold text-secondary'>Delivery Fee:</span>{' '}
+                  <span className='d-flex'>
+                    {' '}
+                    <img
+                      src='/images/seashell.png'
+                      className='ms-4 me-2'
+                      style={{ height: '20px' }}
+                    />{' '}
+                    {props.viewOrders[0]
+                      ? props.viewOrders[0].delivery_fee
+                      : ''}
+                  </span>
+                </p>
                 <h5 className='d-flex align-items-center justify-content-end'>
                   <span className='me-2 fw-bold'> Grand Total: </span>{' '}
                   <img
@@ -220,15 +219,29 @@ export function OrdersTable(props) {
                             </span>
                           </p>
                         </div>
-                        {props.viewOrders.length > 1 && <hr />}
                       </div>
                     </>
                   );
                 })
               : 'Loading...'}
+            {props.viewOrders.length > 1 && <hr />}
             <div className='d-flex'>
               <div className='w-50 me-5'></div>
               <div className='me-5'>
+                <p className='d-flex'>
+                  <span className='fw-bold text-secondary'>Delivery Fee:</span>{' '}
+                  <span className='d-flex'>
+                    {' '}
+                    <img
+                      src='/images/seashell.png'
+                      className='ms-4 me-2'
+                      style={{ height: '20px' }}
+                    />{' '}
+                    {props.viewOrders[0]
+                      ? props.viewOrders[0].delivery_fee
+                      : ''}
+                  </span>
+                </p>
                 <h5 className='d-flex align-items-center justify-content-end'>
                   <span className='me-2 fw-bold'> Grand Total: </span>{' '}
                   <img

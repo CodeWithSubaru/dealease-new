@@ -109,12 +109,13 @@ export function OrdersBuyer() {
   }
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
-
+    let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
-      totalPrice +=
-        Number(orderItem.total_price) + Number(orderItem.delivery_fee);
+      totalPrice += Number(orderItem.total_price);
+      deliveryFee = Number(orderItem.delivery_fee);
     });
-    return Number(totalPrice).toLocaleString('en-US');
+
+    return Number(totalPrice) + deliveryFee;
   }
 
   function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
@@ -235,6 +236,7 @@ export function OrdersBuyer() {
               >
                 View
               </Button>
+              {console.log(order)}
               {order.order_trans_status === '1' ? (
                 <Button
                   variant='danger'
@@ -398,12 +400,15 @@ export function OrdersSeller() {
 
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
+    let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
-      totalPrice += Number(orderItem.total_price) + orderItem.delivery_fee;
+      totalPrice += Number(orderItem.total_price);
+      deliveryFee = Number(orderItem.delivery_fee);
     });
-    return Number(totalPrice).toLocaleString('en-US');
-  }
 
+    return Number(totalPrice) + deliveryFee;
+  }
+   
   const header = [
     {
       title: 'Id',
@@ -517,7 +522,19 @@ export function OrdersSeller() {
               {status(order.order_trans_status)}
             </span>
           ),
-          payment_total_amount: 'Php ' + order.total_amount,
+          payment_total_amount: (
+            <>
+              <img
+                src='/images/seashell.png'
+                style={{ width: '25px' }}
+                className='me-2'
+              />{' '}
+              {calculateGrandTotalDeliveryFee(
+                order.total_amount,
+                order.delivery_fee
+              )}{' '}
+            </>
+          ),
           created_at: dateFormat(order.created_at),
           action: (
             <div key={i} className='button-actions text-light d-flex'>
