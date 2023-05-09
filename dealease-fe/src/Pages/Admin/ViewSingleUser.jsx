@@ -49,6 +49,8 @@ export const ViewSingleUser = (props) => {
                   : ''}{' '}
                 {props.data.user_details
                   ? props.data.user_details.ext_name
+                    ? props.data.user_details.ext_name
+                    : ''
                   : ''}
               </p>
               <h4>User Account Details</h4>

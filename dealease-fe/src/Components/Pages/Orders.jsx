@@ -55,13 +55,14 @@ export function OrdersTable(props) {
                           </p>
                           <p>
                             <span className='d-block fw-bold text-secondary'>
-                              Product Seller:
+                              Seller:
                             </span>{' '}
                             {order.product.user.first_name}{' '}
                             {order.product.user.user_details.middle_name[0]}
                             {'. '}
                             {order.product.user.user_details.last_name}{' '}
-                            {order.product.user.user_details.ext_name}
+                            {order.product.user.user_details.ext_name} - (
+                            {order.product.user.user_details.contact_number})
                           </p>
                         </div>
                         <div>
@@ -91,6 +92,21 @@ export function OrdersTable(props) {
                                 style={{ height: '20px' }}
                               />{' '}
                               {order.total_price}
+                            </span>
+                          </p>
+
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Delivery Fee:
+                            </span>{' '}
+                            <span className='d-flex'>
+                              {' '}
+                              <img
+                                src='/images/seashell.png'
+                                className='me-2'
+                                style={{ height: '20px' }}
+                              />{' '}
+                              {order.delivery_fee}
                             </span>
                           </p>
                         </div>
@@ -143,7 +159,6 @@ export function OrdersTable(props) {
           <Modal.Body>
             {props.viewOrders.length > 0
               ? props.viewOrders.map((order, index) => {
-                  console.log('HERE', order);
                   return (
                     <>
                       <p className='fw-bold fs-5 mb-2'>

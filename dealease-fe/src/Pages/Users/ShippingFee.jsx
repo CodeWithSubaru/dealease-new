@@ -16,7 +16,12 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Load } from '../../Components/Loader/Load';
-import { Finalize } from '../../Components/Notification/Notification';
+import {
+  Finalize,
+  Finalize1,
+} from '../../Components/Notification/Notification';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export function ShippingFee() {
   const {
@@ -30,13 +35,17 @@ export function ShippingFee() {
     setDoneTransaction,
   } = useOrderContext();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
-  const [shippingFeeData, setShippingFeeData] = useState({});
+  const { user, fetchUserInfo } = useAuthContext();
+  const [barangayForm, setBarangay] = useState('');
+  const [street, setStreet] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
+
   const [viewShippingAddressForm, setViewShippingAddressForm] = useState(false);
   const [errors, setErrors] = useState([]);
   const [barangaysData, setBarangaysData] = useState([]);
   const { fetchCountInItemsCart } = useAddToCartContext();
   const [loading, setLoading] = useState(false);
+  const MySwal = withReactContent(Swal);
 
   if (isDoneTransaction) {
     navigate('../home');
@@ -52,8 +61,11 @@ export function ShippingFee() {
 
       Finalize({
         confirmButton: 'Yes, Place my order',
-        text: "You won't be able to revert this!",
+        text: 'Are you sure you want to place order. It will deduct to your shell wallet',
         successMsg: 'Your Order Placed Successfully.',
+        errorMsg: 'Something went wrong!',
+        status: 'Success!',
+        statusmsg: 'success',
       }).then((res) => {
         if (res.isConfirmed) {
           const cartHistoryBySellerId = step1;
@@ -61,14 +73,13 @@ export function ShippingFee() {
           axiosClient
             .post('/orders/place-order', { cartHistoryBySellerId })
             .then((res) => {
+              setOtherAddress({});
               setStep2(step1);
               setDoneTransaction(true);
+              fetchCountInItemsCart();
+              fetchUserInfo();
               setLoading(false);
               navigate('../successful');
-            })
-            .catch((e) => {
-              console.log(e);
-              setLoading(false);
             });
           setStep2(step1);
         }
@@ -77,10 +88,7 @@ export function ShippingFee() {
   };
   function barangay(e) {
     console.log(e.target.selectedOptions[0].text);
-    setShippingFeeData({
-      ...shippingFeeData,
-      barangay: e.target.selectedOptions[0].text,
-    });
+    setBarangay(e.target.selectedOptions[0].text);
   }
 
   if (step1.length === 0) {
@@ -205,21 +213,21 @@ export function ShippingFee() {
                   <Form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      Finalize({
+                      Finalize1({
                         confirmButton: 'Yes, Place my order',
-                        text: "You won't be able to revert this!",
+                        text: 'Are you sure you want to place order. It will deduct to your shell wallet',
                         successMsg: 'Your Order Placed Successfully.',
                       }).then((res) => {
                         if (res.isConfirmed) {
                           setLoading(true);
-                          setShippingFeeData({
-                            ...shippingFeeData,
-                            city: 'Obando',
-                          });
-                          const shippingFee = shippingFeeData;
                           const cartHistoryBySellerId = step1;
+
                           const data = {
-                            shippingFee,
+                            shippingFee: {
+                              barangay: barangayForm,
+                              street: street,
+                              contact_number: contactNumber,
+                            },
                             cartHistoryBySellerId,
                           };
 
@@ -227,13 +235,24 @@ export function ShippingFee() {
                           axiosClient
                             .post('/orders/place-order', data)
                             .then((res) => {
+                              MySwal.fire(
+                                'Success!',
+                                'Order has been replaced',
+                                'success'
+                              );
                               setStep2(data);
                               setDoneTransaction(true);
                               setLoading(false);
+                              fetchCountInItemsCart();
+                              fetchUserInfo();
+                              setBarangay('');
+                              setStreet('');
+                              setContactNumber('');
                               navigate('../successful');
                             })
                             .catch((e) => {
-                              console.log(e);
+                              MySwal.fire('Error!', 'Errors Found', 'error');
+                              setErrors(e.response.data.errors);
                               setLoading(false);
                             });
                         }
@@ -245,10 +264,10 @@ export function ShippingFee() {
 
                     <div className='d-flex mb-3'>
                       <Form.Group className='flex-grow-1 me-2'>
-                        <Form.Label className='text-dark'>City * </Form.Label>
-                        <Form.Select defaultValue='Obando'>
-                          <option value={'Obando'}>Obando</option>
-                        </Form.Select>
+                        <Form.Label className='text-dark'>
+                          City / Town{' '}
+                        </Form.Label>
+                        <Form.Control type='text' value={'Obando'} disabled />
                       </Form.Group>
 
                       <Form.Group className='flex-grow-1'>
@@ -258,21 +277,27 @@ export function ShippingFee() {
                         <Form.Select
                           onChange={barangay}
                           className='form-select'
-                          isInvalid={!!errors.barangay}
+                          defaultValue={'default'}
+                          isInvalid={!!errors['shippingFee.barangay']}
                         >
+                          <option value={'default'} disabled>
+                            Select Barangay
+                          </option>
                           {barangaysData.length > 0 &&
                             barangaysData.map((item) => (
-                              <option
-                                key={item.brgy_code}
-                                value={item.brgy_code}
-                              >
-                                {item.brgy_name}
-                              </option>
+                              <>
+                                <option
+                                  key={item.brgy_code}
+                                  value={item.brgy_code}
+                                >
+                                  {item.brgy_name}
+                                </option>
+                              </>
                             ))}
                         </Form.Select>
-                        {errors && errors.barangay ? (
+                        {errors['shippingFee.barangay'] ? (
                           <Form.Control.Feedback type='invalid'>
-                            {errors.barangay}
+                            {errors['shippingFee.barangay'][0]}
                           </Form.Control.Feedback>
                         ) : null}
                       </Form.Group>
@@ -282,13 +307,16 @@ export function ShippingFee() {
                       <Form.Label className='text-dark'>Street</Form.Label>
                       <Form.Control
                         type='text'
-                        onChange={(e) =>
-                          setShippingFeeData({
-                            ...shippingFeeData,
-                            street: e.target.value,
-                          })
-                        }
+                        onChange={(e) => setStreet(e.target.value)}
+                        value={street}
+                        isInvalid={errors['shippingFee.street']}
                       />
+
+                      {errors['shippingFee.street'] ? (
+                        <Form.Control.Feedback type='invalid'>
+                          {errors['shippingFee.street'][0]}
+                        </Form.Control.Feedback>
+                      ) : null}
                     </Form.Group>
 
                     <Form.Group className='mb-3'>
@@ -298,13 +326,15 @@ export function ShippingFee() {
                       <div className='position-relative'>
                         <Form.Control
                           type='text'
-                          onChange={(e) =>
-                            setShippingFeeData({
-                              ...shippingFeeData,
-                              contact_number: e.target.value,
-                            })
-                          }
+                          value={contactNumber}
+                          onChange={(e) => setContactNumber(e.target.value)}
+                          isInvalid={!!errors['shippingFee.contact_number']}
                         />
+                        {errors['shippingFee.contact_number'] ? (
+                          <Form.Control.Feedback type='invalid'>
+                            {errors['shippingFee.contact_number'][0]}
+                          </Form.Control.Feedback>
+                        ) : null}
                         <OverlayTrigger
                           delay={{ show: 150, hide: 400 }}
                           overlay={

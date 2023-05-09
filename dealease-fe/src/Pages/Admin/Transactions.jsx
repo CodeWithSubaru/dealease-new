@@ -10,15 +10,36 @@ import { Notification } from '../../Components/Notification/Notification';
 
 export function TransactionsAdmin() {
   const [body, setBody] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const [numberOfUnderReviewTransaction, setNumberOfUnderReviewTransaction] =
+    useState(0);
+  const [numberOfApprovedTransaction, setNumberOfApprovedTransaction] =
+    useState(0);
 
-  function accept(id) {
+  function fetchUnderReviewTransaction() {
+    axiosClient.get('/admin/transactions/under-review').then((res) => {
+      console.log(res);
+      setNumberOfUnderReviewTransaction(res.data);
+    });
+  }
+
+  function fetchApprovedTransaction() {
+    axiosClient.get('/admin/transactions/approved').then((res) => {
+      console.log(res);
+      setNumberOfApprovedTransaction(res.data);
+    });
+  }
+
+  function confirm(id) {
     axiosClient
-      .put('/admin/accept/' + id)
+      .put('/admin/confirm/' + id)
       .then((res) =>
         Notification({
           title: 'Success',
           message: res.data.status,
           icon: 'success',
+        }).then(() => {
+          setUserTransactionsDataTable(1);
         })
       )
       .catch((err) =>
@@ -34,6 +55,11 @@ export function TransactionsAdmin() {
   const header = [
     {
       title: 'Id',
+      prop: 'id',
+      isSortable: true,
+    },
+    {
+      title: 'Payment Number',
       prop: 'payment_number',
       isSortable: true,
     },
@@ -82,19 +108,8 @@ export function TransactionsAdmin() {
   }
 
   function switchUserType(user) {
-    if (user.is_buyer === 'Buyer') {
+    if (user.is_buyer === 'User') {
       return user.is_buyer;
-    }
-
-    if (user.is_seller === 'Seller') {
-      return user.is_seller;
-    }
-
-    if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
-    ) {
-      return 'Buyer + Seller';
     }
 
     if (user.role_type === 'Admin') {
@@ -107,17 +122,37 @@ export function TransactionsAdmin() {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Accepted';
+      return 'Approved';
     }
     return '';
   }
-  function setBuyerTransactionsDataTable($id) {
+
+  function switchColor(status) {
+    if (status === '0') {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
+    }
+
+    if (status === '1') {
+      return 'border-warning bg-warning bg-opacity-75 text-light';
+    }
+    if (status === '2') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '3') {
+      return 'border-secondary bg-secondary bg-opacity-75 text-light';
+    }
+  }
+
+  function setUserTransactionsDataTable($id) {
+    setBody([]);
+    setLoading(true);
     axiosClient
       .get('/admin/transactions/show/transactions/' + $id)
       .then((resp) => {
         const transactions = resp.data.map((transaction, i) => {
           return {
-            payment_number: i + 1,
+            id: i + 1,
+            payment_number: transaction.payment_number,
             fullname: (
               <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
                 <img
@@ -128,13 +163,14 @@ export function TransactionsAdmin() {
                 <div>
                   <p className='mb-0'>
                     {
-                      transaction.user.first_name +
-                        ' ' +
-                        // transaction.user.user_details.middle_name +
-                        // '.' +
-                        ' ' +
-                        // transaction.user_details.last_name +
-                        ' '
+                      transaction.user.first_name
+                      // +
+                      // ' ' +
+                      // transaction.user.user_details.middle_name +
+                      // '.' +
+                      // ' ' +
+                      // transaction.user_details.last_name +
+                      // ' '
                       // transaction.user_details.ext_name
                     }
                   </p>
@@ -145,7 +181,12 @@ export function TransactionsAdmin() {
               </div>
             ),
             payment_status: (
-              <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-50 text-light'>
+              <span
+                className={
+                  'text-nowrap rounded px-2 text-uppercase border border-2 ' +
+                  switchColor(transaction.payment_status)
+                }
+              >
                 {status(transaction.payment_status)}
               </span>
             ),
@@ -154,33 +195,41 @@ export function TransactionsAdmin() {
             created_at: dateFormat(transaction.created_at),
             action: (
               <div key={i} className='button-actions text-light d-flex'>
-                <Button
-                  variant='primary'
-                  onClick={() => accept(transaction.payment_number)}
-                  style={{ cursor: 'pointer' }}
-                  className='p-2 me-2 rounded'
-                >
-                  <FontAwesomeIcon icon={faCheck} className='mx-2' />
-                </Button>
-                <Button
-                  variant='danger'
-                  onClick={() => decline(user.user_id)}
-                  style={{ cursor: 'pointer' }}
-                  className='p-2 2 rounded'
-                >
-                  <FontAwesomeIcon icon={faClose} className='mx-2' />
-                </Button>
+                {transaction.payment_status === '1' && (
+                  <>
+                    <Button
+                      variant='primary'
+                      onClick={() => confirm(transaction.payment_number)}
+                      style={{ cursor: 'pointer' }}
+                      className='badge rounded px-2 me-2 btn'
+                    >
+                      Confirm
+                    </Button>
+                    <Button
+                      variant='danger'
+                      onClick={() => decline(user.user_id)}
+                      style={{ cursor: 'pointer' }}
+                      className='badge rounded px-2 me-2 btn'
+                    >
+                      Cancel
+                    </Button>
+                  </>
+                )}
               </div>
             ),
           };
         });
-
+        setLoading(false);
+        fetchUnderReviewTransaction();
+        fetchApprovedTransaction();
         setBody(transactions);
       });
   }
 
   useEffect(() => {
-    setBuyerTransactionsDataTable(1);
+    setUserTransactionsDataTable(1);
+    fetchUnderReviewTransaction();
+    fetchApprovedTransaction();
   }, [body.id]);
 
   return (
@@ -188,7 +237,10 @@ export function TransactionsAdmin() {
       <Transactions
         header={header}
         body={body}
-        changePaymentStatus={setBuyerTransactionsDataTable}
+        changePaymentStatus={setUserTransactionsDataTable}
+        loading={loading}
+        numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
+        numberOfApprovedTransaction={numberOfApprovedTransaction}
       />
     </>
   );

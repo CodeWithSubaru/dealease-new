@@ -24,6 +24,14 @@ export function SuccessfulUser() {
     return navigate('../shipping');
   }
 
+  function calculateSubTotalPrice(item) {
+    let totalPrice = 0;
+    for (let i = 0; i < item.length; i++) {
+      totalPrice += Number(item[i].total_price);
+    }
+    return Number(totalPrice).toLocaleString('en-US');
+  }
+
   useEffect(() => {
     setDoneTransaction(true);
   }, []);
@@ -41,7 +49,9 @@ export function SuccessfulUser() {
               <h4 className='fw-light mb-3'> Customer Information</h4>
               <div className='d-flex justify-content-between'>
                 <div>
-                  <h6 className='fw-light mb-1 text-secondary'>Information</h6>
+                  <h6 className='fw-light mb-1 text-secondary'>
+                    Customer Details
+                  </h6>
                   <p>
                     {' '}
                     {user.first_name}{' '}
@@ -57,11 +67,19 @@ export function SuccessfulUser() {
                 </div>
               </div>
               <div>
+                <h6 className='fw-light mb-1 text-secondary'>Contact Number</h6>
+                <p>
+                  {Object.keys(otherAddress).length > 0
+                    ? otherAddress.shippingFee.contact_number
+                    : user.user_details.contact_number}
+                </p>
+              </div>
+              <div>
                 <h6 className='fw-light mb-1 text-secondary'>
                   Shipping Address
                 </h6>
-
-                {otherAddress ? (
+                {console.log('HERE', otherAddress)}
+                {Object.keys(otherAddress).length > 0 ? (
                   <>
                     <span className='d-block'>
                       {otherAddress.shippingFee.street}
@@ -72,9 +90,19 @@ export function SuccessfulUser() {
                   </>
                 ) : (
                   <>
-                    <span className='d-block'>{user.user_details.street}</span>
                     <span className='d-block'>
-                      {user.user_details.barangay}
+                      {user.user_details
+                        ? user.user_details.street
+                          ? user.user_details.street
+                          : ''
+                        : ''}
+                    </span>
+                    <span className='d-block'>
+                      {user.user_details
+                        ? user.user_details.barangay
+                          ? user.user_details.barangay
+                          : ''
+                        : ''}
                     </span>
                   </>
                 )}
@@ -83,18 +111,53 @@ export function SuccessfulUser() {
                 <span className='d-block'>Region III (Central Luzon)</span>
               </div>
             </div>
+            {console.log('HERE', step2)}
+            {Object.values(
+              step2.cartHistoryBySellerId ? step2.cartHistoryBySellerId : step2
+            ).map((item, index) => (
+              <p key={index} className='p-2'>
+                <strong>{item.length}</strong> item
+                {item.length > 1 ? "'s" : ''} on Seller{' '}
+                <strong>
+                  {item.length > 1
+                    ? item[index]
+                      ? item[index].product.user.first_name
+                      : ''
+                    : item[0].product.user.first_name}{' '}
+                  {item.length > 1
+                    ? item[index]
+                      ? item[index].product.user.user_details.middle_name[0] +
+                        '. '
+                      : ''
+                    : item[0].product.user.user_details.middle_name[0] +
+                      '. '}{' '}
+                  {item.length > 1
+                    ? item[index]
+                      ? item[index].product.user.user_details.last_name
+                      : ''
+                    : item[0].product.user.user_details.last_name}{' '}
+                  {item.length > 1
+                    ? item[index]
+                      ? item[index].product.user.user_details.ext_name
+                      : ''
+                    : item[0].product.user.user_details.ext_name}
+                </strong>{' '}
+                <br />
+                <span className='fw-semibold'> Sub Total:</span>{' '}
+                {calculateSubTotalPrice(item)}
+                <p>
+                  <span className='fw-semibold'> Delivery Fee: </span>{' '}
+                  {20 * 1.5}
+                </p>
+              </p>
+            ))}
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
               <div className='d-flex justify-content-between'>
                 <span className='fw-semibold'>Total Order Amount</span>
                 <span>{grandTotal} shells</span>
               </div>
             </div>
-            <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
-              <div className='d-flex justify-content-between'>
-                <span className='fw-semibold'>Delivery Fee</span>
-                <span>{20 * 1.5 * 2} shells</span>
-              </div>
-            </div>
+
             <div className='d-flex justify-content-end'>
               <span className='d-block'>
                 <Link

@@ -3,17 +3,29 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\PaymentTransaction;
+use App\Models\ShellTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\UsersWallet;
 
 class AdminPaymentController extends Controller
 {
+
+    public function numberOfUnderReviewTransaction()
+    {
+        return ShellTransaction::with('user')->where('payment_status', '1')->latest('created_at')->count();
+    }
+
+    public function numberOfApprovedTransaction()
+    {
+        return ShellTransaction::with('user')->where('payment_status', '2')->latest('created_at')->count();
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index($payment_status)
     {
-        return PaymentTransaction::with('user')->where('payment_status', $payment_status)->latest('created_at')->get();
+        return ShellTransaction::with('user')->where('payment_status', $payment_status)->latest('created_at')->get();
     }
     /**
      * Store a newly created resource in storage.
@@ -37,10 +49,15 @@ class AdminPaymentController extends Controller
     {
         //
     }
-    // Accept withdraw Shell to Peso
-    public function accept($id)
+    // Confirm withdraw Shell to Peso
+    public function confirm($id)
     {
-        PaymentTransaction::find($id)->update(['payment_status' => 2]);
+        $shellTransaction = ShellTransaction::where('payment_number', $id);
+        $shellTransaction->update(['payment_status' => 2]);
+        $usersWallet = UsersWallet::find($shellTransaction->first()->user_id);
+        $amount = $usersWallet->shell_coin_amount + $shellTransaction->first()->payment_total_amount;
+        $usersWallet->update(['shell_coin_amount' =>  $amount]);
+
         return response()->json(['status' => 'Transaction successfully'], 200);
     }
     /**

@@ -50,3 +50,19 @@ export function Finalize(props) {
     return result;
   });
 }
+
+export function Finalize1(props) {
+  const MySwal = withReactContent(Swal);
+
+  return MySwal.fire({
+    title: 'Are you sure?',
+    text: props.text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: props.confirmButton,
+  }).then((result) => {
+    return result;
+  });
+}

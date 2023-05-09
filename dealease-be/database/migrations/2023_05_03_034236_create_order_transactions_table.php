@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('delivery_fee', 8, 2);
             $table->foreignId('seller_id');
             $table->foreignId('buyer_id');
-            $table->foreignId('shipping_id');
             $table->foreignId('delivery_address_id')->nullable();
             $table->timestamps();
         });

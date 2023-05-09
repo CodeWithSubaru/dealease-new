@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shell_transactions', function (Blueprint $table) {
-            $table->id();
+            $table->id('shells_trans_id');
             $table->foreignId('user_id');
+            $table->string('payment_number');
             $table->char('payment_status', 1);
             $table->text('payment_description');
             $table->decimal('payment_total_amount', 8, 2);

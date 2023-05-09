@@ -19,7 +19,7 @@ import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import API_URI from '../../api/public_url';
 
 export function CardItem(props) {
-  const { token } = useAuthContext();
+  const { token, user } = useAuthContext();
   const [editModalshow, setEditmodalShow] = useState(false);
   const [signinModal, setSigninModal] = useState(false);
   const userType = localStorage.getItem('USER_TYPE');
@@ -56,6 +56,18 @@ export function CardItem(props) {
     return formattedDate;
   }
 
+  // Soft Delete Product
+  const deleteProduct = (product_id) => {
+    Delete().then((resp) => {
+      if (resp.isConfirmed) {
+        axiosClient
+          .delete('/seller/product/' + product_id)
+          .catch((e) => console.log(e));
+        setProductDataTable();
+      }
+    });
+  };
+
   return (
     <>
       <div className=''>
@@ -66,7 +78,7 @@ export function CardItem(props) {
           <div className='cards_item_info'>
             <h5 className='cards_item_text'>{props.text}</h5>
             <div className='text-center mt-2'></div>
-            {userType === 'Seller' || userType === 'Buyer_seller2' ? (
+            {props.seller == user.user_id ? (
               <Container>
                 <Row>
                   <Col>
@@ -76,8 +88,9 @@ export function CardItem(props) {
                     />
 
                     <Button
+                      variant='success'
                       onClick={() => setEditmodalShow(true)}
-                      className='btn make-deal'
+                      className='btn make-deal bg-success rounded'
                       name='edit'
                       id='edit'
                     >
@@ -86,10 +99,15 @@ export function CardItem(props) {
                     </Button>
                   </Col>
                   <Col>
-                    <button className='btn make-deal' name='delete' id='delete'>
+                    <Button
+                      variant='danger'
+                      className='btn make-deal bg-danger rounded'
+                      name='delete'
+                      id='delete'
+                    >
                       <FontAwesomeIcon icon={faTrash} />
                       &nbsp; {props.delbutton}
-                    </button>
+                    </Button>
                   </Col>
                 </Row>
               </Container>

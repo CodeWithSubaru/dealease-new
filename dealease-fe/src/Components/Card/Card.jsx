@@ -25,6 +25,7 @@ export function Card() {
   } = useProductContext();
 
   const { msgStatus, status } = useAddToCartContext();
+  const [currentColor, setCurrentColor] = useState(0);
 
   useEffect(() => {
     fetchPublicProducts(user.user_id);
@@ -39,8 +40,14 @@ export function Card() {
               <h1 className='text-home mb-5'>{token ? 'Home' : 'Products'}</h1>
               <div className='d-flex align-items-end'>
                 <span
-                  className='rounded-pill btn btn-sm btn-primary me-3 fw-semibold'
-                  onClick={() => fetchPublicProducts(user.user_id)}
+                  className={
+                    'rounded-pill btn btn-sm me-3 fw-semibold ' +
+                    (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    fetchPublicProducts(user.user_id);
+                    setCurrentColor(0);
+                  }}
                 >
                   All
                 </span>
@@ -48,24 +55,30 @@ export function Card() {
                   <small className='fw-bold mb-1 ms-2'>DATE</small>
                   <div>
                     <span
-                      className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
-                      onClick={() => fetchThisDay()}
+                      className={
+                        'rounded-pill btn btn-sm me-3 fw-semibold ' +
+                        (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+                      }
+                      onClick={() => {
+                        fetchThisDay();
+                        setCurrentColor(1);
+                      }}
                     >
-                      This Day
-                    </span>
-                    <span
-                      className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
-                      onClick={() => fetchThisWeek()}
-                    >
-                      This Week
+                      Today
                     </span>
                   </div>
                 </div>
                 <div className='d-flex flex-column'>
                   <small className='fw-bold mb-1 ms-2'>STATUS</small>
                   <span
-                    className='rounded-pill btn btn-sm btn-secondary me-3 fw-semibold'
-                    onClick={() => fetchAvailable()}
+                    className={
+                      'rounded-pill btn btn-sm me-3 fw-semibold ' +
+                      (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
+                    }
+                    onClick={() => {
+                      fetchAvailable();
+                      setCurrentColor(2);
+                    }}
                   >
                     Available
                   </span>
@@ -87,7 +100,7 @@ export function Card() {
                       />
                       <div
                         className='position-absolute ms-1'
-                        style={{ top: '5px', right: '170px' }}
+                        style={{ top: '5px', right: '205px' }}
                       >
                         <FontAwesomeIcon
                           icon={faSearch}
@@ -124,15 +137,15 @@ export function Card() {
               {products.length > 0 ? (
                 products.map((product, data) =>
                   product && !product.deleted_at ? (
-                    <Col className='mb-4 card-card'>
+                    <Col className='mb-4 card-card' key={product.id}>
                       <CardItem
                         key={product.id}
                         id={product.id}
                         src={'http://localhost:8000/images/' + product.image}
                         createdAt={product.created_at}
                         text={product.description}
-                        seller={product.user}
-                        button='Add to cart '
+                        seller={product.user_id}
+                        button='Add to cart'
                         editbutton='Edit'
                         delbutton='Delete'
                         path='/services'

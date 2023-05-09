@@ -50,11 +50,9 @@ export function AddToCart() {
   const [loading, setLoading] = useState(false);
 
   function fetchCartHistoryBySellerId() {
-    setLoading(true);
     axiosClient
       .get('orders/seller-id')
       .then((res) => {
-        setLoading(false);
         setCartHistoryBySellerId(res.data);
       })
       .catch((e) => {
@@ -110,7 +108,17 @@ export function AddToCart() {
   }
 
   useEffect(() => {
-    fetchCartHistoryBySellerId();
+    setLoading(true);
+    axiosClient
+      .get('orders/seller-id')
+      .then((res) => {
+        setLoading(false);
+        setCartHistoryBySellerId(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -189,24 +197,31 @@ export function AddToCart() {
                                     <span className='badge rounded-pill text-bg-primary'>
                                       {item.length > 1
                                         ? item[index]
+                                          ? item[index].product.user.first_name
+                                          : ''
+                                        : item[0].product.user.first_name}{' '}
+                                      {item.length > 1
+                                        ? item[index]
                                           ? item[index].product.user
-                                              .first_name +
-                                            ' ' +
-                                            item[index].product.user
                                               .user_details.middle_name[0] +
-                                            '.' +
-                                            ' ' +
-                                            item[index].product.user
+                                            '. '
+                                          : ''
+                                        : item[0].product.user.user_details
+                                            .middle_name[0] + '. '}{' '}
+                                      {item.length > 1
+                                        ? item[index]
+                                          ? item[index].product.user
                                               .user_details.last_name
                                           : ''
-                                        : item[0].product.user.first_name +
-                                          ' ' +
-                                          item[0].product.user.user_details
-                                            .middle_name[0] +
-                                          '.' +
-                                          ' ' +
-                                          item[0].product.user.user_details
-                                            .last_name}
+                                        : item[0].product.user.user_details
+                                            .last_name}{' '}
+                                      {item.length > 1
+                                        ? item[index]
+                                          ? item[index].product.user
+                                              .user_details.ext_name
+                                          : ''
+                                        : item[0].product.user.user_details
+                                            .ext_name}
                                     </span>
                                   </p>
                                   {item.map((cartItem, index) => (
@@ -356,7 +371,29 @@ export function AddToCart() {
                                         ? item[index]
                                           ? item[index].product.user.first_name
                                           : ''
-                                        : item[0].product.user.first_name}
+                                        : item[0].product.user.first_name}{' '}
+                                      {item.length > 1
+                                        ? item[index]
+                                          ? item[index].product.user
+                                              .user_details.middle_name[0] +
+                                            '. '
+                                          : ''
+                                        : item[0].product.user.user_details
+                                            .middle_name[0] + '. '}{' '}
+                                      {item.length > 1
+                                        ? item[index]
+                                          ? item[index].product.user
+                                              .user_details.last_name
+                                          : ''
+                                        : item[0].product.user.user_details
+                                            .last_name}{' '}
+                                      {item.length > 1
+                                        ? item[index]
+                                          ? item[index].product.user
+                                              .user_details.ext_name
+                                          : ''
+                                        : item[0].product.user.user_details
+                                            .ext_name}
                                     </strong>{' '}
                                     <br />
                                     <span className='fw-semibold'>
