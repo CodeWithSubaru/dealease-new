@@ -341,10 +341,16 @@ export function OrdersSeller() {
     if (status === '1') {
       return 'Pending';
     }
+
     if (status === '2') {
+      return 'Preparing';
+    }
+
+    if (status === '3') {
       return 'Finding Rider';
     }
-    if (status === '3') {
+
+    if (status === '4') {
       return 'Delivered';
     }
   }
@@ -596,7 +602,7 @@ export function OrdersSeller() {
                     style={{ cursor: 'pointer' }}
                     className='badge rounded px-2 me-2'
                   >
-                    Accept
+                    Find Rider
                   </Button>
                 </>
               ) : (
@@ -606,8 +612,8 @@ export function OrdersSeller() {
           ),
         };
       });
-      setLoading(false);
       setBody(orders);
+      setLoading(false);
     });
   }
 

@@ -137,7 +137,7 @@ export function Card() {
               {products.length > 0 ? (
                 products.map((product, data) =>
                   product && !product.deleted_at ? (
-                    <Col className='mb-4 card-card' key={product.id}>
+                    <Col className='mb-4 card-card' key={data}>
                       <CardItem
                         key={product.id}
                         id={product.id}

@@ -12,14 +12,7 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'description',
-        'image',
-        'stocks_per_kg',
-        'price_per_kg',
-        'user_id'
-    ];
+    protected $guarded;
 
     public function postedByUser()
     {
