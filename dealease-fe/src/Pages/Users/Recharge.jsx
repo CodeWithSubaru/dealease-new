@@ -41,7 +41,6 @@ export function Recharge() {
   // Submit Recharge
   const handleRecharge = (e) => {
     e.preventDefault();
-    console.log(data);
     axiosClient
       .post('/recharge', data)
       .then((res) => {

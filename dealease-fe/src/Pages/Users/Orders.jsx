@@ -91,7 +91,6 @@ export function OrdersBuyer() {
   }
 
   function cancel(id, grandTotal) {
-    console.log(grandTotal);
     Finalize({
       text: 'Once you cancel this order, Your money will be refunded',
       confirmButton: 'Yes',
@@ -443,6 +442,34 @@ export function OrdersSeller() {
     { title: 'Action', prop: 'action' },
   ];
 
+  function cancel(id, grandTotal, customerId) {
+    Finalize({
+      text: 'Are you sure, you want to cancel this order',
+      confirmButton: 'Yes',
+      successMsg: 'Order Cancelled Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/seller/cancel-order/' + id, {
+            status: 0,
+            grandTotal,
+            customerId,
+          })
+          .then((resp) => {
+            fetchUserInfo();
+          })
+          .catch((e) => console.log(e));
+        setUserOrdersTable(1);
+      }
+    });
+  }
+
+  function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
+    let totalPriceDelFee = 0;
+    totalPriceDelFee += Number(totalPrice) + Number(delFee);
+    return Number(totalPriceDelFee).toLocaleString('en-US');
+  }
+
   function setUserOrdersTable(number) {
     setBody([]);
     setLoading(true);
@@ -505,17 +532,56 @@ export function OrdersSeller() {
               >
                 View
               </Button>
-              {order.order_trans_status === '1' ? (
-                <Button
-                  variant='success'
-                  onClick={() => {
-                    accept(order.order_number);
-                  }}
-                  style={{ cursor: 'pointer' }}
-                  className='badge rounded px-2 me-2'
-                >
-                  Find Rider
-                </Button>
+
+              {order.order_trans_status === '1' &&
+              order.order_trans_status > 0 ? (
+                <>
+                  <Button
+                    variant='success'
+                    onClick={() => {
+                      accept(order.order_number);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2 me-2'
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variant='primary'
+                    onClick={() => {
+                      cancel(
+                        order.order_number,
+                        calculateGrandTotalDeliveryFee(
+                          order.total_amount,
+                          order.delivery_fee
+                        ),
+                        order.buyer_id
+                      );
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded text-bg-danger px-2 me-2'
+                  >
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                ''
+              )}
+
+              {order.order_trans_status === '2' &&
+              order.order_trans_status > 0 ? (
+                <>
+                  <Button
+                    variant='success'
+                    onClick={() => {
+                      accept(order.order_number);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2 me-2'
+                  >
+                    Accept
+                  </Button>
+                </>
               ) : (
                 ''
               )}

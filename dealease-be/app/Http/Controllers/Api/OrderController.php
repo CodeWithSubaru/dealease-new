@@ -133,15 +133,21 @@ class OrderController extends Controller
                     'weight' => $orderedItems[$i][$j]['weight'],
                     'total_price' => $orderedItems[$i][$j]['total_price'],
                 ]);
+
                 $totalPrice += (float) $orderedItems[$i][$j]['total_price'];
+
+                // delete carts
                 Cart::where('product_id', $orderedItems[$i][$j]['product_id'])->where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
                 $sellerId = $orderedItems[$i][$j]['product']['user_id'];
+
+                // deduction of quantity in Product stocks
+                $productStocks = Product::find($orderedItems[$i][$j]['product_id']);
+                $stocks = $productStocks->stocks_per_kg - $orderedItems[$i][$j]['weight'];
+                $productStocks->update(['stocks_per_kg' => $stocks]);
             }
 
             $userDetails = UserDetail::where('user_details_id', auth()->id())->get();
-
             $barangay = $request->shippingFee ? $request->shippingFee['barangay'] : $userDetails[0]->barangay;
-
             if ($barangay === 'Paliwas' || $barangay === 'Salambao' || $barangay === 'Binuangan') {
                 $rate = 20;
             } elseif ($barangay === 'Pag-asa' || $barangay === 'San Pascual') {
@@ -167,12 +173,16 @@ class OrderController extends Controller
                 'delivery_address_id' => null,
             ]);
 
-            // Deduction on wallet based on user's orders
+            // Deduction on customers wallet based on user's orders
             $userWallet = UsersWallet::where('user_id', auth()->id());
-            $shells =  $userWallet->first()->shell_coin_amount - ($rate + $totalPrice);
+            $customerShells =  $userWallet->first()->shell_coin_amount - ($rate + $totalPrice);
 
-            $userWallet->update(['shell_coin_amount' => $shells]);
+            $userWallet->update(['shell_coin_amount' => $customerShells]);
 
+            // seller coins will be added after the deduction to customers wallet
+            $sellerWallet = UsersWallet::where('user_id', $sellerId);
+            $sellerShells = $sellerWallet->first()->shell_coin_amount + ($rate + $totalPrice);
+            $sellerWallet->update(['shell_coin_amount' => $sellerShells]);
 
             if ($request->shippingFee) {
                 // option for other shipping address
@@ -217,8 +227,26 @@ class OrderController extends Controller
 
     public function cancelOrder(Request $request, $order)
     {
+        // cancel order by customer / buyer
         OrderTransaction::where('order_number', $order)->update(['order_trans_status' => $request->status]);
         $usersWallet = UsersWallet::where('user_id', auth()->id());
+        $refund = $usersWallet->first()->shell_coin_amount + $request->grandTotal;
+        $usersWallet->update(['shell_coin_amount' => $refund]);
+
+        // deduction of quantity in Product stocks
+        $productStocks = Product::find($request->product_id);
+        $stocks = $productStocks->stocks_per_kg + $request->product_id;
+        $productStocks->update(['stocks_per_kg' => $stocks]);
+
+        return response()->json(['status' => 'Order Cancelled Successfully'], 200);
+    }
+
+    public function cancelOrderSeller(Request $request, $order)
+    {
+        // cancel order by seller
+        // ** deduction to seller wallet after received the refund by customer
+        OrderTransaction::where('order_number', $order)->update(['order_trans_status' => $request->status]);
+        $usersWallet = UsersWallet::where('user_id', $request->customerId);
         $refund = $usersWallet->first()->shell_coin_amount + $request->grandTotal;
         $usersWallet->update(['shell_coin_amount' => $refund]);
 

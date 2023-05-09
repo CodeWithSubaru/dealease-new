@@ -61,7 +61,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->middleware('auth');
 
     Route::apiResource('/transactions', PaymentController::class);
-    Route::put('/orders/user/cancel-order/{order_number}', [OrderController::class, 'cancelOrder']);
     Route::get('/orders/buyer/{order_number}', [OrderController::class, 'viewOrderByOrdNumber']);
     Route::get('/orders/order-status/buyer/{order_status}', [OrderController::class, 'numberOfOrdersByStatusBuyer']);
     Route::get('/orders/order-status/seller/{order_status}', [OrderController::class, 'numberOfOrdersByStatusSeller']);
@@ -71,7 +70,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/increment/{id}', [OrderController::class, 'increment']);
     Route::get('/orders/decrement/{id}', [OrderController::class, 'decrement']);
     Route::get('/orders/seller-id', [OrderController::class, 'fetchCartGroupById']);
-
+    Route::put('/orders/user/cancel-order/{order_number}', [OrderController::class, 'cancelOrder']);
+    Route::put('/orders/seller/cancel-order/{order_number}', [OrderController::class, 'cancelOrderSeller']);
 
     Route::post('/orders/place-order', [OrderController::class, 'placeOrder']);
     Route::apiResource('/orders', OrderController::class);
