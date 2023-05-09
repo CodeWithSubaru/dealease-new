@@ -5,18 +5,19 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductFilterController extends Controller
 {
 
-    public function thisDay()
+    public function thisDay($id)
     {
-        return Product::whereDate('created_at', Carbon::now())->latest('created_at')->get();
+        return Product::whereDate('created_at', Carbon::now())->where('user_id', '!=', $id)->latest('created_at')->get();
     }
 
-    public function availableProducts()
+    public function availableProducts($id)
     {
-        return Product::where('stocks_per_kg', '>', '0')->get();
+        return Product::where('user_id', '!=', $id)->where('stocks_per_kg', '>', '0')->latest('created_at')->get();
     }
 
     public function searchProduct($product)
@@ -24,12 +25,13 @@ class ProductFilterController extends Controller
         $startWeek = Carbon::now()->startOfWeek();
         $endWeek   = Carbon::now()->endOfWeek();
 
-        $query = Product::query()
+        return Product::query()
             ->where('title', 'like', '%' . $product . '%')
             ->orWhere('description', 'like', '%' . $product . '%')
-            ->orWhere('price_per_kg', 'like', '%' . $product . '%');
-
-        return $query->where('stocks_per_kg', '>', '0')
-            ->whereBetween('created_at', [$startWeek, $endWeek])->get();
+            ->orWhere('price_per_kg', 'like', '%' . $product . '%')
+            ->where('stocks_per_kg', '>', '0')
+            ->whereBetween('created_at', [$startWeek, $endWeek])
+            ->where('user_id', '!=', auth()->id())
+            ->latest('created_at')->get();
     }
 }

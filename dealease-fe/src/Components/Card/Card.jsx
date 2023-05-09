@@ -60,7 +60,7 @@ export function Card() {
                         (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
                       }
                       onClick={() => {
-                        fetchThisDay();
+                        fetchThisDay(user.user_id);
                         setCurrentColor(1);
                       }}
                     >
@@ -76,7 +76,7 @@ export function Card() {
                       (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
                     }
                     onClick={() => {
-                      fetchAvailable();
+                      fetchAvailable(user.user_id);
                       setCurrentColor(2);
                     }}
                   >

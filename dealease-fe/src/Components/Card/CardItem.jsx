@@ -78,40 +78,7 @@ export function CardItem(props) {
           <div className='cards_item_info'>
             <h5 className='cards_item_text'>{props.text}</h5>
             <div className='text-center mt-2'></div>
-            {props.seller == user.user_id ? (
-              <Container>
-                <Row>
-                  <Col>
-                    <Edit
-                      show={editModalshow}
-                      onHide={() => setEditmodalShow(false)}
-                    />
-
-                    <Button
-                      variant='success'
-                      onClick={() => setEditmodalShow(true)}
-                      className='btn make-deal bg-success rounded'
-                      name='edit'
-                      id='edit'
-                    >
-                      <FontAwesomeIcon icon={faEdit} />
-                      &nbsp; {props.editbutton}
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      variant='danger'
-                      className='btn make-deal bg-danger rounded'
-                      name='delete'
-                      id='delete'
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                      &nbsp; {props.delbutton}
-                    </Button>
-                  </Col>
-                </Row>
-              </Container>
-            ) : (
+            {
               <>
                 <MydModalWithGrid
                   show={signinModal}
@@ -127,7 +94,7 @@ export function CardItem(props) {
                   <FontAwesomeIcon icon={faCartPlus} className='ms-1' />
                 </button>
               </>
-            )}
+            }
           </div>
         </div>
       </div>

@@ -24,28 +24,28 @@ export const ProductProvider = ({ children }) => {
     });
   }
 
-  function fetchThisWeek() {
+  function fetchThisWeek(id) {
     setProducts({});
     setLoading(true);
-    axiosClient.get('/product/this-week').then((resp) => {
+    axiosClient.get('/product/this-week/' + id).then((resp) => {
       setProducts(resp.data);
       setLoading(false);
     });
   }
 
-  function fetchThisDay() {
+  function fetchThisDay(id) {
     setProducts({});
     setLoading(true);
-    axiosClient.get('/product/this-day').then((resp) => {
+    axiosClient.get('/product/this-day/' + id).then((resp) => {
       setProducts(resp.data);
       setLoading(false);
     });
   }
 
-  function fetchAvailable() {
+  function fetchAvailable(id) {
     setProducts({});
     setLoading(true);
-    axiosClient.get('/product/available').then((resp) => {
+    axiosClient.get('/product/available/' + id).then((resp) => {
       setProducts(resp.data);
       setLoading(false);
     });
