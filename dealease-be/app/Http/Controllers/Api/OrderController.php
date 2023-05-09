@@ -11,6 +11,7 @@ use App\Models\OrderTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\DeliveryAddress;
 use App\Models\DeliveryStatus;
+use App\Models\UsersWallet;
 
 class OrderController extends Controller
 {
@@ -139,20 +140,23 @@ class OrderController extends Controller
 
             $userDetails = UserDetail::where('user_details_id', auth()->id())->get();
 
-            if ($userDetails[0]->barangay === 'Paliwas' || $userDetails[0]->barangay === 'Salambao' || $userDetails[0]->barangay === 'Binuangan') {
+            $barangay = $request->shippingFee ? $request->shippingFee['barangay'] : $userDetails[0]->barangay;
+
+            if ($barangay === 'Paliwas' || $barangay === 'Salambao' || $barangay === 'Binuangan') {
                 $rate = 20;
-            } elseif ($userDetails[0]->barangay === 'Pag-asa' || $userDetails[0]->barangay === 'San Pascual') {
+            } elseif ($barangay === 'Pag-asa' || $barangay === 'San Pascual') {
                 $rate = 25;
-            } elseif ($userDetails[0]->barangay === 'Catanghalan' || $userDetails[0]->barangay === 'Hulo') {
+            } elseif ($barangay === 'Catanghalan' || $barangay === 'Hulo') {
                 $rate = 30;
-            } elseif ($userDetails[0]->barangay === 'Panghulo' || $userDetails[0]->barangay === 'Lawa') {
+            } elseif ($barangay === 'Panghulo' || $barangay === 'Lawa') {
                 $rate = 35;
-            } elseif ($userDetails[0]->barangay === 'Paco') {
+            } elseif ($barangay === 'Paco') {
                 $rate = 40;
-            } elseif ($userDetails[0]->barangay === 'Tawiran') {
+            } elseif ($barangay === 'Tawiran') {
                 $rate = 45;
             }
 
+            // insert orders
             $orderTransaction = OrderTransaction::create([
                 'order_number' => $orderNumber,
                 'total_amount' => $totalPrice,
@@ -160,12 +164,18 @@ class OrderController extends Controller
                 'delivery_fee' => $rate,
                 'seller_id' => $sellerId,
                 'buyer_id' => auth()->id(),
-                'shipping_id' => 1,
                 'delivery_address_id' => null,
             ]);
 
+            // Deduction on wallet based on user's orders
+            $userWallet = UsersWallet::where('user_id', auth()->id());
+            $shells =  $userWallet->first()->shell_coin_amount - ($rate + $totalPrice);
+
+            $userWallet->update(['shell_coin_amount' => $shells]);
+
 
             if ($request->shippingFee) {
+                // option for other shipping address
                 $deliveryAddress = DeliveryAddress::create([
                     'order_trans_id' => $orderTransaction->order_trans_id,
                     'rider_id' => null,
@@ -204,6 +214,17 @@ class OrderController extends Controller
     {
         return OrderTransaction::where('order_number', $order)->update(['order_trans_status' => $request->status]);
     }
+
+    public function cancelOrder(Request $request, $order)
+    {
+        OrderTransaction::where('order_number', $order)->update(['order_trans_status' => $request->status]);
+        $usersWallet = UsersWallet::where('user_id', auth()->id());
+        $refund = $usersWallet->first()->shell_coin_amount + $request->grandTotal;
+        $usersWallet->update(['shell_coin_amount' => $refund]);
+
+        return response()->json(['status' => 'Order Cancelled Successfully'], 200);
+    }
+
 
     public function increment($id)
     {

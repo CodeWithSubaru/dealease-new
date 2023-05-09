@@ -61,6 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->middleware('auth');
 
     Route::apiResource('/transactions', PaymentController::class);
+    Route::put('/orders/user/cancel-order/{order_number}', [OrderController::class, 'cancelOrder']);
     Route::get('/orders/buyer/{order_number}', [OrderController::class, 'viewOrderByOrdNumber']);
     Route::get('/orders/order-status/buyer/{order_status}', [OrderController::class, 'numberOfOrdersByStatusBuyer']);
     Route::get('/orders/order-status/seller/{order_status}', [OrderController::class, 'numberOfOrdersByStatusSeller']);

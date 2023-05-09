@@ -35,11 +35,7 @@ export function ShippingFee() {
     setDoneTransaction,
   } = useOrderContext();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
-  const [shippingFeeData, setShippingFeeData] = useState({
-    street: '',
-    contact_number: '',
-  });
+  const { user, fetchUserInfo } = useAuthContext();
   const [barangayForm, setBarangay] = useState('');
   const [street, setStreet] = useState('');
   const [contactNumber, setContactNumber] = useState('');
@@ -65,7 +61,7 @@ export function ShippingFee() {
 
       Finalize({
         confirmButton: 'Yes, Place my order',
-        text: 'Are you sure you want to place order',
+        text: 'Are you sure you want to place order. It will deduct to your shell wallet',
         successMsg: 'Your Order Placed Successfully.',
         errorMsg: 'Something went wrong!',
         status: 'Success!',
@@ -77,14 +73,16 @@ export function ShippingFee() {
           axiosClient
             .post('/orders/place-order', { cartHistoryBySellerId })
             .then((res) => {
+              setOtherAddress({});
               setStep2(step1);
               setDoneTransaction(true);
+              fetchCountInItemsCart();
+              fetchUserInfo();
               setLoading(false);
               navigate('../successful');
             });
           setStep2(step1);
         }
-        setLoading(false);
       });
     },
   };
@@ -217,7 +215,7 @@ export function ShippingFee() {
                       e.preventDefault();
                       Finalize1({
                         confirmButton: 'Yes, Place my order',
-                        text: "You won't be able to revert this!",
+                        text: 'Are you sure you want to place order. It will deduct to your shell wallet',
                         successMsg: 'Your Order Placed Successfully.',
                       }).then((res) => {
                         if (res.isConfirmed) {
@@ -245,6 +243,11 @@ export function ShippingFee() {
                               setStep2(data);
                               setDoneTransaction(true);
                               setLoading(false);
+                              fetchCountInItemsCart();
+                              fetchUserInfo();
+                              setBarangay('');
+                              setStreet('');
+                              setContactNumber('');
                               navigate('../successful');
                             })
                             .catch((e) => {

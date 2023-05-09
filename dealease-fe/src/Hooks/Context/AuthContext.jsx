@@ -146,6 +146,10 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
+  function fetchUserInfo() {
+    axiosClient.get('/user').then((res) => setUser(res.data[0]));
+  }
+
   useEffect(() => {
     axiosClient
       .get('/user')
@@ -202,6 +206,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         setLoading,
+        fetchUserInfo,
       }}
     >
       {children}

@@ -4,6 +4,7 @@ import axiosClient from '../../api/axios';
 import PUBLIC_URL from '../../api/public_url';
 import Button from 'react-bootstrap/Button';
 import { Finalize } from '../../Components/Notification/Notification';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function OrdersBuyer() {
   const title = 'Buyer';
@@ -14,6 +15,7 @@ export function OrdersBuyer() {
   const [deliveredOrderNumber, setDeliveredOrderNumber] = useState(0);
   const [viewOrderProduct, setViewOrderProduct] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const { fetchUserInfo } = useAuthContext();
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
     axiosClient
@@ -88,16 +90,19 @@ export function OrdersBuyer() {
       .catch((e) => console.log(e));
   }
 
-  function cancel(id) {
+  function cancel(id, grandTotal) {
+    console.log(grandTotal);
     Finalize({
-      text: 'You want decline this order request',
+      text: 'Once you cancel this order, Your money will be refunded',
       confirmButton: 'Yes',
-      successMsg: 'Order Declined Successfully.',
+      successMsg: 'Order Cancelled Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .put('/orders/' + id, { status: 0 })
-          .then((resp) => console.log(resp))
+          .put('/orders/user/cancel-order/' + id, { status: 0, grandTotal })
+          .then((resp) => {
+            fetchUserInfo();
+          })
           .catch((e) => console.log(e));
         setUserOrdersTable(1);
       }
@@ -107,9 +112,16 @@ export function OrdersBuyer() {
     let totalPrice = 0;
 
     Object.values(orders).forEach((orderItem) => {
-      totalPrice += Number(orderItem.total_price);
+      totalPrice +=
+        Number(orderItem.total_price) + Number(orderItem.delivery_fee);
     });
     return Number(totalPrice).toLocaleString('en-US');
+  }
+
+  function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
+    let totalPriceDelFee = 0;
+    totalPriceDelFee += Number(totalPrice) + Number(delFee);
+    return Number(totalPriceDelFee).toLocaleString('en-US');
   }
 
   const header = [
@@ -204,7 +216,10 @@ export function OrdersBuyer() {
                 style={{ width: '25px' }}
                 className='me-2'
               />{' '}
-              {order.total_amount}{' '}
+              {calculateGrandTotalDeliveryFee(
+                order.total_amount,
+                order.delivery_fee
+              )}{' '}
             </div>
           ),
           created_at: dateFormat(order.created_at),
@@ -224,7 +239,15 @@ export function OrdersBuyer() {
               {order.order_trans_status === '1' ? (
                 <Button
                   variant='danger'
-                  onClick={() => cancel(order.order_number)}
+                  onClick={() => {
+                    cancel(
+                      order.order_number,
+                      calculateGrandTotalDeliveryFee(
+                        order.total_amount,
+                        order.delivery_fee
+                      )
+                    );
+                  }}
                   style={{ cursor: 'pointer' }}
                   className='badge rounded text-bg-danger px-2'
                 >
@@ -376,9 +399,8 @@ export function OrdersSeller() {
 
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
-
     Object.values(orders).forEach((orderItem) => {
-      totalPrice += Number(orderItem.total_price);
+      totalPrice += Number(orderItem.total_price) + orderItem.delivery_fee;
     });
     return Number(totalPrice).toLocaleString('en-US');
   }
