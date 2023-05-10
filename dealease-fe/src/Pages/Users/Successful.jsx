@@ -78,7 +78,7 @@ export function SuccessfulUser() {
                 <h6 className='fw-light mb-1 text-secondary'>
                   Shipping Address
                 </h6>
-                {console.log('HERE', otherAddress)}
+
                 {Object.keys(otherAddress).length > 0 ? (
                   <>
                     <span className='d-block'>
@@ -111,7 +111,6 @@ export function SuccessfulUser() {
                 <span className='d-block'>Region III (Central Luzon)</span>
               </div>
             </div>
-            {console.log('HERE', step2)}
             {Object.values(
               step2.cartHistoryBySellerId ? step2.cartHistoryBySellerId : step2
             ).map((item, index) => (

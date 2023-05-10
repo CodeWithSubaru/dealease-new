@@ -60,7 +60,7 @@ export function Card() {
                         (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
                       }
                       onClick={() => {
-                        fetchThisDay();
+                        fetchThisDay(user.user_id);
                         setCurrentColor(1);
                       }}
                     >
@@ -76,7 +76,7 @@ export function Card() {
                       (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
                     }
                     onClick={() => {
-                      fetchAvailable();
+                      fetchAvailable(user.user_id);
                       setCurrentColor(2);
                     }}
                   >
@@ -137,7 +137,7 @@ export function Card() {
               {products.length > 0 ? (
                 products.map((product, data) =>
                   product && !product.deleted_at ? (
-                    <Col className='mb-4 card-card' key={product.id}>
+                    <Col className='mb-4 card-card' key={data}>
                       <CardItem
                         key={product.id}
                         id={product.id}

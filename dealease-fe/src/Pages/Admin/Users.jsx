@@ -397,6 +397,7 @@ export function Users() {
                 onClick={() => {
                   setUserDataTable('/admin/users');
                 }}
+                disabled={loading}
               >
                 All
                 <span
@@ -413,6 +414,7 @@ export function Users() {
                 onClick={() => {
                   setUserDataTable('/admin/users/unverified');
                 }}
+                disabled={loading}
               >
                 Unverified Users
                 <span

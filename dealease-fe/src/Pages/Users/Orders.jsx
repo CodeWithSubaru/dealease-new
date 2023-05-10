@@ -53,7 +53,7 @@ export function OrdersBuyer() {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Processing';
+      return 'Preparing';
     }
     if (status === '3') {
       return 'Delivered';
@@ -91,7 +91,6 @@ export function OrdersBuyer() {
   }
 
   function cancel(id, grandTotal) {
-    console.log(grandTotal);
     Finalize({
       text: 'Once you cancel this order, Your money will be refunded',
       confirmButton: 'Yes',
@@ -110,12 +109,13 @@ export function OrdersBuyer() {
   }
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
-
+    let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
-      totalPrice +=
-        Number(orderItem.total_price) + Number(orderItem.delivery_fee);
+      totalPrice += Number(orderItem.total_price);
+      deliveryFee = Number(orderItem.delivery_fee);
     });
-    return Number(totalPrice).toLocaleString('en-US');
+
+    return Number(totalPrice) + deliveryFee;
   }
 
   function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
@@ -236,6 +236,7 @@ export function OrdersBuyer() {
               >
                 View
               </Button>
+
               {order.order_trans_status === '1' ? (
                 <Button
                   variant='danger'
@@ -340,10 +341,16 @@ export function OrdersSeller() {
     if (status === '1') {
       return 'Pending';
     }
+
     if (status === '2') {
+      return 'Preparing';
+    }
+
+    if (status === '3') {
       return 'Finding Rider';
     }
-    if (status === '3') {
+
+    if (status === '4') {
       return 'Delivered';
     }
   }
@@ -399,10 +406,13 @@ export function OrdersSeller() {
 
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
+    let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
-      totalPrice += Number(orderItem.total_price) + orderItem.delivery_fee;
+      totalPrice += Number(orderItem.total_price);
+      deliveryFee = Number(orderItem.delivery_fee);
     });
-    return Number(totalPrice).toLocaleString('en-US');
+
+    return Number(totalPrice) + deliveryFee;
   }
 
   const header = [
@@ -442,6 +452,34 @@ export function OrdersSeller() {
     },
     { title: 'Action', prop: 'action' },
   ];
+
+  function cancel(id, grandTotal, customerId) {
+    Finalize({
+      text: 'Are you sure, you want to cancel this order',
+      confirmButton: 'Yes',
+      successMsg: 'Order Cancelled Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/seller/cancel-order/' + id, {
+            status: 0,
+            grandTotal,
+            customerId,
+          })
+          .then((resp) => {
+            fetchUserInfo();
+          })
+          .catch((e) => console.log(e));
+        setUserOrdersTable(1);
+      }
+    });
+  }
+
+  function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
+    let totalPriceDelFee = 0;
+    totalPriceDelFee += Number(totalPrice) + Number(delFee);
+    return Number(totalPriceDelFee).toLocaleString('en-US');
+  }
 
   function setUserOrdersTable(number) {
     setBody([]);
@@ -490,7 +528,19 @@ export function OrdersSeller() {
               {status(order.order_trans_status)}
             </span>
           ),
-          payment_total_amount: 'Php ' + order.total_amount,
+          payment_total_amount: (
+            <>
+              <img
+                src='/images/seashell.png'
+                style={{ width: '25px' }}
+                className='me-2'
+              />{' '}
+              {calculateGrandTotalDeliveryFee(
+                order.total_amount,
+                order.delivery_fee
+              )}{' '}
+            </>
+          ),
           created_at: dateFormat(order.created_at),
           action: (
             <div key={i} className='button-actions text-light d-flex'>
@@ -505,17 +555,56 @@ export function OrdersSeller() {
               >
                 View
               </Button>
-              {order.order_trans_status === '1' ? (
-                <Button
-                  variant='success'
-                  onClick={() => {
-                    accept(order.order_number);
-                  }}
-                  style={{ cursor: 'pointer' }}
-                  className='badge rounded px-2 me-2'
-                >
-                  Find Rider
-                </Button>
+
+              {order.order_trans_status === '1' &&
+              order.order_trans_status > 0 ? (
+                <>
+                  <Button
+                    variant='success'
+                    onClick={() => {
+                      accept(order.order_number);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2 me-2'
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variant='primary'
+                    onClick={() => {
+                      cancel(
+                        order.order_number,
+                        calculateGrandTotalDeliveryFee(
+                          order.total_amount,
+                          order.delivery_fee
+                        ),
+                        order.buyer_id
+                      );
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded text-bg-danger px-2 me-2'
+                  >
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                ''
+              )}
+
+              {order.order_trans_status === '2' &&
+              order.order_trans_status > 0 ? (
+                <>
+                  <Button
+                    variant='success'
+                    onClick={() => {
+                      accept(order.order_number);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2 me-2'
+                  >
+                    Find Rider
+                  </Button>
+                </>
               ) : (
                 ''
               )}
@@ -523,8 +612,8 @@ export function OrdersSeller() {
           ),
         };
       });
-      setLoading(false);
       setBody(orders);
+      setLoading(false);
     });
   }
 

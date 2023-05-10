@@ -6,7 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Button, Nav } from 'react-bootstrap';
-import { Notification } from '../../Components/Notification/Notification';
+import {
+  Notification,
+  Finalize,
+} from '../../Components/Notification/Notification';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function TransactionsAdmin() {
   const [body, setBody] = useState([]);
@@ -15,42 +19,64 @@ export function TransactionsAdmin() {
     useState(0);
   const [numberOfApprovedTransaction, setNumberOfApprovedTransaction] =
     useState(0);
+  const [numberOfCancelledTransaction, setNumberOfCancelledTransaction] =
+    useState(0);
 
   function fetchUnderReviewTransaction() {
     axiosClient.get('/admin/transactions/under-review').then((res) => {
-      console.log(res);
       setNumberOfUnderReviewTransaction(res.data);
     });
   }
 
   function fetchApprovedTransaction() {
     axiosClient.get('/admin/transactions/approved').then((res) => {
-      console.log(res);
       setNumberOfApprovedTransaction(res.data);
     });
   }
 
-  function confirm(id) {
-    axiosClient
-      .put('/admin/confirm/' + id)
-      .then((res) =>
-        Notification({
-          title: 'Success',
-          message: res.data.status,
-          icon: 'success',
-        }).then(() => {
-          setUserTransactionsDataTable(1);
-        })
-      )
-      .catch((err) =>
-        Notification({
-          title: 'Error',
-          message: 'Something went wrong',
-          icon: 'error',
-        }).then(() => setErrors(err.response.data.errors))
-      );
+  function fetchCancelledTransaction() {
+    axiosClient.get('/admin/transactions/cancelled').then((res) => {
+      console.log(res);
+      setNumberOfCancelledTransaction(res.data);
+    });
   }
-  function decline() {}
+
+  function confirm(id) {
+    Finalize({
+      text: 'Are you sure, You want to confirm this transaction?',
+      confirmButton: 'Yes',
+      successMsg: 'Transaction Confirmed Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/admin/confirm/' + id)
+          .then((res) => setUserTransactionsDataTable(1))
+          .catch((err) => setErrors(err.response.data.errors));
+
+        setUserDataTable(uri);
+        fetchNumberOfUsers();
+        fetchNumberOfUnverifiedUsers();
+      }
+    });
+  }
+
+  function decline(id) {
+    Finalize({
+      text: 'Once you decline this request',
+      confirmButton: 'Yes',
+      successMsg: 'Transaction Declined Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/admin/decline/' + id)
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((e) => console.log(e));
+        setUserTransactionsDataTable(1);
+      }
+    });
+  }
 
   const header = [
     {
@@ -74,15 +100,16 @@ export function TransactionsAdmin() {
       isSortable: true,
     },
     {
-      title: 'Description',
-      prop: 'payment_description',
-      isSortable: true,
-    },
-    {
       title: 'Total Amount',
       prop: 'payment_total_amount',
       isSortable: true,
     },
+    {
+      title: 'Description',
+      prop: 'payment_description',
+      isSortable: true,
+    },
+
     {
       title: 'Date Request',
       prop: 'created_at',
@@ -107,24 +134,16 @@ export function TransactionsAdmin() {
     return formattedDate;
   }
 
-  function switchUserType(user) {
-    if (user.is_buyer === 'User') {
-      return user.is_buyer;
-    }
-
-    if (user.role_type === 'Admin') {
-      return user.role_type;
-    }
-  }
-
   function status(status) {
+    if (status === '0') {
+      return 'Declined';
+    }
     if (status === '1') {
       return 'Pending';
     }
     if (status === '2') {
       return 'Approved';
     }
-    return '';
   }
 
   function switchColor(status) {
@@ -143,11 +162,11 @@ export function TransactionsAdmin() {
     }
   }
 
-  function setUserTransactionsDataTable($id) {
+  function setUserTransactionsDataTable(id) {
     setBody([]);
     setLoading(true);
     axiosClient
-      .get('/admin/transactions/show/transactions/' + $id)
+      .get('/admin/transactions/show/transactions/' + id)
       .then((resp) => {
         const transactions = resp.data.map((transaction, i) => {
           return {
@@ -162,21 +181,15 @@ export function TransactionsAdmin() {
                 />
                 <div>
                   <p className='mb-0'>
-                    {
-                      transaction.user.first_name
-                      // +
-                      // ' ' +
-                      // transaction.user.user_details.middle_name +
-                      // '.' +
-                      // ' ' +
-                      // transaction.user_details.last_name +
-                      // ' '
-                      // transaction.user_details.ext_name
-                    }
+                    {transaction.user.first_name + ' '}
+                    {transaction.user.user_details.middle_name
+                      ? transaction.user.user_details.middle_name[0] + '. '
+                      : ''}
+                    {transaction.user.user_details.last_name}{' '}
+                    {transaction.user.user_details.ext_name
+                      ? transaction.user.user_details.ext_name
+                      : ''}
                   </p>
-                  <span className='badge rounded-pill text-bg-primary'>
-                    {switchUserType(transaction.user)}
-                  </span>
                 </div>
               </div>
             ),
@@ -191,7 +204,19 @@ export function TransactionsAdmin() {
               </span>
             ),
             payment_description: transaction.payment_description,
-            payment_total_amount: 'Php ' + transaction.payment_total_amount,
+            payment_total_amount: (
+              <div className='d-flex'>
+                {' '}
+                <img
+                  src='/images/seashell.png'
+                  height={25}
+                  width={25}
+                  className='mx-1 me-2'
+                  alt=''
+                />{' '}
+                {transaction.payment_total_amount}
+              </div>
+            ),
             created_at: dateFormat(transaction.created_at),
             action: (
               <div key={i} className='button-actions text-light d-flex'>
@@ -207,7 +232,7 @@ export function TransactionsAdmin() {
                     </Button>
                     <Button
                       variant='danger'
-                      onClick={() => decline(user.user_id)}
+                      onClick={() => decline(transaction.payment_number)}
                       style={{ cursor: 'pointer' }}
                       className='badge rounded px-2 me-2 btn'
                     >
@@ -241,6 +266,10 @@ export function TransactionsAdmin() {
         loading={loading}
         numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
         numberOfApprovedTransaction={numberOfApprovedTransaction}
+        numberOfCancelledTransaction={numberOfCancelledTransaction}
+        fetchUnderReviewTransaction={fetchUnderReviewTransaction}
+        fetchApprovedTransaction={fetchApprovedTransaction}
+        fetchCancelledTransaction={fetchCancelledTransaction}
       />
     </>
   );

@@ -133,15 +133,21 @@ class OrderController extends Controller
                     'weight' => $orderedItems[$i][$j]['weight'],
                     'total_price' => $orderedItems[$i][$j]['total_price'],
                 ]);
+
                 $totalPrice += (float) $orderedItems[$i][$j]['total_price'];
+
+                // delete carts
                 Cart::where('product_id', $orderedItems[$i][$j]['product_id'])->where('order_by', $orderedItems[$i][$j]['order_by'])->delete();
                 $sellerId = $orderedItems[$i][$j]['product']['user_id'];
+
+                // deduction of quantity in Product stocks
+                $productStocks = Product::find($orderedItems[$i][$j]['product_id']);
+                $stocks = $productStocks->stocks_per_kg - $orderedItems[$i][$j]['weight'];
+                $productStocks->update(['stocks_per_kg' => $stocks]);
             }
 
             $userDetails = UserDetail::where('user_details_id', auth()->id())->get();
-
             $barangay = $request->shippingFee ? $request->shippingFee['barangay'] : $userDetails[0]->barangay;
-
             if ($barangay === 'Paliwas' || $barangay === 'Salambao' || $barangay === 'Binuangan') {
                 $rate = 20;
             } elseif ($barangay === 'Pag-asa' || $barangay === 'San Pascual') {
@@ -167,12 +173,16 @@ class OrderController extends Controller
                 'delivery_address_id' => null,
             ]);
 
-            // Deduction on wallet based on user's orders
+            // Deduction on customers wallet based on user's orders
             $userWallet = UsersWallet::where('user_id', auth()->id());
-            $shells =  $userWallet->first()->shell_coin_amount - ($rate + $totalPrice);
+            $customerShells =  $userWallet->first()->shell_coin_amount - ($rate + $totalPrice);
 
-            $userWallet->update(['shell_coin_amount' => $shells]);
+            $userWallet->update(['shell_coin_amount' => $customerShells]);
 
+            // seller coins will be added after the deduction to customers wallet
+            $sellerWallet = UsersWallet::where('user_id', $sellerId);
+            $sellerShells = $sellerWallet->first()->shell_coin_amount + ($rate + $totalPrice);
+            $sellerWallet->update(['shell_coin_amount' => $sellerShells]);
 
             if ($request->shippingFee) {
                 // option for other shipping address
@@ -217,10 +227,65 @@ class OrderController extends Controller
 
     public function cancelOrder(Request $request, $order)
     {
-        OrderTransaction::where('order_number', $order)->update(['order_trans_status' => $request->status]);
-        $usersWallet = UsersWallet::where('user_id', auth()->id());
-        $refund = $usersWallet->first()->shell_coin_amount + $request->grandTotal;
-        $usersWallet->update(['shell_coin_amount' => $refund]);
+        // cancel order by customer / buyer
+        $orderTransaction = Order::with('order_transaction')->where('order_number', $order);
+
+        // add amount ordered to customers wallet
+        $customerWallet = UsersWallet::where('user_id', auth()->id());
+        $refund = $customerWallet->first()->shell_coin_amount + $request->grandTotal;
+        $customerWallet->update(['shell_coin_amount' => $refund]);
+
+        // return stock number
+        for ($i = 0; $i < count($orderTransaction->get()); $i++) {
+            $orderQuery = $orderTransaction->get()[$i];
+
+            $orderQuery->order_transaction[0]->update(['order_trans_status' => $request->status]);
+            $productStocks = Product::find($orderQuery->product_id);
+            $stocks = $productStocks->stocks_per_kg + $orderQuery->weight;
+            $productStocks->update(['stocks_per_kg' => $stocks]);
+            $totalPriceAndDeliveryFee = (float) $orderQuery->order_transaction[0]->total_amount + (float) $orderQuery->order_transaction[0]->delivery_fee;
+            $sellerId = $orderQuery->order_transaction[0]->seller_id;
+        }
+
+        // Implement this when delivered line 285 - 287
+        // deduct ordered amount of customer to sellers wallet
+        // $sellerWallet = UsersWallet::where('user_id', $sellerId);
+        // $deduction = $sellerWallet->first()->shell_coin_amount - $totalPriceAndDeliveryFee;
+        // $sellerWallet->update(['shell_coin_amount' => $deduction]);
+
+        return response()->json(['status' => 'Order Cancelled Successfully'], 200);
+    }
+
+    public function cancelOrderSeller(Request $request, $order)
+    {
+        // cancel order by customer / buyer
+        $orderTransaction = Order::with('order_transaction')->where('order_number', $order);
+
+        // return stock number
+        for ($i = 0; $i < count($orderTransaction->get()); $i++) {
+            $orderQuery = $orderTransaction->get()[$i];
+
+            $orderQuery->order_transaction[0]->update(['order_trans_status' => $request->status]);
+            $productStocks = Product::find($orderQuery->product_id);
+            $stocks = $productStocks->stocks_per_kg + $orderQuery->weight;
+            $productStocks->update(['stocks_per_kg' => $stocks]);
+
+            // Get Records seller id total delivery fee and price
+            $totalPriceAndDeliveryFee = (float) $orderQuery->order_transaction[0]->total_amount + (float) $orderQuery->order_transaction[0]->delivery_fee;
+            $sellerId = $orderQuery->order_transaction[0]->seller_id;
+            $buyerId = $orderQuery->order_transaction[0]->buyer_id;
+        }
+
+        // add amount ordered to customers wallet
+        $customerWallet = UsersWallet::where('user_id', $buyerId);
+        $refund = $customerWallet->first()->shell_coin_amount + $totalPriceAndDeliveryFee;
+        $customerWallet->update(['shell_coin_amount' => $refund]);
+
+        // Implement this when delivered line 285 - 287
+        // deduct ordered amount of customer to sellers wallet
+        // $sellerWallet = UsersWallet::where('user_id', $sellerId);
+        // $deduction = $sellerWallet->first()->shell_coin_amount - $totalPriceAndDeliveryFee;
+        // $sellerWallet->update(['shell_coin_amount' => $deduction]);
 
         return response()->json(['status' => 'Order Cancelled Successfully'], 200);
     }

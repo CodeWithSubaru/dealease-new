@@ -15,7 +15,7 @@ class OrderTransaction extends Model
 
     public function order()
     {
-        return  $this->hasMany(\App\Models\Order::class, 'order_number', 'order_number');
+        return  $this->belongsTo(\App\Models\Order::class, 'order_number', 'order_number');
     }
 
     public function seller()
