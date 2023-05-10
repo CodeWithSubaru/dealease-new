@@ -45,13 +45,19 @@ class RiderController extends Controller
         return Deliveries::where('rider_id', '=', $rider)->where('delivery_status', '=', '1')->whereDate('created_at', Carbon::now())->get();
     }
 
+    //to deliver button can trigger this post method.
     public function toDeliver(string $id) {
+        // update status of delivery table
         $changeStatus = Deliveries::where('id', $id)->update([
             'delivery_status' => '2',
         ]);
 
         if($changeStatus) {
-
+            // will update status of order transaction table at the same time.
+            $product = Deliveries::find($id);
+            OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([
+                'order_trans_status' => '5',
+            ]);
         }
     }
 }
