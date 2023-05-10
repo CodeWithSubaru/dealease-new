@@ -90,8 +90,9 @@ function App() {
           </Route>
 
           {/* Rider */}
-          <Route path='/rider/login' element={<LoginRider />} />
           <Route path='/rider/home' element={<HomeRider />} />
+
+          <Route path='/rider/login' element={<LoginRider />} />
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

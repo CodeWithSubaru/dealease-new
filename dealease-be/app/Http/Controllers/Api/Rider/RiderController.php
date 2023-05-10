@@ -14,14 +14,13 @@ class RiderController extends Controller
     // Display yung mga available na order na pwedeng iaccept ni rider
     public function availableOrdersToPickUp()
     {
-
-        return OrderTransaction::where('order_trans_status', '=', '3')->whereDate('created_at', Carbon::now())->get();
+        return OrderTransaction::with('buyer', 'buyer.user_details')->where('order_trans_status', '3')->whereDate('created_at', Carbon::now())->latest('order_number')->get();
     }
 
     // call when rider accept an order
     public function acceptOrder(Request $request)
     {
-        $rider = Auth::id(); //getting authenticated user id
+        $rider = auth()->user()->user_id; //getting authenticated user id
 
         // inserting in Deliveries table
         $acceptOrder = Deliveries::create([
@@ -44,8 +43,8 @@ class RiderController extends Controller
     // display the accepted order, it turns to pick up order status which 1
     public function itemToPickUp()
     {
-        $rider = Auth::id(); //getting authenticated user id
-        return Deliveries::where('rider_id', '=', $rider)->where('delivery_status', '=', '1')->whereDate('created_at', Carbon::now())->get();
+        $rider = auth()->user()->user_id; //getting authenticated user id
+        return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details')->where('rider_id', '=', $rider)->where('delivery_status', '=', '1')->whereDate('created_at', Carbon::now())->get();
     }
 
     //to deliver button can trigger this post method.

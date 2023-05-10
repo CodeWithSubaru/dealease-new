@@ -379,7 +379,7 @@ export function OrdersSeller() {
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .put('/orders/' + orderNumber, { status: 2 })
+          .put('/orders/' + orderNumber, { status: 3 })
           .then((resp) => {})
           .catch((e) => console.log(e));
         fetchNumberOrdersByStatusUser(1);

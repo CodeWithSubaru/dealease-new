@@ -431,11 +431,14 @@ export function ShippingFee() {
                                 : ''
                               : item[0].product.user.first_name +
                                 ' ' +
-                                item[0].product.user.user_details
-                                  .middle_name[0] +
+                                item[0].product.user.user_details.middle_name
+                              ? item[0].product.user.user_details.middle_name[0]
+                              : '' +
                                 '.' +
                                 ' ' +
-                                item[0].product.user.user_details.last_name}
+                                item[0].product.user.user_details.last_name
+                              ? item[0].product.user.user_details.last_name
+                              : ''}
                           </span>
                         </p>
                         {item.map((cartItem, index) => (
