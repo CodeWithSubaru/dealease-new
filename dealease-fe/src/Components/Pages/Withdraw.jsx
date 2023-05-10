@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 
 export function Withdraw() {
   // Withdraw from shell into money
-  const { user } = useAuthContext();
+  const { user, fetchUserInfo } = useAuthContext();
   const [shellToConvert, setShellToConvert] = useState(0);
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
@@ -34,6 +34,7 @@ export function Withdraw() {
                   }).then(() => {
                     setShellToConvert('');
                     setErrors([]);
+                    fetchUserInfo();
                     navigate('/transactions');
                   });
                 }
@@ -74,7 +75,7 @@ export function Withdraw() {
             </Form.Control.Feedback>
             Converted to Peso
             <br />
-            Php {Number(shellToConvert / 1.5).toFixed(2)}
+            Php {Number(shellToConvert).toFixed(2)}
           </Form.Group>
 
           <Button
@@ -84,6 +85,7 @@ export function Withdraw() {
               shellToConvert >
               Number(user.wallet ? user.wallet.shell_coin_amount : 0)
             }
+            className='rounded'
           >
             Withdraw
           </Button>

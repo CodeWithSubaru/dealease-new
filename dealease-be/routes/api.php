@@ -115,6 +115,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/transactions/show/transactions/{payment_status}', [AdminPaymentController::class, 'index']);
     Route::get('/admin/transactions/under-review', [AdminPaymentController::class, 'numberOfUnderReviewTransaction']);
     Route::get('/admin/transactions/approved', [AdminPaymentController::class, 'numberOfApprovedTransaction']);
+    Route::get('/admin/transactions/cancelled', [AdminPaymentController::class, 'numberOfCancelledTransaction']);
     Route::apiResource('/admin/transactions', AdminPaymentController::class);
     Route::put('/admin/confirm/{id}', [AdminPaymentController::class, 'confirm']);
+    Route::put('/admin/decline/{id}', [AdminPaymentController::class, 'decline']);
 });

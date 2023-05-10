@@ -6,7 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Button, Nav } from 'react-bootstrap';
-import { Notification } from '../../Components/Notification/Notification';
+import {
+  Notification,
+  Finalize,
+} from '../../Components/Notification/Notification';
+import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function TransactionsAdmin() {
   const [body, setBody] = useState([]);
@@ -14,6 +18,8 @@ export function TransactionsAdmin() {
   const [numberOfUnderReviewTransaction, setNumberOfUnderReviewTransaction] =
     useState(0);
   const [numberOfApprovedTransaction, setNumberOfApprovedTransaction] =
+    useState(0);
+  const [numberOfCancelledTransaction, setNumberOfCancelledTransaction] =
     useState(0);
 
   function fetchUnderReviewTransaction() {
@@ -28,27 +34,49 @@ export function TransactionsAdmin() {
     });
   }
 
-  function confirm(id) {
-    axiosClient
-      .put('/admin/confirm/' + id)
-      .then((res) =>
-        Notification({
-          title: 'Success',
-          message: res.data.status,
-          icon: 'success',
-        }).then(() => {
-          setUserTransactionsDataTable(1);
-        })
-      )
-      .catch((err) =>
-        Notification({
-          title: 'Error',
-          message: 'Something went wrong',
-          icon: 'error',
-        }).then(() => setErrors(err.response.data.errors))
-      );
+  function fetchCancelledTransaction() {
+    axiosClient.get('/admin/transactions/cancelled').then((res) => {
+      console.log(res);
+      setNumberOfCancelledTransaction(res.data);
+    });
   }
-  function decline() {}
+
+  function confirm(id) {
+    Finalize({
+      text: 'Are you sure, You want to confirm this transaction?',
+      confirmButton: 'Yes',
+      successMsg: 'Transaction Confirmed Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/admin/confirm/' + id)
+          .then((res) => setUserTransactionsDataTable(1))
+          .catch((err) => setErrors(err.response.data.errors));
+
+        setUserDataTable(uri);
+        fetchNumberOfUsers();
+        fetchNumberOfUnverifiedUsers();
+      }
+    });
+  }
+
+  function decline(id) {
+    Finalize({
+      text: 'Once you decline this request',
+      confirmButton: 'Yes',
+      successMsg: 'Transaction Declined Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/admin/decline/' + id)
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((e) => console.log(e));
+        setUserTransactionsDataTable(1);
+      }
+    });
+  }
 
   const header = [
     {
@@ -107,6 +135,9 @@ export function TransactionsAdmin() {
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Declined';
+    }
     if (status === '1') {
       return 'Pending';
     }
@@ -201,7 +232,7 @@ export function TransactionsAdmin() {
                     </Button>
                     <Button
                       variant='danger'
-                      onClick={() => decline(user.user_id)}
+                      onClick={() => decline(transaction.payment_number)}
                       style={{ cursor: 'pointer' }}
                       className='badge rounded px-2 me-2 btn'
                     >
@@ -235,8 +266,10 @@ export function TransactionsAdmin() {
         loading={loading}
         numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
         numberOfApprovedTransaction={numberOfApprovedTransaction}
+        numberOfCancelledTransaction={numberOfCancelledTransaction}
         fetchUnderReviewTransaction={fetchUnderReviewTransaction}
         fetchApprovedTransaction={fetchApprovedTransaction}
+        fetchCancelledTransaction={fetchCancelledTransaction}
       />
     </>
   );
