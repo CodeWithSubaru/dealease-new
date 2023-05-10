@@ -27,6 +27,7 @@ import { Footer } from '../../Components/Footer/Footer';
 import { Link, Navigate } from 'react-router-dom';
 import { CardImg } from 'react-bootstrap';
 import { Row, Col, InputGroup } from 'react-bootstrap';
+import { Finalize } from '../../Components/Notification/Notification';
 
 export function Recharge() {
   const openPaymongo = (url) => {
@@ -35,35 +36,37 @@ export function Recharge() {
   const { collapseSidebar } = useProSidebar();
   const [errors, setErrors] = useState([]);
   const [amount, setAmountToShell] = useState(0);
+  const navigate = useNavigate();
+
   const data = {
     amount,
   };
   // Submit Recharge
   const handleRecharge = (e) => {
     e.preventDefault();
-    axiosClient
-      .post('/recharge', data)
-      .then((res) => {
-        if (res.status == 200) {
-          Notification({
-            title: 'Success',
-            message: 'cute mo po',
-            icon: 'success',
-          }).then(() => {
+    Finalize({
+      text: 'Are you sure, Recharge?',
+      confirmButton: 'Yes',
+      successMsg: 'Transaction Confirmed Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/recharge', data)
+          .then((res) => {
             setAmountToShell('');
-
+            navigate('/transactions');
             openPaymongo(res.data[0].original.data.attributes.checkout_url);
+          })
+          .catch((e) => {
+            Notification({
+              title: 'Error',
+              message: 'Errors Found',
+              icon: 'error',
+            });
+            setErrors(e.response.data.errors);
           });
-        }
-      })
-      .catch((e) => {
-        Notification({
-          title: 'Error',
-          message: 'Errors Found',
-          icon: 'error',
-        });
-        setErrors(e.response.data.errors);
-      });
+      }
+    });
   };
 
   return (
@@ -167,7 +170,12 @@ export function Recharge() {
                 </InputGroup>
                 <p> Converted Amount: {amount * 1}</p>
                 <div className='d-flex justify-content-end'>
-                  <Button type='submit' variant='primary' className='rounded'>
+                  <Button
+                    type='submit'
+                    variant='primary'
+                    className='rounded'
+                    disabled={amount < 100 || amount > 100000}
+                  >
                     Purchase
                   </Button>
                 </div>
