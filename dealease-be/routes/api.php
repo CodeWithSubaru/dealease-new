@@ -49,8 +49,11 @@ Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
 // Rider
-Route::get('/rider', [RiderController::class, 'availableOrdersToDeliver']);
+Route::get('/rider', [RiderController::class, 'availableOrdersToPickUp']);
 Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
+Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
+Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
+
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
