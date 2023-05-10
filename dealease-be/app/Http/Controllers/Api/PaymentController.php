@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Paymongo\Paymongo;
-use App\Models\BuyerWallet;
-use App\Models\SellerWallet;
 use Illuminate\Http\Request;
 use App\Models\ShellTransaction;
-use App\Models\PaymentTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\UsersWallet;
 
 class PaymentController extends Controller
 {
+
     public function withdraw(Request $request)
     {
         $shells = UsersWallet::where('user_id', auth()->id())->get()[0];
@@ -24,12 +22,19 @@ class PaymentController extends Controller
             ],
         ]);
 
+        $paymentNumber = $this->generatePaymentNumber();
+
         ShellTransaction::create([
             'user_id' => auth()->id(),
+            'payment_number' => $paymentNumber,
             'payment_status' => 1,
-            'payment_description' => auth()->user()->first_name . " request to withdraw for " . $request->shell_coin_amount . ' Shells',
+            'payment_description' => 'Withdraw',
             'payment_total_amount' => $request->shell_coin_amount,
         ]);
+
+        $shells = UsersWallet::where('user_id', auth()->id());
+        $total = (float) $shells->get()[0]->shell_coin_amount - (float) $request->shell_coin_amount;
+        $shells->update(['shell_coin_amount' => $total]);
 
         return response()->json(['status' => 'Request Created Successfully'], 200);
     }
@@ -49,7 +54,7 @@ class PaymentController extends Controller
             'user_id' => auth()->id(),
             'payment_number' => $paymentNumber,
             'payment_status' => 1,
-            'payment_description' => auth()->user()->first_name . " request to Recharge for " . $request->amount . ' Shells',
+            'payment_description' => 'Recharge',
             'payment_total_amount' => $request->amount,
         ]);
 
@@ -136,9 +141,11 @@ class PaymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($transaction)
     {
-        //
+        $status = $transaction;
+
+        return ShellTransaction::with('user', 'user.user_details')->where('payment_status', $status)->get();
     }
 
     /**

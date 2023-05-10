@@ -2,12 +2,19 @@ import axiosClient from '../../api/axios';
 import { Transactions } from '../../Components/Pages/Transactions';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faClose, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import PUBLIC_URL from '../../api/public_url';
 
 export function TransactionsUser() {
   const [body, setBody] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [numberOfUnderReviewTransaction, setNumberOfUnderReviewTransaction] =
+    useState(0);
+  const [numberOfApprovedTransaction, setNumberOfApprovedTransaction] =
+    useState(0);
+  const [numberOfCancelledTransaction, setNumberOfCancelledTransaction] =
+    useState(0);
 
   const header = [
     {
@@ -31,17 +38,13 @@ export function TransactionsUser() {
       isSortable: true,
     },
     {
-      title: 'Description',
-      prop: 'payment_description',
-    },
-    {
-      title: 'Checkout Url',
-      prop: 'checkout_url',
-    },
-    {
       title: 'Total Amount',
       prop: 'payment_total_amount',
       isSortable: true,
+    },
+    {
+      title: 'Description',
+      prop: 'payment_description',
     },
     {
       title: 'Date Request',
@@ -50,6 +53,25 @@ export function TransactionsUser() {
     },
     // { title: 'Action', prop: 'action' },
   ];
+
+  function fetchUnderReviewTransaction() {
+    axiosClient.get('/admin/transactions/under-review').then((res) => {
+      setNumberOfUnderReviewTransaction(res.data);
+    });
+  }
+
+  function fetchApprovedTransaction() {
+    axiosClient.get('/admin/transactions/approved').then((res) => {
+      setNumberOfApprovedTransaction(res.data);
+    });
+  }
+
+  function fetchCancelledTransaction() {
+    axiosClient.get('/admin/transactions/cancelled').then((res) => {
+      console.log(res);
+      setNumberOfCancelledTransaction(res.data);
+    });
+  }
 
   function dateFormat(date) {
     const convertedDate = new Date(date);
@@ -66,117 +88,122 @@ export function TransactionsUser() {
     return formattedDate;
   }
 
-  function switchUserType(user) {
-    if (user.is_buyer === 'Buyer') {
-      return user.is_buyer;
+  function switchColor(status) {
+    if (status === '0') {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
 
-    if (user.is_seller === 'Seller') {
-      return user.is_seller;
+    if (status === '1') {
+      return 'border-warning bg-warning bg-opacity-75 text-light';
     }
-
-    if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
-    ) {
-      return 'Buyer + Seller';
+    if (status === '2') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
     }
-
-    if (user.role_type === 'Admin') {
-      return user.role_type;
+    if (status === '3') {
+      return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Declined';
+    }
     if (status === '1') {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Accepted';
+      return 'Approved';
     }
-    return '';
   }
 
-  function setUserTransactionsDataTable() {
-    axiosClient.get('/transactions').then((resp) => {
-      const transactions = resp.data.map((transaction, i) => {
-        return {
-          id: i + 1,
-          payment_number: transaction.payment_number,
-          fullname: (
-            <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
-              <img
-                src={PUBLIC_URL + 'images/' + transaction.user.prof_img}
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
-              <div>
-                <p className='mb-0'>
-                  {
-                    transaction.user.first_name
-                    // +
-                    //   ' ' +
-                    // transaction.user.user_details.middle_name +
-                    // '.' +
-                    // ' ' +
-                    // transaction.user_details.last_name +
-                    // ' '
-                    // transaction.user_details.ext_name
-                  }
-                </p>
-                <span className='badge rounded-pill text-bg-primary'>
-                  {switchUserType(transaction.user)}
-                </span>
+  function setUserTransactionsDataTable(id) {
+    setBody([]);
+    setLoading(true);
+    axiosClient
+      .get('/admin/transactions/show/transactions/' + id)
+      .then((resp) => {
+        const transactions = resp.data.map((transaction, i) => {
+          return {
+            id: i + 1,
+            payment_number: transaction.payment_number,
+            fullname: (
+              <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
+                <img
+                  src={PUBLIC_URL + 'images/' + transaction.user.prof_img}
+                  className='rounded-circle pr-5'
+                  style={{ width: '50px', height: '50px' }}
+                />
+                <div>
+                  <p className='mb-0'>
+                    {transaction.user.first_name + ' '}
+                    {transaction.user.user_details.middle_name
+                      ? transaction.user.user_details.middle_name[0] + '. '
+                      : ''}
+                    {transaction.user.user_details.last_name}{' '}
+                    {transaction.user.user_details.ext_name
+                      ? transaction.user.user_details.ext_name
+                      : ''}
+                  </p>
+                </div>
               </div>
-            </div>
-          ),
-          payment_status: (
-            <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-50 text-light'>
-              {status(transaction.payment_status)}
-            </span>
-          ),
-          payment_description: transaction.payment_description,
-          checkout_url: (
-            <a
-              href={transaction.checkout_url}
-              className='text-wrap'
-              target='_blank'
-            >
-              {' '}
-              Checkout URL{' '}
-            </a>
-          ),
-          payment_total_amount: 'Php ' + transaction.payment_total_amount,
-          created_at: dateFormat(transaction.created_at),
-          // action: (
-          //   <div key={i} className='button-actions text-light d-flex'>
-          //     <Button
-          //       variant='primary'
-          //       onClick={() => viewCompleteDetails(user.user_id)}
-          //       style={{ cursor: 'pointer' }}
-          //       className='p-2 me-2 rounded'
-          //     >
-          //       <FontAwesomeIcon icon={faCheck} className='mx-2' />
-          //     </Button>
-          //     <Button
-          //       variant='danger'
-          //       onClick={() => findUser(user.user_id)}
-          //       style={{ cursor: 'pointer' }}
-          //       className='p-2 2 rounded'
-          //     >
-          //       <FontAwesomeIcon icon={faClose} className='mx-2' />
-          //     </Button>
-          //   </div>
-          // ),
-        };
-      });
+            ),
+            payment_status: (
+              <span
+                className={
+                  'text-nowrap rounded px-2 text-uppercase border border-2 ' +
+                  switchColor(transaction.payment_status)
+                }
+              >
+                {status(transaction.payment_status)}
+              </span>
+            ),
+            payment_description: transaction.payment_description,
+            payment_total_amount: (
+              <>
+                {' '}
+                <img
+                  src='/images/seashell.png'
+                  height={25}
+                  width={25}
+                  className='mx-1'
+                  alt=''
+                />{' '}
+                {transaction.payment_total_amount}
+              </>
+            ),
+            created_at: dateFormat(transaction.created_at),
+            // action: (
+            //   <div key={i} className='button-actions text-light d-flex'>
+            //     <Button
+            //       variant='primary'
+            //       onClick={() => viewCompleteDetails(user.user_id)}
+            //       style={{ cursor: 'pointer' }}
+            //       className='p-2 me-2 rounded'
+            //     >
+            //       <FontAwesomeIcon icon={faCheck} className='mx-2' />
+            //     </Button>
+            //     <Button
+            //       variant='danger'
+            //       onClick={() => findUser(user.user_id)}
+            //       style={{ cursor: 'pointer' }}
+            //       className='p-2 2 rounded'
+            //     >
+            //       <FontAwesomeIcon icon={faClose} className='mx-2' />
+            //     </Button>
+            //   </div>
+            // ),
+          };
+        });
 
-      setBody(transactions);
-    });
+        setBody(transactions);
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
-    setUserTransactionsDataTable();
+    setUserTransactionsDataTable(1);
+    fetchUnderReviewTransaction();
+    fetchApprovedTransaction();
   }, [body.id]);
 
   return (
@@ -185,6 +212,13 @@ export function TransactionsUser() {
         header={header}
         body={body}
         changePaymentStatus={setUserTransactionsDataTable}
+        loading={loading}
+        numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
+        numberOfApprovedTransaction={numberOfApprovedTransaction}
+        numberOfCancelledTransaction={numberOfCancelledTransaction}
+        fetchUnderReviewTransaction={fetchUnderReviewTransaction}
+        fetchApprovedTransaction={fetchApprovedTransaction}
+        fetchCancelledTransaction={fetchCancelledTransaction}
       />
     </>
   );

@@ -306,11 +306,7 @@ export function Register() {
                 <div>
                   <div className='mt-2 text-white reg-label'>Barangay</div>
                   <div>
-                    <select
-                      onChange={brgy}
-                      value={user.barangay}
-                      className='form-select'
-                    >
+                    <select onChange={brgy} className='form-select'>
                       <option>Select Barangay</option>
                       {barangayData &&
                         barangayData.length > 0 &&

@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\Admin\AdminPaymentController;
 use App\Http\Controllers\Api\ProductFilterController;
+use App\Http\Controllers\Api\Rider\RiderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,9 +37,9 @@ Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement'
 Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
 
 // Product Filter
-Route::get('/product/this-week', [ProductFilterController::class, 'thisWeek']);
-Route::get('/product/this-day', [ProductFilterController::class, 'thisDay']);
-Route::get('/product/available', [ProductFilterController::class, 'availableProducts']);
+Route::get('/product/this-week/{id}', [ProductFilterController::class, 'thisWeek']);
+Route::get('/product/this-day/{id}', [ProductFilterController::class, 'thisDay']);
+Route::get('/product/available/{id}', [ProductFilterController::class, 'availableProducts']);
 Route::get('/product/search/{product}', [ProductFilterController::class, 'searchProduct']);
 
 // Payment
@@ -47,6 +48,9 @@ Route::post('/payment', [PaymentController::class, 'payment']);
 Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
+// Rider
+Route::get('/rider', [RiderController::class, 'availableOrdersToDeliver']);
+Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
@@ -61,7 +65,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->middleware('auth');
 
     Route::apiResource('/transactions', PaymentController::class);
-    Route::put('/orders/user/cancel-order/{order_number}', [OrderController::class, 'cancelOrder']);
     Route::get('/orders/buyer/{order_number}', [OrderController::class, 'viewOrderByOrdNumber']);
     Route::get('/orders/order-status/buyer/{order_status}', [OrderController::class, 'numberOfOrdersByStatusBuyer']);
     Route::get('/orders/order-status/seller/{order_status}', [OrderController::class, 'numberOfOrdersByStatusSeller']);
@@ -71,7 +74,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/increment/{id}', [OrderController::class, 'increment']);
     Route::get('/orders/decrement/{id}', [OrderController::class, 'decrement']);
     Route::get('/orders/seller-id', [OrderController::class, 'fetchCartGroupById']);
-
+    Route::put('/orders/user/cancel-order/{order_number}', [OrderController::class, 'cancelOrder']);
+    Route::put('/orders/seller/cancel-order/{order_number}', [OrderController::class, 'cancelOrderSeller']);
 
     Route::post('/orders/place-order', [OrderController::class, 'placeOrder']);
     Route::apiResource('/orders', OrderController::class);
@@ -99,7 +103,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/users-by-10', [UsersController::class, 'getTenUsers']);
     Route::post('/messages/inbox/delete/{id}', [MessageController::class, 'softDelete']);
     Route::post('/messages/inbox/restore/{id}', [MessageController::class, 'restore']);
+    Route::get('/admin/total-amount', [AnalyticsControllers::class, 'totalAmount']);
+    Route::get('/admin/total-amount-recharge', [AnalyticsControllers::class, 'totalAmountRecharge']);
+    Route::get('/admin/total-amount-withdraw', [AnalyticsControllers::class, 'totalAmountWithdraw']);
+    Route::get('/admin/get-number-of-user-by-month', [AnalyticsControllers::class, 'getNumOfUsersByMonth']);
     Route::get('/admin/get-number-of-user', [AnalyticsControllers::class, 'getNumOfUsers']);
+    Route::get('/admin/pending-shell-transaction', [AnalyticsControllers::class, 'getNumberOfPendingTransactions']);
+    Route::get('/admin/success-shell-transaction', [AnalyticsControllers::class, 'getNumberOfSuccessTransactions']);
     Route::get('/admin/get-number-of-message', [AnalyticsControllers::class, 'getNumOfMessages']);
     Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
     Route::apiResource('/admin/announcement', AnnouncementController::class);
@@ -111,6 +121,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/transactions/show/transactions/{payment_status}', [AdminPaymentController::class, 'index']);
     Route::get('/admin/transactions/under-review', [AdminPaymentController::class, 'numberOfUnderReviewTransaction']);
     Route::get('/admin/transactions/approved', [AdminPaymentController::class, 'numberOfApprovedTransaction']);
+    Route::get('/admin/transactions/cancelled', [AdminPaymentController::class, 'numberOfCancelledTransaction']);
     Route::apiResource('/admin/transactions', AdminPaymentController::class);
     Route::put('/admin/confirm/{id}', [AdminPaymentController::class, 'confirm']);
+    Route::put('/admin/decline/{id}', [AdminPaymentController::class, 'decline']);
 });

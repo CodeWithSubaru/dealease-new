@@ -41,11 +41,9 @@ export function Recharge() {
   // Submit Recharge
   const handleRecharge = (e) => {
     e.preventDefault();
-    console.log(data);
     axiosClient
       .post('/recharge', data)
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           Notification({
             title: 'Success',

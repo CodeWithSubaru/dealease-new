@@ -38,6 +38,6 @@ class Order extends Model
 
     public function order_transaction()
     {
-        return  $this->belongsTo(\App\Models\OrderTransaction::class, 'order_number', 'order_number');
+        return  $this->hasMany(\App\Models\OrderTransaction::class, 'order_number', 'order_number');
     }
 }
