@@ -68,11 +68,9 @@ export function Announcement() {
   });
 
   return (
-    <div className='p-5' id='announcement'>
-      <Card className='p-5 rounded w-75 mx-auto'>
-        <div className='w-50 mx-auto mb-5'>
-          <H1 className='d-block w-100'>Announcement</H1>
-        </div>
+    <div>
+      <Card className='p-5 rounded w-75 mx-auto' id='announcement'>
+        <H1 className='d-block w-100'>Announcement</H1>
         <Carousel
           style={{ height: '50vh' }}
           variant='dark'

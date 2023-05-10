@@ -34,7 +34,7 @@ export function Card() {
   return (
     <div className='cards' id='products'>
       <div className='cards_container'>
-        <Container className='mt-5 px-5'>
+        <Container className='mt-5'>
           <Row>
             <Col>
               <h1 className='text-home mb-5'>{token ? 'Home' : 'Products'}</h1>
