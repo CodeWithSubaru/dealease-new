@@ -7,6 +7,7 @@ use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ShellTransaction;
 
 class AnalyticsControllers extends Controller
 {
@@ -22,11 +23,12 @@ class AnalyticsControllers extends Controller
 
     public function getNumberOfPendingTransactions()
     {
-        $usersCountByMonth = User::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, COUNT(*) count'))
+        $shellTransaction = ShellTransaction::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, COUNT(*) count'))
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
+            ->where('payment_status', '2')
             ->get();
-        return $usersCountByMonth;
+        return $shellTransaction;
     }
 }

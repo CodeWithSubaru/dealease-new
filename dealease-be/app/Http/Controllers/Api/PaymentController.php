@@ -54,7 +54,7 @@ class PaymentController extends Controller
             'user_id' => auth()->id(),
             'payment_number' => $paymentNumber,
             'payment_status' => 1,
-            'payment_description' => 'Encashment',
+            'payment_description' => 'Recharge',
             'payment_total_amount' => $request->amount,
         ]);
 

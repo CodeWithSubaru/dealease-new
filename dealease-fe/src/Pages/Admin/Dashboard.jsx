@@ -89,19 +89,12 @@ export function Dashboard() {
       return user.role_type;
     }
 
-    if (user.is_buyer === 'Buyer') {
-      return user.is_buyer;
+    if (user.role_type === 'User') {
+      return user.role_type;
     }
 
-    if (user.is_seller === 'Seller') {
-      return user.is_seller;
-    }
-
-    if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
-    ) {
-      return 'Buyer + Seller';
+    if (user.role_type === 'Rider') {
+      return user.role_type;
     }
   }
 
@@ -136,7 +129,7 @@ export function Dashboard() {
               />
               <div>
                 <p className='mb-0'>
-                {user.first_name + ' '}
+                  {user.first_name + ' '}
                   {user.user_details
                     ? user.user_details.middle_name
                       ? user.user_details.middle_name + '. '
@@ -299,7 +292,7 @@ export function Dashboard() {
       .then((response) => setCountOfUsers(response.data));
 
     axiosClient
-      .get('/admin/get-number-of-message')
+      .get('/admin/pending-shell-transaction')
       .then((response) => setCountOfMessages(response.data));
     setUserDataTable();
   }, [countOfUsers.count, countOfMessages.count]);
@@ -361,7 +354,7 @@ export function Dashboard() {
         <main className='w-100' style={{ minHeight: '815px' }}>
           <Card className='dashboard w-75 mx-auto px-4'>
             <H1 className='mt-4'>Dashboard</H1>
-            <div className='cards-details-wrapper d-flex justify-content-between'>
+            <div className='cards-details-wrapper d-flex justify-content-between flex-wrap'>
               <CardDetails
                 title='Users'
                 totalNumber={calculateTotal(countOfUsers)}
@@ -369,8 +362,16 @@ export function Dashboard() {
                 style={{ marginLeft: '0' }}
                 color='bg-primary'
               />
+
               <CardDetails
-                title='Pending Transactions'
+                title='Shells Pending Transactions'
+                totalNumber={calculateTotal(countOfMessages)}
+                icon={faHourglass1}
+                color='bg-success'
+              />
+
+              <CardDetails
+                title='Success Transactions'
                 totalNumber={calculateTotal(countOfMessages)}
                 icon={faHourglass1}
                 color='bg-success'
@@ -439,7 +440,7 @@ export function Dashboard() {
 function CardDetails(props) {
   return (
     <Card
-      className='card-details rounded p-4 my-4 d-flex justify-content-between'
+      className='card-details rounded p-4 my-3 d-flex justify-content-between'
       style={{ backgroundColor: '#fff', width: '32%' }}
     >
       <div className='d-flex justify-content-between'>
