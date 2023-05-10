@@ -8,6 +8,7 @@ import PUBLIC_URL from '../../api/public_url';
 
 export function TransactionsUser() {
   const [body, setBody] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const header = [
     {
@@ -33,10 +34,6 @@ export function TransactionsUser() {
     {
       title: 'Description',
       prop: 'payment_description',
-    },
-    {
-      title: 'Checkout Url',
-      prop: 'checkout_url',
     },
     {
       title: 'Total Amount',
@@ -87,7 +84,7 @@ export function TransactionsUser() {
     }
   }
 
-  function status(status) {
+  function paymentStatus(status) {
     if (status === '1') {
       return 'Pending';
     }
@@ -97,8 +94,10 @@ export function TransactionsUser() {
     return '';
   }
 
-  function setUserTransactionsDataTable() {
-    axiosClient.get('/transactions').then((resp) => {
+  function setUserTransactionsDataTable(status) {
+    setBody([]);
+    setLoading(true);
+    axiosClient.get('/transactions/' + status).then((resp) => {
       const transactions = resp.data.map((transaction, i) => {
         return {
           id: i + 1,
@@ -112,17 +111,14 @@ export function TransactionsUser() {
               />
               <div>
                 <p className='mb-0'>
-                  {
-                    transaction.user.first_name
-                    // +
-                    //   ' ' +
-                    // transaction.user.user_details.middle_name +
-                    // '.' +
-                    // ' ' +
-                    // transaction.user_details.last_name +
-                    // ' '
-                    // transaction.user_details.ext_name
-                  }
+                  {transaction.user.first_name +
+                    ' ' +
+                    transaction.user.user_details.middle_name +
+                    '.' +
+                    ' ' +
+                    transaction.user.user_details.last_name +
+                    ' ' +
+                    transaction.user.user_details.ext_name}
                 </p>
                 <span className='badge rounded-pill text-bg-primary'>
                   {switchUserType(transaction.user)}
@@ -132,21 +128,23 @@ export function TransactionsUser() {
           ),
           payment_status: (
             <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-50 text-light'>
-              {status(transaction.payment_status)}
+              {paymentStatus(transaction.payment_status)}
             </span>
           ),
           payment_description: transaction.payment_description,
-          checkout_url: (
-            <a
-              href={transaction.checkout_url}
-              className='text-wrap'
-              target='_blank'
-            >
+          payment_total_amount: (
+            <>
               {' '}
-              Checkout URL{' '}
-            </a>
+              <img
+                src='/images/seashell.png'
+                height={25}
+                width={25}
+                className='mx-1'
+                alt=''
+              />{' '}
+              {transaction.payment_total_amount}
+            </>
           ),
-          payment_total_amount: 'Php ' + transaction.payment_total_amount,
           created_at: dateFormat(transaction.created_at),
           // action: (
           //   <div key={i} className='button-actions text-light d-flex'>
@@ -172,11 +170,12 @@ export function TransactionsUser() {
       });
 
       setBody(transactions);
+      setLoading(false);
     });
   }
 
   useEffect(() => {
-    setUserTransactionsDataTable();
+    setUserTransactionsDataTable(1);
   }, [body.id]);
 
   return (
@@ -185,6 +184,7 @@ export function TransactionsUser() {
         header={header}
         body={body}
         changePaymentStatus={setUserTransactionsDataTable}
+        loading={loading}
       />
     </>
   );

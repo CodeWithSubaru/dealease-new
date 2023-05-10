@@ -16,6 +16,7 @@ export function Transactions(props) {
                 <Nav.Link
                   eventKey='first'
                   onClick={() => props.changePaymentStatus(1)}
+                  disabled={props.loading}
                 >
                   Under Review
                   <span
@@ -30,6 +31,7 @@ export function Transactions(props) {
                 <Nav.Link
                   eventKey='second'
                   onClick={() => props.changePaymentStatus(2)}
+                  disabled={props.loading}
                 >
                   Request Approved
                   <span

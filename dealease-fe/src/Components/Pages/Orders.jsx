@@ -278,6 +278,7 @@ export function OrdersTable(props) {
                     props.fetchNumberOrdersByStatusUser(2);
                     props.fetchNumberOrdersByStatusUser(3);
                   }}
+                  disabled={props.loading}
                 >
                   {props.title == 'Buyer' ? 'My' : ''} Pending Orders (
                   {props.title}){' '}
@@ -298,6 +299,7 @@ export function OrdersTable(props) {
                     props.fetchNumberOrdersByStatusUser(2);
                     props.fetchNumberOrdersByStatusUser(3);
                   }}
+                  disabled={props.loading}
                 >
                   {props.title == 'Buyer'
                     ? 'My Processing Orders'
@@ -321,6 +323,7 @@ export function OrdersTable(props) {
                     props.fetchNumberOrdersByStatusUser(2);
                     props.fetchNumberOrdersByStatusUser(3);
                   }}
+                  disabled={props.loading}
                 >
                   {props.title == 'Buyer' ? 'My' : ''} Delivered Orders (
                   {props.title}){' '}

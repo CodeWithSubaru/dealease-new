@@ -622,6 +622,7 @@ export function OrdersSeller() {
     fetchNumberOrdersByStatusUser(2);
     fetchNumberOrdersByStatusUser(3);
     setUserOrdersTable(1);
+    console.log('Hi');
   }, []);
 
   return (
