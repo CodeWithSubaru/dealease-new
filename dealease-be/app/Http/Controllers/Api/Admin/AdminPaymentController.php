@@ -25,7 +25,7 @@ class AdminPaymentController extends Controller
      */
     public function index($payment_status)
     {
-        return ShellTransaction::with('user')->where('payment_status', $payment_status)->latest('created_at')->get();
+        return ShellTransaction::with('user', 'user.user_details')->where('payment_status', $payment_status)->latest('created_at')->get();
     }
     /**
      * Store a newly created resource in storage.

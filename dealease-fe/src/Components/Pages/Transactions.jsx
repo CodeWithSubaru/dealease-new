@@ -15,7 +15,11 @@ export function Transactions(props) {
               <Nav.Item className='mb-0'>
                 <Nav.Link
                   eventKey='first'
-                  onClick={() => props.changePaymentStatus(1)}
+                  onClick={() => {
+                    props.changePaymentStatus(1);
+                    props.fetchUnderReviewTransaction();
+                    props.fetchApprovedTransaction();
+                  }}
                   disabled={props.loading}
                 >
                   Under Review
@@ -30,7 +34,11 @@ export function Transactions(props) {
               <Nav.Item>
                 <Nav.Link
                   eventKey='second'
-                  onClick={() => props.changePaymentStatus(2)}
+                  onClick={() => {
+                    props.changePaymentStatus(2);
+                    props.fetchUnderReviewTransaction();
+                    props.fetchApprovedTransaction();
+                  }}
                   disabled={props.loading}
                 >
                   Request Approved

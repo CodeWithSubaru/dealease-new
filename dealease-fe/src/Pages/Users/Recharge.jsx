@@ -44,7 +44,6 @@ export function Recharge() {
     axiosClient
       .post('/recharge', data)
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           Notification({
             title: 'Success',

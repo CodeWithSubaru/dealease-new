@@ -156,7 +156,7 @@ export const ProductUser = () => {
   // Submit Edit Form
   const handlePostEdit = (e) => {
     e.preventDefault();
-    console.log(data);
+   
     axiosClient
       .post('/seller/product/' + product_id, data, {
         headers: { 'Content-Type': 'multipart/form-data' },

@@ -18,14 +18,12 @@ export function TransactionsAdmin() {
 
   function fetchUnderReviewTransaction() {
     axiosClient.get('/admin/transactions/under-review').then((res) => {
-      console.log(res);
       setNumberOfUnderReviewTransaction(res.data);
     });
   }
 
   function fetchApprovedTransaction() {
     axiosClient.get('/admin/transactions/approved').then((res) => {
-      console.log(res);
       setNumberOfApprovedTransaction(res.data);
     });
   }
@@ -74,15 +72,16 @@ export function TransactionsAdmin() {
       isSortable: true,
     },
     {
-      title: 'Description',
-      prop: 'payment_description',
-      isSortable: true,
-    },
-    {
       title: 'Total Amount',
       prop: 'payment_total_amount',
       isSortable: true,
     },
+    {
+      title: 'Description',
+      prop: 'payment_description',
+      isSortable: true,
+    },
+
     {
       title: 'Date Request',
       prop: 'created_at',
@@ -107,16 +106,6 @@ export function TransactionsAdmin() {
     return formattedDate;
   }
 
-  function switchUserType(user) {
-    if (user.is_buyer === 'User') {
-      return user.is_buyer;
-    }
-
-    if (user.role_type === 'Admin') {
-      return user.role_type;
-    }
-  }
-
   function status(status) {
     if (status === '1') {
       return 'Pending';
@@ -124,7 +113,6 @@ export function TransactionsAdmin() {
     if (status === '2') {
       return 'Approved';
     }
-    return '';
   }
 
   function switchColor(status) {
@@ -143,11 +131,11 @@ export function TransactionsAdmin() {
     }
   }
 
-  function setUserTransactionsDataTable($id) {
+  function setUserTransactionsDataTable(id) {
     setBody([]);
     setLoading(true);
     axiosClient
-      .get('/admin/transactions/show/transactions/' + $id)
+      .get('/admin/transactions/show/transactions/' + id)
       .then((resp) => {
         const transactions = resp.data.map((transaction, i) => {
           return {
@@ -162,21 +150,15 @@ export function TransactionsAdmin() {
                 />
                 <div>
                   <p className='mb-0'>
-                    {
-                      transaction.user.first_name
-                      // +
-                      // ' ' +
-                      // transaction.user.user_details.middle_name +
-                      // '.' +
-                      // ' ' +
-                      // transaction.user_details.last_name +
-                      // ' '
-                      // transaction.user_details.ext_name
-                    }
+                    {transaction.user.first_name + ' '}
+                    {transaction.user.user_details.middle_name
+                      ? transaction.user.user_details.middle_name[0] + '. '
+                      : ''}
+                    {transaction.user.user_details.last_name}{' '}
+                    {transaction.user.user_details.ext_name
+                      ? transaction.user.user_details.ext_name
+                      : ''}
                   </p>
-                  <span className='badge rounded-pill text-bg-primary'>
-                    {switchUserType(transaction.user)}
-                  </span>
                 </div>
               </div>
             ),
@@ -191,7 +173,19 @@ export function TransactionsAdmin() {
               </span>
             ),
             payment_description: transaction.payment_description,
-            payment_total_amount: 'Php ' + transaction.payment_total_amount,
+            payment_total_amount: (
+              <div className='d-flex'>
+                {' '}
+                <img
+                  src='/images/seashell.png'
+                  height={25}
+                  width={25}
+                  className='mx-1 me-2'
+                  alt=''
+                />{' '}
+                {transaction.payment_total_amount}
+              </div>
+            ),
             created_at: dateFormat(transaction.created_at),
             action: (
               <div key={i} className='button-actions text-light d-flex'>
@@ -241,6 +235,8 @@ export function TransactionsAdmin() {
         loading={loading}
         numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
         numberOfApprovedTransaction={numberOfApprovedTransaction}
+        fetchUnderReviewTransaction={fetchUnderReviewTransaction}
+        fetchApprovedTransaction={fetchApprovedTransaction}
       />
     </>
   );

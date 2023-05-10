@@ -9,6 +9,10 @@ import PUBLIC_URL from '../../api/public_url';
 export function TransactionsUser() {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [numberOfUnderReviewTransaction, setNumberOfUnderReviewTransaction] =
+    useState(0);
+  const [numberOfApprovedTransaction, setNumberOfApprovedTransaction] =
+    useState(0);
 
   const header = [
     {
@@ -32,13 +36,13 @@ export function TransactionsUser() {
       isSortable: true,
     },
     {
-      title: 'Description',
-      prop: 'payment_description',
-    },
-    {
       title: 'Total Amount',
       prop: 'payment_total_amount',
       isSortable: true,
+    },
+    {
+      title: 'Description',
+      prop: 'payment_description',
     },
     {
       title: 'Date Request',
@@ -47,6 +51,18 @@ export function TransactionsUser() {
     },
     // { title: 'Action', prop: 'action' },
   ];
+
+  function fetchUnderReviewTransaction() {
+    axiosClient.get('/admin/transactions/under-review').then((res) => {
+      setNumberOfUnderReviewTransaction(res.data);
+    });
+  }
+
+  function fetchApprovedTransaction() {
+    axiosClient.get('/admin/transactions/approved').then((res) => {
+      setNumberOfApprovedTransaction(res.data);
+    });
+  }
 
   function dateFormat(date) {
     const convertedDate = new Date(date);
@@ -63,42 +79,39 @@ export function TransactionsUser() {
     return formattedDate;
   }
 
-  function switchUserType(user) {
-    if (user.is_buyer === 'Buyer') {
-      return user.is_buyer;
+  function switchColor(status) {
+    if (status === '0') {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
 
-    if (user.is_seller === 'Seller') {
-      return user.is_seller;
+    if (status === '1') {
+      return 'border-warning bg-warning bg-opacity-75 text-light';
     }
-
-    if (
-      user.is_buyer === 'Buyer_seller1' ||
-      user.is_seller === 'Buyer_seller2'
-    ) {
-      return 'Buyer + Seller';
+    if (status === '2') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
     }
-
-    if (user.role_type === 'Admin') {
-      return user.role_type;
+    if (status === '3') {
+      return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
   }
 
-  function paymentStatus(status) {
+  function status(status) {
     if (status === '1') {
       return 'Pending';
     }
     if (status === '2') {
-      return 'Accepted';
+      return 'Approved';
     }
-    return '';
   }
 
-  function setUserTransactionsDataTable(status) {
+  function setUserTransactionsDataTable(id) {
     setBody([]);
     setLoading(true);
-    axiosClient.get('/transactions/' + status).then((resp) => {
+    axiosClient.get('/transactions/' + id).then((resp) => {
       const transactions = resp.data.map((transaction, i) => {
+        {
+          console.log(transaction);
+        }
         return {
           id: i + 1,
           payment_number: transaction.payment_number,
@@ -111,24 +124,26 @@ export function TransactionsUser() {
               />
               <div>
                 <p className='mb-0'>
-                  {transaction.user.first_name +
-                    ' ' +
-                    transaction.user.user_details.middle_name +
-                    '.' +
-                    ' ' +
-                    transaction.user.user_details.last_name +
-                    ' ' +
-                    transaction.user.user_details.ext_name}
+                  {transaction.user.first_name + ' '}
+                  {transaction.user.user_details.middle_name
+                    ? transaction.user.user_details.middle_name[0] + '. '
+                    : ''}
+                  {transaction.user.user_details.last_name}{' '}
+                  {transaction.user.user_details.ext_name
+                    ? transaction.user.user_details.ext_name
+                    : ''}
                 </p>
-                <span className='badge rounded-pill text-bg-primary'>
-                  {switchUserType(transaction.user)}
-                </span>
               </div>
             </div>
           ),
           payment_status: (
-            <span className='border border-2 border-warning rounded px-2 text-uppercase bg-warning bg-opacity-50 text-light'>
-              {paymentStatus(transaction.payment_status)}
+            <span
+              className={
+                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
+                switchColor(transaction.payment_status)
+              }
+            >
+              {status(transaction.payment_status)}
             </span>
           ),
           payment_description: transaction.payment_description,
@@ -176,6 +191,8 @@ export function TransactionsUser() {
 
   useEffect(() => {
     setUserTransactionsDataTable(1);
+    fetchUnderReviewTransaction();
+    fetchApprovedTransaction();
   }, [body.id]);
 
   return (
@@ -185,6 +202,10 @@ export function TransactionsUser() {
         body={body}
         changePaymentStatus={setUserTransactionsDataTable}
         loading={loading}
+        numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
+        numberOfApprovedTransaction={numberOfApprovedTransaction}
+        fetchUnderReviewTransaction={fetchUnderReviewTransaction}
+        fetchApprovedTransaction={fetchApprovedTransaction}
       />
     </>
   );
