@@ -12,13 +12,15 @@ use Illuminate\Support\Facades\Auth;
 class RiderController extends Controller
 {
     // Display yung mga available na order na pwedeng iaccept ni rider
-    public function availableOrdersToPickUp() {
+    public function availableOrdersToPickUp()
+    {
 
         return OrderTransaction::where('order_trans_status', '=', '3')->whereDate('created_at', Carbon::now())->get();
     }
 
     // call when rider accept an order
-    public function acceptOrder(Request $request) {
+    public function acceptOrder(Request $request)
+    {
         $rider = Auth::id(); //getting authenticated user id
 
         // inserting in Deliveries table
@@ -40,19 +42,21 @@ class RiderController extends Controller
     }
 
     // display the accepted order, it turns to pick up order status which 1
-    public function itemToPickUp() {
+    public function itemToPickUp()
+    {
         $rider = Auth::id(); //getting authenticated user id
         return Deliveries::where('rider_id', '=', $rider)->where('delivery_status', '=', '1')->whereDate('created_at', Carbon::now())->get();
     }
 
     //to deliver button can trigger this post method.
-    public function toDeliver(string $id) {
+    public function toDeliver(string $id)
+    {
         // update status of delivery table
         $changeStatus = Deliveries::where('id', $id)->update([
             'delivery_status' => '2',
         ]);
 
-        if($changeStatus) {
+        if ($changeStatus) {
             // will update status of order transaction table at the same time.
             $product = Deliveries::find($id);
             OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([

@@ -14,7 +14,7 @@ class PaymentController extends Controller
 
     public function withdraw(Request $request)
     {
-        $shells = UsersWallet::where('user_id', auth()->id())->get()[0];
+        $shells = UsersWallet::where('user_id', auth()->user()->user_id)->get()[0];
 
         $request->validate([
             'shell_coin_amount' => [
@@ -25,14 +25,14 @@ class PaymentController extends Controller
         $paymentNumber = $this->generatePaymentNumber();
 
         ShellTransaction::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth()->user()->user_id,
             'payment_number' => $paymentNumber,
             'payment_status' => 1,
             'payment_description' => 'Withdraw',
             'payment_total_amount' => $request->shell_coin_amount,
         ]);
 
-        $shells = UsersWallet::where('user_id', auth()->id());
+        $shells = UsersWallet::where('user_id', auth()->user()->user_id);
         $total = (float) $shells->get()[0]->shell_coin_amount - (float) $request->shell_coin_amount;
         $shells->update(['shell_coin_amount' => $total]);
 
@@ -51,14 +51,14 @@ class PaymentController extends Controller
         $paymentNumber = $this->generatePaymentNumber();
 
         $paymentTransaction = ShellTransaction::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth()->user()->user_id,
             'payment_number' => $paymentNumber,
             'payment_status' => 1,
             'payment_description' => 'Recharge',
             'payment_total_amount' => $request->amount,
         ]);
 
-        $authUser = User::with('user_details')->where('user_id', auth()->id())->get()[0];
+        $authUser = User::with('user_details')->where('user_id', auth()->user()->user_id)->get()[0];
         $amount = $request->amount . '00';
         $pay = $this->payment($paymentTransaction->payment_number, $authUser->first_name, $authUser->email, $amount, $authUser->user_details->contact_number);
 
@@ -135,7 +135,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        return ShellTransaction::with('user', 'user.user_details')->where('user_id', auth()->id())->latest()->get();
+        return ShellTransaction::with('user', 'user.user_details')->where('user_id', auth()->user()->user_id)->latest()->get();
     }
 
     /**

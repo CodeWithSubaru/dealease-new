@@ -147,7 +147,7 @@ class AuthController extends Controller
         ]);
 
         if ($AccountVerificationRequirement) {
-            User::where('user_id', auth()->id())->update(['avr_id' => $AccountVerificationRequirement->avr_id]);
+            User::where('user_id', auth()->user()->user_id)->update(['avr_id' => $AccountVerificationRequirement->avr_id]);
         }
 
         return response()->json(['status' => 'Request Submitted Successfully'], 200);
