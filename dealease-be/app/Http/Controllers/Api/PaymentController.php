@@ -22,12 +22,19 @@ class PaymentController extends Controller
             ],
         ]);
 
+        $paymentNumber = $this->generatePaymentNumber();
+
         ShellTransaction::create([
             'user_id' => auth()->id(),
+            'payment_number' => $paymentNumber,
             'payment_status' => 1,
             'payment_description' => 'Withdraw',
             'payment_total_amount' => $request->shell_coin_amount,
         ]);
+
+        $shells = UsersWallet::where('user_id', auth()->id());
+        $total = (float) $shells->get()[0]->shell_coin_amount - (float) $request->shell_coin_amount;
+        $shells->update(['shell_coin_amount' => $total]);
 
         return response()->json(['status' => 'Request Created Successfully'], 200);
     }

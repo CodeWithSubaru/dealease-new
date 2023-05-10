@@ -61,27 +61,30 @@ export function Withdraw() {
               }}
               isInvalid={
                 shellToConvert >
-                  Number(
-                    user.buyer_wallet ? user.buyer_wallet.shell_coin_amount : 0
-                  ) || !!errors.length > 0
+                  Number(user.wallet ? user.wallet.shell_coin_amount : 0) ||
+                !!errors.length > 0
               }
             />
             <Form.Control.Feedback type='invalid'>
               {errors.length > 0
                 ? errors
                 : shellToConvert >
-                    Number(
-                      user.buyer_wallet
-                        ? user.buyer_wallet.shell_coin_amount
-                        : 0
-                    ) && 'Insufficient Balance!'}
+                    Number(user.wallet ? user.wallet.shell_coin_amount : 0) &&
+                  'Insufficient Balance!'}
             </Form.Control.Feedback>
             Converted to Peso
             <br />
             Php {Number(shellToConvert / 1.5).toFixed(2)}
           </Form.Group>
 
-          <Button type='submit' variant='primary'>
+          <Button
+            type='submit'
+            variant='primary'
+            disabled={
+              shellToConvert >
+              Number(user.wallet ? user.wallet.shell_coin_amount : 0)
+            }
+          >
             Withdraw
           </Button>
         </Form>
