@@ -27,6 +27,17 @@ class AnalyticsControllers extends Controller
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
+            ->where('payment_status', '1')
+            ->get();
+        return $shellTransaction;
+    }
+
+    public function getNumberOfSuccessTransactions()
+    {
+        $shellTransaction = ShellTransaction::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, COUNT(*) count'))
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
             ->where('payment_status', '2')
             ->get();
         return $shellTransaction;

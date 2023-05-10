@@ -38,6 +38,7 @@ import {
   faEye,
   faEnvelope,
   faHandshake,
+  faCheck,
   faUser,
   faUserLargeSlash,
   faHourglass1,
@@ -49,7 +50,8 @@ import { Footer } from '../../Components/Footer/Footer';
 export function Dashboard() {
   const [singleUser, setSingleUser] = useState(null);
   const [countOfUsers, setCountOfUsers] = useState([]);
-  const [countOfMessages, setCountOfMessages] = useState([]);
+  const [countOfShellPending, setcountOfShellPending] = useState([]);
+  const [countOfShellSuccess, setcountOfShellSuccess] = useState([]);
   const [body, setBody] = useState([]);
   const { collapseSidebar } = useProSidebar();
   const header = [
@@ -238,11 +240,16 @@ export function Dashboard() {
       {
         label: 'Users',
         data: countByCategory(countOfUsers, labels),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: 'red',
       },
       {
-        label: 'Pending Transactions',
-        data: countByCategory(countOfMessages, labels),
+        label: 'Shell Pending Transactions',
+        data: countByCategory(countOfShellPending, labels),
+        backgroundColor: 'blue',
+      },
+      {
+        label: 'Shell Success Transactions',
+        data: countByCategory(countOfShellSuccess, labels),
         backgroundColor: 'green',
       },
       {
@@ -293,9 +300,17 @@ export function Dashboard() {
 
     axiosClient
       .get('/admin/pending-shell-transaction')
-      .then((response) => setCountOfMessages(response.data));
+      .then((response) => setcountOfShellPending(response.data));
+
+    axiosClient
+      .get('/admin/success-shell-transaction')
+      .then((response) => setcountOfShellSuccess(response.data));
     setUserDataTable();
-  }, [countOfUsers.count, countOfMessages.count]);
+  }, [
+    countOfUsers.count,
+    countOfShellPending.count,
+    countOfShellSuccess.count,
+  ]);
 
   return (
     <>
@@ -365,15 +380,15 @@ export function Dashboard() {
 
               <CardDetails
                 title='Shells Pending Transactions'
-                totalNumber={calculateTotal(countOfMessages)}
+                totalNumber={calculateTotal(countOfShellPending)}
                 icon={faHourglass1}
                 color='bg-success'
               />
 
               <CardDetails
-                title='Success Transactions'
-                totalNumber={calculateTotal(countOfMessages)}
-                icon={faHourglass1}
+                title='Shell Success Transactions'
+                totalNumber={calculateTotal(countOfShellSuccess)}
+                icon={faCheck}
                 color='bg-success'
               />
 
@@ -451,8 +466,8 @@ function CardDetails(props) {
             style={{ width: '45px', height: '45px' }}
           />
         </div>
-        <div className='d-flex flex-column align-items-end'>
-          <p className='text-nowrap'>{props.title}</p>
+        <div className='d-flex flex-column justify-content-between align-items-end'>
+          <p className='flex-grow-1 text-end mb-0'>{props.title}</p>
           <H1 style={{ fontSize: '50px' }}>{props.totalNumber}</H1>
         </div>
       </div>

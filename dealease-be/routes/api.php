@@ -105,6 +105,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/messages/inbox/restore/{id}', [MessageController::class, 'restore']);
     Route::get('/admin/get-number-of-user', [AnalyticsControllers::class, 'getNumOfUsers']);
     Route::get('/admin/pending-shell-transaction', [AnalyticsControllers::class, 'getNumberOfPendingTransactions']);
+    Route::get('/admin/success-shell-transaction', [AnalyticsControllers::class, 'getNumberOfSuccessTransactions']);
     Route::get('/admin/get-number-of-message', [AnalyticsControllers::class, 'getNumOfMessages']);
     Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
     Route::apiResource('/admin/announcement', AnnouncementController::class);
