@@ -103,6 +103,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/users-by-10', [UsersController::class, 'getTenUsers']);
     Route::post('/messages/inbox/delete/{id}', [MessageController::class, 'softDelete']);
     Route::post('/messages/inbox/restore/{id}', [MessageController::class, 'restore']);
+    Route::get('/admin/total-amount', [AnalyticsControllers::class, 'totalAmount']);
+    Route::get('/admin/total-amount-recharge', [AnalyticsControllers::class, 'totalAmountRecharge']);
+    Route::get('/admin/total-amount-withdraw', [AnalyticsControllers::class, 'totalAmountWithdraw']);
+    Route::get('/admin/get-number-of-user-by-month', [AnalyticsControllers::class, 'getNumOfUsersByMonth']);
     Route::get('/admin/get-number-of-user', [AnalyticsControllers::class, 'getNumOfUsers']);
     Route::get('/admin/pending-shell-transaction', [AnalyticsControllers::class, 'getNumberOfPendingTransactions']);
     Route::get('/admin/success-shell-transaction', [AnalyticsControllers::class, 'getNumberOfSuccessTransactions']);

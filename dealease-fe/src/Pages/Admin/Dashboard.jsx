@@ -42,6 +42,10 @@ import {
   faUser,
   faUserLargeSlash,
   faHourglass1,
+  faArrowRotateForward,
+  faArrowsRotate,
+  faMoneyBill,
+  faMoneyBill1,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { ViewSingleUser } from './ViewSingleUser';
@@ -54,6 +58,11 @@ export function Dashboard() {
   const [countOfShellSuccess, setcountOfShellSuccess] = useState([]);
   const [body, setBody] = useState([]);
   const { collapseSidebar } = useProSidebar();
+  const [countOfUsersByMonth, setCountOfUsersByMonth] = useState([]);
+  const [totalAmountRecharge, settotalAmountRecharge] = useState(0);
+  const [totalAmountWithdraw, settotalAmountWithdraw] = useState(0);
+  const [totalAmount, settotalAmount] = useState(0);
+
   const header = [
     {
       title: 'Id',
@@ -84,6 +93,12 @@ export function Dashboard() {
     let yourDate = new Date(date);
     yourDate = yourDate.toUTCString();
     return yourDate.split(' ').slice(1, 4).join(' ');
+  }
+
+  function formatToThousands(num) {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'k'
+      : Math.sign(num) * Math.abs(num);
   }
 
   function switchUserType(user) {
@@ -243,12 +258,12 @@ export function Dashboard() {
         backgroundColor: 'red',
       },
       {
-        label: 'Shell Pending Transactions',
+        label: 'Pending Shell Transactions',
         data: countByCategory(countOfShellPending, labels),
         backgroundColor: 'blue',
       },
       {
-        label: 'Shell Success Transactions',
+        label: 'Success Shell Transactions',
         data: countByCategory(countOfShellSuccess, labels),
         backgroundColor: 'green',
       },
@@ -265,7 +280,7 @@ export function Dashboard() {
     datasets: [
       {
         label: '# of Users',
-        data: countOfUsers.map((item) => item.count),
+        data: countOfUsersByMonth,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -305,12 +320,25 @@ export function Dashboard() {
     axiosClient
       .get('/admin/success-shell-transaction')
       .then((response) => setcountOfShellSuccess(response.data));
+
+    axiosClient
+      .get('/admin/total-amount-recharge')
+      .then((response) => settotalAmountRecharge(response.data));
+
+    axiosClient
+      .get('/admin/total-amount-withdraw')
+      .then((response) => settotalAmountWithdraw(response.data));
+
+    axiosClient
+      .get('/admin/total-amount')
+      .then((response) => settotalAmount(response.data));
+
+    axiosClient
+      .get('/admin/get-number-of-user-by-month')
+      .then((response) => setCountOfUsersByMonth(response.data));
+
     setUserDataTable();
-  }, [
-    countOfUsers.count,
-    countOfShellPending.count,
-    countOfShellSuccess.count,
-  ]);
+  }, []);
 
   return (
     <>
@@ -369,7 +397,7 @@ export function Dashboard() {
         <main className='w-100' style={{ minHeight: '815px' }}>
           <Card className='dashboard w-75 mx-auto px-4'>
             <H1 className='mt-4'>Dashboard</H1>
-            <div className='cards-details-wrapper d-flex justify-content-between flex-wrap'>
+            <div className='cards-details-wrapper d-flex justify-content-between flex-wrap mb-5'>
               <CardDetails
                 title='Users'
                 totalNumber={calculateTotal(countOfUsers)}
@@ -379,23 +407,37 @@ export function Dashboard() {
               />
 
               <CardDetails
-                title='Shells Pending Transactions'
+                title='Pending Shells Transactions'
                 totalNumber={calculateTotal(countOfShellPending)}
                 icon={faHourglass1}
                 color='bg-success'
               />
 
               <CardDetails
-                title='Shell Success Transactions'
+                title='Success Shell Transactions'
                 totalNumber={calculateTotal(countOfShellSuccess)}
-                icon={faCheck}
+                icon={faArrowsRotate}
                 color='bg-success'
               />
 
               <CardDetails
-                title='Total Transactions'
-                totalNumber={2}
-                icon={faUserLargeSlash}
+                title='Total Amount Recharge'
+                totalNumber={formatToThousands(Number(totalAmountRecharge))}
+                icon={faArrowsRotate}
+                color='bg-secondary'
+              />
+
+              <CardDetails
+                title='Total Amount Withdraw'
+                totalNumber={formatToThousands(Number(totalAmountWithdraw))}
+                icon={faArrowsRotate}
+                color='bg-secondary'
+              />
+
+              <CardDetails
+                title='Total Amount Transaction'
+                totalNumber={formatToThousands(Number(totalAmount))}
+                icon={faMoneyBill}
                 color='bg-secondary'
               />
             </div>
