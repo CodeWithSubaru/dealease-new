@@ -417,21 +417,21 @@ export function Dashboard() {
                 title='Success Shell Transactions'
                 totalNumber={calculateTotal(countOfShellSuccess)}
                 icon={faArrowsRotate}
-                color='bg-success'
+                color='bg-info'
               />
 
               <CardDetails
                 title='Total Amount Recharge'
                 totalNumber={formatToThousands(Number(totalAmountRecharge))}
                 icon={faArrowsRotate}
-                color='bg-secondary'
+                color='bg-warning'
               />
 
               <CardDetails
                 title='Total Amount Withdraw'
                 totalNumber={formatToThousands(Number(totalAmountWithdraw))}
                 icon={faArrowsRotate}
-                color='bg-secondary'
+                color='bg-danger'
               />
 
               <CardDetails
