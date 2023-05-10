@@ -83,16 +83,17 @@ function App() {
             />
             <Route path='/admin/announcement' element={<AnnouncementAdmin />} />
           </Route>
+
+          {/* Rider */}
+          <Route element={<AuthRiderLayout />}>
+            <Route path='/rider/home' element={<HomeRider />} />
+          </Route>
+
           <Route element={<GuestLayout />}>
             {/*Solla */}
             <Route path='/' element={<Mainpage />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
-          </Route>
-
-          {/* Rider */}
-          <Route element={<AuthRiderLayout />}>
-            <Route path='/rider/home' element={<HomeRider />} />
           </Route>
 
           <Route path='/rider/login' element={<LoginRider />} />
