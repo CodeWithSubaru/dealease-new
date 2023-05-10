@@ -41,7 +41,7 @@ export function TransactionsAdmin() {
     });
   }
 
-  function confirm(id) {
+  function confirmRecharge(id) {
     Finalize({
       text: 'Are you sure, You want to confirm this transaction?',
       confirmButton: 'Yes',
@@ -49,11 +49,30 @@ export function TransactionsAdmin() {
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .put('/admin/confirm/' + id)
+          .put('/admin/confirm-recharge/' + id)
           .then((res) => setUserTransactionsDataTable(1))
           .catch((err) => setErrors(err.response.data.errors));
 
-        setUserDataTable(uri);
+        setUserTransactionsDataTable(1);
+        fetchNumberOfUsers();
+        fetchNumberOfUnverifiedUsers();
+      }
+    });
+  }
+
+  function confirmWithdraw(id) {
+    Finalize({
+      text: 'Are you sure, You want to confirm this transaction?',
+      confirmButton: 'Yes',
+      successMsg: 'Transaction Confirmed Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/admin/confirm-withdraw/' + id)
+          .then((res) => setUserTransactionsDataTable(1))
+          .catch((err) => setErrors(err.response.data.errors));
+
+        setUserTransactionsDataTable(1);
         fetchNumberOfUsers();
         fetchNumberOfUnverifiedUsers();
       }
@@ -224,7 +243,11 @@ export function TransactionsAdmin() {
                   <>
                     <Button
                       variant='primary'
-                      onClick={() => confirm(transaction.payment_number)}
+                      onClick={() =>
+                        transaction.payment_description === 'Recharge'
+                          ? confirmRecharge(transaction.payment_number)
+                          : confirmWithdraw(transaction.payment_number)
+                      }
                       style={{ cursor: 'pointer' }}
                       className='badge rounded px-2 me-2 btn'
                     >
