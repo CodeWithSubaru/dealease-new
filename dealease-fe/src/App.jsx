@@ -19,6 +19,7 @@ import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
 import { LoginRider } from './Pages/Auth/LoginRider';
+import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
 
 // Admin Components
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
@@ -90,7 +91,9 @@ function App() {
           </Route>
 
           {/* Rider */}
-          <Route path='/rider/home' element={<HomeRider />} />
+          <Route element={<AuthRiderLayout />}>
+            <Route path='/rider/home' element={<HomeRider />} />
+          </Route>
 
           <Route path='/rider/login' element={<LoginRider />} />
           <Route path='/admin/login' element={<LoginAdmin />} />
