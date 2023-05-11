@@ -9,6 +9,7 @@ use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use App\Models\OrderTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\Deliveries;
 use App\Models\DeliveryAddress;
 use App\Models\DeliveryStatus;
 use App\Models\UsersWallet;
@@ -333,4 +334,23 @@ class OrderController extends Controller
         $cart->weight = 0;
         $cart->delete();
     }
+
+    // order received
+    // public function orderReceived(string $id) {
+    //     $changeStatus = Deliveries::where('id', $id)->update([
+    //         'delivery_status' => '4',
+    //     ]);
+
+    //     if ($changeStatus) {
+    //         // will update status of order transaction table at the same time.
+    //         $product = Deliveries::find($id);
+    //         $orderTransChangeStatus = OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([
+    //             'order_trans_status' => '7',
+    //         ]);
+
+    //         if ($orderTransChangeStatus) {
+
+    //         }
+    //     }
+    // }
 }
