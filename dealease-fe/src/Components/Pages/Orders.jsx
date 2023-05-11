@@ -99,6 +99,13 @@ export function OrdersTable(props) {
                               {order.total_price}
                             </span>
                           </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Shipping Information:
+                            </span>{' '}
+                            {console.log(order)}
+                          </p>
                         </div>
                       </div>
                     </>
