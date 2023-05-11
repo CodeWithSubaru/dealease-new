@@ -32,6 +32,11 @@ export function TransactionsUser() {
       prop: 'fullname',
     },
     {
+      title: 'Other Details',
+      prop: 'other_details',
+      isFilterable: true,
+    },
+    {
       title: 'Status',
       prop: 'payment_status',
       isFilterable: true,
@@ -147,6 +152,22 @@ export function TransactionsUser() {
                 </div>
               </div>
             ),
+            other_details: (
+              <>
+                <span>
+                  {' '}
+                  <span className='fw-semibold'>Email: </span>{' '}
+                  {transaction.user.email}
+                </span>{' '}
+                <span>
+                  <span className='fw-semibold'> Contact #:</span>{' '}
+                  {transaction.user.user_details.contact_number
+                    ? transaction.user.user_details.contact_number
+                    : ''}
+                </span>
+              </>
+            ),
+
             payment_status: (
               <span
                 className={
