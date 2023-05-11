@@ -1,3 +1,8 @@
+.login-modal {
+  width: 420px;
+  margin: auto;
+  top: 50px;
+}
 .form-control {
   font-size: 15px;
   border-radius: 5px;
@@ -77,20 +82,17 @@
   // left: 50%;
   // transform: translate(-50%, -50%);
   position: absolute;
-  padding: 20px 20px;
+  padding: 10px 10px;
   display: inline-block;
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
   cursor: pointer;
-  background: rgb(7, 66, 114);
+  background: rgb(12, 111, 253);
   background: linear-gradient(
     0deg,
-    rgba(7, 66, 114, 1) 0%,
-    rgba(4, 133, 179, 1) 0%,
-    rgba(3, 155, 200, 1) 16%,
-    rgba(1, 197, 241, 1) 72%,
-    rgba(1, 197, 241, 1) 90%,
+    rgba(12, 111, 253, 1) 0%,
+    rgba(12, 111, 253, 1) 37%,
     rgba(0, 212, 255, 1) 100%
   );
   transition: box-shadow 0.4s ease, background-color 0.4s ease, color 0.4s ease;
@@ -257,11 +259,11 @@ label {
   box-shadow: none;
   transform: translateY(0);
 }
-.btn-submit {
+.btn-submit-login {
   appearance: none;
   background-color: transparent;
   border: 2px solid #ffffff;
-  border-radius: 15px;
+  border-radius: 25px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
@@ -286,18 +288,18 @@ label {
   will-change: transform;
 }
 
-.btn-submit:disabled {
+.btn-submit-login:disabled {
   pointer-events: none;
 }
 
-.btn-submit:hover {
+.btn-submit-login:hover {
   color: #fff;
-  background-color: #1a1a1a9f;
+  background-color: #ffffff;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
   transform: translateY(-2px);
 }
 
-.btn-submit:active {
+.btn-submit-login:active {
   box-shadow: none;
   transform: translateY(0);
 }
@@ -403,6 +405,20 @@ label {
 }
 
 @media screen and (max-width: 960px) {
+  .login-modal {
+    width: 350px;
+    margin: auto;
+    top: 50px;
+  }
+  .box {
+    border-radius: 15px;
+    width: 100%;
+    top: 0;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    position: absolute;
+    padding: 10px 10px;
+  }
   .boxregister {
     border-radius: 15px;
     width: 100%;
@@ -467,10 +483,10 @@ label {
     background-color: rgba(20, 20, 20, 0.5);
     animation: animate 10s linear infinite;
   }
-  .Auth-form-content {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  // .Auth-form-content {
+  //   padding-left: 0;
+  //   padding-right: 0;
+  // }
 }
 
 .fadeInDown {

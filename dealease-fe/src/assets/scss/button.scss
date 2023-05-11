@@ -39,11 +39,16 @@
   margin-top: 20px;
 }
 
+.btn-sm {
+  padding: 6px 26px;
+  font-size: 16px;
+}
 .btn-large {
   padding: 12px 26px;
   font-size: 20px;
 }
 
+.btn-sm:hover,
 .btn-medium:hover,
 .btn-large:hover {
   transition: all 0.3s ease-out;

@@ -12,7 +12,6 @@ export function Mainpage(props) {
       <HeroSection showRegisterModal={props.showRegisterModal} />
       <Announcement />
       <Card />
-      <Footer />
     </>
   );
 }

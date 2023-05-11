@@ -73,7 +73,7 @@ export const Login = () => {
             </div>
             <div className='form-group my-3'>
               <div>
-                <label htmlFor='' className='text-white'>
+                <label htmlFor='' className='text-white '>
                   Password
                 </label>
               </div>
@@ -95,8 +95,12 @@ export const Login = () => {
                 </small>
               </div>
             </div>
-            <div className='remember_me-wrapper mt-2 d-flex justify-content-end'>
-              <Link to='/forgot-password' className='fw-bold text-right'>
+
+            <div className='forgotpass mt-2 d-flex justify-content-end'>
+              <Link
+                to='/forgot-password'
+                className='text-white text-capitalize text-right'
+              >
                 Forgot Password
               </Link>
             </div>
@@ -109,7 +113,7 @@ export const Login = () => {
             <div className=' mt-3'>
               <button
                 type='submit'
-                className='btn btn-submit'
+                className='btn btn-outline btn-light btn-submit-login'
                 form='loginBuyer'
                 disabled={isLogin}
               >

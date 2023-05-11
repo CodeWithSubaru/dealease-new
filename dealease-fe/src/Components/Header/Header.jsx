@@ -10,15 +10,7 @@ import {
   NavDropdown,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBars,
-  faFishFins,
-  faHouse,
-  faInfoCircle,
-  faSignInAlt,
-  faVolumeHigh,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Link } from 'react-router-dom';
 // import '../../assets/scss/header.scss';
@@ -114,7 +106,7 @@ export function Header(props) {
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-              placement='top'
+              placement='end'
               height='100%'
             >
               <Offcanvas.Header closeButton>
@@ -129,7 +121,7 @@ export function Header(props) {
                   <span className='fs-3'>Dealease</span>
                 </Offcanvas.Title>
               </Offcanvas.Header>
-              <Offcanvas.Body>
+              <Offcanvas.Body className='offCanvas'>
                 <Nav className='justify-content-end flex-grow-1 pe-4'>
                   <Nav.Link className='navLink' href='#'>
                     Home
@@ -159,18 +151,22 @@ export function Header(props) {
                   onHide={() => setModalShow(false)}
                 />
                 <button
-                  className='btn btn-outline-login me-3'
+                  className='btn btn-outline btn-sm text-decoration-none border border-2 border-light me-3'
                   // className='login-button'
                   onClick={() => setModalShow(true)}
                   role={Button}
                 >
+                  <FontAwesomeIcon
+                    icon={faUserCircle}
+                    className='navs-icon me-2 '
+                  />
                   Login
                 </button>
                 <button
                   // className='signup-button'
                   onClick={() => setRegisterModalShow(true)}
                   role={Button}
-                  className='btn btn-light me-3'
+                  className='btn btn-dark btn-sm text-decoration-none border border-2 border-dark me-3'
                 >
                   Signup
                 </button>

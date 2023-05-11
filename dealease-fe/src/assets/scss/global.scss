@@ -182,6 +182,15 @@
 .badge {
   color: white !important;
 }
-.offCanvas {
-  background-color: #0c6ffd;
+.contacts-footer {
+  height: 280px;
+  padding: 30px;
+}
+@media screen and (max-width: 960px) {
+  .offCanvas {
+    background-color: #0c6ffd;
+  }
+  .contacts-footer {
+    height: 380px;
+  }
 }

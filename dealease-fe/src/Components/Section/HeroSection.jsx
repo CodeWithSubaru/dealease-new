@@ -13,22 +13,20 @@ export function HeroSection(props) {
       </div>
       <Container>
         <div className='hero-container'>
-          <h1>Make a Deal Now</h1>
+          <h1>Market that you need 🤤</h1>
           <p>What are you waiting for?</p>
           <div className='hero-btns d-flex align-items-center'>
-            <Button
-              className='btns'
-              buttonStyle='btn-outline'
-              buttonSize='btn-large'
+            <a
+              className='btn btn-outline btn-large text-decoration-none border border-2 border-light'
               onClick={() => props.showRegisterModal()}
             >
               Get Started
-            </Button>
+            </a>
             <a
-              className='btn btn-primary btn-large text-decoration-none border border-2 border-primary'
+              className='btn btn-primary btn-large text-decoration-none border border-2 border-light'
               href='#products'
             >
-              See Posts
+              Order Now
             </a>
           </div>
         </div>
