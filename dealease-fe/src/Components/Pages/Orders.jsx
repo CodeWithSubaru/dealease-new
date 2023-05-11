@@ -59,11 +59,15 @@ export function OrdersTable(props) {
                               Seller:
                             </span>{' '}
                             {order.product.user.first_name}{' '}
-                            {order.product.user.user_details.middle_name[0]}
-                            {'. '}
+                            {order.product.user.user_details.middle_name
+                              ? order.product.user.user_details.middle_name[0] +
+                                '. '
+                              : ''}
                             {order.product.user.user_details.last_name}{' '}
-                            {order.product.user.user_details.ext_name} - (
-                            {order.product.user.user_details.contact_number})
+                            {order.product.user.user_details.ext_name
+                              ? order.product.user.user_details.ext_name
+                              : ''}{' '}
+                            - ({order.product.user.user_details.contact_number})
                           </p>
                         </div>
                         <div>
@@ -185,10 +189,14 @@ export function OrdersTable(props) {
                               Buyer Name:
                             </span>{' '}
                             {order.order_by.first_name}{' '}
-                            {order.order_by.user_details.middle_name[0]}
-                            {'. '}
+                            {order.order_by.user_details.middle_name
+                              ? order.order_by.user_details.middle_name[0] +
+                                '. '
+                              : ''}
                             {order.order_by.user_details.last_name}{' '}
-                            {order.order_by.user_details.ext_name}
+                            {order.order_by.user_details.ext_name
+                              ? order.order_by.user_details.ext_name
+                              : ''}
                           </p>
                         </div>
                         <div>
