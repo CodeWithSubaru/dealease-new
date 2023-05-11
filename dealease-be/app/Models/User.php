@@ -42,6 +42,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function avr()
+    {
+        return $this->belongsTo(\App\Models\AccountVerificationRequirement::class, 'avr_id');
+    }
+
     public function user_details()
     {
         return  $this->belongsTo(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
