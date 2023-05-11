@@ -49,8 +49,11 @@ Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
     ->middleware('throttle:5,1');
 
 // Rider
-Route::get('/rider', [RiderController::class, 'availableOrdersToDeliver']);
+Route::get('/rider', [RiderController::class, 'availableOrdersToPickUp']);
 Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
+Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
+Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
+
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
@@ -123,6 +126,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/transactions/approved', [AdminPaymentController::class, 'numberOfApprovedTransaction']);
     Route::get('/admin/transactions/cancelled', [AdminPaymentController::class, 'numberOfCancelledTransaction']);
     Route::apiResource('/admin/transactions', AdminPaymentController::class);
-    Route::put('/admin/confirm/{id}', [AdminPaymentController::class, 'confirm']);
+    Route::put('/admin/confirm-recharge/{id}', [AdminPaymentController::class, 'confirmRecharge']);
+    Route::put('/admin/confirm-withdraw/{id}', [AdminPaymentController::class, 'confirmRecharge']);
     Route::put('/admin/decline/{id}', [AdminPaymentController::class, 'decline']);
 });

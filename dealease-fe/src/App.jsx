@@ -19,6 +19,7 @@ import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
 import { LoginRider } from './Pages/Auth/LoginRider';
+import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
 
 // Admin Components
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
@@ -82,6 +83,12 @@ function App() {
             />
             <Route path='/admin/announcement' element={<AnnouncementAdmin />} />
           </Route>
+
+          {/* Rider */}
+          <Route element={<AuthRiderLayout />}>
+            <Route path='/rider/home' element={<HomeRider />} />
+          </Route>
+
           <Route element={<GuestLayout />}>
             {/*Solla */}
             <Route path='/' element={<Mainpage />} />
@@ -89,9 +96,7 @@ function App() {
             <Route path='/password-reset/:token' element={<PasswordReset />} />
           </Route>
 
-          {/* Rider */}
           <Route path='/rider/login' element={<LoginRider />} />
-          <Route path='/rider/home' element={<HomeRider />} />
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

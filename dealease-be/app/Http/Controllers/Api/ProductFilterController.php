@@ -31,7 +31,7 @@ class ProductFilterController extends Controller
             ->orWhere('price_per_kg', 'like', '%' . $product . '%')
             ->where('stocks_per_kg', '>', '0')
             ->whereBetween('created_at', [$startWeek, $endWeek])
-            ->where('user_id', '!=', auth()->id())
+            ->where('user_id', '!=', auth()->user()->user_id)
             ->latest('created_at')->get();
     }
 }

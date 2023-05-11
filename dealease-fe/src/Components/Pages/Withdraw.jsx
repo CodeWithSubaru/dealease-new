@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Notification } from '../Notification/Notification';
+import { Notification, Finalize } from '../Notification/Notification';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../../api/axios';
 import Form from 'react-bootstrap/Form';
@@ -20,35 +20,38 @@ export function Withdraw() {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            axiosClient
-              .post('/request-withdrawal', {
-                wallet: 0,
-                shell_coin_amount: shellToConvert,
-              })
-              .then((res) => {
-                if (res.status === 200) {
-                  Notification({
-                    title: 'Success',
-                    message: res.data.status,
-                    icon: 'success',
-                  }).then(() => {
-                    setShellToConvert('');
-                    setErrors([]);
-                    fetchUserInfo();
-                    navigate('/transactions');
+
+            Finalize({
+              text: 'Are you sure, Withdraw?',
+              confirmButton: 'Yes',
+              successMsg: 'Transaction Confirmed Successfully.',
+            }).then((res) => {
+              if (res.isConfirmed) {
+                axiosClient
+                  .post('/request-withdrawal', {
+                    wallet: 0,
+                    shell_coin_amount: shellToConvert,
+                  })
+                  .then((res) => {
+                    if (res.status === 200) {
+                      setShellToConvert('');
+                      setErrors([]);
+                      fetchUserInfo();
+                      navigate('/transactions');
+                    }
+                  })
+                  .catch((e) => {
+                    Notification({
+                      title: 'Error',
+                      message: 'Something went wrong',
+                      icon: 'error',
+                    }).then(() => {
+                      setErrors(e.response.data.message);
+                      console.log(e);
+                    });
                   });
-                }
-              })
-              .catch((e) => {
-                Notification({
-                  title: 'Error',
-                  message: 'Something went wrong',
-                  icon: 'error',
-                }).then(() => {
-                  setErrors(e.response.data.message);
-                  console.log(e);
-                });
-              });
+              }
+            });
           }}
         >
           <h1>Request for Withdrawal</h1>
@@ -83,7 +86,8 @@ export function Withdraw() {
             variant='primary'
             disabled={
               shellToConvert >
-              Number(user.wallet ? user.wallet.shell_coin_amount : 0)
+                Number(user.wallet ? user.wallet.shell_coin_amount : 0) ||
+              shellToConvert < 100
             }
             className='rounded'
           >

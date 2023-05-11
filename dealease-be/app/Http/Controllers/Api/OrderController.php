@@ -30,7 +30,7 @@ class OrderController extends Controller
     {
         return OrderTransaction::with('seller', 'seller.user_details')
             ->where('order_trans_status', $order_status)
-            ->where('buyer_id', auth()->id())
+            ->where('buyer_id', auth()->user()->user_id)
             ->latest('order_number')
             ->get();
     }
@@ -39,7 +39,7 @@ class OrderController extends Controller
     {
         return OrderTransaction::with('buyer', 'buyer.user_details',)
             ->where('order_trans_status', $order_status)
-            ->where('seller_id', auth()->id())
+            ->where('seller_id', auth()->user()->user_id)
             ->latest('order_number')
             ->get();
     }
@@ -55,7 +55,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Cart::with('product', 'product.user', 'product.user.user_details')->where('order_by', auth()->id())->get();
+        return Cart::with('product', 'product.user', 'product.user.user_details')->where('order_by', auth()->user()->user_id)->get();
     }
 
     public function fetchCartGroupById()
@@ -76,7 +76,7 @@ class OrderController extends Controller
         $product = Product::find($request->id);
 
         // find and validate of product already exists
-        $order = Cart::where('order_by', auth()->id())->where('product_id', $request->id)->first();
+        $order = Cart::where('order_by', auth()->user()->user_id)->where('product_id', $request->id)->first();
 
         if ($order) {
             return response()->json(['status' => 'Item already added to cart'], 422);
@@ -84,7 +84,7 @@ class OrderController extends Controller
 
         Cart::create([
             'product_id' => $product->id,
-            'order_by' => auth()->id(),
+            'order_by' => auth()->user()->user_id,
             'weight' => 1,
             'total_price' => $product->price_per_kg,
             // calculation of total_price in orders_table $product->price_per_kg * ($product->stocks_per_kg ? $product->stocks_per_kg : 1)
@@ -146,7 +146,7 @@ class OrderController extends Controller
                 $productStocks->update(['stocks_per_kg' => $stocks]);
             }
 
-            $userDetails = UserDetail::where('user_details_id', auth()->id())->get();
+            $userDetails = UserDetail::where('user_details_id', auth()->user()->user_id)->get();
             $barangay = $request->shippingFee ? $request->shippingFee['barangay'] : $userDetails[0]->barangay;
             if ($barangay === 'Paliwas' || $barangay === 'Salambao' || $barangay === 'Binuangan') {
                 $rate = 20;
@@ -169,12 +169,12 @@ class OrderController extends Controller
                 'order_trans_status' => 1,
                 'delivery_fee' => $rate,
                 'seller_id' => $sellerId,
-                'buyer_id' => auth()->id(),
+                'buyer_id' => auth()->user()->user_id,
                 'delivery_address_id' => null,
             ]);
 
             // Deduction on customers wallet based on user's orders
-            $userWallet = UsersWallet::where('user_id', auth()->id());
+            $userWallet = UsersWallet::where('user_id', auth()->user()->user_id);
             $customerShells =  $userWallet->first()->shell_coin_amount - ($rate + $totalPrice);
 
             $userWallet->update(['shell_coin_amount' => $customerShells]);
@@ -231,7 +231,7 @@ class OrderController extends Controller
         $orderTransaction = Order::with('order_transaction')->where('order_number', $order);
 
         // add amount ordered to customers wallet
-        $customerWallet = UsersWallet::where('user_id', auth()->id());
+        $customerWallet = UsersWallet::where('user_id', auth()->user()->user_id);
         $refund = $customerWallet->first()->shell_coin_amount + $request->grandTotal;
         $customerWallet->update(['shell_coin_amount' => $refund]);
 

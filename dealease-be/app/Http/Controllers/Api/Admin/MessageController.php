@@ -18,8 +18,8 @@ class MessageController extends Controller
     {
 
         $inbox = Inbox::join('messages', 'messages.message_id', 'inboxes.last_message_id')->with('sender', 'lastMessage.receiver')
-            ->where('sender_id', auth()->id())
-            ->orWhere('messages.receiver_id', auth()->id())
+            ->where('sender_id', auth()->user()->user_id)
+            ->orWhere('messages.receiver_id', auth()->user()->user_id)
             ->get();
 
         return response()->json($inbox, 200);
@@ -62,10 +62,10 @@ class MessageController extends Controller
             'sender:user_id,first_name',
             'receiver:user_id,first_name'
         )
-            ->where('inboxes.sender_id', auth()->id())
+            ->where('inboxes.sender_id', auth()->user()->user_id)
             ->where('receiver_id', $clicked_user)
             ->orWhere('inboxes.sender_id', $clicked_user)
-            ->where('receiver_id', auth()->id())
+            ->where('receiver_id', auth()->user()->user_id)
             ->get();
 
         return response()->json($getMessage, 200);

@@ -18,6 +18,11 @@ class OrderTransaction extends Model
         return  $this->belongsTo(\App\Models\Order::class, 'order_number', 'order_number');
     }
 
+    public function order_trans()
+    {
+        return  $this->hasOne(\App\Models\Deliveries::class, 'order_trans_id', 'order_trans_id');
+    }
+
     public function seller()
     {
         return  $this->hasOne(\App\Models\User::class, 'user_id', 'seller_id');
