@@ -149,6 +149,34 @@ export function ShippingFee() {
     return Number(totalPrice + 20 * 1.5 * Object.keys(cart).length);
   }
 
+  function calculateGrandTotalDeliveryFee(cart, delFee) {
+    let totalPrice = 0;
+    Object.values(cart).forEach((cartItem) => {
+      for (let i = 0; i < cartItem.length; i++) {
+        totalPrice += Number(cartItem[i].total_price) + Number(delFee);
+      }
+    });
+    return Number(totalPrice);
+  }
+
+  function changeDeliveryFeePerBrgy(df) {
+    let rate = 0;
+    if (df === 'Paliwas' || df === 'Salambao' || df === 'Binuangan') {
+      rate = 20;
+    } else if (df === 'Pag-asa' || df === 'San Pascual') {
+      rate = 25;
+    } else if (df === 'Catanghalan' || df === 'Hulo') {
+      rate = 30;
+    } else if (df === 'Panghulo' || df === 'Lawa') {
+      rate = 35;
+    } else if (df === 'Paco') {
+      rate = 40;
+    } else if (df === 'Tawiran') {
+      rate = 45;
+    }
+    return rate;
+  }
+
   useEffect(() => {
     barangays('031414').then((barangay) => setBarangaysData(barangay));
   }, []);
@@ -304,7 +332,12 @@ export function ShippingFee() {
                     alt=''
                     className='mx-1'
                   />{' '}
-                  {calculateGrandTotalPrice(step1)}
+                  {calculateGrandTotalDeliveryFee(
+                    step1,
+                    changeDeliveryFeePerBrgy(
+                      barangayForm ? barangayForm : user.user_details.barangay
+                    )
+                  )}
                 </p>
               </div>
             </div>
@@ -357,6 +390,7 @@ export function ShippingFee() {
                       viewShippingAddressForm
                         ? setViewShippingAddressForm(false)
                         : setViewShippingAddressForm(true);
+                      setBarangay('');
                     }}
                   >
                     {viewShippingAddressForm
@@ -595,7 +629,13 @@ export function ShippingFee() {
                                           alt=''
                                           className=''
                                         />{' '}
-                                        <span>30</span>
+                                        <span>
+                                          {changeDeliveryFeePerBrgy(
+                                            barangayForm
+                                              ? barangayForm
+                                              : user.user_details.barangay
+                                          )}
+                                        </span>
                                       </td>
                                     </tr>
                                     <tr>
@@ -633,7 +673,14 @@ export function ShippingFee() {
                       className=''
                     />{' '}
                     <span className='ms-1'>
-                      {calculateGrandTotalPrice(step1)}
+                      {calculateGrandTotalDeliveryFee(
+                        step1,
+                        changeDeliveryFeePerBrgy(
+                          barangayForm
+                            ? barangayForm
+                            : user.user_details.barangay
+                        )
+                      )}
                     </span>
                   </span>
                 </div>
