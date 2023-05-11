@@ -14,6 +14,7 @@ export function OrdersTable(props) {
   return (
     <>
       <div className='mx-auto w-75' style={{ minHeight: '85vh' }}>
+        {/* Buyer Modal View */}
         <Modal
           size='lg'
           show={props.viewOrderProduct}
@@ -139,6 +140,7 @@ export function OrdersTable(props) {
           </Modal.Footer>
         </Modal>
 
+        {/* Seller Modal View */}
         <Modal
           size='lg'
           show={props.viewOrderBuyerModal}
@@ -149,7 +151,7 @@ export function OrdersTable(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title id='contained-modal-title-vcenter'>
-              #
+              {console.log(props.viewOrders[0])}#
               {props.viewOrders[0]
                 ? props.viewOrders[0].order_number
                 : 'Loading...'}

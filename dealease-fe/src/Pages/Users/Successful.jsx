@@ -55,10 +55,13 @@ export function SuccessfulUser() {
                   <p>
                     {' '}
                     {user.first_name}{' '}
-                    {user.user_details ? user.user_details.middle_name[0] : ''}{' '}
-                    {'. '}{' '}
+                    {user.user_details.middle_name
+                      ? user.user_details.middle_name[0] + '. '
+                      : ''}{' '}
                     {user.user_details ? user.user_details.last_name : ''}{' '}
-                    {user.user_details ? user.user_details.ext_name : ''}
+                    {user.user_details.ext_name
+                      ? user.user_details.ext_name
+                      : ''}
                   </p>
                 </div>
                 <div>
@@ -124,19 +127,20 @@ export function SuccessfulUser() {
                       : ''
                     : item[0].product.user.first_name}{' '}
                   {item.length > 1
-                    ? item[index]
+                    ? item[index].product.user.user_details.middle_name
                       ? item[index].product.user.user_details.middle_name[0] +
                         '. '
                       : ''
-                    : item[0].product.user.user_details.middle_name[0] +
-                      '. '}{' '}
+                    : item[0].product.user.user_details.middle_name
+                    ? item[0].product.user.user_details.middle_name[0] + '. '
+                    : ''}{' '}
                   {item.length > 1
                     ? item[index]
                       ? item[index].product.user.user_details.last_name
                       : ''
                     : item[0].product.user.user_details.last_name}{' '}
                   {item.length > 1
-                    ? item[index]
+                    ? item[index].product.user.user_details.ext_name
                       ? item[index].product.user.user_details.ext_name
                       : ''
                     : item[0].product.user.user_details.ext_name}

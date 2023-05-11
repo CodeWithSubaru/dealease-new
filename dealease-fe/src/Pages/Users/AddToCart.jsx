@@ -201,22 +201,28 @@ export function AddToCart() {
                                           : ''
                                         : item[0].product.user.first_name}{' '}
                                       {item.length > 1
-                                        ? item[index]
+                                        ? item[index].product.user.user_details
+                                            .middle_name
                                           ? item[index].product.user
                                               .user_details.middle_name[0] +
                                             '. '
                                           : ''
                                         : item[0].product.user.user_details
-                                            .middle_name[0] + '. '}{' '}
+                                            .middle_name
+                                        ? item[0].product.user.user_details
+                                            .middle_name[0] + '. '
+                                        : ''}{' '}
                                       {item.length > 1
-                                        ? item[index]
+                                        ? item[index].product.user.user_details
+                                            .last_name
                                           ? item[index].product.user
                                               .user_details.last_name
                                           : ''
                                         : item[0].product.user.user_details
                                             .last_name}{' '}
                                       {item.length > 1
-                                        ? item[index]
+                                        ? item[index].product.user.user_details
+                                            .ext_name
                                           ? item[index].product.user
                                               .user_details.ext_name
                                           : ''
@@ -369,31 +375,30 @@ export function AddToCart() {
                                     <strong>
                                       {item.length > 1
                                         ? item[index]
-                                          ? item[index].product.user.first_name
-                                          : ''
-                                        : item[0].product.user.first_name}{' '}
-                                      {item.length > 1
-                                        ? item[index]
                                           ? item[index].product.user
-                                              .user_details.middle_name[0] +
-                                            '. '
-                                          : ''
-                                        : item[0].product.user.user_details
-                                            .middle_name[0] + '. '}{' '}
-                                      {item.length > 1
-                                        ? item[index]
-                                          ? item[index].product.user
+                                              .first_name +
+                                            ' ' +
+                                            (item[index].product.user
+                                              .user_details.middle_name
+                                              ? item[index].product.user
+                                                  .user_details.middle_name[0] +
+                                                '. '
+                                              : '') +
+                                            item[index].product.user
                                               .user_details.last_name
                                           : ''
-                                        : item[0].product.user.user_details
-                                            .last_name}{' '}
-                                      {item.length > 1
-                                        ? item[index]
-                                          ? item[index].product.user
-                                              .user_details.ext_name
-                                          : ''
-                                        : item[0].product.user.user_details
-                                            .ext_name}
+                                        : item[0].product.user.first_name +
+                                          ' ' +
+                                          (item[0].product.user.user_details
+                                            .middle_name
+                                            ? item[0].product.user.user_details
+                                                .middle_name[0] + '. '
+                                            : '') +
+                                          (item[0].product.user.user_details
+                                            .last_name
+                                            ? item[0].product.user.user_details
+                                                .last_name
+                                            : '')}
                                     </strong>{' '}
                                     <br />
                                     <span className='fw-semibold'>
