@@ -48,6 +48,14 @@ export const GlobalStyles = createGlobalStyle`
     height: 100%;
   }
 
+
+  div[role="dialog"][aria-modal="true"]:nth-last-child(1) {
+    z-index: 1125;
+  }
+  .modal-backdrop.show:nth-last-child(2){
+    z-index: 1100;
+  }
+  
   .loader {
     border: 2px solid blue;
     border-radius: 50%;
