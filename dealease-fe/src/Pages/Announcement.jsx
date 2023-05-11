@@ -19,56 +19,58 @@ export function Announcement() {
 
   let hasAnnouncements = false;
   const announcements = data.map((item) => {
-    if (!item.deleted_at && item.is_published) {
+    if (!item.deleted_at && item.is_published == 1) {
       hasAnnouncements = true;
       return (
-        <Carousel.Item key={item.id} className='d-flex justify-content-center '>
-          <Card
-            style={{
-              height: '400px',
-              width: '400px',
-            }}
-          >
-            <div
-              className='w-100'
+        <Carousel.Item key={item.id}>
+          <div className='d-flex justify-content-center carousel-item'>
+            <Card
               style={{
-                height: '250px',
-                overflow: 'hidden',
+                height: '400px',
+                width: '400px',
               }}
             >
-              <img
-                src={PUBLIC_URL + 'images/' + item.image}
-                className='w-100 h-100'
+              <div
+                className='w-100'
                 style={{
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center center',
-                  objectFit: 'cover',
+                  height: '250px',
+                  overflow: 'hidden',
                 }}
-                alt={item.title}
-              />
-            </div>
-            <Carousel.Caption
-              className='text-light bg-dark w-100'
-              style={{
-                position: 'absolute',
-                bottom: '0',
-                left: '0',
-                top: '250px',
-              }}
-            >
-              <div className=''>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+              >
+                <img
+                  src={PUBLIC_URL + 'images/' + item.image}
+                  className='w-100 h-100'
+                  style={{
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center center',
+                    objectFit: 'cover',
+                  }}
+                  alt={item.title}
+                />
               </div>
-            </Carousel.Caption>
-          </Card>
+              <Carousel.Caption
+                className='text-light bg-dark w-100'
+                style={{
+                  position: 'absolute',
+                  bottom: '0',
+                  left: '0',
+                  top: '250px',
+                }}
+              >
+                <div className=''>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </Carousel.Caption>
+            </Card>
+          </div>
         </Carousel.Item>
       );
     }
   });
 
   return (
-    <div className='p-5' id='announcement'>
+    <div className='p-5'>
       <Card className='p-5 rounded w-75 mx-auto'>
         <div className='w-50 mx-auto mb-5'>
           <H1 className='d-block w-100'>Announcement</H1>
