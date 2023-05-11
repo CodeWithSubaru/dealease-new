@@ -14,6 +14,7 @@ export function OrdersTable(props) {
   return (
     <>
       <div className='mx-auto w-75' style={{ minHeight: '85vh' }}>
+        {/* Buyer Modal View */}
         <Modal
           size='lg'
           show={props.viewOrderProduct}
@@ -58,11 +59,15 @@ export function OrdersTable(props) {
                               Seller:
                             </span>{' '}
                             {order.product.user.first_name}{' '}
-                            {order.product.user.user_details.middle_name[0]}
-                            {'. '}
+                            {order.product.user.user_details.middle_name
+                              ? order.product.user.user_details.middle_name[0] +
+                                '. '
+                              : ''}
                             {order.product.user.user_details.last_name}{' '}
-                            {order.product.user.user_details.ext_name} - (
-                            {order.product.user.user_details.contact_number})
+                            {order.product.user.user_details.ext_name
+                              ? order.product.user.user_details.ext_name
+                              : ''}{' '}
+                            - ({order.product.user.user_details.contact_number})
                           </p>
                         </div>
                         <div>
@@ -139,6 +144,7 @@ export function OrdersTable(props) {
           </Modal.Footer>
         </Modal>
 
+        {/* Seller Modal View */}
         <Modal
           size='lg'
           show={props.viewOrderBuyerModal}
@@ -149,7 +155,7 @@ export function OrdersTable(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title id='contained-modal-title-vcenter'>
-              #
+              {console.log(props.viewOrders[0])}#
               {props.viewOrders[0]
                 ? props.viewOrders[0].order_number
                 : 'Loading...'}
@@ -183,10 +189,14 @@ export function OrdersTable(props) {
                               Buyer Name:
                             </span>{' '}
                             {order.order_by.first_name}{' '}
-                            {order.order_by.user_details.middle_name[0]}
-                            {'. '}
+                            {order.order_by.user_details.middle_name
+                              ? order.order_by.user_details.middle_name[0] +
+                                '. '
+                              : ''}
                             {order.order_by.user_details.last_name}{' '}
-                            {order.order_by.user_details.ext_name}
+                            {order.order_by.user_details.ext_name
+                              ? order.order_by.user_details.ext_name
+                              : ''}
                           </p>
                         </div>
                         <div>

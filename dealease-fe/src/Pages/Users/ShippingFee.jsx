@@ -171,10 +171,13 @@ export function ShippingFee() {
                   <span>
                     {' '}
                     {user.first_name}{' '}
-                    {user.user_details ? user.user_details.middle_name[0] : ''}{' '}
-                    {'. '}{' '}
+                    {user.user_details.middle_name
+                      ? user.user_details.middle_name[0]
+                      : ''}{' '}
                     {user.user_details ? user.user_details.last_name : ''}{' '}
-                    {user.user_details ? user.user_details.ext_name : ''}
+                    {user.user_details.ext_name
+                      ? user.user_details.ext_name
+                      : ''}
                   </span>
                   <div></div>
                 </div>
@@ -425,20 +428,18 @@ export function ShippingFee() {
                                   item[index].product.user.user_details
                                     .middle_name[0] +
                                   '.' +
-                                  ' ' +
                                   item[index].product.user.user_details
                                     .last_name
                                 : ''
                               : item[0].product.user.first_name +
                                 ' ' +
-                                item[0].product.user.user_details.middle_name
-                              ? item[0].product.user.user_details.middle_name[0]
-                              : '' +
-                                '.' +
-                                ' ' +
-                                item[0].product.user.user_details.last_name
-                              ? item[0].product.user.user_details.last_name
-                              : ''}
+                                (item[0].product.user.user_details.middle_name
+                                  ? item[0].product.user.user_details
+                                      .middle_name[0] + '. '
+                                  : '') +
+                                (item[0].product.user.user_details.last_name
+                                  ? item[0].product.user.user_details.last_name
+                                  : '')}
                           </span>
                         </p>
                         {item.map((cartItem, index) => (

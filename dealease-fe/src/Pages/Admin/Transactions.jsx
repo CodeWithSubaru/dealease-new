@@ -36,7 +36,6 @@ export function TransactionsAdmin() {
 
   function fetchCancelledTransaction() {
     axiosClient.get('/admin/transactions/cancelled').then((res) => {
-      console.log(res);
       setNumberOfCancelledTransaction(res.data);
     });
   }
@@ -54,8 +53,9 @@ export function TransactionsAdmin() {
           .catch((err) => setErrors(err.response.data.errors));
 
         setUserTransactionsDataTable(1);
-        fetchNumberOfUsers();
-        fetchNumberOfUnverifiedUsers();
+        fetchUnderReviewTransaction();
+        fetchApprovedTransaction();
+        fetchCancelledTransaction();
       }
     });
   }
@@ -73,8 +73,9 @@ export function TransactionsAdmin() {
           .catch((err) => setErrors(err.response.data.errors));
 
         setUserTransactionsDataTable(1);
-        fetchNumberOfUsers();
-        fetchNumberOfUnverifiedUsers();
+        fetchUnderReviewTransaction();
+        fetchApprovedTransaction();
+        fetchCancelledTransaction();
       }
     });
   }
@@ -93,6 +94,9 @@ export function TransactionsAdmin() {
           })
           .catch((e) => console.log(e));
         setUserTransactionsDataTable(1);
+        fetchUnderReviewTransaction();
+        fetchApprovedTransaction();
+        fetchCancelledTransaction();
       }
     });
   }
@@ -111,6 +115,11 @@ export function TransactionsAdmin() {
     {
       title: 'Full Name',
       prop: 'fullname',
+    },
+    {
+      title: 'Other Details',
+      prop: 'other_details',
+      isFilterable: true,
     },
     {
       title: 'Status',
@@ -211,6 +220,21 @@ export function TransactionsAdmin() {
                   </p>
                 </div>
               </div>
+            ),
+            other_details: (
+              <>
+                <span>
+                  {' '}
+                  <span className='fw-semibold'>Email: </span>{' '}
+                  {transaction.user.email}
+                </span>{' '}
+                <span>
+                  <span className='fw-semibold'> Contact #:</span>{' '}
+                  {transaction.user.user_details.contact_number
+                    ? transaction.user.user_details.contact_number
+                    : ''}
+                </span>
+              </>
             ),
             payment_status: (
               <span

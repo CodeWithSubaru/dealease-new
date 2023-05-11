@@ -184,14 +184,13 @@ export function OrdersBuyer() {
               <div>
                 <p className='mb-0'>
                   {order.seller.first_name}{' '}
-                  {order.seller.user_details
-                    ? order.seller.user_details.middle_name[0]
+                  {order.seller.user_details.middle_name
+                    ? order.seller.user_details.middle_name[0] + '. '
                     : ''}
-                  {'. '}
                   {order.seller.user_details
                     ? order.seller.user_details.last_name
                     : ' '}{' '}
-                  {order.seller.user_details
+                  {order.seller.user_details.ext_name
                     ? order.seller.user_details.ext_name
                     : ''}
                 </p>
@@ -502,15 +501,14 @@ export function OrdersSeller() {
               />
               <div>
                 <p className='mb-0'>
-                  {order.buyer.first_name}{' '}
-                  {order.buyer.user_details
-                    ? order.buyer.user_details.middle_name[0]
+                  {order.buyer.first_name ? order.buyer.first_name : ''}{' '}
+                  {order.buyer.user_details.middle_name
+                    ? order.buyer.user_details.middle_name[0] + '. '
                     : ''}
-                  {'. '}
-                  {order.buyer.user_details
+                  {order.buyer.user_details.last_name
                     ? order.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.buyer.user_details
+                  {order.buyer.user_details.ext_name
                     ? order.buyer.user_details.ext_name
                     : ''}
                 </p>
