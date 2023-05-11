@@ -131,9 +131,15 @@ export function Header(props) {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className='justify-content-end flex-grow-1 pe-4'>
-                  <Nav.Link href='#'>Home</Nav.Link>
-                  <Nav.Link href='#announcement'>Announcement</Nav.Link>
-                  <Nav.Link href='#products'>Products</Nav.Link>
+                  <Nav.Link className='navLink' href='#'>
+                    Home
+                  </Nav.Link>
+                  <Nav.Link className='navLink' href='#announcement'>
+                    Announcement
+                  </Nav.Link>
+                  <Nav.Link className='navLink' href='#products'>
+                    Products
+                  </Nav.Link>
                   <NavDropdown
                     title='Dropdown'
                     id={`offcanvasNavbarDropdown-expand-${expand}`}

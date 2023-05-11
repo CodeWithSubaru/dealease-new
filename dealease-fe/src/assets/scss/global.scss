@@ -117,3 +117,71 @@
 .header.hidden {
   transform: translateY(-110%);
 }
+.navLink {
+  background-image: linear-gradient(to right, #fff, #fff 50%, #ffffffbf 50%);
+  background-size: 200% 100%;
+  background-position: -100%;
+  display: inline-block;
+  padding: 8px 0;
+  position: relative;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease-in-out;
+  font-weight: 600;
+  margin: 0px 5px;
+}
+.navLink::before {
+  content: '';
+  background: #fff;
+  display: block;
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  transition: all 0.3s ease-in-out;
+}
+.navLink:hover {
+  background-position: 0;
+}
+.navLink:hover::before {
+  width: 100%;
+}
+.navLinkCircle {
+  background-image: linear-gradient(to right, #fff, #fff 50%, #ffffffbf 50%);
+  background-size: 200% 100%;
+  background-position: -100%;
+  display: inline-block;
+  padding: 8px 0;
+  position: relative;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease-in-out;
+  font-weight: 600;
+  margin: 0px 5px;
+}
+.navLinkCircle::before {
+  content: '';
+  background: #fff;
+  display: block;
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  transition: all 0.3s ease-in-out;
+}
+.navLinkCircle:hover {
+  // background-position: 0;
+  background-color: white;
+}
+// .navLinkCircle:hover::before {
+//   width: 100%;
+//   background-color: white;
+// }
+.badge {
+  color: white !important;
+}
+.offCanvas {
+  background-color: #0c6ffd;
+}
