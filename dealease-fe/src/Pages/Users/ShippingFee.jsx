@@ -563,7 +563,7 @@ export function ShippingFee() {
                                     </tr>
 
                                     <tr>
-                                      <td className=''>
+                                      <td className='d-flex ms-3'>
                                         {cartItem.product.title}
                                       </td>
                                       <td className='text-center'>
@@ -582,7 +582,10 @@ export function ShippingFee() {
                                     </tr>
 
                                     <tr>
-                                      <td> Delivery Fee</td>
+                                      <td className='d-flex ms-3'>
+                                        {' '}
+                                        Delivery Fee
+                                      </td>
                                       <td></td>
                                       <td className='text-end'>
                                         <img
@@ -593,6 +596,20 @@ export function ShippingFee() {
                                           className=''
                                         />{' '}
                                         <span>30</span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td className='d-flex ms-3'>Sub Total</td>
+                                      <td></td>
+                                      <td className='text-end'>
+                                        <img
+                                          src='/images/seashell.png'
+                                          height={15}
+                                          width={15}
+                                          alt=''
+                                          className=''
+                                        />{' '}
+                                        {calculateSubTotalPrice(item)}
                                       </td>
                                     </tr>
                                   </table>

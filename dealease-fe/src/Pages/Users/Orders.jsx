@@ -140,10 +140,6 @@ export function OrdersBuyer() {
       prop: 'seller_name',
     },
     {
-      title: 'Contact #',
-      prop: 'contact_number',
-    },
-    {
       title: 'Status',
       prop: 'order_status',
       isFilterable: true,
@@ -197,7 +193,6 @@ export function OrdersBuyer() {
               </div>
             </div>
           ),
-          contact_number: order.seller.user_details.contact_number,
           order_status: (
             <span
               className={
