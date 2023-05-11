@@ -119,6 +119,7 @@ export function TransactionsAdmin() {
     {
       title: 'Other Details',
       prop: 'other_details',
+      isFilterable: true,
     },
     {
       title: 'Status',
