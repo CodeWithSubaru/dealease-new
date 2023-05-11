@@ -263,7 +263,7 @@ export function Users() {
                   {user.first_name + ' '}
                   {user.user_details
                     ? user.user_details.middle_name
-                      ? user.user_details.middle_name + '. '
+                      ? user.user_details.middle_name[0] + '. '
                       : ' '
                     : ''}
                   {user.user_details
