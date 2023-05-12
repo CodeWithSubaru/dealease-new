@@ -36,9 +36,9 @@
     flex-direction: column;
     align-items: center;
   }
-  a {
-    display: none;
-  }
+  // a {
+  //   display: none;
+  // }
   .recharge-card-body {
     padding: 0.5em 1.2em;
   }
@@ -201,8 +201,9 @@
   display: flex;
   flex-flow: column;
   align-items: center;
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
+  margin-top: 50px;
   background-color: #ffffff;
 }
 

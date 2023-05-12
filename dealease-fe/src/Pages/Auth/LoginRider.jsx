@@ -49,7 +49,7 @@ export const LoginRider = () => {
     <>
       <Modal
         className='modal'
-        dialogClassName='modal-container'
+        ddialogClassName='modal-md login-modal'
         show={true}
         keyboard
         aria-labelledby='contained-modal-title-vcenter'
