@@ -120,6 +120,9 @@ export const HomeRider = () => {
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Pending';
+    }
     if (status === '1') {
       return 'Pending';
     }
@@ -127,7 +130,7 @@ export const HomeRider = () => {
       return 'Preparing';
     }
     if (status === '3') {
-      return 'Wating rider';
+      return 'Waiting rider';
     }
     if (status === '4') {
       return 'To Pick Up';

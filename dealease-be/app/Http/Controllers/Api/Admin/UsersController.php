@@ -105,7 +105,7 @@ class UsersController extends Controller
      */
     public function show(string $id)
     {
-        $foundUserById = User::with('user_details')->where('user_id', $id)->get();
+        $foundUserById = User::with('avr', 'user_details')->where('user_id', $id)->get();
         return response()->json(['foundUserById' => $foundUserById], 200);
     }
 

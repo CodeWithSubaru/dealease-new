@@ -67,7 +67,6 @@ export function OrdersTable(props) {
                             {order.product.user.user_details.ext_name
                               ? order.product.user.user_details.ext_name
                               : ''}{' '}
-                            - ({order.product.user.user_details.contact_number})
                           </p>
                         </div>
                         <div>
@@ -98,6 +97,21 @@ export function OrdersTable(props) {
                               />{' '}
                               {order.total_price}
                             </span>
+                          </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Shipping Information:
+                            </span>{' '}
+                            <span className='fw-semibold'>Address: </span>
+                            {order.barangay
+                              ? order.street
+                              : user.user_details.street}{' '}
+                            {order.barangay
+                              ? order.barangay
+                              : user.user_details.barangay}{' '}
+                            {order.city ? order.city : ''}{' '}
+                            {'Bulacan Region III (Central Luzon)'}
                           </p>
                         </div>
                       </div>
@@ -155,7 +169,7 @@ export function OrdersTable(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title id='contained-modal-title-vcenter'>
-              {console.log(props.viewOrders[0])}#
+              #
               {props.viewOrders[0]
                 ? props.viewOrders[0].order_number
                 : 'Loading...'}
@@ -285,8 +299,8 @@ export function OrdersTable(props) {
                   onClick={() => {
                     props.setUserOrdersTable(1);
                     props.fetchNumberOrdersByStatusUser(1);
-                    props.fetchNumberOrdersByStatusUser(2);
-                    props.fetchNumberOrdersByStatusUser(3);
+                    props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                    props.fetchNumberOrdersByStatusUser(6);
                   }}
                   disabled={props.loading}
                 >
@@ -304,17 +318,15 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='second'
                   onClick={() => {
-                    props.setUserOrdersTable(2);
+                    props.setUserOrdersTable([2, 3, 4, 5]);
                     props.fetchNumberOrdersByStatusUser(1);
-                    props.fetchNumberOrdersByStatusUser(2);
-                    props.fetchNumberOrdersByStatusUser(3);
+                    props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                    props.fetchNumberOrdersByStatusUser(6);
                   }}
                   disabled={props.loading}
                 >
-                  {props.title == 'Buyer'
-                    ? 'My Processing Orders'
-                    : 'Find Rider'}{' '}
-                  ({props.title}){' '}
+                  {props.title == 'Buyer' ? 'My' : ''}
+                  {' Processing Orders'}({props.title}){' '}
                   <span
                     className='badge rounded-pill text-bg-primary position-relative'
                     style={{ top: '-8px', left: '-5px' }}
@@ -328,10 +340,10 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='third'
                   onClick={() => {
-                    props.setUserOrdersTable(3);
+                    props.setUserOrdersTable(6);
                     props.fetchNumberOrdersByStatusUser(1);
-                    props.fetchNumberOrdersByStatusUser(2);
-                    props.fetchNumberOrdersByStatusUser(3);
+                    props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                    props.fetchNumberOrdersByStatusUser(6);
                   }}
                   disabled={props.loading}
                 >
@@ -362,9 +374,7 @@ export function OrdersTable(props) {
               <Tab.Pane eventKey='second'>
                 <Card className='p-5 pb-1 rounded'>
                   <h1 className='mb-4 fw-bold'>
-                    {props.title == 'Buyer'
-                      ? 'My Processing Orders'
-                      : 'Find Rider'}
+                    {props.title == 'Buyer' ? 'My' : ''} Processing Orders
                   </h1>
                   {props.loading ? (
                     <Load />

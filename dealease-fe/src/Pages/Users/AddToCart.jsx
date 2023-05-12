@@ -104,7 +104,7 @@ export function AddToCart() {
       }
     });
 
-    return Number(totalPrice + 20 * 1.5 * Object.keys(cart).length);
+    return Number(totalPrice);
   }
 
   useEffect(() => {
@@ -360,13 +360,6 @@ export function AddToCart() {
                                       Sub Total:
                                     </span>{' '}
                                     {calculateSubTotalPrice(item)}
-                                    <p>
-                                      <span className='fw-semibold'>
-                                        {' '}
-                                        Delivery Fee:{' '}
-                                      </span>{' '}
-                                      {20 * 1.5}
-                                    </p>
                                   </p>
                                 )
                               )}
