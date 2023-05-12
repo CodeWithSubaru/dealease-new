@@ -23,9 +23,14 @@ export function OrdersBuyer() {
       .then((res) => {
         if (orderStatus === 1) {
           setPendingOrderNumber(res.data);
-        } else if (orderStatus === 2) {
+        } else if (
+          orderStatus[0] === 2 ||
+          orderStatus[1] === 3 ||
+          orderStatus[2] === 4 ||
+          orderStatus[3] === 5
+        ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 3) {
+        } else if (orderStatus === 6) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -91,22 +96,22 @@ export function OrdersBuyer() {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
     if (status === '3') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-success bg-success bg-opacity-75 text-light';
     }
     if (status === '4') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-info bg-info bg-opacity-75 text-light';
     }
     if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
     if (status === '6') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-success bg-success bg-opacity-75 text-light';
     }
     if (status === '7') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
     if (status === '8') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
   }
 
@@ -343,10 +348,11 @@ export function OrdersSeller() {
         } else if (
           orderStatus[0] === 2 ||
           orderStatus[1] === 3 ||
-          orderStatus[2] === 4
+          orderStatus[2] === 4 ||
+          orderStatus[3] === 5
         ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 5) {
+        } else if (orderStatus === 6) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -411,22 +417,22 @@ export function OrdersSeller() {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
     if (status === '3') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-success bg-success bg-opacity-75 text-light';
     }
     if (status === '4') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-info bg-info bg-opacity-75 text-light';
     }
     if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
     if (status === '6') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-success bg-success bg-opacity-75 text-light';
     }
     if (status === '7') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
     if (status === '8') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
   }
 
