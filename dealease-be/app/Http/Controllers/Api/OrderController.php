@@ -41,7 +41,7 @@ class OrderController extends Controller
     public function fetchOrdersSeller($order_status)
     {
         $orderStatus = explode(',', $order_status);
-        return OrderTransaction::with('buyer', 'buyer.user_details')
+        return OrderTransaction::with('buyer', 'buyer.user_details', 'delivery', 'delivery.rider', 'delivery.rider.user_details')
             ->whereIn('order_trans_status', $orderStatus)
             ->where('seller_id', auth()->user()->user_id)
             ->latest('order_number')

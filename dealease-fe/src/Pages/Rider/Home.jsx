@@ -25,6 +25,9 @@ import {
   faTable,
   faToggleOn,
   faInbox,
+  faLocationDot,
+  faEllipsisVertical,
+  faCircleDot,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -282,14 +285,14 @@ export const HomeRider = () => {
               <div>
                 <p className='mb-0'>
                   {order.buyer.first_name}{' '}
-                  {order.buyer.user_details
+                  {order.buyer.user_details.middle_name
                     ? order.buyer.user_details.middle_name[0]
                     : ''}
                   {'. '}
                   {order.buyer.user_details
                     ? order.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.buyer.user_details
+                  {order.buyer.user_details.ext_name
                     ? order.buyer.user_details.ext_name
                     : ''}
                 </p>
@@ -387,14 +390,14 @@ export const HomeRider = () => {
               <div>
                 <p className='mb-0'>
                   {order.order_to_deliver.buyer.first_name}{' '}
-                  {order.order_to_deliver.buyer.user_details
+                  {order.order_to_deliver.buyer.user_details.middle_name
                     ? order.order_to_deliver.buyer.user_details.middle_name[0]
                     : ''}
                   {'. '}
                   {order.order_to_deliver.buyer.user_details
                     ? order.order_to_deliver.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.order_to_deliver.buyer.user_details
+                  {order.order_to_deliver.buyer.user_details.ext_name
                     ? order.order_to_deliver.buyer.user_details.ext_name
                     : ''}
                 </p>
@@ -490,7 +493,7 @@ export const HomeRider = () => {
 
   return (
     <>
-      <Header>
+      {/* <Header>
         {' '}
         <div className='div-dropdown'>
           <Dropdown as={ButtonGroup} className='dropdown-button'>
@@ -521,7 +524,7 @@ export const HomeRider = () => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-      </Header>
+      </Header> */}
 
       <div style={{ display: 'flex', height: '100%' }}>
         <Sidebar
@@ -564,6 +567,15 @@ export const HomeRider = () => {
                 Withdraw
               </MenuItem>
             </SubMenu>
+            <MenuItem
+              className='text-black '
+              onClick={() => {
+                logout();
+              }}
+              // icon={<FaHouse />}
+            >
+              Logout
+            </MenuItem>
           </Menu>
         </Sidebar>
         <main className='w-100' style={{ minHeight: '815px' }}>
@@ -574,10 +586,10 @@ export const HomeRider = () => {
             <div className='d-flex mx-auto justify-content-center'>
               <div className='flex-grow-1 me-4'>
                 <Card className='rounded overflow-hidden'>
-                  <Card.Body className='bg-primary '>
+                  <Card.Body className='bg-primary'>
                     <p className='text-white'>Information</p>
                     <hr />
-                    <p className='small text-white  '>Total Deliver</p>
+                    <p className='small text-white'>Total Deliver</p>
                     <div className='small text-white'>
                       <i className='fas fa-angle-right'></i>
                     </div>
@@ -610,20 +622,56 @@ export const HomeRider = () => {
               </div>
             </div>
           </div>
-          <Ridertransaction
-            header={header}
-            body={body}
-            viewOrders={viewOrders}
-            viewOrderBuyerModal={viewOrderBuyerModal}
-            closeViewOrderBuyerModal={closeViewOrderBuyerModal}
-            status={status}
-            calculateGrandTotalPrice={calculateGrandTotalPrice}
-            loading={loading}
-            setRiderTable={setRiderTable}
-            setRiderDeliveryTable={setRiderDeliveryTable}
-          />
+          <Card className='mx-auto w-75 mb-5 p-5'>
+            <h1 className='fw-bold mb-4'>To Pick Up</h1>
+            <Card className='d-flex flex-row w-50 p-4'>
+              <div className='d-flex justify-content-between w-100 align-items-center'>
+                <div className='d-flex justify-content-between'>
+                  <div className='d-flex flex-column me-3'>
+                    <FontAwesomeIcon
+                      icon={faCircleDot}
+                      className='mb-1 text-success'
+                    />
+                    <FontAwesomeIcon
+                      icon={faEllipsisVertical}
+                      className='text-success mb-0'
+                    />
+                    <FontAwesomeIcon
+                      icon={faEllipsisVertical}
+                      className='mb-1 text-success'
+                    />
+                    <FontAwesomeIcon
+                      icon={faLocationDot}
+                      className='text-success'
+                    />
+                  </div>
+                  {console.log(viewOrders)}
+                  <div className='mt-2'>
+                    <h4 className='mb-0'>{'Na'}</h4>
+                    <p>{'Description'}</p>
+                  </div>
+                </div>
+                <div className='d-flex justify-content-center'>
+                  <Button
+                    variant='primary'
+                    className='me-2 rounded btn'
+                    onClick={() => handleEditShow(item.id)}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variant={'danger'}
+                    onClick={() => {}}
+                    className='me-2 rounded'
+                  >
+                    Decline
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </Card>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );

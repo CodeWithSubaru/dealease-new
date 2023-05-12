@@ -242,6 +242,12 @@ export function OrdersTable(props) {
                               {order.total_price}
                             </span>
                           </p>
+                          <p>
+                            <span className='fw-bold text-secondary'>
+                              Rider Name:
+                            </span>
+                            {console.log(order)}
+                          </p>
                         </div>
                       </div>
                     </>
@@ -379,7 +385,10 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={props.header} body={props.body} />
+                    <TableComponent
+                      header={props.header1 ? props.header1 : props.header}
+                      body={props.body}
+                    />
                   )}
                 </Card>
               </Tab.Pane>
@@ -391,7 +400,10 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={props.header} body={props.body} />
+                    <TableComponent
+                      header={props.header1 ? props.header1 : props.header}
+                      body={props.body}
+                    />
                   )}
                 </Card>
               </Tab.Pane>

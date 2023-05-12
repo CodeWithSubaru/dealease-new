@@ -15,6 +15,7 @@ import { AddToCart } from './Pages/Users/AddToCart';
 import { ShippingFee } from './Pages/Users/ShippingFee';
 import { SuccessfulUser } from './Pages/Users/Successful';
 import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
+import { SettingsUser } from './Pages/Users/Settings';
 
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
@@ -34,6 +35,7 @@ import { TransactionsUser } from './Pages/Users/Transactions';
 
 // solla
 // Guest Layout
+import { RegisterRider } from './Pages/Auth/RegisterRider';
 import { Mainpage } from './Pages';
 import { GuestLayout } from './Layouts/GuestLayout';
 import { ForgotPassword } from './Pages/Auth/ForgotPassword';
@@ -61,6 +63,7 @@ function App() {
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/Product' element={<ProductUser />} />
+            <Route path='/settings' element={<SettingsUser />} />
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/withdraw' element={<WithdrawUser />} />
@@ -97,6 +100,7 @@ function App() {
           </Route>
 
           <Route path='/rider/login' element={<LoginRider />} />
+          <Route path='/rider/register' element={<RegisterRider />} />
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
