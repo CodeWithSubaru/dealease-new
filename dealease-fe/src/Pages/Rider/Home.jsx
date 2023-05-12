@@ -120,6 +120,9 @@ export const HomeRider = () => {
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Pending';
+    }
     if (status === '1') {
       return 'Pending';
     }

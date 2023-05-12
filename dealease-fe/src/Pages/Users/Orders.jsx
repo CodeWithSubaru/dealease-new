@@ -49,6 +49,10 @@ export function OrdersBuyer() {
   }
 
   function status(status) {
+    if (status === 0) {
+      return 'Cancelled';
+    }
+
     if (status === '1') {
       return 'Pending';
     }
@@ -56,7 +60,22 @@ export function OrdersBuyer() {
       return 'Preparing';
     }
     if (status === '3') {
+      return 'Wating rider';
+    }
+    if (status === '4') {
+      return 'To Pick Up';
+    }
+    if (status === '5') {
+      return 'To Deliver';
+    }
+    if (status === '6') {
       return 'Delivered';
+    }
+    if (status === '7') {
+      return 'Success';
+    }
+    if (status === '8') {
+      return 'Failed';
     }
   }
 
@@ -72,6 +91,21 @@ export function OrdersBuyer() {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
     if (status === '3') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '4') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '5') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '6') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '7') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '8') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
   }
@@ -262,8 +296,8 @@ export function OrdersBuyer() {
 
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
-    fetchNumberOrdersByStatusUser(2);
-    fetchNumberOrdersByStatusUser(3);
+    fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+    fetchNumberOrdersByStatusUser(6);
     setUserOrdersTable(1);
   }, []);
 
@@ -306,9 +340,13 @@ export function OrdersSeller() {
       .then((res) => {
         if (orderStatus === 1) {
           setPendingOrderNumber(res.data);
-        } else if (orderStatus === 2) {
+        } else if (
+          orderStatus[0] === 2 ||
+          orderStatus[1] === 3 ||
+          orderStatus[2] === 4
+        ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 3) {
+        } else if (orderStatus === 5) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -332,20 +370,32 @@ export function OrdersSeller() {
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Cancelled';
+    }
     if (status === '1') {
       return 'Pending';
     }
-
     if (status === '2') {
       return 'Preparing';
     }
-
     if (status === '3') {
-      return 'Finding Rider';
+      return 'Wating rider';
     }
-
     if (status === '4') {
+      return 'To Pick Up';
+    }
+    if (status === '5') {
+      return 'To Deliver';
+    }
+    if (status === '6') {
       return 'Delivered';
+    }
+    if (status === '7') {
+      return 'Success';
+    }
+    if (status === '8') {
+      return 'Failed';
     }
   }
 
@@ -363,9 +413,43 @@ export function OrdersSeller() {
     if (status === '3') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
+    if (status === '4') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '5') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '6') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '7') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '8') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
   }
 
   function accept(orderNumber) {
+    Finalize({
+      text: 'You want accept this order request',
+      confirmButton: 'Yes',
+      successMsg: 'Order Accepted Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/' + orderNumber, { status: 2 })
+          .then((resp) => {})
+          .catch((e) => console.log(e));
+        fetchNumberOrdersByStatusUser(1);
+        fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+        fetchNumberOrdersByStatusUser(6);
+        setUserOrdersTable([2, 3, 4, 5]);
+      }
+    });
+  }
+
+  function findRider(orderNumber) {
     Finalize({
       text: 'You want accept this order request and Find Rider',
       confirmButton: 'Yes',
@@ -377,9 +461,9 @@ export function OrdersSeller() {
           .then((resp) => {})
           .catch((e) => console.log(e));
         fetchNumberOrdersByStatusUser(1);
-        fetchNumberOrdersByStatusUser(2);
-        fetchNumberOrdersByStatusUser(3);
-        setUserOrdersTable(1);
+        fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+        fetchNumberOrdersByStatusUser(6);
+        setUserOrdersTable([2, 3, 4, 5]);
       }
     });
   }
@@ -425,8 +509,8 @@ export function OrdersSeller() {
       prop: 'buyer_name',
     },
     {
-      title: 'Contact #',
-      prop: 'contact_number',
+      title: 'Shipping Address',
+      prop: 'shipping_address',
     },
     {
       title: 'Status',
@@ -476,6 +560,7 @@ export function OrdersSeller() {
   }
 
   function setUserOrdersTable(number) {
+    console.log(number);
     setBody([]);
     setLoading(true);
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
@@ -510,7 +595,7 @@ export function OrdersSeller() {
               </div>
             </div>
           ),
-          contact_number: order.buyer.user_details.contact_number,
+          shipping_address: 1,
           order_status: (
             <span
               className={
@@ -562,6 +647,31 @@ export function OrdersSeller() {
                   >
                     Accept
                   </Button>
+                </>
+              ) : (
+                ''
+              )}
+
+              {order.order_trans_status === '2' &&
+              order.order_trans_status > 0 ? (
+                <>
+                  <Button
+                    variant='success'
+                    onClick={() => {
+                      findRider(order.order_number);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2 me-2'
+                  >
+                    Find Rider
+                  </Button>
+                </>
+              ) : (
+                ''
+              )}
+
+              {order.order_trans_status < '3' &&
+                order.order_trans_status > 0 && (
                   <Button
                     variant='primary'
                     onClick={() => {
@@ -579,28 +689,7 @@ export function OrdersSeller() {
                   >
                     Cancel
                   </Button>
-                </>
-              ) : (
-                ''
-              )}
-
-              {order.order_trans_status === '2' &&
-              order.order_trans_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      accept(order.order_number);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    Find Rider
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
+                )}
             </div>
           ),
         };
@@ -612,8 +701,8 @@ export function OrdersSeller() {
 
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
-    fetchNumberOrdersByStatusUser(2);
-    fetchNumberOrdersByStatusUser(3);
+    fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+    fetchNumberOrdersByStatusUser(6);
     setUserOrdersTable(1);
   }, []);
 

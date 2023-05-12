@@ -40,4 +40,9 @@ class Order extends Model
     {
         return  $this->hasMany(\App\Models\OrderTransaction::class, 'order_number', 'order_number');
     }
+
+    public function deliveryAddress()
+    {
+        return  $this->belongsTo(\App\Models\Deliveries::class, 'delivery_address_id', 'delivery_address_id');
+    }
 }

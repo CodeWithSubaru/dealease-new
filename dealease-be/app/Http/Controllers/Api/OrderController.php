@@ -13,6 +13,8 @@ use App\Models\DeliveryAddress;
 use App\Models\DeliveryStatus;
 use App\Models\UsersWallet;
 
+use function PHPSTORM_META\type;
+
 class OrderController extends Controller
 {
 
@@ -28,8 +30,9 @@ class OrderController extends Controller
 
     public function fetchOrdersBuyer($order_status)
     {
+        $orderStatus = explode(',', $order_status);
         return OrderTransaction::with('seller', 'seller.user_details')
-            ->where('order_trans_status', $order_status)
+            ->whereIn('order_trans_status', $orderStatus)
             ->where('buyer_id', auth()->user()->user_id)
             ->latest('order_number')
             ->get();
@@ -37,8 +40,9 @@ class OrderController extends Controller
 
     public function fetchOrdersSeller($order_status)
     {
-        return OrderTransaction::with('buyer', 'buyer.user_details',)
-            ->where('order_trans_status', $order_status)
+        $orderStatus = explode(',', $order_status);
+        return OrderTransaction::with('buyer', 'buyer.user_details')
+            ->whereIn('order_trans_status', $orderStatus)
             ->where('seller_id', auth()->user()->user_id)
             ->latest('order_number')
             ->get();
@@ -212,6 +216,7 @@ class OrderController extends Controller
 
         return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details')
             ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
+            ->leftJoin('delivery_addresses', 'delivery_addresses.delivery_address_id', 'order_transactions.delivery_address_id')
             ->where('orders.order_number', $order)
             ->where('order_transactions.order_trans_status', '!=', 0)
             ->get();
