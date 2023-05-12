@@ -282,14 +282,14 @@ export const HomeRider = () => {
               <div>
                 <p className='mb-0'>
                   {order.buyer.first_name}{' '}
-                  {order.buyer.user_details
+                  {order.buyer.user_details.middle_name
                     ? order.buyer.user_details.middle_name[0]
                     : ''}
                   {'. '}
                   {order.buyer.user_details
                     ? order.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.buyer.user_details
+                  {order.buyer.user_details.ext_name
                     ? order.buyer.user_details.ext_name
                     : ''}
                 </p>
@@ -387,14 +387,14 @@ export const HomeRider = () => {
               <div>
                 <p className='mb-0'>
                   {order.order_to_deliver.buyer.first_name}{' '}
-                  {order.order_to_deliver.buyer.user_details
+                  {order.order_to_deliver.buyer.user_details.middle_name
                     ? order.order_to_deliver.buyer.user_details.middle_name[0]
                     : ''}
                   {'. '}
                   {order.order_to_deliver.buyer.user_details
                     ? order.order_to_deliver.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.order_to_deliver.buyer.user_details
+                  {order.order_to_deliver.buyer.user_details.ext_name
                     ? order.order_to_deliver.buyer.user_details.ext_name
                     : ''}
                 </p>
