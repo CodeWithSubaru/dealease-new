@@ -15,6 +15,7 @@ import { AddToCart } from './Pages/Users/AddToCart';
 import { ShippingFee } from './Pages/Users/ShippingFee';
 import { SuccessfulUser } from './Pages/Users/Successful';
 import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
+import { SettingsUser } from './Pages/Users/Settings';
 
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
@@ -62,6 +63,7 @@ function App() {
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/Product' element={<ProductUser />} />
+            <Route path='/settings' element={<SettingsUser />} />
             <Route path='/profile' element={<ProfileUser />} />
             <Route path='/change-password' element={<ChangePasswordUser />} />
             <Route path='/withdraw' element={<WithdrawUser />} />
