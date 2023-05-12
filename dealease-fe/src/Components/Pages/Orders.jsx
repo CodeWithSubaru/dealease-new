@@ -299,8 +299,8 @@ export function OrdersTable(props) {
                   onClick={() => {
                     props.setUserOrdersTable(1);
                     props.fetchNumberOrdersByStatusUser(1);
-                    props.fetchNumberOrdersByStatusUser([2, 3, 4]);
-                    props.fetchNumberOrdersByStatusUser(5);
+                    props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                    props.fetchNumberOrdersByStatusUser(6);
                   }}
                   disabled={props.loading}
                 >
@@ -318,10 +318,10 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='second'
                   onClick={() => {
-                    props.setUserOrdersTable([2, 3, 4]);
+                    props.setUserOrdersTable([2, 3, 4, 5]);
                     props.fetchNumberOrdersByStatusUser(1);
-                    props.fetchNumberOrdersByStatusUser([2, 3, 4]);
-                    props.fetchNumberOrdersByStatusUser(5);
+                    props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                    props.fetchNumberOrdersByStatusUser(6);
                   }}
                   disabled={props.loading}
                 >
@@ -340,10 +340,10 @@ export function OrdersTable(props) {
                 <Nav.Link
                   eventKey='third'
                   onClick={() => {
-                    props.setUserOrdersTable(5);
+                    props.setUserOrdersTable(6);
                     props.fetchNumberOrdersByStatusUser(1);
-                    props.fetchNumberOrdersByStatusUser([2, 3, 4]);
-                    props.fetchNumberOrdersByStatusUser(5);
+                    props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                    props.fetchNumberOrdersByStatusUser(6);
                   }}
                   disabled={props.loading}
                 >
