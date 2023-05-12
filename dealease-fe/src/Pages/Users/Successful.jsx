@@ -32,9 +32,33 @@ export function SuccessfulUser() {
     return Number(totalPrice).toLocaleString('en-US');
   }
 
-  useEffect(() => {
-    setDoneTransaction(true);
-  }, []);
+  function changeDeliveryFeePerBrgy(df) {
+    let rate = 0;
+    if (df === 'Paliwas' || df === 'Salambao' || df === 'Binuangan') {
+      rate = 20;
+    } else if (df === 'Pag-asa' || df === 'San Pascual') {
+      rate = 25;
+    } else if (df === 'Catanghalan' || df === 'Hulo') {
+      rate = 30;
+    } else if (df === 'Panghulo' || df === 'Lawa') {
+      rate = 35;
+    } else if (df === 'Paco') {
+      rate = 40;
+    } else if (df === 'Tawiran') {
+      rate = 45;
+    }
+    return rate;
+  }
+
+  function calculateGrandTotalDeliveryFee(cart, delFee) {
+    let totalPrice = 0;
+    Object.values(cart).forEach((cartItem) => {
+      for (let i = 0; i < cartItem.length; i++) {
+        totalPrice += Number(cartItem[i].total_price) + Number(delFee);
+      }
+    });
+    return Number(totalPrice);
+  }
 
   return (
     <div className='mx-auto w-75'>
@@ -66,7 +90,18 @@ export function SuccessfulUser() {
                 </div>
                 <div>
                   <h6 className='fw-light text-secondary'>Payment Method</h6>
-                  <p> Cash on Delivery (COD) - Php {grandTotal}</p>
+                  <p>
+                    {' '}
+                    Cash on Delivery (COD) - Php{' '}
+                    {calculateGrandTotalDeliveryFee(
+                      step1,
+                      changeDeliveryFeePerBrgy(
+                        Object.keys(otherAddress).length > 0
+                          ? otherAddress.shippingFee.barangay
+                          : user.user_details.barangay
+                      )
+                    )}
+                  </p>
                 </div>
               </div>
               <div>
@@ -150,14 +185,34 @@ export function SuccessfulUser() {
                 {calculateSubTotalPrice(item)}
                 <p>
                   <span className='fw-semibold'> Delivery Fee: </span>{' '}
-                  {20 * 1.5}
+                  {changeDeliveryFeePerBrgy(
+                    Object.keys(otherAddress).length > 0
+                      ? otherAddress.shippingFee.barangay
+                      : user.user_details.barangay
+                  )}
                 </p>
               </p>
             ))}
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
               <div className='d-flex justify-content-between'>
                 <span className='fw-semibold'>Total Order Amount</span>
-                <span>{grandTotal} shells</span>
+                <span className='d-flex align-items-center'>
+                  <img
+                    src='/images/seashell.png'
+                    height={25}
+                    width={25}
+                    alt=''
+                    className='mx-2'
+                  />{' '}
+                  {calculateGrandTotalDeliveryFee(
+                    step1,
+                    changeDeliveryFeePerBrgy(
+                      Object.keys(otherAddress).length > 0
+                        ? otherAddress.shippingFee.barangay
+                        : user.user_details.barangay
+                    )
+                  )}
+                </span>
               </div>
             </div>
 
