@@ -34,6 +34,7 @@ import { TransactionsUser } from './Pages/Users/Transactions';
 
 // solla
 // Guest Layout
+import { RegisterRider } from './Pages/Auth/RegisterRider';
 import { Mainpage } from './Pages';
 import { GuestLayout } from './Layouts/GuestLayout';
 import { ForgotPassword } from './Pages/Auth/ForgotPassword';
@@ -97,6 +98,7 @@ function App() {
           </Route>
 
           <Route path='/rider/login' element={<LoginRider />} />
+          <Route path='/rider/register' element={<RegisterRider />} />
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
