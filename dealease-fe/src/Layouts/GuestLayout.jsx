@@ -28,7 +28,7 @@ export function GuestLayout() {
         <Container>
           <Row>
             <Col md={6} className='mb-5'>
-              <span className='fs-3  text-white'>
+              <span className='fs-3 fw-bold fst-italic text-white'>
                 <img
                   alt=''
                   src='/images/dealeasefavicon.png'
@@ -91,8 +91,8 @@ export function GuestLayout() {
                 </Col>
               </Row>
               <div className='d-flex justify-content-end mt-5'>
-                <h5 className='my-auto me-5'>Follow as on </h5>
-                <a href=''>
+                <h5 className='my-auto me-5'>Follow us on </h5>
+                <a href='https://www.facebook.com/'>
                   <img
                     alt=''
                     src='/images/socmed/fblogo.png'
@@ -101,7 +101,7 @@ export function GuestLayout() {
                     className='me-3 d-inline-block align-top'
                   />
                 </a>
-                <a href=''>
+                <a href='https://www.instagram.com/'>
                   <img
                     alt=''
                     src='/images/socmed/instagramlogo.png'
@@ -110,7 +110,7 @@ export function GuestLayout() {
                     className='me-3 d-inline-block align-top'
                   />
                 </a>
-                <a href=''>
+                <a href='https://www.youtube.com/'>
                   <img
                     alt=''
                     src='/images/socmed/youtubelogo.png'
@@ -119,7 +119,7 @@ export function GuestLayout() {
                     className='me-3 d-inline-block align-top'
                   />
                 </a>
-                <a href=''>
+                <a href='https://www.linkedin.com/'>
                   <img
                     alt=''
                     src='/images/socmed/linkedinlogo.png'

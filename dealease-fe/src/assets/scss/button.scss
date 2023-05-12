@@ -57,6 +57,28 @@
   border: 2px solid #fff !important;
 }
 
+.btn-reset {
+  padding: 8px 26px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.btn-reset:hover {
+  transition: all 0.3s ease-out;
+  background: #0c6ffd !important;
+  color: #ffffff !important;
+  border: 2px solid #0c6ffd !important;
+}
+.btn-rider {
+  padding: 12px 26px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.btn-rider:hover {
+  transition: all 0.3s ease-out;
+  background: #0c6ffd !important;
+  color: #ffffff !important;
+  border: 3px solid #0c6ffd !important;
+}
 .file-seller {
   margin-top: 200px !important;
   position: absolute;

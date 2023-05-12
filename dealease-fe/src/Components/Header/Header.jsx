@@ -91,7 +91,7 @@ export function Header(props) {
               <span className='fs-3'>Dealease</span>
             </Navbar.Brand> */}
             <Nav className='me-auto'>
-              <span className='fs-3 text-white'>
+              <span className='fs-3 text-white fw-bold fst-italic'>
                 <img
                   alt=''
                   src='/images/dealeasefavicon.png'
@@ -107,7 +107,6 @@ export function Header(props) {
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement='end'
-              height='100%'
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
@@ -118,12 +117,12 @@ export function Header(props) {
                     height='40'
                     className='d-inline-block align-top'
                   />{' '}
-                  <span className='fs-3'>Dealease</span>
+                  <span className='fs-1 fw-bold fst-italic'>Dealease</span>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body className='offCanvas'>
                 <Nav className='justify-content-end flex-grow-1 pe-4'>
-                  <Nav.Link className='navLink' href='#'>
+                  <Nav.Link className='navLink' href='/'>
                     Home
                   </Nav.Link>
                   <Nav.Link className='navLink' href='#announcement'>

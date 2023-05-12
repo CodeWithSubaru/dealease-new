@@ -56,7 +56,7 @@ export function AuthAdminLayout() {
               <span className='fs-3'>Dealease</span>
             </Navbar.Brand> */}
             <Nav className='me-auto'>
-              <span className='fs-3 text-white'>
+              <span className='fs-3 text-white fw-bold fst-italic'>
                 <img
                   alt=''
                   src='/images/dealeasefavicon.png'
@@ -83,7 +83,7 @@ export function AuthAdminLayout() {
                     height='40'
                     className='d-inline-block align-top'
                   />{' '}
-                  <span className='fs-3'>Dealease</span>
+                  <span className='fs-3 fw-bold fst-italic'>Dealease</span>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body className='offCanvas'>

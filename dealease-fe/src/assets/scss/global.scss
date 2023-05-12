@@ -186,11 +186,73 @@
   height: 280px;
   padding: 30px;
 }
+.announcement-card {
+  width: 80%;
+  margin-top: -180px;
+}
+.forgot-password-header {
+  height: 100px;
+}
+.forgot-password-card {
+  width: 35%;
+  height: auto;
+  // margin: 45px 0px;
+}
+.forgot-password-h1 {
+  font-size: 25px !important;
+}
+.wallet-modal-container {
+  position: relative;
+  width: 50%;
+}
+
+.wallet-modal-middle {
+  transition: 0.5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  // transform: translate(-50%, -50%);
+  // -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.wallet-modal-image {
+  margin: auto;
+}
+.wallet-modal-container:hover .wallet-modal-image {
+  opacity: 0.3;
+}
+
+.wallet-modal-container:hover .wallet-modal-middle {
+  opacity: 1;
+}
+
+.wallet-modal-text {
+  background-color: #04aa6d;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
 @media screen and (max-width: 960px) {
+  .forgot-password-header {
+    height: 70px;
+  }
+  .forgot-password-h1 {
+    font-size: 18px !important;
+  }
+  .forgot-password-card {
+    height: auto;
+    width: 90%;
+  }
+  .announcement-card {
+    width: 100%;
+    margin-top: -20px;
+  }
   .offCanvas {
     background-color: #0c6ffd;
   }
   .contacts-footer {
-    height: 380px;
+    height: 450px;
   }
 }

@@ -23,58 +23,51 @@ export function Announcement() {
       hasAnnouncements = true;
       return (
         <Carousel.Item key={item.id}>
-          <div className='d-flex justify-content-center carousel-item'>
-            <Card
-              style={{
-                height: '400px',
-                width: '400px',
-              }}
-            >
-              <div
-                className='w-100'
-                style={{
-                  height: '250px',
-                  overflow: 'hidden',
-                }}
-              >
-                <img
-                  src={PUBLIC_URL + 'images/' + item.image}
-                  className='w-100 h-100'
-                  style={{
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center center',
-                    objectFit: 'cover',
-                  }}
-                  alt={item.title}
-                />
-              </div>
-              <Carousel.Caption
-                className='text-light bg-dark w-100'
-                style={{
-                  position: 'absolute',
-                  bottom: '0',
-                  left: '0',
-                  top: '250px',
-                }}
-              >
-                <div className=''>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              </Carousel.Caption>
-            </Card>
-          </div>
+          {/* <div className='d-flex justify-content-center carousel-item'> */}
+          <img
+            src={PUBLIC_URL + 'images/' + item.image}
+            className='w-100 h-100'
+            style={{
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              objectFit: 'cover',
+            }}
+            alt={item.title}
+          />
+          {/* </div> */}
+          <Carousel.Caption
+            className='text-white bg-dark'
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              right: '0',
+              // top: '250px',
+            }}
+          >
+            <div className=''>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+          </Carousel.Caption>
         </Carousel.Item>
       );
     }
   });
 
   return (
-    <div>
-      <Card className='p-5 rounded w-75 mx-auto' id='announcement'>
+    <div
+      style={
+        {
+          // marginTop: '-100px',
+        }
+      }
+    >
+      <Card className='announcement-card p-4 rounded mx-auto'>
         <H1 className='d-block w-100'>Announcement</H1>
+
         <Carousel
-          style={{ height: '50vh' }}
+          fade
           variant='dark'
           slide={false}
           className='d-flex align-items-center'
@@ -89,6 +82,7 @@ export function Announcement() {
             </Carousel.Item>
           )}
         </Carousel>
+        <div id='products'></div>
       </Card>
     </div>
   );

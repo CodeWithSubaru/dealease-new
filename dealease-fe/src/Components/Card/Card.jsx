@@ -32,7 +32,7 @@ export function Card() {
   }, []);
 
   return (
-    <div className='cards' id='products'>
+    <div className='cards'>
       <div className='cards_container'>
         <Container className='mt-5'>
           <Row>

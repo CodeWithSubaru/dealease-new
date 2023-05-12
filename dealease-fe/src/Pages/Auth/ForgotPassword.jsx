@@ -1,9 +1,9 @@
 import Form from 'react-bootstrap/Form';
 import { H1 } from '../../Components/Helpers/index.style';
 import { useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import axiosClient from '../../api/axios';
-
+import Header from '../../Components/Header/Header';
 export function ForgotPassword() {
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState({});
@@ -32,46 +32,55 @@ export function ForgotPassword() {
   }
 
   return (
-    <Card className='m-auto w-75 p-5'>
-      <H1> Forgot Password</H1>
-      <p className='mb-3'>
-        Please provide your email address to reset your password.
-      </p>
+    <>
+      <div className='bg-primary forgot-password-header'></div>
+      <Container className='mb-5'>
+        <Card className='forgot-password-card m-auto mt-5 p-5'>
+          <H1 className='forgot-password-h1'> Forgot Password</H1>
+          <p className='mb-3'>
+            Please provide your email address to reset your password.
+          </p>
 
-      {notification && (
-        <Form
-          onSubmit={handleReSend}
-          className='fadeInDown alert alert-primary'
-          role='alert'
-        >
-          {isResend
-            ? notification
-            : 'Reset link has been sent. Please check your email.'}{' '}
-          <button type='submit' className='text-underlined'>
-            Resend
-          </button>
-        </Form>
-      )}
+          {notification && (
+            <Form
+              onSubmit={handleReSend}
+              className='fadeInDown alert alert-primary'
+              role='alert'
+            >
+              {isResend
+                ? notification
+                : 'Reset link has been sent. Please check your email.'}{' '}
+              <button type='submit' className='btn-reset text-underlined'>
+                Resend
+              </button>
+            </Form>
+          )}
 
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className='mb-3'>
-          <Form.Label>Email Address *</Form.Label>
-          <Form.Control
-            type='email'
-            name='email'
-            onChange={(e) => setEmail({ ...email, email: e.target.value })}
-            isInvalid={!!errors && errors.email}
-          />
+          <Form onSubmit={handleSubmit}>
+            <Form.Label className='text-black'>Email Address *</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Control
+                type='email'
+                name='email'
+                className='w-100'
+                placeholder='Provide your email'
+                onChange={(e) => setEmail({ ...email, email: e.target.value })}
+                isInvalid={!!errors && errors.email}
+              />
 
-          <Form.Control.Feedback type='invalid'>
-            {errors &&
-              errors.email &&
-              errors.email.length > 0 &&
-              errors.email[0]}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <button>Reset</button>
-      </Form>
-    </Card>
+              <Form.Control.Feedback type='invalid'>
+                {errors &&
+                  errors.email &&
+                  errors.email.length > 0 &&
+                  errors.email[0]}
+              </Form.Control.Feedback>
+              <button className='mt-3 w-100 btn btn-outline text-primary btn-reset text-decoration-none border border-2 float-end border-primary'>
+                Reset
+              </button>
+            </Form.Group>
+          </Form>
+        </Card>
+      </Container>
+    </>
   );
 }

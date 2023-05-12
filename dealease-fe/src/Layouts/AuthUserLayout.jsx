@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
+import Modal from 'react-bootstrap/Modal';
 import {
   Offcanvas,
   Form,
@@ -9,6 +10,8 @@ import {
   Button,
   Navbar,
   Nav,
+  Row,
+  Col,
   NavDropdown,
 } from 'react-bootstrap';
 import useAuthContext from '../Hooks/Context/AuthContext';
@@ -21,7 +24,6 @@ import useAddToCartContext from '../Hooks/Context/AddToCartContext';
 import {
   faCartShopping,
   faCog,
-  faCogs,
   faPowerOff,
   faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
@@ -31,6 +33,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthUserLayout() {
+  const [modalShow, setModalShow] = useState(false);
   const { user, token, user_type, logout } = useAuthContext();
   const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
 
@@ -70,7 +73,7 @@ export function AuthUserLayout() {
               <span className='fs-3'>Dealease</span>
             </Navbar.Brand> */}
             <Nav className='me-auto'>
-              <span className='fs-3 text-white'>
+              <span className='fs-3 text-white fw-bold fst-italic'>
                 <img
                   alt=''
                   src='/images/dealeasefavicon.png'
@@ -81,6 +84,7 @@ export function AuthUserLayout() {
                 Dealease
               </span>
             </Nav>
+
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -97,7 +101,7 @@ export function AuthUserLayout() {
                     height='40'
                     className='d-inline-block align-top'
                   />{' '}
-                  <span className='fs-3'>Dealease</span>
+                  <span className='fs-1 fw-bold fst-italic'>Dealease</span>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body className='offCanvas'>
@@ -153,7 +157,10 @@ export function AuthUserLayout() {
                     overlay={<Tooltip id='tooltip-disabled'>Wallet</Tooltip>}
                     placement='bottom'
                   >
-                    <button className='btn btn-outline-login me-2'>
+                    <button
+                      className='btn btn-outline-login me-2'
+                      onClick={() => setModalShow(true)}
+                    >
                       <img
                         src='/images/seashell.png'
                         className='me-2 d-inline-block align-top'
@@ -311,6 +318,62 @@ export function AuthUserLayout() {
           </div>
         </li>
       </Header> */}
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        dialogClassName='wallet-modal modal-md mx-auto'
+        aria-labelledby='contained-modal-title-vcenter'
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Wallet balance{' '}
+            <img
+              src='/images/seashell.png'
+              className='ms-2 me-2 d-inline-block align-top'
+              width='30'
+              height='30'
+            ></img>
+            {user.wallet ? user.wallet.shell_coin_amount : null}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body closeButton>
+          <Row>
+            <Col>
+              <div className='wallet-modal-container'>
+                <a href='/withdraw'>
+                  <img
+                    alt=''
+                    src='/images/cashout.png'
+                    width='auto'
+                    height='220px'
+                    className='wallet-modal-image d-inline-block align-top'
+                  />
+                  <div class='wallet-modal-middle'>
+                    <div class='wallet-modal-text'>Withdraw</div>
+                  </div>
+                </a>
+              </div>
+            </Col>
+            <Col>
+              <div className='wallet-modal-container'>
+                <a href='/withdraw'>
+                  <img
+                    alt=''
+                    src='/images/cashin.png'
+                    width='auto'
+                    height='220px'
+                    className='wallet-modal-image d-inline-block align-top'
+                  />
+                  <div class='wallet-modal-middle'>
+                    <div class='wallet-modal-text'>Recharge </div>
+                  </div>
+                </a>
+              </div>
+            </Col>
+          </Row>
+        </Modal.Body>
+      </Modal>
       {user_type === 'User' ? (
         <>
           <Outlet />
