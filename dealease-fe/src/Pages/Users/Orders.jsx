@@ -266,7 +266,7 @@ export function OrdersBuyer() {
                 View
               </Button>
 
-              {order.order_trans_status < '6' ? (
+              {order.order_trans_status == '1' ? (
                 <Button
                   variant='danger'
                   onClick={() => {
@@ -748,26 +748,25 @@ export function OrdersSeller() {
                 ''
               )}
 
-              {order.order_trans_status < '3' &&
-                order.order_trans_status > 0 && (
-                  <Button
-                    variant='primary'
-                    onClick={() => {
-                      cancel(
-                        order.order_number,
-                        calculateGrandTotalDeliveryFee(
-                          order.total_amount,
-                          order.delivery_fee
-                        ),
-                        order.buyer_id
-                      );
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded text-bg-danger px-2 me-2'
-                  >
-                    Cancel
-                  </Button>
-                )}
+              {order.order_trans_status == '1' && (
+                <Button
+                  variant='primary'
+                  onClick={() => {
+                    cancel(
+                      order.order_number,
+                      calculateGrandTotalDeliveryFee(
+                        order.total_amount,
+                        order.delivery_fee
+                      ),
+                      order.buyer_id
+                    );
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className='badge rounded text-bg-danger px-2 me-2'
+                >
+                  Cancel
+                </Button>
+              )}
             </div>
           ),
         };

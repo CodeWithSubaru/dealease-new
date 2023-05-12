@@ -242,6 +242,12 @@ export function OrdersTable(props) {
                               {order.total_price}
                             </span>
                           </p>
+                          <p>
+                            <span className='fw-bold text-secondary'>
+                              Rider Name:
+                            </span>
+                            {console.log(order)}
+                          </p>
                         </div>
                       </div>
                     </>
