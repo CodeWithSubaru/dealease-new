@@ -2,12 +2,14 @@ import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
   Offcanvas,
-  Form,
+  Row,
+  Col,
   Container,
   Button,
   Navbar,
   Nav,
   NavDropdown,
+  Modal,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +21,8 @@ import { MydModalWithGrid } from '../Modal/Signupmoda';
 import { RegisterModal } from '../Modal/RegisterModal';
 
 export function Header(props) {
+  const [chooseShow, setChooseShow] = useState(false);
+
   const {
     user,
     token,
@@ -79,7 +83,7 @@ export function Header(props) {
           expand={expand}
           sticky='top'
         >
-          <Container fluid className=''>
+          <Container fluid className='header-container'>
             {/* <Navbar.Brand href='#'>
               <img
                 alt=''
@@ -163,7 +167,8 @@ export function Header(props) {
                 </button>
                 <button
                   // className='signup-button'
-                  onClick={() => setRegisterModalShow(true)}
+                  // onClick={() => setRegisterModalShow(true)}
+                  onClick={() => setChooseShow(true)}
                   role={Button}
                   className='btn btn-dark btn-sm text-decoration-none border border-2 border-dark me-3'
                 >
@@ -271,6 +276,53 @@ export function Header(props) {
           </ul>
         </div>
       </nav> */}
+      <Modal
+        show={chooseShow}
+        onHide={() => setChooseShow(false)}
+        dialogClassName='wallet-modal modal-lg mx-auto'
+        aria-labelledby='contained-modal-title-vcenter'
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Register for </Modal.Title>
+        </Modal.Header>
+        <Modal.Body closeButton>
+          <Row>
+            <Col>
+              <div className='wallet-modal-container'>
+                <a href='/rider/register'>
+                  <img
+                    alt=''
+                    src='/images/forRider.png'
+                    className='wallet-modal-image d-inline-block align-top'
+                  />
+                  <div class='wallet-modal-middle'>
+                    <div class='wallet-modal-text bg-primary text-white fw-bold fs-5'>
+                      Rider
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </Col>
+            <Col>
+              <div className='wallet-modal-container'>
+                <a href='/recharge'>
+                  <img
+                    alt=''
+                    src='/images/forUser.png'
+                    className='wallet-modal-image d-inline-block align-top'
+                  />
+                  <div class='wallet-modal-middle'>
+                    <div class='wallet-modal-text bg-light text-black fw-bold fs-5'>
+                      User{' '}
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </Col>
+          </Row>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
