@@ -25,7 +25,7 @@ export function GuestLayout() {
       <Header />
       <Outlet />
       <div className='contacts-footer bg-dark text-white'>
-        <Container>
+        <Container fluid>
           <Row>
             <Col md={6} className='mb-5'>
               <span className='fs-3 fw-bold fst-italic text-white'>

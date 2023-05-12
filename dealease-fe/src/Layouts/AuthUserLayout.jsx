@@ -357,7 +357,7 @@ export function AuthUserLayout() {
             </Col>
             <Col>
               <div className='wallet-modal-container'>
-                <a href='/withdraw'>
+                <a href='/recharge'>
                   <img
                     alt=''
                     src='/images/cashin.png'

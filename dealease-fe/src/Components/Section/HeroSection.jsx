@@ -11,7 +11,7 @@ export function HeroSection(props) {
       <div className='video-overlay'>
         <video src={'/videos/video.mp4'} autoPlay loop muted />
       </div>
-      <Container>
+      <Container fluid>
         <div className='hero-container'>
           <h1>Market that you need 🤤</h1>
           <p>What are you waiting for?</p>
