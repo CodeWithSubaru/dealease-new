@@ -379,7 +379,10 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={props.header} body={props.body} />
+                    <TableComponent
+                      header={props.header1 ? props.header1 : props.header}
+                      body={props.body}
+                    />
                   )}
                 </Card>
               </Tab.Pane>
@@ -391,7 +394,10 @@ export function OrdersTable(props) {
                   {props.loading ? (
                     <Load />
                   ) : (
-                    <TableComponent header={props.header} body={props.body} />
+                    <TableComponent
+                      header={props.header1 ? props.header1 : props.header}
+                      body={props.body}
+                    />
                   )}
                 </Card>
               </Tab.Pane>

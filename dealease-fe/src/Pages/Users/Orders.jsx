@@ -212,11 +212,6 @@ export function OrdersBuyer() {
               className='d-flex'
               style={{ columnGap: '10px' }}
             >
-              <img
-                src={PUBLIC_URL + 'images/' + order.seller.prof_img}
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
               <div>
                 <p className='mb-0'>
                   {order.seller.first_name}{' '}
@@ -341,6 +336,7 @@ export function OrdersSeller() {
   const [viewOrders, setViewOrders] = useState([]);
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
+    setBody([]);
     axiosClient
       .get('/orders/order-status/seller/' + orderStatus)
       .then((res) => {
@@ -538,6 +534,48 @@ export function OrdersSeller() {
     { title: 'Action', prop: 'action' },
   ];
 
+  const header1 = [
+    {
+      title: 'Id',
+      prop: 'id',
+      isSortable: true,
+    },
+    {
+      title: 'Order Number',
+      prop: 'order_number',
+      isSortable: true,
+    },
+    {
+      title: 'Buyer Name',
+      prop: 'buyer_name',
+    },
+    {
+      title: 'Rider Name',
+      prop: 'rider_name',
+    },
+    {
+      title: 'Shipping Address',
+      prop: 'shipping_address',
+    },
+    {
+      title: 'Status',
+      prop: 'order_status',
+      isFilterable: true,
+      isSortable: true,
+    },
+    {
+      title: 'Total Amount',
+      prop: 'payment_total_amount',
+      isSortable: true,
+    },
+    {
+      title: 'Date Request',
+      prop: 'created_at',
+      isSortable: true,
+    },
+    { title: 'Action', prop: 'action' },
+  ];
+
   function cancel(id, grandTotal, customerId) {
     Finalize({
       text: 'Are you sure, you want to cancel this order',
@@ -567,9 +605,8 @@ export function OrdersSeller() {
   }
 
   function setUserOrdersTable(number) {
-    console.log(number);
-    setBody([]);
     setLoading(true);
+    setBody([]);
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
@@ -581,11 +618,6 @@ export function OrdersSeller() {
               className='d-flex'
               style={{ columnGap: '10px' }}
             >
-              <img
-                src={PUBLIC_URL + 'images/' + order.buyer.prof_img}
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
               <div>
                 <p className='mb-0'>
                   {order.buyer.first_name ? order.buyer.first_name : ''}{' '}
@@ -602,7 +634,46 @@ export function OrdersSeller() {
               </div>
             </div>
           ),
-          shipping_address: 1,
+          rider_name: (
+            <div key={order.order_trans_id}>
+              <div>
+                <p className='mb-0'>
+                  {order.delivery
+                    ? order.delivery.rider.first_name
+                      ? order.delivery.rider.first_name
+                      : ''
+                    : ''}{' '}
+                  {order.delivery
+                    ? order.delivery.rider
+                      ? order.delivery.rider.user_details.middle_name
+                        ? order.delivery.rider.user_details.middle_name[0] +
+                          '. '
+                        : ''
+                      : ''
+                    : ''}
+                  {order.delivery
+                    ? order.delivery.rider
+                      ? order.delivery.rider.user_details.last_name
+                      : ' '
+                    : ''}{' '}
+                  {order.delivery
+                    ? order.delivery.rider
+                      ? order.delivery.rider.user_details.ext_name
+                      : ''
+                    : ''}
+                </p>
+              </div>
+            </div>
+          ),
+          shipping_address: order.delivery_address_id
+            ? order.delivery_address_id
+            : (order.buyer.user_details.street
+                ? order.buyer.user_details.street
+                : '') +
+              ' ' +
+              (order.buyer.user_details.barangay
+                ? order.buyer.user_details.barangay
+                : ''),
           order_status: (
             <span
               className={
@@ -719,6 +790,7 @@ export function OrdersSeller() {
         loading={loading}
         setLoading={setLoading}
         header={header}
+        header1={header1}
         body={body}
         title={title}
         pendingOrderNumber={pendingOrderNumber}

@@ -21,6 +21,11 @@ class Deliveries extends Model
         return  $this->belongsTo(\App\Models\User::class, 'user_id', 'buyer_id');
     }
 
+    public function rider()
+    {
+        return $this->hasOne(\App\Models\User::class, 'user_id', 'rider_id');
+    }
+
     public function user_details()
     {
         return  $this->belongsTo(\App\Models\UserDetail::class, 'user_details_id', 'user_details_id');
