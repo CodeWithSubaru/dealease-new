@@ -14,9 +14,12 @@ class RiderController extends Controller
     // Display yung mga available na order na pwedeng iaccept ni rider
     public function availableOrdersToPickUp()
     {
-        return OrderTransaction::with('buyer', 'buyer.user_details')
+        $yesterday = Carbon::yesterday();
+        $now = Carbon::now();
+
+        return OrderTransaction::with('buyer', 'buyer.user_details', 'order', 'order.product')
+            ->whereBetween('created_at', [$yesterday, $now])
             ->where('order_trans_status', '3')
-            ->whereDate('created_at', Carbon::now())
             ->latest('order_number')
             ->get();
     }
