@@ -65,7 +65,7 @@ export function OrdersBuyer() {
       return 'Preparing';
     }
     if (status === '3') {
-      return 'Wating rider';
+      return 'Waiting rider';
     }
     if (status === '4') {
       return 'To Pick Up';
@@ -146,6 +146,7 @@ export function OrdersBuyer() {
       }
     });
   }
+
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
     let deliveryFee;
@@ -235,7 +236,7 @@ export function OrdersBuyer() {
           order_status: (
             <span
               className={
-                'rounded px-2 text-uppercase border border-2 ' +
+                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
                 switchColor(order.order_trans_status)
               }
             >
@@ -270,7 +271,7 @@ export function OrdersBuyer() {
                 View
               </Button>
 
-              {order.order_trans_status === '1' ? (
+              {order.order_trans_status < '6' ? (
                 <Button
                   variant='danger'
                   onClick={() => {
@@ -386,7 +387,7 @@ export function OrdersSeller() {
       return 'Preparing';
     }
     if (status === '3') {
-      return 'Wating rider';
+      return 'Waiting rider';
     }
     if (status === '4') {
       return 'To Pick Up';
