@@ -70,7 +70,7 @@ export function Announcement() {
           fade
           variant='dark'
           slide={false}
-          className='d-flex align-items-center'
+          className='d-flex align-items-center announcement-carousel'
         >
           {hasAnnouncements ? (
             announcements
