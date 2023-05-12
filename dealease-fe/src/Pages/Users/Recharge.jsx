@@ -71,54 +71,8 @@ export function Recharge() {
 
   return (
     <div style={{ display: 'flex', height: '100%' }}>
-      <Sidebar
-        width='190px'
-        collapsedWidth='65px'
-        transitionDuration='500'
-        rootStyles={{
-          [`.${sidebarClasses.container}`]: {
-            backgroundColor: '#1f98f4',
-          },
-        }}
-      >
-        <Menu
-          menuItemStyles={{
-            button: ({ level, active, disabled }) => {
-              // only apply styles on first level elements of the tree
-              if (level === 0)
-                return {
-                  color: disabled ? '#f5d9ff' : '#white',
-                  backgroundColor: active ? '#eecef9' : undefined,
-                };
-            },
-          }}
-        >
-          <button className='btn' onClick={() => collapseSidebar()}>
-            <FontAwesomeIcon icon={faBars} className='navs-icon' />
-          </button>
-
-          <MenuItem
-            className='text-black '
-            // icon={<FaHouse />}
-            component={<Link to='/' />}
-          >
-            <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-            Home
-          </MenuItem>
-          <SubMenu label='Transactions'>
-            {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
-            {/* <MenuItem component={<Link to="/withdraw" />}> Withdraw </MenuItem> */}
-            <MenuItem component={<Link to='/recharge' />}> Recharge </MenuItem>
-          </SubMenu>
-          <MenuItem className='text-black' component={<Link to='/inbox' />}>
-            <FontAwesomeIcon icon={faInbox} className='navs-icon' />
-            Inbox
-          </MenuItem>
-        </Menu>
-      </Sidebar>
-      <main className='w-100' style={{ minHeight: '815px' }}>
+      <main className='w-100'>
         <div style={{ height: '80vh' }}>
-          <button className='btn btn-dark'>Recharge</button>
           <Card className='recharge-card mx-auto w-75'>
             {/* <Card.Img className='recharge-card-wave' src='/images/wave.png' /> */}
             <Card.Img
@@ -183,8 +137,8 @@ export function Recharge() {
             </Card.Body>
           </Card>
         </div>
+        <Footer />
       </main>
-      <Footer />
     </div>
   );
 }

@@ -79,7 +79,7 @@ export function Header(props) {
           expand={expand}
           sticky='top'
         >
-          <Container>
+          <Container fluid className=''>
             {/* <Navbar.Brand href='#'>
               <img
                 alt=''
