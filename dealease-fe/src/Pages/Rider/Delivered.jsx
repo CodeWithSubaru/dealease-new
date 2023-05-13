@@ -397,7 +397,7 @@ export const DeliveredRider = () => {
   }
 
   useEffect(() => {
-    setRiderTable('/rider');
+    setRiderTable('/rider/delivered');
   }, []);
 
   return (
@@ -696,10 +696,6 @@ export const DeliveredRider = () => {
                         className={
                           'd-flex justify-content-between w-100 align-items-center align-items-center'
                         }
-                        style={{
-                          opacity:
-                            item.order_trans_status === '4' ? '0.5' : '1',
-                        }}
                       >
                         <div className='d-flex flex-grow-1 me-4'>
                           <div className='d-flex flex-column me-3'>
@@ -730,10 +726,10 @@ export const DeliveredRider = () => {
                           <div className='w-100 mt-2'>
                             <div className='d-flex flex-column'>
                               <small className='fs-6 text-secondary'>
-                                # {item.order_number}
+                                # {item.order_to_deliver.order_number}
                               </small>
                               <h4 className='mb-3'>
-                                {item.order.product.title}
+                                {item.order_to_deliver.order.product.title}
                               </h4>
                             </div>
                             <div className='text-end'>
@@ -745,7 +741,7 @@ export const DeliveredRider = () => {
                                     style={{ height: '20px' }}
                                     className='me-1'
                                   />{' '}
-                                  {item.delivery_fee}
+                                  {item.order_to_deliver.delivery_fee}
                                 </span>
                               </div>
                             </div>
@@ -755,24 +751,30 @@ export const DeliveredRider = () => {
                           <Button
                             variant='primary'
                             onClick={() => {
-                              view(item.order_number);
+                              view(item.order_to_deliver.order_number);
+                              setViewOrderBuyerModal(true);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            className='badge rounded px-2 me-2'
+                          >
+                            View
+                          </Button>
+                          <Button
+                            variant='danger'
+                            onClick={() => {
+                              view(item.order_to_deliver.order_number);
                               setViewOrderBuyerModal(true);
                             }}
                             style={{ cursor: 'pointer' }}
                             className='badge rounded text-bg-primary px-2 me-2'
                           >
-                            View
+                            Return
                           </Button>
-                          <Button
-                            variant='success'
-                            onClick={() => {
-                              accept(item.order_trans_id);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            className='badge rounded px-2'
-                          >
-                            Delivered
-                          </Button>
+                          {item.delivery_status === '3' ? (
+                            <span className='text-warning'>Success</span>
+                          ) : (
+                            <span className='text-danger'>Failed</span>
+                          )}
                         </div>
                       </div>
                     </Card>
