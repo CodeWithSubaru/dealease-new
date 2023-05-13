@@ -671,39 +671,34 @@ export const HomeRider = () => {
           </div>
           <Card className='mx-auto w-75 mb-5 p-5'>
             <h1 className='fw-bold mb-4'>To Pick Up</h1>
-            <div className='d-flex flex-wrap me-2 justify-content-center'>
-              {loading ? (
-                <Load />
-              ) : (
-                body.length > 0 &&
-                body.map((item) =>
-                  item ? (
-                    <Card className='flex-grow-1 p-4 me-2'>
-                      <div className='d-flex justify-content-between w-100 align-items-center'>
-                        <div className='d-flex flex-grow-1 me-4'>
-                          <div className='d-flex flex-column me-3'>
-                            <FontAwesomeIcon
-                              icon={faCircleDot}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='mb-0 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faLocationDot}
-                              className='text-success'
-                            />
-                          </div>
+            {console.log(body)}
+            {body.length > 0 &&
+              body.map((item) =>
+                item ? (
+                  <Card className='d-flex flex-row w-50 p-4'>
+                    <div className='d-flex justify-content-between w-100 align-items-center'>
+                      <div className='d-flex flex-grow-1 me-4'>
+                        <div className='d-flex flex-column me-3'>
+                          <FontAwesomeIcon
+                            icon={faCircleDot}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faLocationDot}
+                            className='text-success'
+                          />
+                        </div>
 
+                        {/* To Deliver */}
+                        {item.order_trans_status === '4' && (
                           <div className='w-100 mt-2'>
                             <div className='d-flex flex-column'>
                               <small className='fs-6 text-secondary'>
@@ -727,19 +722,47 @@ export const HomeRider = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className='d-flex justify-content-center'>
-                          <Button
-                            variant='primary'
-                            onClick={() => {
-                              view(item.order_number);
-                              setViewOrderBuyerModal(true);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            className='badge rounded text-bg-primary px-2 me-2'
-                          >
-                            View
-                          </Button>
+                        )}
+
+                        {/* To Pick up */}
+                        {item.order_trans_status === '3' && (
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className='d-flex justify-content-center'>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            view(item.order_number);
+                            setViewOrderBuyerModal(true);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded text-bg-primary px-2 me-2'
+                        >
+                          View
+                        </Button>
 
                           {item.order_trans_status === '3' ? (
                             <>
