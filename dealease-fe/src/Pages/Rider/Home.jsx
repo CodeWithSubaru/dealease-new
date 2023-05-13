@@ -764,31 +764,29 @@ export const HomeRider = () => {
                           View
                         </Button>
 
-                          {item.order_trans_status === '3' ? (
-                            <>
-                              <Button
-                                variant='success'
-                                onClick={() => {
-                                  accept(item.order_trans_id);
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                className='badge rounded px-2'
-                              >
-                                To Pick Up
-                              </Button>
-                            </>
-                          ) : (
-                            ''
-                          )}
-                        </div>
+                        {item.order_trans_status === '3' ? (
+                          <>
+                            <Button
+                              variant='success'
+                              onClick={() => {
+                                accept(item.order_trans_id);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='badge rounded px-2'
+                            >
+                              To Pick Up
+                            </Button>
+                          </>
+                        ) : (
+                          ''
+                        )}
                       </div>
-                    </Card>
-                  ) : (
-                    'No Items Found'
-                  )
+                    </div>
+                  </Card>
+                ) : (
+                  'No Items Found'
                 )
               )}
-            </div>
           </Card>
         </main>
         {/* <Footer /> */}
