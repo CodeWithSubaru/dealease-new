@@ -58,7 +58,7 @@ class RiderController extends Controller
     public function toDeliver(string $id)
     {
         // update status of delivery table
-        $changeStatus = Deliveries::where('id', $id)->update([
+        $changeStatus = Deliveries::where('deliveries_id', $id)->update([
             'delivery_status' => '2',
         ]);
 
@@ -72,7 +72,7 @@ class RiderController extends Controller
     }
 
     public function delivered(string $id) {
-        $changeStatus = Deliveries::where('id', $id)->update([
+        $changeStatus = Deliveries::where('deliveries_id', $id)->update([
             'delivery_status' => '3',
         ]);
 

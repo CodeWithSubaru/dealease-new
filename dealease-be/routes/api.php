@@ -56,7 +56,7 @@ Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
 Route::post('/rider/delivered/{id}', [RiderController::class, 'delivered']);
 
 // Buyer Order Received
-Route::post('/buyer/orderReceived/{id}', [RiderController::class, 'orderReceived']);
+Route::post('/buyer/orderReceived/{id}', [OrderController::class, 'orderReceived']);
 
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
