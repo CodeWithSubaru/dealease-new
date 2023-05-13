@@ -673,7 +673,7 @@ export const ToDeliverRider = () => {
           <Card className='mx-auto w-75 mb-5 p-5'>
             <h1 className='fw-bold mb-4'>To Deliver</h1>
             {/* Card  */}
-            {console.log(body)}
+
             <div className='d-flex flex-wrap justify-content-start'>
               {loading ? (
                 <div className='d-flex justify-content-center flex-grow-1'>
@@ -681,7 +681,7 @@ export const ToDeliverRider = () => {
                 </div>
               ) : (
                 body.length > 0 &&
-                body.map((item) =>
+                body.map((item, i) =>
                   item ? (
                     <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
                       <div
@@ -719,9 +719,10 @@ export const ToDeliverRider = () => {
                             />
                           </div>
 
+                          {console.log(item)}
                           {/* To Deliver action */}
                           {item.order_trans_status === '4' && (
-                            <div className='w-100 mt-2'>
+                            <div className='w-100 mt-2' key={i}>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
                                   # {item.order_number}
@@ -745,33 +746,6 @@ export const ToDeliverRider = () => {
                               </div>
                             </div>
                           )}
-
-                          {/* delivered / receiver action button */}
-                          {/* {item.order_trans_status === '5' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )} */}
                         </div>
                         <div className='d-flex justify-content-center'>
                           <Button
