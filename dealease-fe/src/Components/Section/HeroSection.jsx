@@ -9,7 +9,7 @@ export function HeroSection(props) {
   return (
     <>
       <div className='video-overlay'>
-        <video src={'/videos/video.mp4'} autoPlay loop muted />
+        {/* <video src={'/videos/video.mp4'} autoPlay loop muted /> */}
       </div>
       <Container fluid>
         <div className='hero-container'>

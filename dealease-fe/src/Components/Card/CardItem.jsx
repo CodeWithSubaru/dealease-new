@@ -17,7 +17,6 @@ import { MydModalWithGrid } from '../Modal/Signupmoda';
 import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import API_URI from '../../api/public_url';
-
 export function CardItem(props) {
   const { token, user } = useAuthContext();
   const [editModalshow, setEditmodalShow] = useState(false);
@@ -76,8 +75,19 @@ export function CardItem(props) {
             <img src={props.src} alt='Fish' className='cards_item_img' />
           </figure>
           <div className='cards_item_info'>
-            <h5 className='cards_item_text'>{props.text}</h5>
-            <div className='text-center mt-2'></div>
+            <h5 className=' fs-4'>{props.title}</h5>
+            {/* <div className='text-truncate'> */}
+            <h5 className='cards_item_text '>{props.text}</h5>
+            {/* </div> */}
+            <div className='price-deal mt-2'>
+              {' '}
+              <img
+                src='/images/seashell.png'
+                className='mb-2 me-2'
+                style={{ width: '25px' }}
+              ></img>
+              {Number(props.price).toFixed(2)}
+            </div>
             {
               <>
                 <MydModalWithGrid

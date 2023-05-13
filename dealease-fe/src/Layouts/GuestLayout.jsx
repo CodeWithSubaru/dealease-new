@@ -27,7 +27,7 @@ export function GuestLayout() {
       <div className='contacts-footer bg-dark text-white'>
         <Container fluid>
           <Row>
-            <Col md={6} className='mb-5'>
+            <Col md={3} className='mb-5'>
               <span className='fs-3 fw-bold fst-italic text-white'>
                 <img
                   alt=''
@@ -38,6 +38,17 @@ export function GuestLayout() {
                 />{' '}
                 Dealease
               </span>
+            </Col>
+            <Col md={3} className='mb-5'>
+              {/* <span className='fs-3 fw-bold fst-italic text-white'>
+                <img
+                  alt=''
+                  src='/images/dti.png'
+                  width='180'
+                  height='180'
+                  className='d-inline-block align-top'
+                />
+              </span> */}
             </Col>
             <Col className='pb-5'>
               <Row>

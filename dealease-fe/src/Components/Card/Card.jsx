@@ -137,13 +137,15 @@ export function Card() {
               {products.length > 0 ? (
                 products.map((product, data) =>
                   product && !product.deleted_at ? (
-                    <Col className='mb-4 card-card' key={data}>
+                    <Col className='mb-4' key={data}>
                       <CardItem
                         key={product.id}
                         id={product.id}
                         src={'http://localhost:8000/images/' + product.image}
                         createdAt={product.created_at}
+                        title={product.title}
                         text={product.description}
+                        price={product.price_per_kg}
                         seller={product.user_id}
                         button='Add to cart'
                         editbutton='Edit'
