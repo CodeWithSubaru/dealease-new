@@ -5,7 +5,7 @@ export function NotFound() {
       style={{ height: '100vh' }}
     >
       <div className='d-flex flex-column align-items-center'>
-        <img src='./images/page/crying_fish.png' className='w-25 w-25 mb-4' />
+        <img src='/images/page/crying_fish.png' className='w-25 w-25 mb-4' />
         <h1
           className='text-secondary mb-0f fw-bold'
           style={{ fontSize: '90px' }}

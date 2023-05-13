@@ -19,7 +19,7 @@ class RiderController extends Controller
 
         return OrderTransaction::with('buyer', 'buyer.user_details', 'order', 'order.product')
             ->whereBetween('created_at', [$yesterday, $now])
-            ->where('order_trans_status', '3')
+            ->where('order_trans_status', 3)
             ->latest('order_number')
             ->get();
     }
@@ -51,7 +51,11 @@ class RiderController extends Controller
     public function itemToPickUp()
     {
         $rider = auth()->user()->user_id; //getting authenticated user id
-        return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details')->where('rider_id', '=', $rider)->where('delivery_status', '=', '1')->whereDate('created_at', Carbon::now())->get();
+
+        return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details')
+            ->where('rider_id', '=', $rider)
+            ->where('delivery_status', '=', '1')
+            ->whereDate('created_at', Carbon::now())->get();
     }
 
     //to deliver button can trigger this post method.

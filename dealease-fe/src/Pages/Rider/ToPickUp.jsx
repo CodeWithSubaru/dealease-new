@@ -47,7 +47,7 @@ import axiosClient from '../../api/axios';
 import { Finalize } from '../../Components/Notification/Notification';
 import { Load } from '../../Components/Loader/Load';
 
-export const HomeRider = () => {
+export const ToPickUpRider = () => {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
@@ -63,7 +63,7 @@ export const HomeRider = () => {
 
   useEffect(() => {
     axiosClient
-      .get('/rider')
+      .get('/rider/toPickUp')
       .then((res) => {
         setBody(res.data);
       })
@@ -719,8 +719,8 @@ export const HomeRider = () => {
                             />
                           </div>
 
-                          {/* To Pick up action */}
-                          {item.order_trans_status === '3' && (
+                          {/* To Deliver action */}
+                          {item.order_trans_status === '4' && (
                             <div className='w-100 mt-2'>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
@@ -746,32 +746,6 @@ export const HomeRider = () => {
                             </div>
                           )}
 
-                          {/* To Deliver action */}
-                          {/* {item.order_trans_status === '4' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )} */}
                           {/* delivered / receiver action button */}
                           {/* {item.order_trans_status === '5' && (
                             <div className='w-100 mt-2'>

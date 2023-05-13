@@ -88,6 +88,10 @@
   animation: myanimation 1s;
   z-index: 2;
 }
+
+.header-container {
+  margin: 0px 120px;
+}
 @keyframes myanimation {
   0% {
     background-color: transparent;
@@ -100,8 +104,14 @@
     background-color: #0c6ffd;
   }
 }
-
+.announcement-carousel {
+  width: 60%;
+  margin: 0 auto;
+}
 @media only screen and (max-width: 600px) {
+  .header-container {
+    margin: 0px 0px;
+  }
   .header {
     height: 70px;
   }
@@ -128,7 +138,8 @@
   -webkit-text-fill-color: transparent;
   transition: all 0.3s ease-in-out;
   font-weight: 600;
-  margin: 0px 5px;
+  margin: 0px 10px;
+  font-size: 18px;
 }
 .navLink::before {
   content: '';
@@ -211,7 +222,7 @@
   opacity: 0;
   position: absolute;
   top: 30%;
-  left: 40%;
+  left: 70%;
   // transform: translate(-50%, -50%);
   // -ms-transform: translate(-50%, -50%);
   text-align: center;
@@ -235,6 +246,19 @@
   padding: 16px 32px;
 }
 @media screen and (max-width: 960px) {
+  .wallet-modal-container {
+    position: relative;
+    width: 55%;
+  }
+  .wallet-modal-image {
+    margin: 0 auto;
+  }
+  .announcement-carousel {
+    width: 100%;
+  }
+  .header-container {
+    margin: 0px 0px;
+  }
   .forgot-password-header {
     height: 70px;
   }
