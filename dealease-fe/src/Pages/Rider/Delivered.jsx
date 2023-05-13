@@ -766,7 +766,7 @@ export const DeliveredRider = () => {
                               setViewOrderBuyerModal(true);
                             }}
                             style={{ cursor: 'pointer' }}
-                            className='badge rounded text-bg-primary px-2 me-2'
+                            className='badge rounded px-2 me-2'
                           >
                             Return
                           </Button>
