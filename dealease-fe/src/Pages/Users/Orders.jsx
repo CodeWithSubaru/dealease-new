@@ -23,9 +23,14 @@ export function OrdersBuyer() {
       .then((res) => {
         if (orderStatus === 1) {
           setPendingOrderNumber(res.data);
-        } else if (orderStatus === 2) {
+        } else if (
+          orderStatus[0] === 2 ||
+          orderStatus[1] === 3 ||
+          orderStatus[2] === 4 ||
+          orderStatus[3] === 5
+        ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 3) {
+        } else if (orderStatus === 6) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -49,6 +54,10 @@ export function OrdersBuyer() {
   }
 
   function status(status) {
+    if (status === 0) {
+      return 'Cancelled';
+    }
+
     if (status === '1') {
       return 'Pending';
     }
@@ -56,7 +65,22 @@ export function OrdersBuyer() {
       return 'Preparing';
     }
     if (status === '3') {
+      return 'Waiting rider';
+    }
+    if (status === '4') {
+      return 'To Pick Up';
+    }
+    if (status === '5') {
+      return 'To Deliver';
+    }
+    if (status === '6') {
       return 'Delivered';
+    }
+    if (status === '7') {
+      return 'Success';
+    }
+    if (status === '8') {
+      return 'Failed';
     }
   }
 
@@ -72,7 +96,22 @@ export function OrdersBuyer() {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
     if (status === '3') {
+      return 'border-success bg-success bg-opacity-75 text-light';
+    }
+    if (status === '4') {
+      return 'border-info bg-info bg-opacity-75 text-light';
+    }
+    if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '6') {
+      return 'border-success bg-success bg-opacity-75 text-light';
+    }
+    if (status === '7') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '8') {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
   }
 
@@ -107,6 +146,7 @@ export function OrdersBuyer() {
       }
     });
   }
+
   function calculateGrandTotalPrice(orders) {
     let totalPrice = 0;
     let deliveryFee;
@@ -138,10 +178,6 @@ export function OrdersBuyer() {
     {
       title: 'Seller Name',
       prop: 'seller_name',
-    },
-    {
-      title: 'Contact #',
-      prop: 'contact_number',
     },
     {
       title: 'Status',
@@ -176,11 +212,6 @@ export function OrdersBuyer() {
               className='d-flex'
               style={{ columnGap: '10px' }}
             >
-              <img
-                src={PUBLIC_URL + 'images/' + order.seller.prof_img}
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
               <div>
                 <p className='mb-0'>
                   {order.seller.first_name}{' '}
@@ -197,11 +228,10 @@ export function OrdersBuyer() {
               </div>
             </div>
           ),
-          contact_number: order.seller.user_details.contact_number,
           order_status: (
             <span
               className={
-                'rounded px-2 text-uppercase border border-2 ' +
+                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
                 switchColor(order.order_trans_status)
               }
             >
@@ -236,7 +266,7 @@ export function OrdersBuyer() {
                 View
               </Button>
 
-              {order.order_trans_status === '1' ? (
+              {order.order_trans_status == '1' ? (
                 <Button
                   variant='danger'
                   onClick={() => {
@@ -267,8 +297,8 @@ export function OrdersBuyer() {
 
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
-    fetchNumberOrdersByStatusUser(2);
-    fetchNumberOrdersByStatusUser(3);
+    fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+    fetchNumberOrdersByStatusUser(6);
     setUserOrdersTable(1);
   }, []);
 
@@ -306,14 +336,20 @@ export function OrdersSeller() {
   const [viewOrders, setViewOrders] = useState([]);
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
+    setBody([]);
     axiosClient
       .get('/orders/order-status/seller/' + orderStatus)
       .then((res) => {
         if (orderStatus === 1) {
           setPendingOrderNumber(res.data);
-        } else if (orderStatus === 2) {
+        } else if (
+          orderStatus[0] === 2 ||
+          orderStatus[1] === 3 ||
+          orderStatus[2] === 4 ||
+          orderStatus[3] === 5
+        ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 3) {
+        } else if (orderStatus === 6) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -337,20 +373,32 @@ export function OrdersSeller() {
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Cancelled';
+    }
     if (status === '1') {
       return 'Pending';
     }
-
     if (status === '2') {
       return 'Preparing';
     }
-
     if (status === '3') {
-      return 'Finding Rider';
+      return 'Waiting rider';
     }
-
     if (status === '4') {
+      return 'To Pick Up';
+    }
+    if (status === '5') {
+      return 'To Deliver';
+    }
+    if (status === '6') {
       return 'Delivered';
+    }
+    if (status === '7') {
+      return 'Success';
+    }
+    if (status === '8') {
+      return 'Failed';
     }
   }
 
@@ -366,11 +414,45 @@ export function OrdersSeller() {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
     if (status === '3') {
+      return 'border-success bg-success bg-opacity-75 text-light';
+    }
+    if (status === '4') {
+      return 'border-info bg-info bg-opacity-75 text-light';
+    }
+    if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '6') {
+      return 'border-success bg-success bg-opacity-75 text-light';
+    }
+    if (status === '7') {
+      return 'border-primary bg-primary bg-opacity-75 text-light';
+    }
+    if (status === '8') {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
   }
 
   function accept(orderNumber) {
+    Finalize({
+      text: 'You want accept this order request',
+      confirmButton: 'Yes',
+      successMsg: 'Order Accepted Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .put('/orders/' + orderNumber, { status: 2 })
+          .then((resp) => {})
+          .catch((e) => console.log(e));
+        fetchNumberOrdersByStatusUser(1);
+        fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+        fetchNumberOrdersByStatusUser(6);
+        setUserOrdersTable([2, 3, 4, 5]);
+      }
+    });
+  }
+
+  function findRider(orderNumber) {
     Finalize({
       text: 'You want accept this order request and Find Rider',
       confirmButton: 'Yes',
@@ -382,9 +464,9 @@ export function OrdersSeller() {
           .then((resp) => {})
           .catch((e) => console.log(e));
         fetchNumberOrdersByStatusUser(1);
-        fetchNumberOrdersByStatusUser(2);
-        fetchNumberOrdersByStatusUser(3);
-        setUserOrdersTable(1);
+        fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+        fetchNumberOrdersByStatusUser(6);
+        setUserOrdersTable([2, 3, 4, 5]);
       }
     });
   }
@@ -430,8 +512,50 @@ export function OrdersSeller() {
       prop: 'buyer_name',
     },
     {
-      title: 'Contact #',
-      prop: 'contact_number',
+      title: 'Shipping Address',
+      prop: 'shipping_address',
+    },
+    {
+      title: 'Status',
+      prop: 'order_status',
+      isFilterable: true,
+      isSortable: true,
+    },
+    {
+      title: 'Total Amount',
+      prop: 'payment_total_amount',
+      isSortable: true,
+    },
+    {
+      title: 'Date Request',
+      prop: 'created_at',
+      isSortable: true,
+    },
+    { title: 'Action', prop: 'action' },
+  ];
+
+  const header1 = [
+    {
+      title: 'Id',
+      prop: 'id',
+      isSortable: true,
+    },
+    {
+      title: 'Order Number',
+      prop: 'order_number',
+      isSortable: true,
+    },
+    {
+      title: 'Buyer Name',
+      prop: 'buyer_name',
+    },
+    {
+      title: 'Rider Name',
+      prop: 'rider_name',
+    },
+    {
+      title: 'Shipping Address',
+      prop: 'shipping_address',
     },
     {
       title: 'Status',
@@ -481,8 +605,8 @@ export function OrdersSeller() {
   }
 
   function setUserOrdersTable(number) {
-    setBody([]);
     setLoading(true);
+    setBody([]);
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
@@ -494,11 +618,6 @@ export function OrdersSeller() {
               className='d-flex'
               style={{ columnGap: '10px' }}
             >
-              <img
-                src={PUBLIC_URL + 'images/' + order.buyer.prof_img}
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
               <div>
                 <p className='mb-0'>
                   {order.buyer.first_name ? order.buyer.first_name : ''}{' '}
@@ -515,7 +634,46 @@ export function OrdersSeller() {
               </div>
             </div>
           ),
-          contact_number: order.buyer.user_details.contact_number,
+          rider_name: (
+            <div key={order.order_trans_id}>
+              <div>
+                <p className='mb-0'>
+                  {order.delivery
+                    ? order.delivery.rider.first_name
+                      ? order.delivery.rider.first_name
+                      : ''
+                    : ''}{' '}
+                  {order.delivery
+                    ? order.delivery.rider
+                      ? order.delivery.rider.user_details.middle_name
+                        ? order.delivery.rider.user_details.middle_name[0] +
+                          '. '
+                        : ''
+                      : ''
+                    : ''}
+                  {order.delivery
+                    ? order.delivery.rider
+                      ? order.delivery.rider.user_details.last_name
+                      : ' '
+                    : ''}{' '}
+                  {order.delivery
+                    ? order.delivery.rider
+                      ? order.delivery.rider.user_details.ext_name
+                      : ''
+                    : ''}
+                </p>
+              </div>
+            </div>
+          ),
+          shipping_address: order.delivery_address_id
+            ? order.delivery_address_id
+            : (order.buyer.user_details.street
+                ? order.buyer.user_details.street
+                : '') +
+              ' ' +
+              (order.buyer.user_details.barangay
+                ? order.buyer.user_details.barangay
+                : ''),
           order_status: (
             <span
               className={
@@ -567,23 +725,6 @@ export function OrdersSeller() {
                   >
                     Accept
                   </Button>
-                  <Button
-                    variant='primary'
-                    onClick={() => {
-                      cancel(
-                        order.order_number,
-                        calculateGrandTotalDeliveryFee(
-                          order.total_amount,
-                          order.delivery_fee
-                        ),
-                        order.buyer_id
-                      );
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded text-bg-danger px-2 me-2'
-                  >
-                    Cancel
-                  </Button>
                 </>
               ) : (
                 ''
@@ -595,7 +736,7 @@ export function OrdersSeller() {
                   <Button
                     variant='success'
                     onClick={() => {
-                      accept(order.order_number);
+                      findRider(order.order_number);
                     }}
                     style={{ cursor: 'pointer' }}
                     className='badge rounded px-2 me-2'
@@ -605,6 +746,26 @@ export function OrdersSeller() {
                 </>
               ) : (
                 ''
+              )}
+
+              {order.order_trans_status == '1' && (
+                <Button
+                  variant='primary'
+                  onClick={() => {
+                    cancel(
+                      order.order_number,
+                      calculateGrandTotalDeliveryFee(
+                        order.total_amount,
+                        order.delivery_fee
+                      ),
+                      order.buyer_id
+                    );
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className='badge rounded text-bg-danger px-2 me-2'
+                >
+                  Cancel
+                </Button>
               )}
             </div>
           ),
@@ -617,8 +778,8 @@ export function OrdersSeller() {
 
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
-    fetchNumberOrdersByStatusUser(2);
-    fetchNumberOrdersByStatusUser(3);
+    fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+    fetchNumberOrdersByStatusUser(6);
     setUserOrdersTable(1);
   }, []);
 
@@ -628,6 +789,7 @@ export function OrdersSeller() {
         loading={loading}
         setLoading={setLoading}
         header={header}
+        header1={header1}
         body={body}
         title={title}
         pendingOrderNumber={pendingOrderNumber}

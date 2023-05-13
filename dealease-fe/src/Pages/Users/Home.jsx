@@ -92,7 +92,7 @@ export const HomeUser = () => {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar
+        {/* <Sidebar
           width='190px'
           collapsedWidth='65px'
           transitionDuration='500'
@@ -105,7 +105,6 @@ export const HomeUser = () => {
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
                 if (level === 0)
                   return {
                     color: disabled ? '#f5d9ff' : '#white',
@@ -118,12 +117,7 @@ export const HomeUser = () => {
               <FontAwesomeIcon icon={faBars} className='navs-icon' />
             </button>
 
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/' />}
-            >
-              {/* <FontAwesomeIcon icon={faHouse} className='navs-icon' />  */}
+            <MenuItem className='text-black ' component={<Link to='/' />}>
               Home
             </MenuItem>
 
@@ -142,7 +136,7 @@ export const HomeUser = () => {
               </div>
             )}
           </Menu>
-        </Sidebar>
+        </Sidebar> */}
         <main className='w-100 '>
           <Modal
             show={updateAccessModal}
@@ -303,12 +297,10 @@ export const HomeUser = () => {
               </Button>
             </Modal.Footer>
           </Modal>
-          <button className='btn btn-dark' to={'/recharge'}>
-            Recharge
-          </button>
+
           <Card />
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );

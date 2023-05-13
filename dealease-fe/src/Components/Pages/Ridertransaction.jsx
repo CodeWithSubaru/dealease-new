@@ -54,11 +54,15 @@ export function Ridertransaction(props) {
                               Seller:
                             </span>{' '}
                             {order.product.user.first_name}{' '}
-                            {order.product.user.user_details.middle_name[0]}
-                            {'. '}
+                            {order.product.user.user_details.middle_name
+                              ? order.product.user.user_details.middle_name[0] +
+                                '. '
+                              : ''}
                             {order.product.user.user_details.last_name}{' '}
-                            {order.product.user.user_details.ext_name} - (
-                            {order.product.user.user_details.contact_number})
+                            {order.product.user.user_details.ext_name
+                              ? order.product.user.user_details.ext_name
+                              : ''}{' '}
+                            - ({order.product.user.user_details.contact_number})
                           </p>
                         </div>
                         <div>
@@ -179,10 +183,14 @@ export function Ridertransaction(props) {
                               Buyer Name:
                             </span>{' '}
                             {order.order_by.first_name}{' '}
-                            {order.order_by.user_details.middle_name[0]}
+                            {order.order_by.user_details.middle_name
+                              ? order.order_by.user_details.middle_name[0]
+                              : ''}
                             {'. '}
                             {order.order_by.user_details.last_name}{' '}
-                            {order.order_by.user_details.ext_name}
+                            {order.order_by.user_details.ext_name
+                              ? order.order_by.user_details.ext_name
+                              : ''}
                           </p>
                         </div>
                         <div>
@@ -262,127 +270,7 @@ export function Ridertransaction(props) {
           </Modal.Footer>
         </Modal>
         <Card className='p-5 h-100 mb-5'>
-          <Tab.Container id='left-tabs-example' defaultActiveKey='first'>
-            <Nav justify variant='tabs' defaultActiveKey='/home'>
-              <Nav.Item className='mb-0'>
-                <Nav.Link
-                  eventKey='first'
-                  onClick={() => {
-                    props.setRiderTable('/rider');
-                    // props.fetchNumberOrdersByStatusUser(1);
-                    // props.fetchNumberOrdersByStatusUser(2);
-                    // props.fetchNumberOrdersByStatusUser(3);
-                  }}
-                  disabled={props.loading}
-                >
-                  To Pick Up
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  eventKey='second'
-                  onClick={() => {
-                    props.setRiderDeliveryTable('/rider/toPickUp');
-                    // props.fetchNumberOrdersByStatusUser(1);
-                    // props.fetchNumberOrdersByStatusUser(2);
-                    // props.fetchNumberOrdersByStatusUser(3);
-                  }}
-                  disabled={props.loading}
-                >
-                  To Deliver
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  eventKey='third'
-                  onClick={() => {
-                    props.setRiderDeliveryTable('/rider/toPickUp');
-                    // props.fetchNumberOrdersByStatusUser(1);
-                    // props.fetchNumberOrdersByStatusUser(2);
-                    // props.fetchNumberOrdersByStatusUser(3);
-                  }}
-                  disabled={props.loading}
-                >
-                  Delivered
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  eventKey='fourth'
-                  onClick={() => {
-                    props.setRiderTable();
-                    // props.fetchNumberOrdersByStatusUser(1);
-                    // props.fetchNumberOrdersByStatusUser(2);
-                    // props.fetchNumberOrdersByStatusUser(3);
-                  }}
-                  disabled={props.loading}
-                >
-                  Success
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link
-                  eventKey='fifth'
-                  onClick={() => {
-                    props.setRiderTable();
-                    // props.fetchNumberOrdersByStatusUser(1);
-                    // props.fetchNumberOrdersByStatusUser(2);
-                    // props.fetchNumberOrdersByStatusUser(3);
-                  }}
-                  disabled={props.loading}
-                >
-                  Canceled
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Tab.Content>
-              <Tab.Pane eventKey='first'>
-                <Card className='p-5 pb-1 rounded'>
-                  {props.loading ? (
-                    <Load />
-                  ) : (
-                    <TableComponent header={props.header} body={props.body} />
-                  )}
-                </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey='second'>
-                <Card className='p-5 pb-1 rounded'>
-                  {props.loading ? (
-                    <Load />
-                  ) : (
-                    <TableComponent header={props.header} body={props.body} />
-                  )}
-                </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey='third'>
-                <Card className='p-5 pb-1 rounded'>
-                  {props.loading ? (
-                    <Load />
-                  ) : (
-                    <TableComponent header={props.header} body={props.body} />
-                  )}
-                </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey='fourth'>
-                <Card className='p-5 pb-1 rounded'>
-                  {props.loading ? (
-                    <Load />
-                  ) : (
-                    <TableComponent header={props.header} body={props.body} />
-                  )}
-                </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey='fifth'>
-                <Card className='p-5 pb-1 rounded'>
-                  {props.loading ? (
-                    <Load />
-                  ) : (
-                    <TableComponent header={props.header} body={props.body} />
-                  )}
-                </Card>
-              </Tab.Pane>
-            </Tab.Content>
-          </Tab.Container>
+          <h1 className='fw-bold'> To Pick Up </h1>
         </Card>
       </div>
     </>

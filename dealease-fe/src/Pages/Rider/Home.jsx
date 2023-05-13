@@ -25,6 +25,9 @@ import {
   faTable,
   faToggleOn,
   faInbox,
+  faLocationDot,
+  faEllipsisVertical,
+  faCircleDot,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -61,7 +64,7 @@ export const HomeRider = () => {
     axiosClient
       .get('/rider')
       .then((res) => {
-        console.log(res.data);
+        setBody(res.data);
       })
       .catch((e) => console.log(e));
     return () => {
@@ -120,6 +123,9 @@ export const HomeRider = () => {
   }
 
   function status(status) {
+    if (status === '0') {
+      return 'Pending';
+    }
     if (status === '1') {
       return 'Pending';
     }
@@ -127,7 +133,7 @@ export const HomeRider = () => {
       return 'Preparing';
     }
     if (status === '3') {
-      return 'Wating rider';
+      return 'Waiting rider';
     }
     if (status === '4') {
       return 'To Pick Up';
@@ -215,7 +221,7 @@ export const HomeRider = () => {
       .catch((e) => console.log(e));
   }
 
-  function closeViewOrderBuyerModal() {
+  function closeViewOrderProduct() {
     setViewOrderBuyerModal(false);
   }
 
@@ -261,99 +267,7 @@ export const HomeRider = () => {
     setBody([]);
     setLoading(true);
     axiosClient.get(url).then((resp) => {
-      const ordersRider = resp.data.map((order, i) => {
-        return {
-          id: i + 1,
-          order_number: order.order_number,
-          seller_name: (
-            <div
-              key={order.order_trans_id}
-              className='d-flex'
-              style={{ columnGap: '10px' }}
-            >
-              <img
-                src={PUBLIC_PATH + 'images/' + order.buyer.prof_img}
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
-              <div>
-                <p className='mb-0'>
-                  {order.buyer.first_name}{' '}
-                  {order.buyer.user_details
-                    ? order.buyer.user_details.middle_name[0]
-                    : ''}
-                  {'. '}
-                  {order.buyer.user_details
-                    ? order.buyer.user_details.last_name
-                    : ' '}{' '}
-                  {order.buyer.user_details
-                    ? order.buyer.user_details.ext_name
-                    : ''}
-                </p>
-              </div>
-            </div>
-          ),
-          contact_number: order.buyer.user_details.contact_number,
-          order_status: (
-            <span
-              className={
-                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
-                switchColor(order.order_trans_status)
-              }
-            >
-              {status(order.order_trans_status)}
-            </span>
-          ),
-          payment_total_amount: (
-            <>
-              <img
-                src='/images/seashell.png'
-                style={{ width: '25px' }}
-                className='me-2'
-              />{' '}
-              {calculateGrandTotalDeliveryFee(
-                order.total_amount,
-                order.delivery_fee
-              )}{' '}
-            </>
-          ),
-          created_at: dateFormat(order.created_at),
-          action: (
-            <div key={i} className='button-actions text-light d-flex'>
-              <Button
-                variant='primary'
-                onClick={() => {
-                  view(order.order_number);
-                  setViewOrderBuyerModal(true);
-                }}
-                style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-primary px-2 me-2'
-              >
-                View
-              </Button>
-
-              {order.order_trans_status === '3' &&
-              order.order_trans_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      accept(order.order_trans_id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Pick Up
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
-            </div>
-          ),
-        };
-      });
-      setBody(ordersRider);
+      setBody(resp.data);
       setLoading(false);
     });
   }
@@ -384,14 +298,14 @@ export const HomeRider = () => {
               <div>
                 <p className='mb-0'>
                   {order.order_to_deliver.buyer.first_name}{' '}
-                  {order.order_to_deliver.buyer.user_details
+                  {order.order_to_deliver.buyer.user_details.middle_name
                     ? order.order_to_deliver.buyer.user_details.middle_name[0]
                     : ''}
                   {'. '}
                   {order.order_to_deliver.buyer.user_details
                     ? order.order_to_deliver.buyer.user_details.last_name
                     : ' '}{' '}
-                  {order.order_to_deliver.buyer.user_details
+                  {order.order_to_deliver.buyer.user_details.ext_name
                     ? order.order_to_deliver.buyer.user_details.ext_name
                     : ''}
                 </p>
@@ -487,7 +401,7 @@ export const HomeRider = () => {
 
   return (
     <>
-      <Header>
+      {/* <Header>
         {' '}
         <div className='div-dropdown'>
           <Dropdown as={ButtonGroup} className='dropdown-button'>
@@ -518,7 +432,7 @@ export const HomeRider = () => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
-      </Header>
+      </Header> */}
 
       <div style={{ display: 'flex', height: '100%' }}>
         <Sidebar
@@ -561,8 +475,155 @@ export const HomeRider = () => {
                 Withdraw
               </MenuItem>
             </SubMenu>
+            <MenuItem
+              className='text-black '
+              onClick={() => {
+                logout();
+              }}
+              // icon={<FaHouse />}
+            >
+              Logout
+            </MenuItem>
           </Menu>
         </Sidebar>
+        <Modal
+          size='lg'
+          show={viewOrderBuyerModal}
+          onHide={closeViewOrderProduct}
+          animation={true}
+          aria-labelledby='contained-modal-title-vcenter'
+          scrollable
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id='contained-modal-title-vcenter'>
+              #{viewOrders[0] ? viewOrders[0].order_number : 'Loading...'}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {viewOrders.length > 0
+              ? viewOrders.map((order, index) => {
+                  return (
+                    <>
+                      <p className='fw-bold fs-5 mb-2'>
+                        <b> Product No. {index + 1} </b>
+                      </p>
+                      <div className='d-flex'>
+                        <div className='w-50 me-5'>
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Product Name:
+                            </span>{' '}
+                            {order.product.title}
+                          </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Product Description:
+                            </span>{' '}
+                            {order.product.description}
+                          </p>
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Seller:
+                            </span>{' '}
+                            {order.product.user.first_name}{' '}
+                            {order.product.user.user_details.middle_name
+                              ? order.product.user.user_details.middle_name[0] +
+                                '. '
+                              : ''}
+                            {order.product.user.user_details.last_name}{' '}
+                            {order.product.user.user_details.ext_name
+                              ? order.product.user.user_details.ext_name
+                              : ''}{' '}
+                          </p>
+                        </div>
+                        <div>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Status:
+                            </span>{' '}
+                            {status(order.order_trans_status)}
+                          </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Quantity:
+                            </span>{' '}
+                            {order.weight} kg
+                          </p>
+                          <p>
+                            <span className='d-block fw-bold text-secondary'>
+                              Total Price:
+                            </span>{' '}
+                            <span className='d-flex'>
+                              {' '}
+                              <img
+                                src='/images/seashell.png'
+                                className='me-2'
+                                style={{ height: '20px' }}
+                              />{' '}
+                              {order.total_price}
+                            </span>
+                          </p>
+                          <p>
+                            {' '}
+                            <span className='d-block fw-bold text-secondary'>
+                              Shipping Information:
+                            </span>{' '}
+                            <span className='fw-semibold'>Address: </span>
+                            {order.barangay
+                              ? order.street
+                              : user.user_details.street}{' '}
+                            {order.barangay
+                              ? order.barangay
+                              : user.user_details.barangay}{' '}
+                            {order.city ? order.city : ''}{' '}
+                            {'Bulacan Region III (Central Luzon)'}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
+              : 'Loading...'}
+            <hr />
+            <div className='d-flex'>
+              <div className='w-50 me-5'></div>
+              <div className='me-5'>
+                <p className='d-flex'>
+                  <span className='fw-bold text-secondary'>Delivery Fee:</span>{' '}
+                  <span className='d-flex'>
+                    {' '}
+                    <img
+                      src='/images/seashell.png'
+                      className='ms-4 me-2'
+                      style={{ height: '20px' }}
+                    />{' '}
+                    {viewOrders[0] ? viewOrders[0].delivery_fee : ''}
+                  </span>
+                </p>
+                <h5 className='d-flex align-items-center justify-content-end'>
+                  <span className='me-2 fw-bold'> Grand Total: </span>{' '}
+                  <img
+                    src='/images/seashell.png'
+                    className='me-2'
+                    style={{ height: '30px' }}
+                  />{' '}
+                  {viewOrders.length > 0
+                    ? calculateGrandTotalPrice(viewOrders)
+                    : '(Calculating...)'}
+                </h5>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={closeViewOrderProduct} className='rounded'>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         <main className='w-100' style={{ minHeight: '815px' }}>
           <button className='btn btn-dark' to={'/recharge'}>
             Withdraw
@@ -571,10 +632,10 @@ export const HomeRider = () => {
             <div className='d-flex mx-auto justify-content-center'>
               <div className='flex-grow-1 me-4'>
                 <Card className='rounded overflow-hidden'>
-                  <Card.Body className='bg-primary '>
+                  <Card.Body className='bg-primary'>
                     <p className='text-white'>Information</p>
                     <hr />
-                    <p className='small text-white  '>Total Deliver</p>
+                    <p className='small text-white'>Total Deliver</p>
                     <div className='small text-white'>
                       <i className='fas fa-angle-right'></i>
                     </div>
@@ -595,10 +656,10 @@ export const HomeRider = () => {
               </div>
               <div className='flex-grow-1'>
                 <Card className='rounded overflow-hidden'>
-                  <Card.Body className='bg-success '>
+                  <Card.Body className='bg-success'>
                     <p className='text-white'>Information</p>
                     <hr />
-                    <p className='small text-white  '>Total Wallet Balance</p>
+                    <p className='small text-white'>Total Wallet Balance</p>
                     <div className='small text-white'>
                       <i className='fas fa-angle-right'></i>
                     </div>
@@ -607,20 +668,95 @@ export const HomeRider = () => {
               </div>
             </div>
           </div>
-          <Ridertransaction
-            header={header}
-            body={body}
-            viewOrders={viewOrders}
-            viewOrderBuyerModal={viewOrderBuyerModal}
-            closeViewOrderBuyerModal={closeViewOrderBuyerModal}
-            status={status}
-            calculateGrandTotalPrice={calculateGrandTotalPrice}
-            loading={loading}
-            setRiderTable={setRiderTable}
-            setRiderDeliveryTable={setRiderDeliveryTable}
-          />
+          <Card className='mx-auto w-75 mb-5 p-5'>
+            <h1 className='fw-bold mb-4'>To Pick Up</h1>
+            {console.log(body)}
+            {body.length > 0 &&
+              body.map((item) =>
+                item ? (
+                  <Card className='d-flex flex-row w-50 p-4'>
+                    <div className='d-flex justify-content-between w-100 align-items-center'>
+                      <div className='d-flex flex-grow-1 me-4'>
+                        <div className='d-flex flex-column me-3'>
+                          <FontAwesomeIcon
+                            icon={faCircleDot}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faLocationDot}
+                            className='text-success'
+                          />
+                        </div>
+
+                        <div className='w-100 mt-2'>
+                          <div className='d-flex flex-column'>
+                            <small className='fs-6 text-secondary'>
+                              # {item.order_number}
+                            </small>
+                            <h4 className='mb-3'>{item.order.product.title}</h4>
+                          </div>
+                          <div className='text-end'>
+                            <div className='d-flex justify-content-between'>
+                              <span> Delivery Fee</span>{' '}
+                              <span className='d-flex justify-content-center'>
+                                <img
+                                  src='/images/seashell.png'
+                                  style={{ height: '20px' }}
+                                  className='me-1'
+                                />{' '}
+                                {item.delivery_fee}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='d-flex justify-content-center'>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            view(item.order_number);
+                            setViewOrderBuyerModal(true);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded text-bg-primary px-2 me-2'
+                        >
+                          View
+                        </Button>
+
+                        {item.order_trans_status === '3' ? (
+                          <>
+                            <Button
+                              variant='success'
+                              onClick={() => {
+                                accept(item.order_trans_id);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='badge rounded px-2 me-2'
+                            >
+                              To Pick Up
+                            </Button>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                ) : (
+                  'No Items Found'
+                )
+              )}
+          </Card>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );

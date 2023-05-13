@@ -343,7 +343,7 @@ export function Dashboard() {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar
+        {/* <Sidebar
           width='190px'
           collapsedWidth='65px'
           transitionDuration='500'
@@ -357,7 +357,6 @@ export function Dashboard() {
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
                 if (level === 0)
                   return {
                     color: disabled ? '#f5d9ff' : '#white',
@@ -379,11 +378,9 @@ export function Dashboard() {
               Dashboard
             </MenuItem>
             <SubMenu label='Transactions'>
-              {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
               <MenuItem component={<Link to='/seller/withdraw' />}>
                 Withdraw
               </MenuItem>
-              {/* <MenuItem component={<Link to="/recharge" />}>Recharge</MenuItem> */}
             </SubMenu>
             <MenuItem
               className='text-black'
@@ -393,7 +390,7 @@ export function Dashboard() {
               Inbox
             </MenuItem>
           </Menu>
-        </Sidebar>
+        </Sidebar> */}
         <main className='w-100' style={{ minHeight: '815px' }}>
           <Card className='dashboard w-75 mx-auto px-4'>
             <H1 className='mt-4'>Dashboard</H1>
@@ -488,7 +485,7 @@ export function Dashboard() {
             </div>
           </Card>
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );
