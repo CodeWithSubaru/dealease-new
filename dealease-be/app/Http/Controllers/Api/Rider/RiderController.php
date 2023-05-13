@@ -61,7 +61,7 @@ class RiderController extends Controller
     public function toDeliver(string $id)
     {
         // update status of delivery table
-        $changeStatus = Deliveries::where('id', $id)->update([
+        $changeStatus = Deliveries::where('deliveries_id', $id)->update([
             'delivery_status' => '2',
         ]);
 
@@ -73,4 +73,20 @@ class RiderController extends Controller
             ]);
         }
     }
+
+    public function delivered(string $id) {
+        $changeStatus = Deliveries::where('deliveries_id', $id)->update([
+            'delivery_status' => '3',
+        ]);
+
+        if ($changeStatus) {
+            // will update status of order transaction table at the same time.
+            $product = Deliveries::find($id);
+            OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([
+                'order_trans_status' => '6',
+            ]);
+        }
+    }
+
+
 }
