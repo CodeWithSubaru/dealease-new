@@ -247,15 +247,15 @@ export const ToDeliverRider = () => {
     });
   }
 
-  function toDeliver(orderTransId) {
+  function delivered(orderTransId) {
     Finalize({
-      text: 'To Deliver?',
+      text: 'You want to change status to delivered?',
       confirmButton: 'Yes',
-      successMsg: 'Order To Deliver Successfully.',
+      successMsg: 'Updated to Delivered Status Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .post('/rider/toDeliver/' + orderTransId)
+          .post('/rider/delivered/' + orderTransId)
           .then((resp) => {
             navigate('/rider/delivered');
           })
@@ -728,6 +728,7 @@ export const ToDeliverRider = () => {
                             </div>
                           }
                         </div>
+
                         <div className='d-flex justify-content-center'>
                           <Button
                             variant='primary'
@@ -743,12 +744,12 @@ export const ToDeliverRider = () => {
                           <Button
                             variant='success'
                             onClick={() => {
-                              toDeliver(item.order_trans_id);
+                              delivered(item.deliveries_id);
                             }}
                             style={{ cursor: 'pointer' }}
                             className='badge rounded px-2'
                           >
-                            To Deliver
+                            Delivered
                           </Button>
                         </div>
                       </div>

@@ -54,7 +54,7 @@ Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
 Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
 Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
 Route::post('/rider/delivered/{id}', [RiderController::class, 'delivered']);
-Route::get('/rider/itemDelivered', [RiderController::class, 'itemDelivered']);
+Route::get('/rider/delivered', [RiderController::class, 'itemDelivered']);
 
 // Buyer Order Received
 Route::post('/buyer/orderReceived/{id}', [OrderController::class, 'orderReceived']);

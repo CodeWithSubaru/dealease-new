@@ -63,7 +63,7 @@ export const DeliveredRider = () => {
 
   useEffect(() => {
     axiosClient
-      .get('/rider/itemDelivered')
+      .get('/rider/delivered')
       .then((res) => {
         setBody(res.data);
       })
@@ -694,9 +694,7 @@ export const DeliveredRider = () => {
                     <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
                       <div
                         className={
-                          'd-flex justify-content-between w-100 align-items-center align-items-center' +
-                          (item.order_trans_status === '4' &&
-                            'position-relative')
+                          'd-flex justify-content-between w-100 align-items-center align-items-center'
                         }
                         style={{
                           opacity:
@@ -728,31 +726,30 @@ export const DeliveredRider = () => {
                           </div>
 
                           {/* delivered / receiver action button */}
-                          {item.order_trans_status === '5' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
+
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
                               </div>
                             </div>
-                          )}
+                          </div>
                         </div>
                         <div className='d-flex justify-content-center'>
                           <Button

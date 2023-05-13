@@ -834,7 +834,7 @@ export const HomeRider = () => {
                                 style={{ cursor: 'pointer' }}
                                 className='badge rounded px-2'
                               >
-                                To Pick Up
+                                To Deliver
                               </Button>
                             </>
                           ) : (
