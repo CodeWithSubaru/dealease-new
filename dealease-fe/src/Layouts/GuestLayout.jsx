@@ -14,7 +14,7 @@ export function GuestLayout() {
     if (user_type == 'User') {
       return <Navigate to='/home' />;
     } else if (user_type == 'Rider') {
-      return <Navigate to='/rider/home' />;
+      return <Navigate to='/rider/to-pick-up' />;
     } else if (user_type == 'Admin') {
       return <Navigate to='/admin/dashboard' />;
     }

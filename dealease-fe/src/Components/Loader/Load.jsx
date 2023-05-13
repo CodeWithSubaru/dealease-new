@@ -1,7 +1,7 @@
-export function Load() {
+export function Load(props) {
   return (
     <div className='d-flex justify-content-center align-items-center h-100'>
-      <div className='loader'></div>
+      <div className='loader' style={props.style}></div>
     </div>
   );
 }

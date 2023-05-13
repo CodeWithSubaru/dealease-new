@@ -19,6 +19,8 @@ import { SettingsUser } from './Pages/Users/Settings';
 
 // Rider Components
 import { HomeRider } from './Pages/Rider/Home';
+import { ToDeliverRider } from './Pages/Rider/ToDeliver';
+import { DeliveredRider } from './Pages/Rider/Delivered';
 import { LoginRider } from './Pages/Auth/LoginRider';
 import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
 
@@ -89,7 +91,9 @@ function App() {
 
           {/* Rider */}
           <Route element={<AuthRiderLayout />}>
-            <Route path='/rider/home' element={<HomeRider />} />
+            <Route path='/rider/to-pick-up' element={<HomeRider />} />
+            <Route path='/rider/to-deliver' element={<ToDeliverRider />} />
+            <Route path='/rider/delivered' element={<DeliveredRider />} />
           </Route>
 
           <Route element={<GuestLayout />}>

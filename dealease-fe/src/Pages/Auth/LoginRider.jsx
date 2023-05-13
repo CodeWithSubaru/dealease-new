@@ -24,7 +24,7 @@ export const LoginRider = () => {
     }
 
     if (user_type == 'Rider') {
-      return <Navigate to='/rider/home' />;
+      return <Navigate to='/rider/to-pick-up' />;
     }
 
     if (user_type == 'Admin') {

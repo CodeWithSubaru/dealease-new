@@ -11,9 +11,21 @@ class Deliveries extends Model
 
     protected $guarded;
 
+    protected $primaryKey = 'deliveries_id';
+
     public function orderToDeliver()
     {
         return  $this->belongsTo(\App\Models\OrderTransaction::class, 'order_trans_id', 'order_trans_id');
+    }
+
+    public function order()
+    {
+        return  $this->belongsTo(\App\Models\Order::class, 'order_trans_id', 'order_trans_id');
+    }
+
+    public function product()
+    {
+        return  $this->belongsTo(\App\Models\Product::class, 'product_id', 'product_id');
     }
 
     public function buyer()

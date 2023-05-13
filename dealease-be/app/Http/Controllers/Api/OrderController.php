@@ -9,6 +9,7 @@ use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use App\Models\OrderTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\Deliveries;
 use App\Models\DeliveryAddress;
 use App\Models\DeliveryStatus;
 use App\Models\UsersWallet;
@@ -337,5 +338,58 @@ class OrderController extends Controller
         $cart = Cart::find($id);
         $cart->weight = 0;
         $cart->delete();
+    }
+
+    // order received
+    public function orderReceived(string $id) {
+
+        // first buyer will update the status of order transaction into success.
+        $orderUpdateStatus = OrderTransaction::where('order_trans_id', $id)->update([
+            'order_trans_status' => '7',
+        ]);
+
+        if ($orderUpdateStatus) {
+            // fetching the deliveries_id from deliveries table
+            $deliveries = OrderTransaction::find($id);
+            // buyer will update deliveries status into received
+            $deliveriesChangeStatus = Deliveries::where('deliveries_id', $deliveries->deliveries_id)->update([
+                'delivery_status' => '4',
+            ]);
+
+            // if the update is succeeded
+            if ($deliveriesChangeStatus) {
+                // fetch for delivery details
+                $delivery = Deliveries::find($id);
+                $rider_id = $delivery->rider_id;
+                // fetch for order details
+                $order = OrderTransaction::find($id);
+                $seller_id = $order->seller_id;
+                // seller amount to add
+                $seller_revenue = $order->total_amount;
+                // rider fees to add
+                $rider_fee = $order->delivery_fee;
+
+                // fetching for rider's wallet
+                $riderWallet = UsersWallet::find($rider_id);
+                $riderCurrentWallet = $riderWallet->shell_coin_amount;
+                // current wallet amount + delivery fee
+                $updatedRiderWallet = $riderCurrentWallet + $rider_fee;
+                $updateRiderWallet = UsersWallet::where('wallet_id', $rider_id)->update([
+                    'shell_coin_amount' => $updatedRiderWallet,
+                ]);
+
+                // if succeeded in updating the wallet of rider will trigger this.
+                if ($updateRiderWallet) {
+                    // fetching for seller's wallet
+                    $sellerWallet = UsersWallet::find($seller_id);
+                    $sellerCurrentWallet = $sellerWallet->shell_coin_amount;
+                    // current wallet amount + amount revenue
+                    $updatedSellerWallet = $sellerCurrentWallet + $seller_revenue;
+                    UsersWallet::where('wallet_id', $seller_id)->update([
+                        'shell_coin_amount' => $updatedSellerWallet,
+                    ]);
+                }
+            }
+        }
     }
 }

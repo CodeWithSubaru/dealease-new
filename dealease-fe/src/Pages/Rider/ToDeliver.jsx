@@ -48,7 +48,7 @@ import { Finalize } from '../../Components/Notification/Notification';
 import { Load } from '../../Components/Loader/Load';
 import { useNavigate } from 'react-router-dom';
 
-export const HomeRider = () => {
+export const ToDeliverRider = () => {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
@@ -65,7 +65,7 @@ export const HomeRider = () => {
 
   useEffect(() => {
     axiosClient
-      .get('/rider')
+      .get('/rider/toPickUp')
       .then((res) => {
         setBody(res.data);
       })
@@ -237,33 +237,32 @@ export const HomeRider = () => {
       if (res.isConfirmed) {
         axiosClient
           .post('/riderAcceptOrder', { order_trans_id: orderTransId })
-          .then((resp) => {
-            navigate('/rider/to-deliver');
-          })
-          .catch((e) => console.log(e));
-        // fetchNumberOrdersByStatusUser(1);
-        // fetchNumberOrdersByStatusUser(2);
-        // fetchNumberOrdersByStatusUser(3);
-        setRiderTable('/rider');
-      }
-    });
-  }
-
-  function toDeliver(orderTransId) {
-    Finalize({
-      text: 'To Deliver?',
-      confirmButton: 'Yes',
-      successMsg: 'Order To Deliver Successfully.',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        axiosClient
-          .post('/rider/toDeliver/' + orderTransId)
           .then((resp) => {})
           .catch((e) => console.log(e));
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        // setRiderDeliveryTable('');
+        setRiderTable('/rider/toPickUp');
+      }
+    });
+  }
+
+  function delivered(orderTransId) {
+    Finalize({
+      text: 'You want to change status to delivered?',
+      confirmButton: 'Yes',
+      successMsg: 'Updated to Delivered Status Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/rider/delivered/' + orderTransId)
+          .then((resp) => {
+            navigate('/rider/delivered');
+          })
+          .catch((e) => console.log(e));
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
       }
     });
   }
@@ -357,40 +356,16 @@ export const HomeRider = () => {
                 View
               </Button>
 
-              {order.order_to_deliver.order_trans_status === '3' &&
-              order.order_to_deliver.order_trans_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      accept(order.order_to_deliver.order_trans_id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Pick Up
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
-
-              {order.delivery_status === '1' && order.delivery_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      toDeliver(order.id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Deliver
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
+              <Button
+                variant='success'
+                onClick={() => {
+                  accept(order.order_to_deliver.order_trans_id);
+                }}
+                style={{ cursor: 'pointer' }}
+                className='badge rounded px-2 me-2'
+              >
+                To Deliver
+              </Button>
             </div>
           ),
         };
@@ -401,7 +376,7 @@ export const HomeRider = () => {
   }
 
   useEffect(() => {
-    setRiderTable('/rider');
+    setRiderTable('/rider/toPickUp');
   }, []);
 
   return (
@@ -683,7 +658,7 @@ export const HomeRider = () => {
           </div>
 
           <Card className='mx-auto w-75 mb-5 p-5'>
-            <h1 className='fw-bold mb-4'>To Pick Up</h1>
+            <h1 className='fw-bold mb-4'>To Deliver</h1>
             {/* Card  */}
 
             <div className='d-flex flex-wrap justify-content-start'>
@@ -693,21 +668,16 @@ export const HomeRider = () => {
                 </div>
               ) : (
                 body.length > 0 &&
-                body.map((item) =>
+                body.map((item, i) =>
                   item ? (
                     <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
                       <div
                         className={
-                          'd-flex justify-content-between w-100 align-items-center align-items-center' +
-                          (item.order_trans_status === '4' &&
-                            'position-relative')
+                          'd-flex justify-content-between w-100 align-items-center align-items-center'
                         }
-                        style={{
-                          opacity:
-                            item.order_trans_status === '4' ? '0.5' : '1',
-                        }}
                       >
                         <div className='d-flex flex-grow-1 me-4'>
+                          {/* Icon */}
                           <div className='d-flex flex-column me-3'>
                             <FontAwesomeIcon
                               icon={faCircleDot}
@@ -730,16 +700,16 @@ export const HomeRider = () => {
                               className='text-success'
                             />
                           </div>
-
-                          {/* To Pick up action */}
+                          {console.log(item)}
+                          {/* To Deliver action */}
                           {
-                            <div className='w-100 mt-2'>
+                            <div className='w-100 mt-2' key={i}>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
+                                  # {item.order_to_deliver.order_number}
                                 </small>
                                 <h4 className='mb-3'>
-                                  {item.order.product.title}
+                                  {item.order_to_deliver.order.product.title}
                                 </h4>
                               </div>
                               <div className='text-end'>
@@ -751,71 +721,19 @@ export const HomeRider = () => {
                                       style={{ height: '20px' }}
                                       className='me-1'
                                     />{' '}
-                                    {item.delivery_fee}
+                                    {item.order_to_deliver.delivery_fee}
                                   </span>
                                 </div>
                               </div>
                             </div>
                           }
-
-                          {/* To Deliver action */}
-                          {/* {item.order_trans_status === '4' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )} */}
-                          {/* delivered / receiver action button */}
-                          {/* {item.order_trans_status === '5' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )} */}
                         </div>
+
                         <div className='d-flex justify-content-center'>
                           <Button
                             variant='primary'
                             onClick={() => {
-                              view(item.order_number);
+                              view(item.order_to_deliver.order_number);
                               setViewOrderBuyerModal(true);
                             }}
                             style={{ cursor: 'pointer' }}
@@ -823,23 +741,16 @@ export const HomeRider = () => {
                           >
                             View
                           </Button>
-
-                          {item.order_trans_status === '3' ? (
-                            <>
-                              <Button
-                                variant='success'
-                                onClick={() => {
-                                  accept(item.order_trans_id);
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                className='badge rounded px-2'
-                              >
-                                To Deliver
-                              </Button>
-                            </>
-                          ) : (
-                            ''
-                          )}
+                          <Button
+                            variant='success'
+                            onClick={() => {
+                              delivered(item.deliveries_id);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            className='badge rounded px-2'
+                          >
+                            Delivered
+                          </Button>
                         </div>
                       </div>
                     </Card>
