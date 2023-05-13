@@ -46,12 +46,14 @@ import Header from '../../Components/Header/Header';
 import axiosClient from '../../api/axios';
 import { Finalize } from '../../Components/Notification/Notification';
 import { Load } from '../../Components/Loader/Load';
+import { useNavigate } from 'react-router-dom';
 
 export const ToDeliverRider = () => {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const navigate = useNavigate();
 
   const { user, setEmailVerified, setRegistrationSuccess, logout } =
     useAuthContext();
@@ -240,7 +242,7 @@ export const ToDeliverRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderTable('/rider');
+        setRiderTable('/rider/toPickUp');
       }
     });
   }
@@ -254,12 +256,13 @@ export const ToDeliverRider = () => {
       if (res.isConfirmed) {
         axiosClient
           .post('/rider/toDeliver/' + orderTransId)
-          .then((resp) => {})
+          .then((resp) => {
+            navigate('/rider/delivered');
+          })
           .catch((e) => console.log(e));
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderDeliveryTable('/rider/toPickUp');
       }
     });
   }
@@ -686,16 +689,11 @@ export const ToDeliverRider = () => {
                     <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
                       <div
                         className={
-                          'd-flex justify-content-between w-100 align-items-center align-items-center' +
-                          (item.order_trans_status === '4' &&
-                            'position-relative')
+                          'd-flex justify-content-between w-100 align-items-center align-items-center'
                         }
-                        style={{
-                          opacity:
-                            item.order_trans_status === '4' ? '0.5' : '1',
-                        }}
                       >
                         <div className='d-flex flex-grow-1 me-4'>
+                          {/* Icon */}
                           <div className='d-flex flex-column me-3'>
                             <FontAwesomeIcon
                               icon={faCircleDot}
@@ -718,17 +716,16 @@ export const ToDeliverRider = () => {
                               className='text-success'
                             />
                           </div>
-
                           {console.log(item)}
                           {/* To Deliver action */}
-                          {item.order_trans_status === '4' && (
+                          {
                             <div className='w-100 mt-2' key={i}>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
+                                  # {item.order_to_deliver.order_number}
                                 </small>
                                 <h4 className='mb-3'>
-                                  {item.order.product.title}
+                                  {item.order_to_deliver.order.product.title}
                                 </h4>
                               </div>
                               <div className='text-end'>
@@ -740,18 +737,18 @@ export const ToDeliverRider = () => {
                                       style={{ height: '20px' }}
                                       className='me-1'
                                     />{' '}
-                                    {item.delivery_fee}
+                                    {item.order_to_deliver.delivery_fee}
                                   </span>
                                 </div>
                               </div>
                             </div>
-                          )}
+                          }
                         </div>
                         <div className='d-flex justify-content-center'>
                           <Button
                             variant='primary'
                             onClick={() => {
-                              view(item.order_number);
+                              view(item.order_to_deliver.order_number);
                               setViewOrderBuyerModal(true);
                             }}
                             style={{ cursor: 'pointer' }}
@@ -760,12 +757,12 @@ export const ToDeliverRider = () => {
                             View
                           </Button>
 
-                          {item.order_trans_status === '3' ? (
+                          {item.order_to_deliver.order_trans_status === '4' ? (
                             <>
                               <Button
                                 variant='success'
                                 onClick={() => {
-                                  accept(item.order_trans_id);
+                                  toDeliver(item.order_trans_id);
                                 }}
                                 style={{ cursor: 'pointer' }}
                                 className='badge rounded px-2'

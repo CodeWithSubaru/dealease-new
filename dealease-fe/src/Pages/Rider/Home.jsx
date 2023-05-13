@@ -46,12 +46,14 @@ import Header from '../../Components/Header/Header';
 import axiosClient from '../../api/axios';
 import { Finalize } from '../../Components/Notification/Notification';
 import { Load } from '../../Components/Loader/Load';
+import { useNavigate } from 'react-router-dom';
 
 export const HomeRider = () => {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const navigate = useNavigate();
 
   const { user, setEmailVerified, setRegistrationSuccess, logout } =
     useAuthContext();
@@ -235,7 +237,9 @@ export const HomeRider = () => {
       if (res.isConfirmed) {
         axiosClient
           .post('/riderAcceptOrder', { order_trans_id: orderTransId })
-          .then((resp) => {})
+          .then((resp) => {
+            navigate('/rider/to-deliver');
+          })
           .catch((e) => console.log(e));
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
@@ -259,7 +263,7 @@ export const HomeRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderDeliveryTable('/rider/toPickUp');
+        // setRiderDeliveryTable('');
       }
     });
   }
@@ -673,7 +677,7 @@ export const HomeRider = () => {
           <Card className='mx-auto w-75 mb-5 p-5'>
             <h1 className='fw-bold mb-4'>To Pick Up</h1>
             {/* Card  */}
-            {console.log(body)}
+
             <div className='d-flex flex-wrap justify-content-start'>
               {loading ? (
                 <div className='d-flex justify-content-center flex-grow-1'>
@@ -720,7 +724,7 @@ export const HomeRider = () => {
                           </div>
 
                           {/* To Pick up action */}
-                          {item.order_trans_status === '3' && (
+                          {
                             <div className='w-100 mt-2'>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
@@ -744,7 +748,7 @@ export const HomeRider = () => {
                                 </div>
                               </div>
                             </div>
-                          )}
+                          }
 
                           {/* To Deliver action */}
                           {/* {item.order_trans_status === '4' && (
