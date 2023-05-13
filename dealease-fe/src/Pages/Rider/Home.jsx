@@ -696,27 +696,59 @@ export const HomeRider = () => {
                           />
                         </div>
 
-                        <div className='w-100 mt-2'>
-                          <div className='d-flex flex-column'>
-                            <small className='fs-6 text-secondary'>
-                              # {item.order_number}
-                            </small>
-                            <h4 className='mb-3'>{item.order.product.title}</h4>
-                          </div>
-                          <div className='text-end'>
-                            <div className='d-flex justify-content-between'>
-                              <span> Delivery Fee</span>{' '}
-                              <span className='d-flex justify-content-center'>
-                                <img
-                                  src='/images/seashell.png'
-                                  style={{ height: '20px' }}
-                                  className='me-1'
-                                />{' '}
-                                {item.delivery_fee}
-                              </span>
+                        {/* To Deliver */}
+                        {item.order_trans_status === '4' && (
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        )}
+
+                        {/* To Pick up */}
+                        {item.order_trans_status === '3' && (
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div className='d-flex justify-content-center'>
                         <Button
