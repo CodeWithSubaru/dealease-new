@@ -47,7 +47,7 @@ import axiosClient from '../../api/axios';
 import { Finalize } from '../../Components/Notification/Notification';
 import { Load } from '../../Components/Loader/Load';
 
-export const ToPickUpRider = () => {
+export const DeliveredRider = () => {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
@@ -63,7 +63,7 @@ export const ToPickUpRider = () => {
 
   useEffect(() => {
     axiosClient
-      .get('/rider/toPickUp')
+      .get('/rider/itemDelivered')
       .then((res) => {
         setBody(res.data);
       })
@@ -240,20 +240,20 @@ export const ToPickUpRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderTable('/rider');
+        // setRiderTable('/rider');
       }
     });
   }
 
-  function toDeliver(orderTransId) {
+  function delivered(orderTransId) {
     Finalize({
-      text: 'To Deliver?',
+      text: 'Change status to Delivered?',
       confirmButton: 'Yes',
-      successMsg: 'Order To Deliver Successfully.',
+      successMsg: 'Status Changed to Delivered Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .post('/rider/toDeliver/' + orderTransId)
+          .post('/rider/delivered/' + orderTransId)
           .then((resp) => {})
           .catch((e) => console.log(e));
         // fetchNumberOrdersByStatusUser(1);
@@ -470,6 +470,14 @@ export const ToPickUpRider = () => {
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
               Home
             </MenuItem>
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/rider/to-deliver' />}
+            >
+              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
+              To Deliver
+            </MenuItem>
             <SubMenu label='Transactions'>
               <MenuItem component={<Link to='/withdraw' />}>
                 <FontAwesomeIcon icon={faInbox} className='navs-icon' />
@@ -671,9 +679,9 @@ export const ToPickUpRider = () => {
           </div>
 
           <Card className='mx-auto w-75 mb-5 p-5'>
-            <h1 className='fw-bold mb-4'>To Pick Up</h1>
+            <h1 className='fw-bold mb-4'>Delivered</h1>
             {/* Card  */}
-            {console.log(body)}
+
             <div className='d-flex flex-wrap justify-content-start'>
               {loading ? (
                 <div className='d-flex justify-content-center flex-grow-1'>
@@ -719,8 +727,8 @@ export const ToPickUpRider = () => {
                             />
                           </div>
 
-                          {/* To Deliver action */}
-                          {item.order_trans_status === '4' && (
+                          {/* delivered / receiver action button */}
+                          {item.order_trans_status === '5' && (
                             <div className='w-100 mt-2'>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
@@ -745,33 +753,6 @@ export const ToPickUpRider = () => {
                               </div>
                             </div>
                           )}
-
-                          {/* delivered / receiver action button */}
-                          {/* {item.order_trans_status === '5' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )} */}
                         </div>
                         <div className='d-flex justify-content-center'>
                           <Button
@@ -785,23 +766,16 @@ export const ToPickUpRider = () => {
                           >
                             View
                           </Button>
-
-                          {item.order_trans_status === '3' ? (
-                            <>
-                              <Button
-                                variant='success'
-                                onClick={() => {
-                                  accept(item.order_trans_id);
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                className='badge rounded px-2'
-                              >
-                                To Pick Up
-                              </Button>
-                            </>
-                          ) : (
-                            ''
-                          )}
+                          <Button
+                            variant='success'
+                            onClick={() => {
+                              accept(item.order_trans_id);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            className='badge rounded px-2'
+                          >
+                            Delivered
+                          </Button>
                         </div>
                       </div>
                     </Card>

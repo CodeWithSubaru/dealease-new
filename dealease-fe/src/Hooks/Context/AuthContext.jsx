@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginRider = (data) => {
-    login(data, '/rider/home');
+    login(data, '/rider/to-pick-up');
   };
 
   const logout = () => {

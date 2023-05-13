@@ -469,10 +469,18 @@ export const HomeRider = () => {
             <MenuItem
               className='text-black '
               // icon={<FaHouse />}
-              component={<Link to='/rider/home' />}
+              component={<Link to='/rider/to-pick-up' />}
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              Home
+              To Pick Up
+            </MenuItem>
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/rider/to-deliver' />}
+            >
+              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
+              To Deliver
             </MenuItem>
             <SubMenu label='Transactions'>
               <MenuItem component={<Link to='/withdraw' />}>

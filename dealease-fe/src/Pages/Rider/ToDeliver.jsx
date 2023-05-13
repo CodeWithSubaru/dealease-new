@@ -356,40 +356,16 @@ export const ToDeliverRider = () => {
                 View
               </Button>
 
-              {order.order_to_deliver.order_trans_status === '3' &&
-              order.order_to_deliver.order_trans_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      accept(order.order_to_deliver.order_trans_id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Pick Up
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
-
-              {order.delivery_status === '1' && order.delivery_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      toDeliver(order.id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Deliver
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
+              <Button
+                variant='success'
+                onClick={() => {
+                  accept(order.order_to_deliver.order_trans_id);
+                }}
+                style={{ cursor: 'pointer' }}
+                className='badge rounded px-2 me-2'
+              >
+                To Deliver
+              </Button>
             </div>
           ),
         };
@@ -468,10 +444,18 @@ export const ToDeliverRider = () => {
             <MenuItem
               className='text-black '
               // icon={<FaHouse />}
-              component={<Link to='/rider/home' />}
+              component={<Link to='/rider/to-pick-up' />}
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              Home
+              To Pick Up
+            </MenuItem>
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/rider/to-deliver' />}
+            >
+              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
+              To Deliver
             </MenuItem>
             <SubMenu label='Transactions'>
               <MenuItem component={<Link to='/withdraw' />}>
@@ -756,23 +740,16 @@ export const ToDeliverRider = () => {
                           >
                             View
                           </Button>
-
-                          {item.order_to_deliver.order_trans_status === '4' ? (
-                            <>
-                              <Button
-                                variant='success'
-                                onClick={() => {
-                                  toDeliver(item.order_trans_id);
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                className='badge rounded px-2'
-                              >
-                                To Deliver
-                              </Button>
-                            </>
-                          ) : (
-                            ''
-                          )}
+                          <Button
+                            variant='success'
+                            onClick={() => {
+                              toDeliver(item.order_trans_id);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            className='badge rounded px-2'
+                          >
+                            To Deliver
+                          </Button>
                         </div>
                       </div>
                     </Card>

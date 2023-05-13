@@ -74,7 +74,8 @@ class RiderController extends Controller
         }
     }
 
-    public function delivered(string $id) {
+    public function delivered(string $id)
+    {
         $changeStatus = Deliveries::where('deliveries_id', $id)->update([
             'delivery_status' => '3',
         ]);
@@ -88,5 +89,12 @@ class RiderController extends Controller
         }
     }
 
-
+    public function itemDelivered()
+    {
+        $rider = auth()->user()->user_id; //getting authenticated user id
+        return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details', 'orderToDeliver.order.product')
+            ->where('rider_id', '=', $rider)
+            ->where('delivery_status', '=', '3')
+            ->whereDate('created_at', Carbon::now())->get();
+    }
 }
