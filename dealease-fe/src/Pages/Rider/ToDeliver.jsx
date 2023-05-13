@@ -47,7 +47,7 @@ import axiosClient from '../../api/axios';
 import { Finalize } from '../../Components/Notification/Notification';
 import { Load } from '../../Components/Loader/Load';
 
-export const HomeRider = () => {
+export const ToDeliverRider = () => {
   const [body, setBody] = useState([]);
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
@@ -63,7 +63,7 @@ export const HomeRider = () => {
 
   useEffect(() => {
     axiosClient
-      .get('/rider')
+      .get('/rider/toPickUp')
       .then((res) => {
         setBody(res.data);
       })
@@ -397,7 +397,7 @@ export const HomeRider = () => {
   }
 
   useEffect(() => {
-    setRiderTable('/rider');
+    setRiderTable('/rider/toPickUp');
   }, []);
 
   return (
@@ -671,7 +671,7 @@ export const HomeRider = () => {
           </div>
 
           <Card className='mx-auto w-75 mb-5 p-5'>
-            <h1 className='fw-bold mb-4'>To Pick Up</h1>
+            <h1 className='fw-bold mb-4'>To Deliver</h1>
             {/* Card  */}
             {console.log(body)}
             <div className='d-flex flex-wrap justify-content-start'>
@@ -719,8 +719,8 @@ export const HomeRider = () => {
                             />
                           </div>
 
-                          {/* To Pick up action */}
-                          {item.order_trans_status === '3' && (
+                          {/* To Deliver action */}
+                          {item.order_trans_status === '4' && (
                             <div className='w-100 mt-2'>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
@@ -746,32 +746,6 @@ export const HomeRider = () => {
                             </div>
                           )}
 
-                          {/* To Deliver action */}
-                          {/* {item.order_trans_status === '4' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )} */}
                           {/* delivered / receiver action button */}
                           {/* {item.order_trans_status === '5' && (
                             <div className='w-100 mt-2'>
@@ -822,7 +796,7 @@ export const HomeRider = () => {
                                 style={{ cursor: 'pointer' }}
                                 className='badge rounded px-2'
                               >
-                                To Pick Up
+                                To Deliver
                               </Button>
                             </>
                           ) : (

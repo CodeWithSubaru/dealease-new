@@ -19,7 +19,7 @@ class RiderController extends Controller
 
         return OrderTransaction::with('buyer', 'buyer.user_details', 'order', 'order.product')
             ->whereBetween('created_at', [$yesterday, $now])
-            ->where('order_trans_status', '3')
+            ->where('order_trans_status', 3)
             ->latest('order_number')
             ->get();
     }
