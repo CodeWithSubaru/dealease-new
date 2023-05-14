@@ -56,6 +56,7 @@ class PaymentController extends Controller
             'payment_status' => 1,
             'payment_description' => 'Recharge',
             'payment_total_amount' => $request->amount,
+            'checkout_session_id' => null,
         ]);
 
         $authUser = User::with('user_details')->where('user_id', auth()->user()->user_id)->get()[0];
@@ -127,6 +128,7 @@ class PaymentController extends Controller
         ]);
 
         $responseData = json_decode($response->getBody(), true);
+        return $responseData;
         return response()->json($responseData, 200);
     }
 
