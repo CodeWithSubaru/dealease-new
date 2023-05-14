@@ -78,5 +78,8 @@ export const GlobalStyles = createGlobalStyle`
       transform: rotate(360deg);
     }
   }
-  
+  // Card Style
+  .card {
+    border: 0;
+  }
 `;
