@@ -87,7 +87,7 @@ class AnalyticsControllers extends Controller
     public function totalAmountRecharge()
     {
         $totalAmount = 0;
-        $totalAmountRecharge = ShellTransaction::where('payment_description', 'Withdraw')->where('payment_status', '2')->get();
+        $totalAmountRecharge = ShellTransaction::where('payment_description', 'Recharge')->where('payment_status', '2')->get();
         for ($i = 0; $i < count($totalAmountRecharge); $i++) {
             $totalAmount += (float) $totalAmountRecharge[$i]->payment_total_amount;
         }
@@ -98,7 +98,7 @@ class AnalyticsControllers extends Controller
     public function totalAmountWithdraw()
     {
         $totalAmount = 0;
-        $totalAmountRecharge = ShellTransaction::where('payment_description', 'Recharge')->where('payment_status', '2')->get();
+        $totalAmountRecharge = ShellTransaction::where('payment_description', 'Withdraw')->where('payment_status', '2')->get();
         for ($i = 0; $i < count($totalAmountRecharge); $i++) {
             $totalAmount += (float) $totalAmountRecharge[$i]->payment_total_amount;
         }
