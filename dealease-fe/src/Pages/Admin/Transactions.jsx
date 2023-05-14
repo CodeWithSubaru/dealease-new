@@ -5,7 +5,7 @@ import PUBLIC_URL from '../../api/public_url';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Button, Nav } from 'react-bootstrap';
+import { Button, Modal, Nav } from 'react-bootstrap';
 import {
   Notification,
   Finalize,
@@ -21,6 +21,9 @@ export function TransactionsAdmin() {
     useState(0);
   const [numberOfCancelledTransaction, setNumberOfCancelledTransaction] =
     useState(0);
+  const [viewModal, setViewModal] = useState(false);
+  const [showData, setData] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   function fetchUnderReviewTransaction() {
     axiosClient.get('/admin/transactions/under-review').then((res) => {
@@ -172,6 +175,12 @@ export function TransactionsAdmin() {
     if (status === '2') {
       return 'Approved';
     }
+    if (status === '3') {
+      return 'Approved';
+    }
+    if (status === '4') {
+      return 'Approved';
+    }
   }
 
   function switchColor(status) {
@@ -190,12 +199,25 @@ export function TransactionsAdmin() {
     }
   }
 
+  function checkDetails(session_id) {
+    setLoader(true);
+    setViewModal(true);
+    setData([]);
+    axiosClient
+      .get('/admin/transaction/paymongo/' + session_id)
+      .then((resp) => {
+        setLoader(false);
+        setData(resp.data.data.attributes.payments);
+      });
+  }
+
   function setUserTransactionsDataTable(id) {
     setBody([]);
     setLoading(true);
     axiosClient
       .get('/admin/transactions/show/transactions/' + id)
       .then((resp) => {
+        console.log(resp);
         const transactions = resp.data.map((transaction, i) => {
           return {
             id: i + 1,
@@ -268,6 +290,16 @@ export function TransactionsAdmin() {
                     <Button
                       variant='primary'
                       onClick={() =>
+                        checkDetails(transaction.checkout_session_id)
+                      }
+                      style={{ cursor: 'pointer' }}
+                      className='badge rounded px-2 me-2 btn'
+                    >
+                      View
+                    </Button>
+                    <Button
+                      variant='primary'
+                      onClick={() =>
                         transaction.payment_description === 'Recharge'
                           ? confirmRecharge(transaction.payment_number)
                           : confirmWithdraw(transaction.payment_number)
@@ -306,6 +338,38 @@ export function TransactionsAdmin() {
 
   return (
     <>
+      {/* Modal */}
+      <Modal
+        size='lg'
+        show={viewModal}
+        onHide={() => setViewModal(false)}
+        animation={true}
+        aria-labelledby='contained-modal-title-vcenter'
+        scrollable
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id='contained-modal-title-vcenter'>
+            Payment Status
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className='mb-0'>
+            {!loader
+              ? showData.length > 0
+                ? 'Paid'
+                : 'Not Paid Yet'
+              : 'Loading...'}
+          </p>
+
+          {console.log(showData)}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setViewModal(false)} className='rounded'>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Transactions
         header={header}
         body={body}

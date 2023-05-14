@@ -28,8 +28,8 @@ export function Transactions(props) {
 
   return (
     <>
-      <div className='mx-auto w-75' style={{ minHeight: '85vh' }}>
-        <Card className='p-5 h-100 my-5 mb-5'>
+      <div className='p-5' style={{ minHeight: '85vh' }}>
+        <Card className='p-5 h-100 my-2 mb-5'>
           <div className='d-flex justify-content-end mb-3'>
             <Button
               onClick={() => {
@@ -151,7 +151,6 @@ export function Transactions(props) {
           </Tab.Container>
         </Card>
       </div>
-      <Footer />
     </>
   );
 }

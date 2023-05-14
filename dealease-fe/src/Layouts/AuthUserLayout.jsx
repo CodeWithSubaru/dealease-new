@@ -106,11 +106,11 @@ export function AuthUserLayout() {
               </Offcanvas.Header>
               <Offcanvas.Body className='offCanvas'>
                 <Nav className='justify-content-center flex-grow-1 pe-4'>
-                  <Nav.Link className='navLink' href='#'>
+                  <Nav.Link className='navLink' href='/home'>
                     Home
                   </Nav.Link>
                   <Nav.Link className='navLink' href='/transactions'>
-                    Transactions
+                    Shell Transactions
                   </Nav.Link>
                   <Nav.Link className='navLink' href='/orders'>
                     Orders

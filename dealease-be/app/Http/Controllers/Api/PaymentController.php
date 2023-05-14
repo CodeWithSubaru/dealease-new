@@ -128,7 +128,11 @@ class PaymentController extends Controller
         ]);
 
         $responseData = json_decode($response->getBody(), true);
-        return $responseData;
+        ShellTransaction::where('payment_number', $id)
+            ->update([
+                'checkout_session_id' => $responseData['data']['id']
+            ]);
+
         return response()->json($responseData, 200);
     }
 

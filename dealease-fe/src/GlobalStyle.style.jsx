@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import Background from '/images/background.png';
 
+//   background-image: url(${Background});
 export const GlobalStyles = createGlobalStyle`
   *,
   *::before,
@@ -21,7 +22,7 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1.6;
     width: 100%;
     height: 100%;
-    background-image: url(${Background});
+    background-color: rgb(241 245 249);
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
