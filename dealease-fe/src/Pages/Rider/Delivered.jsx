@@ -52,6 +52,8 @@ export const DeliveredRider = () => {
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const [toPickUpData, setToPickUpData] = useState([]);
+  const [isDisabled, setDisabled] = useState(true);
 
   const { user, setEmailVerified, setRegistrationSuccess, logout } =
     useAuthContext();
@@ -396,8 +398,19 @@ export const DeliveredRider = () => {
     });
   }
 
+  function toPickUp(url) {
+    setBody([]);
+    setLoading(true);
+    axiosClient.get(url).then((resp) => {
+      setToPickUpData(resp.data);
+      setDisabled(false);
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
-    setRiderTable('/rider');
+    setRiderTable('/rider/delivered');
+    toPickUp('/rider/toPickUp');
   }, []);
 
   return (
@@ -465,10 +478,11 @@ export const DeliveredRider = () => {
             <MenuItem
               className='text-black '
               // icon={<FaHouse />}
-              component={<Link to='/rider/home' />}
+              component={<Link to='/rider/to-pick-up' />}
+              disabled={isDisabled || toPickUpData.length > 0}
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              Home
+              To Pick Up
             </MenuItem>
             <MenuItem
               className='text-black '
@@ -478,6 +492,15 @@ export const DeliveredRider = () => {
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
               To Deliver
             </MenuItem>
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/rider/delivered' />}
+            >
+              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
+              Delivered
+            </MenuItem>
+
             <SubMenu label='Transactions'>
               <MenuItem component={<Link to='/withdraw' />}>
                 <FontAwesomeIcon icon={faInbox} className='navs-icon' />
@@ -512,94 +535,122 @@ export const DeliveredRider = () => {
             {viewOrders.length > 0
               ? viewOrders.map((order, index) => {
                   return (
-                    <>
-                      <p className='fw-bold fs-5 mb-2'>
-                        <b> Product No. {index + 1} </b>
-                      </p>
-                      <div className='d-flex'>
-                        <div className='w-50 me-5'>
-                          <p>
-                            <span className='d-block fw-bold text-secondary'>
-                              Product Name:
-                            </span>{' '}
-                            {order.product.title}
-                          </p>
-                          <p>
-                            {' '}
-                            <span className='d-block fw-bold text-secondary'>
-                              Product Description:
-                            </span>{' '}
-                            {order.product.description}
-                          </p>
-                          <p>
-                            <span className='d-block fw-bold text-secondary'>
-                              Seller:
-                            </span>{' '}
-                            {order.product.user.first_name}{' '}
-                            {order.product.user.user_details.middle_name
-                              ? order.product.user.user_details.middle_name[0] +
-                                '. '
-                              : ''}
-                            {order.product.user.user_details.last_name}{' '}
-                            {order.product.user.user_details.ext_name
-                              ? order.product.user.user_details.ext_name
-                              : ''}{' '}
-                          </p>
-                        </div>
-                        <div>
-                          <p>
-                            {' '}
-                            <span className='d-block fw-bold text-secondary'>
-                              Status:
-                            </span>{' '}
-                            {status(order.order_trans_status)}
-                          </p>
-                          <p>
-                            {' '}
-                            <span className='d-block fw-bold text-secondary'>
-                              Quantity:
-                            </span>{' '}
-                            {order.weight} kg
-                          </p>
-                          <p>
-                            <span className='d-block fw-bold text-secondary'>
-                              Total Price:
-                            </span>{' '}
-                            <span className='d-flex'>
-                              {' '}
-                              <img
-                                src='/images/seashell.png'
-                                className='me-2'
-                                style={{ height: '20px' }}
-                              />{' '}
-                              {order.total_price}
-                            </span>
-                          </p>
-                          <p>
-                            {' '}
-                            <span className='d-block fw-bold text-secondary'>
-                              Shipping Information:
-                            </span>{' '}
-                            <span className='fw-semibold'>Address: </span>
-                            {order.barangay
-                              ? order.street
-                              : user.user_details.street}{' '}
-                            {order.barangay
-                              ? order.barangay
-                              : user.user_details.barangay}{' '}
-                            {order.city ? order.city : ''}{' '}
-                            {'Bulacan Region III (Central Luzon)'}
-                          </p>
-                        </div>
-                      </div>
-                    </>
+                    <table>
+                      <tr>
+                        <td className='fw-bold fs-5 mb-2'>
+                          <b> Product No. {index + 1} </b>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className='fw-bold text-secondary w-25'> Name </td>
+                        <td className='fw-bold text-secondary text-center'>
+                          {' '}
+                          Weight{' '}
+                        </td>
+                        <td className='fw-bold text-secondary text-end'>
+                          Price
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td className='d-flex ms-3'>{order.product.title}</td>
+                        <td className='text-center'>{order.weight} kg</td>
+                        <td className='text-end'>-</td>
+                      </tr>
+
+                      <br />
+                      <tr>
+                        <td className='fw-bold text-secondary w-25'>
+                          Seller Name{' '}
+                        </td>
+                        <td className='fw-bold text-secondary text-center'>
+                          {' '}
+                          Contact #{' '}
+                        </td>
+                        <td className='text-end'>-</td>
+                      </tr>
+
+                      <tr>
+                        <td className='d-flex ms-3'>
+                          {order.product.user.first_name}{' '}
+                          {order.product.user.user_details.middle_name
+                            ? order.product.user.user_details.middle_name[0] +
+                              '. '
+                            : ''}
+                          {order.product.user.user_details.last_name
+                            ? order.product.user.user_details.last_name
+                            : ''}{' '}
+                          {order.product.user.user_details.ext_name
+                            ? order.product.user.user_details.ext_name
+                            : ''}
+                        </td>
+                        <td className='text-center'>
+                          {order.product.user.user_details.contact_number}
+                        </td>
+                        <td className='text-end'>-</td>
+                      </tr>
+
+                      <br />
+
+                      <tr>
+                        <td className='fw-bold text-secondary w-25'>
+                          Buyer Name{' '}
+                        </td>
+                        <td className='fw-bold text-secondary text-center'>
+                          {' '}
+                          Contact #{' '}
+                        </td>
+                        <td className='text-end'>-</td>
+                      </tr>
+
+                      <tr>
+                        <td className='d-flex ms-3'>
+                          {order.order_by.first_name}{' '}
+                          {order.order_by.user_details.middle_name
+                            ? order.order_by.user_details.middle_name[0] + '. '
+                            : ''}{' '}
+                          {order.order_by.user_details.last_name
+                            ? order.order_by.user_details.last_name
+                            : ''}{' '}
+                          {order.order_by.user_details.ext_name
+                            ? order.order_by.user_details.ext_name
+                            : ''}{' '}
+                        </td>
+                        <td className='text-center'>
+                          {order.order_by.user_details.contact_number}
+                        </td>
+                        <td className='text-end'>-</td>
+                      </tr>
+
+                      <br />
+                      <tr>
+                        <td className='fw-bold text-secondary w-25'>
+                          Shipping Info{' '}
+                        </td>
+                        <td className='text-center'>-</td>
+                        <td className='text-end'>-</td>
+                      </tr>
+
+                      <tr>
+                        <td className='d-flex ms-3'>
+                          {order.delivery_address_id
+                            ? ''
+                            : order.order_by.user_details.street +
+                              ' ' +
+                              order.order_by.user_details.barangay}
+                        </td>
+                        <td className='text-center'>-</td>
+                        <td className='text-end'>-</td>
+                      </tr>
+                    </table>
                   );
                 })
               : 'Loading...'}
             <hr />
-            <div className='d-flex'>
-              <div className='w-50 me-5'></div>
-              <div className='me-5'>
+            <div className='d-flex flex-grow-1 '>
+              <div className='w-50'></div>
+              <div className='flex-grow-1 d-flex justify-content-end'>
                 <p className='d-flex'>
                   <span className='fw-bold text-secondary'>Delivery Fee:</span>{' '}
                   <span className='d-flex'>
@@ -612,17 +663,6 @@ export const DeliveredRider = () => {
                     {viewOrders[0] ? viewOrders[0].delivery_fee : ''}
                   </span>
                 </p>
-                <h5 className='d-flex align-items-center justify-content-end'>
-                  <span className='me-2 fw-bold'> Grand Total: </span>{' '}
-                  <img
-                    src='/images/seashell.png'
-                    className='me-2'
-                    style={{ height: '30px' }}
-                  />{' '}
-                  {viewOrders.length > 0
-                    ? calculateGrandTotalPrice(viewOrders)
-                    : '(Calculating...)'}
-                </h5>
               </div>
             </div>
           </Modal.Body>
@@ -696,10 +736,6 @@ export const DeliveredRider = () => {
                         className={
                           'd-flex justify-content-between w-100 align-items-center align-items-center'
                         }
-                        style={{
-                          opacity:
-                            item.order_trans_status === '4' ? '0.5' : '1',
-                        }}
                       >
                         <div className='d-flex flex-grow-1 me-4'>
                           <div className='d-flex flex-column me-3'>
@@ -730,10 +766,10 @@ export const DeliveredRider = () => {
                           <div className='w-100 mt-2'>
                             <div className='d-flex flex-column'>
                               <small className='fs-6 text-secondary'>
-                                # {item.order_number}
+                                # {item.order_to_deliver.order_number}
                               </small>
                               <h4 className='mb-3'>
-                                {item.order.product.title}
+                                {item.order_to_deliver.order.product.title}
                               </h4>
                             </div>
                             <div className='text-end'>
@@ -745,7 +781,7 @@ export const DeliveredRider = () => {
                                     style={{ height: '20px' }}
                                     className='me-1'
                                   />{' '}
-                                  {item.delivery_fee}
+                                  {item.order_to_deliver.delivery_fee}
                                 </span>
                               </div>
                             </div>
@@ -755,24 +791,30 @@ export const DeliveredRider = () => {
                           <Button
                             variant='primary'
                             onClick={() => {
-                              view(item.order_number);
+                              view(item.order_to_deliver.order_number);
                               setViewOrderBuyerModal(true);
                             }}
                             style={{ cursor: 'pointer' }}
-                            className='badge rounded text-bg-primary px-2 me-2'
+                            className='badge rounded px-2 me-2'
                           >
                             View
                           </Button>
                           <Button
-                            variant='success'
+                            variant='danger'
                             onClick={() => {
-                              accept(item.order_trans_id);
+                              view(item.order_to_deliver.order_number);
+                              setViewOrderBuyerModal(true);
                             }}
                             style={{ cursor: 'pointer' }}
-                            className='badge rounded px-2'
+                            className='badge rounded px-2 me-2'
                           >
-                            Delivered
+                            Return
                           </Button>
+                          {item.delivery_status === '3' ? (
+                            <span className='text-warning'>Success</span>
+                          ) : (
+                            <span className='text-danger'>Failed</span>
+                          )}
                         </div>
                       </div>
                     </Card>
