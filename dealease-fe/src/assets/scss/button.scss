@@ -38,6 +38,11 @@
   font-size: 18px;
   margin-top: 20px;
 }
+.btn-filter-product {
+  padding: 6px 26px;
+  font-size: 16px;
+  margin: 0 4px;
+}
 
 .btn-sm {
   padding: 6px 26px;
@@ -116,6 +121,9 @@
   margin-left: -20px;
 }
 @media screen and (max-width: 960px) {
+  .search-input {
+    height: 40px;
+  }
   .div-dropdown {
     color: #fff;
     align-items: center;

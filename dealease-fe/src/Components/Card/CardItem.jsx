@@ -11,12 +11,14 @@ import {
   faTrash,
   faCartShopping,
   faCartPlus,
+  faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { Edit } from '../Modal/Editmodal';
 import { MydModalWithGrid } from '../Modal/Signupmoda';
 import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import API_URI from '../../api/public_url';
+import { FaUserAltSlash } from 'react-icons/fa';
 export function CardItem(props) {
   const { token, user } = useAuthContext();
   const [editModalshow, setEditmodalShow] = useState(false);
@@ -79,6 +81,7 @@ export function CardItem(props) {
             {/* <div className='text-truncate'> */}
             <h5 className='cards_item_text '>{props.text}</h5>
             {/* </div> */}
+            <h5 className='text-end mt-2'>- Seller {props.title}</h5>
             <div className='price-deal mt-2'>
               {' '}
               <img

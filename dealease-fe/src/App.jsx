@@ -38,6 +38,7 @@ import { TransactionsUser } from './Pages/Users/Transactions';
 // solla
 // Guest Layout
 import { RegisterRider } from './Pages/Auth/RegisterRider';
+import { Register } from './Pages/Auth/Register';
 import { Mainpage } from './Pages';
 import { GuestLayout } from './Layouts/GuestLayout';
 import { ForgotPassword } from './Pages/Auth/ForgotPassword';
@@ -99,6 +100,7 @@ function App() {
           <Route element={<GuestLayout />}>
             {/*Solla */}
             <Route path='/' element={<Mainpage />} />
+            <Route path='/register' element={<Register />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/password-reset/:token' element={<PasswordReset />} />
           </Route>

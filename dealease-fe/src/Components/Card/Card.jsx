@@ -35,13 +35,13 @@ export function Card() {
     <div className='cards'>
       <div className='cards_container'>
         <Container className='mt-5'>
-          <Row>
-            <Col>
-              <h1 className='text-home mb-5'>{token ? 'Home' : 'Products'}</h1>
-              <div className='d-flex align-items-end'>
+          <h1 className='text-home mb-3'>{token ? 'Home' : 'Products'}</h1>
+          <div className='justify-content-between'>
+            <Row>
+              <Col className='d-flex '>
                 <span
                   className={
-                    'rounded-pill btn btn-sm me-3 fw-semibold ' +
+                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
                     (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
@@ -51,68 +51,61 @@ export function Card() {
                 >
                   All
                 </span>
-                <div className='d-flex flex-column'>
-                  <small className='fw-bold mb-1 ms-2'>DATE</small>
-                  <div>
-                    <span
-                      className={
-                        'rounded-pill btn btn-sm me-3 fw-semibold ' +
-                        (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
-                      }
-                      onClick={() => {
-                        fetchThisDay(user.user_id);
-                        setCurrentColor(1);
-                      }}
-                    >
-                      Today
-                    </span>
-                  </div>
-                </div>
-                <div className='d-flex flex-column'>
-                  <small className='fw-bold mb-1 ms-2'>STATUS</small>
-                  <span
-                    className={
-                      'rounded-pill btn btn-sm me-3 fw-semibold ' +
-                      (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
-                    }
-                    onClick={() => {
-                      fetchAvailable(user.user_id);
-                      setCurrentColor(2);
-                    }}
-                  >
-                    Available
-                  </span>
-                </div>
 
-                <div className='flex-grow-1'>
-                  <Form className='w-100'>
-                    <div className='position-relative d-flex justify-content-end'>
-                      <Form.Control
-                        type='search'
-                        placeholder='Search...'
-                        className={'rounded-pill w-25'}
-                        style={{
-                          transition: '.5s all ease',
-                          paddingLeft: '32px',
-                        }}
-                        aria-label='Search'
-                        onChange={searchProduct}
+                <span
+                  className={
+                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    fetchThisDay(user.user_id);
+                    setCurrentColor(1);
+                  }}
+                >
+                  Today
+                </span>
+
+                <span
+                  className={
+                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    fetchAvailable(user.user_id);
+                    setCurrentColor(2);
+                  }}
+                >
+                  Available
+                </span>
+              </Col>
+              <Col>
+                <Form className=' mt-3 '>
+                  <div className='position-relative d-flex '>
+                    <Form.Control
+                      type='search'
+                      placeholder='Search...'
+                      className={'rounded-pill search-input'}
+                      style={{
+                        transition: '.5s all ease',
+                        paddingLeft: '32px',
+                      }}
+                      aria-label='Search'
+                      onChange={searchProduct}
+                    />
+                    <div
+                      className='position-absolute search-icon ms-1'
+                      // style={{ top: '5px', right: '205px' }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faSearch}
+                        style={{ opacity: 0.5 }}
                       />
-                      <div
-                        className='position-absolute ms-1'
-                        style={{ top: '5px', right: '205px' }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faSearch}
-                          style={{ opacity: 0.5 }}
-                        />
-                      </div>
                     </div>
-                  </Form>
-                </div>
-              </div>
-            </Col>
-          </Row>
+                  </div>
+                </Form>
+              </Col>
+            </Row>
+          </div>
         </Container>
 
         {msgStatus && (

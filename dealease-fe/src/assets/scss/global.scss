@@ -245,7 +245,24 @@
   font-size: 16px;
   padding: 16px 32px;
 }
+.search-icon {
+  margin-top: 7px;
+  left: 8px;
+}
+.search-input {
+  width: 50%;
+}
+.offcanvas {
+  width: auto !important;
+}
 @media screen and (max-width: 960px) {
+  .search-input {
+    width: 100%;
+  }
+  .search-icon {
+    margin-top: 9px;
+    left: 8px;
+  }
   .wallet-modal-container {
     position: relative;
     width: 55%;
