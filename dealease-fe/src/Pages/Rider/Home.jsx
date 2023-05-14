@@ -53,6 +53,8 @@ export const HomeRider = () => {
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const [toPickUpData, setToPickUpData] = useState([]);
+  const [isDisabled, setDisabled] = useState(true);
   const navigate = useNavigate();
 
   const { user, setEmailVerified, setRegistrationSuccess, logout } =
@@ -62,6 +64,10 @@ export const HomeRider = () => {
   const handleLogout = () => {
     logout();
   };
+
+  if (toPickUpData.length > 0) {
+    navigate('/rider/to-deliver');
+  }
 
   useEffect(() => {
     axiosClient
@@ -244,16 +250,16 @@ export const HomeRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderTable('/rider');
+        setRiderDeliveryTable('/rider');
       }
     });
   }
 
   function toDeliver(orderTransId) {
     Finalize({
-      text: 'To Deliver?',
+      text: 'Are you sure you want change status To Deliver Status?',
       confirmButton: 'Yes',
-      successMsg: 'Order To Deliver Successfully.',
+      successMsg: 'Order changed status To Deliver Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
@@ -268,140 +274,18 @@ export const HomeRider = () => {
     });
   }
 
-  function setRiderTable(url) {
+  function toPickUp(url) {
     setBody([]);
     setLoading(true);
     axiosClient.get(url).then((resp) => {
-      setBody(resp.data);
-      setLoading(false);
-    });
-  }
-
-  function setRiderDeliveryTable(url) {
-    setBody([]);
-    setLoading(true);
-    axiosClient.get(url).then((resp) => {
-      const ordersRider = resp.data.map((order, i) => {
-        return {
-          id: i + 1,
-          order_number: order.order_to_deliver.order_number,
-          seller_name: (
-            <div
-              key={order.order_to_deliver.order_trans_id}
-              className='d-flex'
-              style={{ columnGap: '10px' }}
-            >
-              <img
-                src={
-                  PUBLIC_PATH +
-                  'images/' +
-                  order.order_to_deliver.buyer.prof_img
-                }
-                className='rounded-circle pr-5'
-                style={{ width: '50px', height: '50px' }}
-              />
-              <div>
-                <p className='mb-0'>
-                  {order.order_to_deliver.buyer.first_name}{' '}
-                  {order.order_to_deliver.buyer.user_details.middle_name
-                    ? order.order_to_deliver.buyer.user_details.middle_name[0]
-                    : ''}
-                  {'. '}
-                  {order.order_to_deliver.buyer.user_details
-                    ? order.order_to_deliver.buyer.user_details.last_name
-                    : ' '}{' '}
-                  {order.order_to_deliver.buyer.user_details.ext_name
-                    ? order.order_to_deliver.buyer.user_details.ext_name
-                    : ''}
-                </p>
-              </div>
-            </div>
-          ),
-          contact_number:
-            order.order_to_deliver.buyer.user_details.contact_number,
-          order_status: (
-            <span
-              className={
-                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
-                switchColor(order.order_to_deliver.order_trans_status)
-              }
-            >
-              {status(order.order_to_deliver.order_trans_status)}
-            </span>
-          ),
-          payment_total_amount: (
-            <>
-              <img
-                src='/images/seashell.png'
-                style={{ width: '25px' }}
-                className='me-2'
-              />{' '}
-              {calculateGrandTotalDeliveryFee(
-                order.order_to_deliver.total_amount,
-                order.order_to_deliver.delivery_fee
-              )}{' '}
-            </>
-          ),
-          created_at: dateFormat(order.order_to_deliver.created_at),
-          action: (
-            <div key={i} className='button-actions text-light d-flex'>
-              <Button
-                variant='primary'
-                onClick={() => {
-                  view(order.order_to_deliver.order_number);
-                  setViewOrderBuyerModal(true);
-                }}
-                style={{ cursor: 'pointer' }}
-                className='badge rounded text-bg-primary px-2 me-2'
-              >
-                View
-              </Button>
-
-              {order.order_to_deliver.order_trans_status === '3' &&
-              order.order_to_deliver.order_trans_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      accept(order.order_to_deliver.order_trans_id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Pick Up
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
-
-              {order.delivery_status === '1' && order.delivery_status > 0 ? (
-                <>
-                  <Button
-                    variant='success'
-                    onClick={() => {
-                      toDeliver(order.id);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded px-2 me-2'
-                  >
-                    To Deliver
-                  </Button>
-                </>
-              ) : (
-                ''
-              )}
-            </div>
-          ),
-        };
-      });
-      setBody(ordersRider);
+      setToPickUpData(resp.data);
+      setDisabled(false);
       setLoading(false);
     });
   }
 
   useEffect(() => {
-    setRiderTable('/rider');
+    toPickUp('/rider/toPickUp');
   }, []);
 
   return (
@@ -470,6 +354,7 @@ export const HomeRider = () => {
               className='text-black '
               // icon={<FaHouse />}
               component={<Link to='/rider/to-pick-up' />}
+              disabled={isDisabled || toPickUpData.length > 0}
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
               To Pick Up
@@ -481,6 +366,14 @@ export const HomeRider = () => {
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
               To Deliver
+            </MenuItem>
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/rider/delivered' />}
+            >
+              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
+              Delivered
             </MenuItem>
             <SubMenu label='Transactions'>
               <MenuItem component={<Link to='/withdraw' />}>

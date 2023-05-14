@@ -53,6 +53,7 @@ export const ToDeliverRider = () => {
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const [isDisabled, setDisabled] = useState(true);
   const navigate = useNavigate();
 
   const { user, setEmailVerified, setRegistrationSuccess, logout } =
@@ -272,6 +273,7 @@ export const ToDeliverRider = () => {
     setLoading(true);
     axiosClient.get(url).then((resp) => {
       setBody(resp.data);
+      setDisabled(false);
       setLoading(false);
     });
   }
@@ -445,6 +447,7 @@ export const ToDeliverRider = () => {
               className='text-black '
               // icon={<FaHouse />}
               component={<Link to='/rider/to-pick-up' />}
+              disabled={isDisabled || body.length > 0}
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
               To Pick Up
@@ -456,6 +459,14 @@ export const ToDeliverRider = () => {
             >
               <FontAwesomeIcon icon={faHouse} className='navs-icon' />
               To Deliver
+            </MenuItem>
+            <MenuItem
+              className='text-black '
+              // icon={<FaHouse />}
+              component={<Link to='/rider/delivered' />}
+            >
+              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
+              Delivered
             </MenuItem>
             <SubMenu label='Transactions'>
               <MenuItem component={<Link to='/withdraw' />}>
@@ -669,7 +680,7 @@ export const ToDeliverRider = () => {
               ) : (
                 body.length > 0 &&
                 body.map((item, i) =>
-                  item ? (
+                  item.length > 0 ? (
                     <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
                       <div
                         className={
