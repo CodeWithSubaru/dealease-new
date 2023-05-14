@@ -3,8 +3,6 @@ import { Modal, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { CardItem } from './CardItem';
-import '../../assets/scss/card.scss';
-import '../../assets/scss/button.scss';
 import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
@@ -32,59 +30,60 @@ export function Card() {
   }, []);
 
   return (
-    <div className='cards'>
-      <div className='cards_container'>
-        <Container className='mt-5'>
-          <h1 className='text-home mb-3'>{token ? 'Home' : 'Products'}</h1>
-          <div className='justify-content-between'>
-            <Row>
-              <Col className='d-flex '>
-                <span
-                  className={
-                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
-                    (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
-                  }
-                  onClick={() => {
-                    fetchPublicProducts(user.user_id);
-                    setCurrentColor(0);
-                  }}
-                >
-                  All
-                </span>
+    <div>
+      <div className='card m-5'>
+        <div className='mt-5 d-flex'>
+          <div className='d-flex justify-content-between flex-grow-1 px-3'>
+            <div className='w-100'>
+              <h1 className='text-home mb-3'>{token ? 'Home' : 'Products'}</h1>
+              <div className='d-flex justify-content-between'>
+                <div>
+                  <span
+                    className={
+                      'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                      (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
+                    }
+                    onClick={() => {
+                      fetchPublicProducts(user.user_id);
+                      setCurrentColor(0);
+                    }}
+                  >
+                    All
+                  </span>
 
-                <span
-                  className={
-                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
-                    (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
-                  }
-                  onClick={() => {
-                    fetchThisDay(user.user_id);
-                    setCurrentColor(1);
-                  }}
-                >
-                  Today
-                </span>
+                  <span
+                    className={
+                      'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                      (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+                    }
+                    onClick={() => {
+                      fetchThisDay(user.user_id);
+                      setCurrentColor(1);
+                    }}
+                  >
+                    Today
+                  </span>
 
-                <span
-                  className={
-                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
-                    (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
-                  }
-                  onClick={() => {
-                    fetchAvailable(user.user_id);
-                    setCurrentColor(2);
-                  }}
-                >
-                  Available
-                </span>
-              </Col>
-              <Col>
-                <Form className=' mt-3 '>
+                  <span
+                    className={
+                      'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                      (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
+                    }
+                    onClick={() => {
+                      fetchAvailable(user.user_id);
+                      setCurrentColor(2);
+                    }}
+                  >
+                    Available
+                  </span>
+                </div>
+
+                <Form className='d-flex flex-grow-1 justify-content-end mt-3'>
                   <div className='position-relative d-flex '>
                     <Form.Control
                       type='search'
                       placeholder='Search...'
-                      className={'rounded-pill search-input'}
+                      className={'rounded-pill search-input w-100'}
                       style={{
                         transition: '.5s all ease',
                         paddingLeft: '32px',
@@ -103,10 +102,10 @@ export function Card() {
                     </div>
                   </div>
                 </Form>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </div>
-        </Container>
+        </div>
 
         {msgStatus && (
           <div
