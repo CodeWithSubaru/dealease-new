@@ -110,7 +110,7 @@ export function Header(props) {
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-              placement='end'
+              placement='start'
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
@@ -174,10 +174,10 @@ export function Header(props) {
                 >
                   Signup
                 </button>
-                <RegisterModal
+                {/* <RegisterModal
                   showRegister={modalRegisterShow}
                   onHideRegister={() => setRegisterModalShow(false)}
-                />
+                /> */}
                 {/* <Form className='d-flex'>
                   <Form.Control
                     type='search'
@@ -306,7 +306,7 @@ export function Header(props) {
             </Col>
             <Col>
               <div className='wallet-modal-container'>
-                <a href='/recharge'>
+                <a href='/register'>
                   <img
                     alt=''
                     src='/images/forUser.png'
