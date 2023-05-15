@@ -361,11 +361,11 @@ class OrderController extends Controller
             // if the update is succeeded
             if ($deliveriesChangeStatus) {
                 // fetch for delivery details
-                $delivery = Deliveries::find($deliveries->order_trans_id);
+                $delivery = Deliveries::find($deliveries->first()->order_trans_id);
                 $rider_id = $delivery->rider_id;
 
                 // fetch for order details
-                $order = OrderTransaction::find($id);
+                $order = OrderTransaction::find($id)->first();
                 $seller_id = $order->seller_id;
 
                 // seller amount to add
@@ -375,7 +375,7 @@ class OrderController extends Controller
                 $rider_fee = $order->delivery_fee;
 
                 // fetching for rider's wallet
-                $riderWallet = UsersWallet::find($rider_id);
+                $riderWallet = UsersWallet::find($rider_id)->first();
                 $riderCurrentWallet = $riderWallet->shell_coin_amount;
 
                 // current wallet amount + delivery fee
@@ -387,10 +387,10 @@ class OrderController extends Controller
                 // if succeeded in updating the wallet of rider will trigger this.
                 if ($updateRiderWallet) {
                     // fetching for seller's wallet
-                    $sellerWallet = UsersWallet::find($seller_id);
+                    $sellerWallet = UsersWallet::find($seller_id)->first();
                     $sellerCurrentWallet = $sellerWallet->shell_coin_amount;
                     // current wallet amount + amount revenue
-                    $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue * 0.04);
+                    $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue - ($seller_revenue * 0.04));
                     UsersWallet::where('wallet_id', $seller_id)->update([
                         'shell_coin_amount' => $updatedSellerWallet,
                     ]);

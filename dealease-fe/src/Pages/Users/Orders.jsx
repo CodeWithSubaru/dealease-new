@@ -151,7 +151,7 @@ export function OrdersBuyer() {
     });
   }
 
-  function orderReceived(id, grandTotal) {
+  function orderReceived(id) {
     Finalize({
       text: 'Are you sure, your deliver Received?',
       confirmButton: 'Yes',
