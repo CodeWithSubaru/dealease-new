@@ -38,6 +38,7 @@ export function ShippingFee() {
   const { user, fetchUserInfo } = useAuthContext();
   const [barangayForm, setBarangay] = useState('');
   const [street, setStreet] = useState('');
+  const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
 
   const [viewShippingAddressForm, setViewShippingAddressForm] = useState(false);
@@ -416,6 +417,7 @@ export function ShippingFee() {
 
                           const data = {
                             shippingFee: {
+                              full_name: fullName,
                               barangay: barangayForm,
                               street: street,
                               contact_number: contactNumber,
@@ -452,11 +454,23 @@ export function ShippingFee() {
                     }}
                     id='shippingForm'
                   >
-                    <h3 className='mb-3'>Shipping Address</h3>
-
+                    <h3 className=''>Shipping Address</h3>
+                    <p className='text-secondary mb-3'>
+                      Please fill up the form.
+                    </p>
                     <Form.Group className='mb-3'>
                       <Form.Label className='text-dark'> Full Name </Form.Label>
-                      <Form.Control type='text' onChange={() => {}} />
+                      <Form.Control
+                        type='text'
+                        onChange={(e) => setFullName(e.target.value)}
+                        isInvalid={!!errors['shippingFee.full_name']}
+                      />
+
+                      {errors['shippingFee.full_name'] ? (
+                        <Form.Control.Feedback type='invalid'>
+                          {errors['shippingFee.full_name'][0]}
+                        </Form.Control.Feedback>
+                      ) : null}
                     </Form.Group>
 
                     <div className='d-flex mb-3'>

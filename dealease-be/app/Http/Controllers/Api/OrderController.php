@@ -119,6 +119,7 @@ class OrderController extends Controller
     {
         if ($request->shippingFee) {
             $request->validate([
+                'shippingFee.full_name' => 'required',
                 'shippingFee.barangay' => 'required',
                 'shippingFee.street' => 'required',
                 'shippingFee.contact_number' => ['required', 'min:11', 'max:11'],
@@ -385,7 +386,7 @@ class OrderController extends Controller
                     $sellerWallet = UsersWallet::find($seller_id);
                     $sellerCurrentWallet = $sellerWallet->shell_coin_amount;
                     // current wallet amount + amount revenue
-                    $updatedSellerWallet = $sellerCurrentWallet + $seller_revenue;
+                    $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue * 0.04);
                     UsersWallet::where('wallet_id', $seller_id)->update([
                         'shell_coin_amount' => $updatedSellerWallet,
                     ]);

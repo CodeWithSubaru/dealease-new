@@ -603,75 +603,74 @@ export const HomeRider = () => {
                 <div className='d-flex justify-content-center flex-grow-1'>
                   <Load />
                 </div>
-              ) : (
-                body.length > 0 &&
-                body.map((item) =>
-                  item ? (
-                    <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
-                      <div
-                        className={
-                          'd-flex justify-content-between w-100 align-items-center align-items-center' +
-                          (item.order_trans_status === '4' &&
-                            'position-relative')
-                        }
-                        style={{
-                          opacity:
-                            item.order_trans_status === '4' ? '0.5' : '1',
-                        }}
-                      >
-                        <div className='d-flex flex-grow-1 me-4'>
-                          <div className='d-flex flex-column me-3'>
-                            <FontAwesomeIcon
-                              icon={faCircleDot}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faLocationDot}
-                              className='text-success'
-                            />
+              ) : body.length > 0 ? (
+                body.map((item) => (
+                  <Card
+                    className='d-flex p-4 m-1 border border-1 border-dark-subtle'
+                    style={{ width: '48%' }}
+                  >
+                    <div
+                      className={
+                        'd-flex justify-content-between w-100 align-items-center align-items-center' +
+                        (item.order_trans_status === '4' && 'position-relative')
+                      }
+                      style={{
+                        opacity: item.order_trans_status === '4' ? '0.5' : '1',
+                      }}
+                    >
+                      <div className='d-flex flex-grow-1 me-4'>
+                        <div className='d-flex flex-column me-3'>
+                          <FontAwesomeIcon
+                            icon={faCircleDot}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faLocationDot}
+                            className='text-success'
+                          />
+                        </div>
+
+                        {/* To Pick up action */}
+                        {
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
+                              </div>
+                            </div>
                           </div>
+                        }
 
-                          {/* To Pick up action */}
-                          {
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          }
-
-                          {/* To Deliver action */}
-                          {/* {item.order_trans_status === '4' && (
+                        {/* To Deliver action */}
+                        {/* {item.order_trans_status === '4' && (
                             <div className='w-100 mt-2'>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
@@ -696,8 +695,8 @@ export const HomeRider = () => {
                               </div>
                             </div>
                           )} */}
-                          {/* delivered / receiver action button */}
-                          {/* {item.order_trans_status === '5' && (
+                        {/* delivered / receiver action button */}
+                        {/* {item.order_trans_status === '5' && (
                             <div className='w-100 mt-2'>
                               <div className='d-flex flex-column'>
                                 <small className='fs-6 text-secondary'>
@@ -722,43 +721,45 @@ export const HomeRider = () => {
                               </div>
                             </div>
                           )} */}
-                        </div>
-                        <div className='d-flex justify-content-center'>
-                          <Button
-                            variant='primary'
-                            onClick={() => {
-                              view(item.order_number);
-                              setViewOrderBuyerModal(true);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            className='badge rounded text-bg-primary px-2 me-2'
-                          >
-                            View
-                          </Button>
-
-                          {item.order_trans_status === '3' ? (
-                            <>
-                              <Button
-                                variant='success'
-                                onClick={() => {
-                                  accept(item.order_trans_id);
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                className='badge rounded px-2'
-                              >
-                                To Deliver
-                              </Button>
-                            </>
-                          ) : (
-                            ''
-                          )}
-                        </div>
                       </div>
-                    </Card>
-                  ) : (
-                    'No Items Found'
-                  )
-                )
+                      <div className='d-flex justify-content-center'>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            view(item.order_number);
+                            setViewOrderBuyerModal(true);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded text-bg-primary px-2 me-2'
+                        >
+                          View
+                        </Button>
+
+                        {item.order_trans_status === '3' ? (
+                          <>
+                            <Button
+                              variant='success'
+                              onClick={() => {
+                                accept(item.order_trans_id);
+                              }}
+                              style={{ cursor: 'pointer' }}
+                              className='badge rounded px-2'
+                            >
+                              To Deliver
+                            </Button>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <div className='text-center w-100'>
+                  {' '}
+                  <span> No Items Found </span>{' '}
+                </div>
               )}
             </div>
           </Card>

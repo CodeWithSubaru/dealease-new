@@ -272,6 +272,7 @@ export const ToDeliverRider = () => {
     setBody([]);
     setLoading(true);
     axiosClient.get(url).then((resp) => {
+      console.log(resp);
       setBody(resp.data);
       setDisabled(false);
       setLoading(false);
@@ -694,98 +695,98 @@ export const ToDeliverRider = () => {
                 <div className='d-flex justify-content-center flex-grow-1'>
                   <Load />
                 </div>
-              ) : (
-                body.length > 0 &&
-                body.map((item, i) =>
-                  item.length > 0 ? (
-                    <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
-                      <div
-                        className={
-                          'd-flex justify-content-between w-100 align-items-center align-items-center'
-                        }
-                      >
-                        <div className='d-flex flex-grow-1 me-4'>
-                          {/* Icon */}
-                          <div className='d-flex flex-column me-3'>
-                            <FontAwesomeIcon
-                              icon={faCircleDot}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faLocationDot}
-                              className='text-success'
-                            />
-                          </div>
-                          {console.log(item)}
-                          {/* To Deliver action */}
-                          {
-                            <div className='w-100 mt-2' key={i}>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_to_deliver.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order_to_deliver.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.order_to_deliver.delivery_fee}
-                                  </span>
-                                </div>
+              ) : body.length > 0 ? (
+                body.map((item, i) => (
+                  <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
+                    <div
+                      className={
+                        'd-flex justify-content-between w-100 align-items-center align-items-center'
+                      }
+                    >
+                      <div className='d-flex flex-grow-1 me-4'>
+                        {/* Icon */}
+                        <div className='d-flex flex-column me-3'>
+                          <FontAwesomeIcon
+                            icon={faCircleDot}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faLocationDot}
+                            className='text-success'
+                          />
+                        </div>
+                        {console.log(item)}
+                        {/* To Deliver action */}
+                        {
+                          <div className='w-100 mt-2' key={i}>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_to_deliver.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order_to_deliver.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.order_to_deliver.delivery_fee}
+                                </span>
                               </div>
                             </div>
-                          }
-                        </div>
-
-                        <div className='d-flex justify-content-center'>
-                          <Button
-                            variant='primary'
-                            onClick={() => {
-                              view(item.order_to_deliver.order_number);
-                              setViewOrderBuyerModal(true);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            className='badge rounded text-bg-primary px-2 me-2'
-                          >
-                            View
-                          </Button>
-                          <Button
-                            variant='success'
-                            onClick={() => {
-                              delivered(item.deliveries_id);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            className='badge rounded px-2'
-                          >
-                            Delivered
-                          </Button>
-                        </div>
+                          </div>
+                        }
                       </div>
-                    </Card>
-                  ) : (
-                    'No Items Found'
-                  )
-                )
+
+                      <div className='d-flex justify-content-center'>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            view(item.order_to_deliver.order_number);
+                            setViewOrderBuyerModal(true);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded text-bg-primary px-2 me-2'
+                        >
+                          View
+                        </Button>
+                        <Button
+                          variant='success'
+                          onClick={() => {
+                            delivered(item.deliveries_id);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded px-2'
+                        >
+                          Delivered
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <div className='text-center w-100'>
+                  {' '}
+                  <span> No Items Found </span>{' '}
+                </div>
               )}
             </div>
           </Card>
