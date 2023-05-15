@@ -354,14 +354,14 @@ class OrderController extends Controller
             // fetching the deliveries_id from deliveries table
             $deliveries = OrderTransaction::find($id);
             // buyer will update deliveries status into received
-            $deliveriesChangeStatus = Deliveries::where('deliveries_id', $deliveries->deliveries_id)->update([
+            $deliveriesChangeStatus = Deliveries::where('order_trans_id', $deliveries->order_trans_id)->update([
                 'delivery_status' => '4',
             ]);
 
             // if the update is succeeded
             if ($deliveriesChangeStatus) {
                 // fetch for delivery details
-                $delivery = Deliveries::find($deliveriesChangeStatus->deliveries_id);
+                $delivery = Deliveries::find($deliveries->order_trans_id);
                 $rider_id = $delivery->rider_id;
 
                 // fetch for order details
