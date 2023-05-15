@@ -186,9 +186,9 @@ class OrderController extends Controller
             $userWallet->update(['shell_coin_amount' => $customerShells]);
 
             // seller coins will be added after the deduction to customers wallet
-            $sellerWallet = UsersWallet::where('user_id', $sellerId);
-            $sellerShells = $sellerWallet->first()->shell_coin_amount + ($rate + $totalPrice);
-            $sellerWallet->update(['shell_coin_amount' => $sellerShells]);
+            // $sellerWallet = UsersWallet::where('user_id', $sellerId);
+            // $sellerShells = $sellerWallet->first()->shell_coin_amount + ($rate + $totalPrice);
+            // $sellerWallet->update(['shell_coin_amount' => $sellerShells]);
 
             if ($request->shippingFee) {
                 // option for other shipping address

@@ -137,7 +137,7 @@ export function OrdersBuyer() {
     Finalize({
       text: 'Are you sure, you want to cancel your order?',
       confirmButton: 'Yes',
-      successMsg: 'Order Received',
+      successMsg: 'Order Cancelled Successfully',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
