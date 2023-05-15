@@ -384,7 +384,7 @@ export function ShippingFee() {
                     {user.user_details ? user.user_details.city : ''}
                   </span>
                   <Link
-                    className='flex-grow-1 d-flex justify-content-end align-items-center text-secondary'
+                    className='flex-grow-1 d-flex justify-content-end align-items-center text-secondary flex-shrink-0'
                     style={{ fontSize: '14px' }}
                     onClick={() => {
                       viewShippingAddressForm
@@ -453,6 +453,11 @@ export function ShippingFee() {
                     id='shippingForm'
                   >
                     <h3 className='mb-3'>Shipping Address</h3>
+
+                    <Form.Group className='mb-3'>
+                      <Form.Label className='text-dark'> Full Name </Form.Label>
+                      <Form.Control type='text' onChange={() => {}} />
+                    </Form.Group>
 
                     <div className='d-flex mb-3'>
                       <Form.Group className='flex-grow-1 me-2'>
@@ -652,6 +657,7 @@ export function ShippingFee() {
                                         {calculateSubTotalPrice(item)}
                                       </td>
                                     </tr>
+                                    <br />
                                   </table>
                                 </div>
                               </div>

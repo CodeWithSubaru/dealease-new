@@ -197,8 +197,8 @@
 
 .text-home::after {
   content: '';
-  display: flex;
-  width: 10%;
+  display: block;
+  width: 100px;
   border-bottom: 5px solid #1f98f4;
 }
 
