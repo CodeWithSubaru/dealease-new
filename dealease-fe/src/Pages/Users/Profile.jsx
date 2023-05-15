@@ -2,7 +2,7 @@ import useAuthContext from "../../Hooks/Context/AuthContext";
 import Table from "react-bootstrap/Table";
 import { Footer } from "../../Components/Footer/Footer";
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+
 import Modal from "react-bootstrap/Modal";
 import { FaUserEdit } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
@@ -28,6 +28,7 @@ import {
   faInbox,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { Row, Col, Container, Button } from "react-bootstrap";
 
 export const ProfileUser = () => {
   const { user } = useAuthContext();
@@ -93,79 +94,107 @@ export const ProfileUser = () => {
           <div className="userprofile">
             <form method="">
               <div className="row">
-                <div className="col-md-4">
+                <div className="col">
                   <img
                     className="profimg rounded-circle"
                     src={PUBLIC_PATH + "images/" + user.prof_img}
                     alt="profimg"
                   />
-                  <div className="proffirst">
-                    {user ? user.first_name : ""}{" "}
-                  </div>
-                  <div className="profemail">{user ? user.email : ""} </div>
-                  <div className="backgrnd"></div>
-                  <div className="accountinfo">
-                    <h5>Account Information</h5>
-                  </div>
-                  <div className="proftable">
-                    <Table striped>
-                      <tbody>
-                        <tr>
-                          <td>Full Name</td>
-                          <td>
-                            {user ? user.first_name : ""}{" "}
-                            {user ? user.middle_name : ""}{" "}
-                            {user ? user.last_name : ""}{" "}
-                            {user ? user.ext_name : ""}
-                          </td>
-                        </tr>
+                  <Row>
+                    <Col
+                      xs={3}
+                      style={{
+                        margin: "0 87px",
+                      }}
+                    >
+                      <h5>Account Information</h5>
+                    </Col>
 
-                        <tr>
-                          <td>Email</td>
-                          <td>{user ? user.email : ""}</td>
-                        </tr>
+                    <Col
+                      style={{
+                        color: "#0c6ffd",
+                      }}
+                    >
+                      <FaUserEdit size="0.7rem" /> &nbsp;
+                      <a href="#" onClick={handleShow}>
+                        Edit Profile
+                      </a>
+                    </Col>
+                  </Row>
 
-                        <tr>
-                          <td>Address</td>
-                          <td>
-                            {user.user_details ? user.user_details.street : ""}
-                            {user.user_details
-                              ? user.user_details.barangay
-                              : ""}
-                            {user.user_details ? user.user_details.city : ""}{" "}
-                            {user.user_details
-                              ? user.user_details.province
-                              : ""}
-                            {user.user_details ? user.user_details.region : ""}
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>Contact Number</td>
-                          <td>
-                            {user.user_details
-                              ? user.user_details.contact_number
-                              : ""}
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>Birthday </td>
-                          <td>
-                            {user.user_details
-                              ? user.user_details.birth_date
-                              : ""}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
+                  <br />
+                  <br />
+                  <Container
+                    style={{
+                      margin: "0 75px",
+                    }}
+                  >
+                    <Row>
+                      <Col xs={2}>Full Name:</Col>
+                      <Col xs={3}>
+                        {user ? user.first_name : ""}{" "}
+                        {user.user_details ? user.user_details.middle_name : ""}{" "}
+                        {user.user_details ? user.user_details.last_name : ""}{" "}
+                        {user.user_details ? user.user_details.ext_name : ""}
+                      </Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp; Change
+                      </Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={2}>Email:</Col>
+                      <Col xs={3}>{user ? user.email : ""} </Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp; Change
+                      </Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={2}>Phone:</Col>
+                      <Col xs={3}>
+                        {user.user_details
+                          ? user.user_details.contact_number
+                          : ""}
+                      </Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp; Change
+                      </Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={2}>Password:</Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp;
+                        <a href="change-password">Change</a>
+                      </Col>
+                    </Row>
+                  </Container>
 
                   <div className="modalprof">
-                    <Button className="disbutton" onClick={handleShow}>
-                      <FaUserEdit size="0.7rem" /> &nbsp; Edit Profile
-                    </Button>
-
                     <Modal show={show} onHide={handleClose}>
                       <Modal.Header closeButton>
                         <Modal.Title>Edit Profile</Modal.Title>
@@ -245,8 +274,8 @@ export const ProfileUser = () => {
             </form>
           </div>
         </main>
-        <Footer />
       </div>
+      <Footer />
     </>
   ) : (
     <p>Loading...</p>
