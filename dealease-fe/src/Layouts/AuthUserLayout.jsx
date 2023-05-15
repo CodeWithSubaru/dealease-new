@@ -33,6 +33,10 @@ import Tooltip from 'react-bootstrap/Tooltip';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthUserLayout() {
+  const [show, setShowHelp] = useState(false);
+
+  const helpClose = () => setShowHelp(false);
+  const helpShow = () => setShowHelp(true);
   const [modalShow, setModalShow] = useState(false);
   const { user, token, user_type, logout } = useAuthContext();
   const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
@@ -61,7 +65,7 @@ export function AuthUserLayout() {
           expand={expand}
           sticky='top'
         >
-          <Container>
+          <Container fluid>
             {/* <Navbar.Brand href='#'>
               <img
                 alt=''
@@ -81,7 +85,6 @@ export function AuthUserLayout() {
                   height='40'
                   className='d-inline-block align-top'
                 />{' '}
-                Dealease
               </span>
             </Nav>
 
@@ -182,7 +185,7 @@ export function AuthUserLayout() {
                     overlay={<Tooltip id='tooltip-disabled'>Help</Tooltip>}
                     placement='bottom'
                   >
-                    <Nav.Link href='/help'>
+                    <Nav.Link href='' onClick={helpShow}>
                       <FontAwesomeIcon
                         icon={faQuestionCircle}
                         className='navs-icon'
@@ -374,6 +377,15 @@ export function AuthUserLayout() {
           </Row>
         </Modal.Body>
       </Modal>
+      <Offcanvas show={show} onHide={helpClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
       {user_type === 'User' ? (
         <>
           <Outlet />

@@ -25,6 +25,7 @@
     "react-pro-sidebar": "^1.0.0",
     "react-router-dom": "^6.8.1",
     "react-toastify": "^9.1.1",
+    "rsuite": "^5.33.1",
     "sass": "^1.58.3",
     "select-philippines-address": "^1.0.6",
     "styled-components": "^5.3.6",
