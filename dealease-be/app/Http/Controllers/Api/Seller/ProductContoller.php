@@ -14,7 +14,7 @@ class ProductContoller extends Controller
     // display publicly
     public function getProductsForPublic($id)
     {
-        return Product::where('user_id', '!=', $id)->where('stocks_per_kg', '>=', 0)
+        return Product::with('seller', 'seller.user_details')->where('user_id', '!=', $id)->where('stocks_per_kg', '>=', 0)
             ->latest('created_at')
             ->get();
     }
@@ -25,7 +25,7 @@ class ProductContoller extends Controller
     public function index()
     {
         $id = Auth::id(); //getting authenticated user id
-        $product = Product::where('user_id', $id)->get();
+        $product = Product::with('seller', 'seller.user_details')->where('user_id', $id)->get();
         return response()->json(['listOfProduct' => $product], 200);
     }
 

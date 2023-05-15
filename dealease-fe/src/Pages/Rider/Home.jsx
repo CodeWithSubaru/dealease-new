@@ -509,7 +509,9 @@ export const HomeRider = () => {
                       <tr>
                         <td className='d-flex ms-3'>
                           {order.delivery_address_id
-                            ? ''
+                            ? order.delivery_address.street +
+                              ' ' +
+                              order.delivery_address.barangay
                             : order.order_by.user_details.street +
                               ' ' +
                               order.order_by.user_details.barangay}

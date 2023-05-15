@@ -215,7 +215,7 @@ class OrderController extends Controller
     public function show($order)
     {
 
-        return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details')
+        return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details', 'deliveryAddress')
             ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
             ->leftJoin('delivery_addresses', 'delivery_addresses.delivery_address_id', 'order_transactions.delivery_address_id')
             ->where('orders.order_number', $order)
@@ -341,7 +341,8 @@ class OrderController extends Controller
     }
 
     // order received
-    public function orderReceived(string $id) {
+    public function orderReceived(string $id)
+    {
 
         // first buyer will update the status of order transaction into success.
         $orderUpdateStatus = OrderTransaction::where('order_trans_id', $id)->update([

@@ -19,6 +19,7 @@ import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import API_URI from '../../api/public_url';
 import { FaUserAltSlash } from 'react-icons/fa';
+import PUBLIC_PATH from '../../api/public_url';
 export function CardItem(props) {
   const { token, user } = useAuthContext();
   const [editModalshow, setEditmodalShow] = useState(false);
@@ -77,11 +78,22 @@ export function CardItem(props) {
             <img src={props.src} alt='Fish' className='cards_item_img' />
           </figure>
           <div className='cards_item_info'>
-            <h5 className=' fs-4'>{props.title}</h5>
+            <h5 className='fs-4'>{props.title}</h5>
             {/* <div className='text-truncate'> */}
-            <h5 className='cards_item_text '>{props.text}</h5>
+            <h5 className='cards_item_text fs-6'>{props.text}</h5>
             {/* </div> */}
-            <h5 className='text-end mt-2'>- Seller {props.title}</h5>
+            <h6 className='text-end mt-2'>
+              <div className='d-flex flex-column'>
+                <p>
+                  {' '}
+                  - Seller{' '}
+                  <span className='text-black-50'>
+                    {props.seller.first_name}{' '}
+                    {props.seller.user_details.last_name}
+                  </span>
+                </p>
+              </div>
+            </h6>
             <div className='price-deal mt-2'>
               {' '}
               <img

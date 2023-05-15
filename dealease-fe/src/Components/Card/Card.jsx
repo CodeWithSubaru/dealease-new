@@ -139,7 +139,7 @@ export function Card() {
                         title={product.title}
                         text={product.description}
                         price={product.price_per_kg}
-                        seller={product.user_id}
+                        seller={product.seller}
                         button='Add to cart'
                         editbutton='Edit'
                         delbutton='Delete'

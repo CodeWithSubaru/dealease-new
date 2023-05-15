@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/announcement/delete/{id}', [AnnouncementController::class, 'softDelete']);
     Route::post('/admin/announcement/restore/{id}', [AnnouncementController::class, 'restore']);
     Route::post('/admin/announcement/update-status', [AnnouncementController::class, 'updateStatus']);
+    Route::get('/admin/transaction/paymongo/{id}', [AdminPaymentController::class, 'showDetails']);
     Route::get('/admin/transactions/show/transactions/{payment_status}', [AdminPaymentController::class, 'index']);
     Route::get('/admin/transactions/under-review', [AdminPaymentController::class, 'numberOfUnderReviewTransaction']);
     Route::get('/admin/transactions/approved', [AdminPaymentController::class, 'numberOfApprovedTransaction']);

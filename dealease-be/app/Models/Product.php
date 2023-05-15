@@ -23,4 +23,14 @@ class Product extends Model
     {
         return $this->hasOne(User::class, 'user_id', 'user_id');
     }
+
+    public function seller()
+    {
+        return $this->hasOne(User::class, 'user_id', 'user_id');
+    }
+
+    public function userDetails()
+    {
+        return $this->belongsTo(UserDetail::class, 'user_detais_id', 'user_detais_id');
+    }
 }

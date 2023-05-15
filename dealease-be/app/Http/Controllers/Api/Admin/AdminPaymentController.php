@@ -29,6 +29,7 @@ class AdminPaymentController extends Controller
      */
     public function index($payment_status)
     {
+
         return ShellTransaction::with('user', 'user.user_details')
             ->where('payment_status', $payment_status)
             ->latest('created_at')
@@ -45,8 +46,18 @@ class AdminPaymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showDetails(string $id)
     {
+        $client = new \GuzzleHttp\Client();
+
+        $response = $client->request('GET', 'https://api.paymongo.com/v1/checkout_sessions/' . $id, [
+            'headers' => [
+                'accept' => 'application/json',
+                'authorization' => 'Basic c2tfdGVzdF9kSnY3bzVwTjdkdFBOTDNDQTliNWkzVFI6',
+            ],
+        ]);
+
+        return $response->getBody();
     }
 
     /**
