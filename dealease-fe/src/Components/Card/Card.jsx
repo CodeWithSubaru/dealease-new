@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Row, Col, Container, Button } from 'react-bootstrap';
+import { InputGroup, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { CardItem } from './CardItem';
@@ -78,31 +78,23 @@ export function Card() {
                   Available
                 </span>
               </Col>
-              <Col>
-                <Form className=' mt-3 '>
-                  <div className='position-relative d-flex '>
-                    <Form.Control
-                      type='search'
-                      placeholder='Search...'
-                      className={'rounded-pill search-input'}
-                      style={{
-                        transition: '.5s all ease',
-                        paddingLeft: '32px',
-                      }}
-                      aria-label='Search'
-                      onChange={searchProduct}
-                    />
-                    <div
-                      className='position-absolute search-icon ms-1'
-                      // style={{ top: '5px', right: '205px' }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faSearch}
-                        style={{ opacity: 0.5 }}
-                      />
-                    </div>
-                  </div>
-                </Form>
+              <Col md={3}>
+                <InputGroup className='mt-3'>
+                  <InputGroup.Text id='basic-addon1'>
+                    {' '}
+                    <FontAwesomeIcon icon={faSearch} style={{ opacity: 0.5 }} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type='search'
+                    placeholder='Search here...'
+                    className={' search-input'}
+                    style={{
+                      transition: '.5s all ease',
+                    }}
+                    aria-label='Search'
+                    onChange={searchProduct}
+                  />
+                </InputGroup>
               </Col>
             </Row>
           </div>
