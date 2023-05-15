@@ -53,16 +53,16 @@ export const ProductProvider = ({ children }) => {
   }
 
   function searchProduct(e) {
-    if (e.target.value !== '') {
-      setProducts({});
-      setLoading(true);
-      setTimeout(() => {
+    setTimeout(() => {
+      if (e.target.value !== '') {
+        setProducts({});
+        setLoading(true);
         axiosClient.get('product/search/' + e.target.value).then((res) => {
           setProducts(res.data);
           setLoading(false);
         });
-      }, 1500);
-    }
+      }
+    }, 1500);
   }
 
   return (

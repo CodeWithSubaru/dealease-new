@@ -78,7 +78,10 @@ export function Card() {
                   </span>
                 </div>
 
-                <Form className='d-flex flex-grow-1 justify-content-end mt-3'>
+                <Form
+                  className='d-flex flex-grow-1 justify-content-end mt-3'
+                  onSubmit={(e) => e.preventDefault()}
+                >
                   <div className='position-relative d-flex '>
                     <Form.Control
                       type='search'
@@ -108,15 +111,17 @@ export function Card() {
         </div>
 
         {msgStatus && (
-          <div
-            className={
-              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed bg-opacity-100 ' +
-              (status ? 'alert-primary' : 'alert-danger')
-            }
-            style={{ top: '100px', zIndex: '10' }}
-            role='alert'
-          >
-            {msgStatus}
+          <div className='d-flex justify-content-center'>
+            <div
+              className={
+                'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed bg-opacity-100 ' +
+                (status ? 'alert-primary' : 'alert-danger')
+              }
+              style={{ top: '100px', zIndex: '10' }}
+              role='alert'
+            >
+              {msgStatus}
+            </div>
           </div>
         )}
 
@@ -150,8 +155,8 @@ export function Card() {
                   )
                 )
               ) : (
-                <div className='h-100 d-flex align-items-center'>
-                  No Products Found
+                <div className='h-100 text-center'>
+                  <span>No Products Found</span>
                 </div>
               )}
             </Row>
