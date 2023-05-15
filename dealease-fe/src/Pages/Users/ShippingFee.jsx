@@ -197,130 +197,135 @@ export function ShippingFee() {
               {Object.values(step1).length > 0
                 ? Object.values(step1).map((item, index) => {
                     return (
-                      <div>
-                        <p className='mb-0' key={index}>
-                          <span className='badge rounded-pill text-bg-primary'>
-                            {item.length > 1
-                              ? item[index]
-                                ? item[index].product.user.first_name +
+                      <>
+                        <div>
+                          <p className='mb-0' key={index}>
+                            <span className='badge rounded-pill text-bg-primary'>
+                              {item.length > 1
+                                ? item[index]
+                                  ? item[index].product.user.first_name +
+                                    ' ' +
+                                    item[index].product.user.user_details
+                                      .middle_name[0] +
+                                    '.' +
+                                    item[index].product.user.user_details
+                                      .last_name
+                                  : ''
+                                : item[0].product.user.first_name +
                                   ' ' +
-                                  item[index].product.user.user_details
-                                    .middle_name[0] +
-                                  '.' +
-                                  item[index].product.user.user_details
-                                    .last_name
-                                : ''
-                              : item[0].product.user.first_name +
-                                ' ' +
-                                (item[0].product.user.user_details.middle_name
-                                  ? item[0].product.user.user_details
-                                      .middle_name[0] + '. '
-                                  : '') +
-                                (item[0].product.user.user_details.last_name
-                                  ? item[0].product.user.user_details.last_name
-                                  : '')}
-                          </span>
-                        </p>
-                        {item.map((cartItem, index) => (
-                          <>
-                            <Card
-                              className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
-                              key={index}
-                            >
-                              <div
-                                style={{
-                                  width: '120px',
-                                  height: '120px',
-                                  overflow: 'hidden',
-                                }}
+                                  (item[0].product.user.user_details.middle_name
+                                    ? item[0].product.user.user_details
+                                        .middle_name[0] + '. '
+                                    : '') +
+                                  (item[0].product.user.user_details.last_name
+                                    ? item[0].product.user.user_details
+                                        .last_name
+                                    : '')}
+                            </span>
+                          </p>
+                          {item.map((cartItem, index) => (
+                            <>
+                              <Card
+                                className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
+                                key={index}
                               >
-                                <img
-                                  src={
-                                    PUBLIC_URL +
-                                    'images/' +
-                                    cartItem.product.image
-                                  }
-                                  alt={
-                                    cartItem.product.image
-                                      ? cartItem.product.image
-                                      : ''
-                                  }
+                                <div
                                   style={{
-                                    objectFit: 'cover',
+                                    width: '120px',
+                                    height: '120px',
+                                    overflow: 'hidden',
                                   }}
-                                  className='rounded w-100 h-100'
-                                />
-                              </div>
-                              <div className='flex-grow-1 d-flex justify-content-between ms-3'>
-                                <div>
-                                  <H3 className='fs-3 '>
-                                    {cartItem.product.title}
-                                  </H3>
-                                  <div className='d-flex flex-column text-secondary'>
-                                    <span>
-                                      Price: Php {cartItem.product.price_per_kg}
-                                    </span>
-                                    <span>
-                                      Available Stocks :{' '}
-                                      {cartItem.product.stocks_per_kg} kg
-                                    </span>
-                                  </div>
+                                >
+                                  <img
+                                    src={
+                                      PUBLIC_URL +
+                                      'images/' +
+                                      cartItem.product.image
+                                    }
+                                    alt={
+                                      cartItem.product.image
+                                        ? cartItem.product.image
+                                        : ''
+                                    }
+                                    style={{
+                                      objectFit: 'cover',
+                                    }}
+                                    className='rounded w-100 h-100'
+                                  />
                                 </div>
-                                <div className='flex-shrink-0 align-self-end justify-content-end'>
-                                  <div className='d-flex align-items-end justify-content-end'>
-                                    <Button
-                                      variant='primary'
-                                      className='w-25 py-2 px-0 me-2 rounded'
-                                      onClick={() => decrement(cartItem.id)}
-                                      disabled={cartItem.weight == 1}
-                                    >
-                                      -
-                                    </Button>
-                                    <input
-                                      type='text'
-                                      className='w-25 py-1 text-center'
-                                      value={cartItem.weight}
-                                      disabled
-                                    />
-                                    <Button
-                                      variant='primary'
-                                      className='w-25 py-2 px-0 ms-2 rounded me-2'
-                                      onClick={() => increment(cartItem.id)}
-                                      disabled={
-                                        cartItem.product.stocks_per_kg <=
-                                        cartItem.weight
-                                      }
-                                    >
-                                      +
-                                    </Button>
+                                <div className='flex-grow-1 d-flex justify-content-between ms-3'>
+                                  <div>
+                                    <H3 className='fs-3 '>
+                                      {cartItem.product.title}
+                                    </H3>
+                                    <div className='d-flex flex-column text-secondary'>
+                                      <span>
+                                        Price: Php{' '}
+                                        {cartItem.product.price_per_kg}
+                                      </span>
+                                      <span>
+                                        Available Stocks :{' '}
+                                        {cartItem.product.stocks_per_kg} kg
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className='flex-shrink-0 align-self-end justify-content-end'>
+                                    <div className='d-flex align-items-end justify-content-end'>
+                                      <Button
+                                        variant='primary'
+                                        className='w-25 py-2 px-0 me-2 rounded'
+                                        onClick={() => decrement(cartItem.id)}
+                                        disabled={cartItem.weight == 1}
+                                      >
+                                        -
+                                      </Button>
+                                      <input
+                                        type='text'
+                                        className='w-25 py-1 text-center'
+                                        value={cartItem.weight}
+                                        disabled
+                                      />
+                                      <Button
+                                        variant='primary'
+                                        className='w-25 py-2 px-0 ms-2 rounded me-2'
+                                        onClick={() => increment(cartItem.id)}
+                                        disabled={
+                                          cartItem.product.stocks_per_kg <=
+                                          cartItem.weight
+                                        }
+                                      >
+                                        +
+                                      </Button>
 
-                                    <Button
-                                      className='btn btn-danger rounded'
-                                      onClick={() =>
-                                        removeFromCart(cartItem.id)
-                                      }
-                                    >
-                                      Remove
-                                    </Button>
+                                      <Button
+                                        className='btn btn-danger rounded'
+                                        onClick={() =>
+                                          removeFromCart(cartItem.id)
+                                        }
+                                      >
+                                        Remove
+                                      </Button>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </Card>
-                          </>
-                        ))}
-                        <p className='mb-1'>
-                          <span className='fw-semibold '> Sub Total:</span> Php{' '}
-                          {calculateSubTotalPrice(item)}
-                        </p>
-                        <p>
-                          <span className='fw-semibold'> Delivery Fee: </span>{' '}
-                          {20 * 1.5}
-                        </p>
-                      </div>
+                              </Card>
+                            </>
+                          ))}
+                          <p className='mb-1'>
+                            <span className='fw-semibold '> Sub Total:</span>{' '}
+                            Php {calculateSubTotalPrice(item)}
+                          </p>
+                          <p>
+                            <span className='fw-semibold'> Delivery Fee: </span>{' '}
+                            {20 * 1.5}
+                          </p>
+                        </div>
+                        <br />
+                      </>
                     );
                   })
                 : ''}
-              <div className='mt-5'>
+              <div className='mt-2'>
                 <hr className='border border-1 border-dark-subtle' />
                 <p className='fs-4 fw-bold mt-2 d-flex align-items-center text-secondary'>
                   {' '}
