@@ -73,7 +73,7 @@ export function Register() {
 
   useEffect(() => {
     barangays('031414').then((barangay) => setBarangay(barangay));
-    setImage('../../../images/default_image.png');
+    setImage('../../../images/default-profile-picture.jpg');
     setErrors(null);
   }, []);
 
@@ -81,7 +81,7 @@ export function Register() {
     <>
       <div className='bg-primary forgot-password-header'></div>
       <main>
-        <Container className='bg-light'>
+        <Container className='bg-light p-5'>
           <div>
             <div className='d-flex justify-content-between'>
               <div className='register-description mb-1'>
@@ -91,8 +91,8 @@ export function Register() {
               </div>
               <Image
                 src={image}
-                className='float-end rounded d-flex justify-content-center p-3'
-                style={{ height: '150px', width: '150px' }}
+                className='float-end rounded-circle d-flex justify-content-center '
+                style={{ height: '160px', width: '160px' }}
               />
             </div>
 
@@ -104,7 +104,7 @@ export function Register() {
             >
               {/* <div className='form-top'> */}
               <div className='personal-details'>
-                <Row className='px-4'>
+                <Row className=''>
                   <Col>
                     <div className='pt-2'>
                       <div htmlFor='upload-img' className=' reg-label'>
@@ -125,7 +125,7 @@ export function Register() {
                     </small>
                   </Col>
                 </Row>
-                <Row className='px-4'>
+                <Row className=''>
                   <Col lg={6}>
                     <div>
                       <div className='mt-2  reg-label'>
@@ -163,7 +163,7 @@ export function Register() {
                     </div>
                   </Col>
                 </Row>
-                <Row className='px-4'>
+                <Row className=''>
                   <Col lg={6}>
                     <div>
                       <div className='mt-2  reg-label'>
@@ -202,7 +202,7 @@ export function Register() {
                   </Col>
                 </Row>
 
-                <Row className='px-4'>
+                <Row className=''>
                   <Col lg={6}>
                     <div>
                       <div className='mt-2  reg-label'> Birthday </div>
@@ -246,7 +246,7 @@ export function Register() {
                     </small>
                   </Col>
                 </Row>
-                {/* <Row className='px-4'>
+                {/* <Row className=''>
                     <div className='d-flex mt-3 reg-div-button'>
                       <Col lg={6}>
                         <div className='pb-3 pe-2'>
@@ -283,8 +283,8 @@ export function Register() {
               <div className='address-details'>
                 {/* <h3>Address Details</h3> */}
                 {/* <hr /> */}
-                <Row className='px-4'>
-                  <Col>
+                <Row className=''>
+                  <Col md={''}>
                     <div>
                       <div className='mt-2  reg-label'>City/Town</div>
                       <div>
@@ -300,9 +300,8 @@ export function Register() {
                       {errors && errors.city && errors.city[0]}
                     </small>
                   </Col>
-                </Row>
-                <Row className='px-4'>
-                  <Col>
+
+                  <Col md={''}>
                     <div>
                       <div className='mt-2  reg-label'>Barangay</div>
                       <div>
@@ -325,9 +324,7 @@ export function Register() {
                       {errors && errors.barangay && errors.barangay[0]}
                     </small>
                   </Col>
-                </Row>
-                <Row className='px-4'>
-                  <Col>
+                  <Col md={'3'}>
                     <div>
                       <div className='mt-2  reg-label'>Street</div>
                       <div>
@@ -347,7 +344,7 @@ export function Register() {
                     </small>
                   </Col>
                 </Row>
-                {/* <Row className='px-4'>
+                {/* <Row className=''>
                     <div className='d-flex mt-3 reg-div-button'>
                       <Col lg={6}>
                         <div className='pb-3 pe-2'>
@@ -380,7 +377,7 @@ export function Register() {
               <div className='account-details'>
                 {/* <h3>Account Details</h3> */}
                 {/* <hr /> */}
-                <Row className='px-4'>
+                <Row className=''>
                   <Col>
                     <div>
                       <div className='mt-2  reg-label'>
@@ -403,7 +400,7 @@ export function Register() {
                     </small>
                   </Col>
                 </Row>
-                <Row className='px-4'>
+                <Row className=''>
                   <Col>
                     <div>
                       <div className='mt-2  reg-label'>
@@ -426,7 +423,7 @@ export function Register() {
                     </small>
                   </Col>
                 </Row>
-                <Row className='px-4'>
+                <Row className=''>
                   <Col>
                     <div className='mb-1'>
                       <div className='mt-2  reg-label'>
@@ -451,27 +448,19 @@ export function Register() {
                 </Row>
               </div>
 
-              <Row className='px-4'>
+              <Row className=''>
                 <div className='d-flex mt-3 reg-div-button'>
-                  {/* <Col lg={6}>
-                      <div className='pb-3 pe-2'>
-                        <button
-                          type='submit'
-                          className='btn btn-primary btn-submit'
-                        >
-                          {' '}
-                          Previous{' '}
-                        </button>
-                      </div>
-                    </Col> */}
-                  {/* <Col>
-                <div className='pb-3 ps-2'>
-                  <button type='submit' className='btn btn-primary-register'>
-                    {' '}
-                    Submit{' '}
-                  </button>
-                </div>
-              </Col> */}
+                  <Col>
+                    <div className=''>
+                      <button
+                        type='submit'
+                        className='btn btn-primary float-end'
+                      >
+                        {' '}
+                        Submit{' '}
+                      </button>
+                    </div>
+                  </Col>
                 </div>
               </Row>
             </form>

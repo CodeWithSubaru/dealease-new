@@ -256,6 +256,13 @@
   width: auto !important;
 }
 @media screen and (max-width: 960px) {
+  .header {
+    height: 70px;
+  }
+
+  .header2 {
+    height: 70px;
+  }
   .search-input {
     width: 100%;
   }
