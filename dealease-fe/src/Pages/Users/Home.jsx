@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import useAuthContext from '../../Hooks/Context/AuthContext';
-import { Card } from '../../Components/Card/Card';
-import { Footer } from '../../Components/Footer/Footer';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import Alert from 'react-bootstrap/Alert';
-import { Notification } from '../../Components/Notification/Notification';
+import React, { useEffect, useState } from "react";
+import useAuthContext from "../../Hooks/Context/AuthContext";
+import { Card } from "../../Components/Card/Card";
+import { Footer } from "../../Components/Footer/Footer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import Alert from "react-bootstrap/Alert";
+import { Notification } from "../../Components/Notification/Notification";
 
 import {
   Sidebar,
@@ -14,14 +14,14 @@ import {
   SubMenu,
   useProSidebar,
   sidebarClasses,
-} from 'react-pro-sidebar';
-import { Link } from 'react-router-dom';
-import { Button, Modal } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
-import useOrderContext from '../../Hooks/Context/OrderContext';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
-import axiosClient from '../../api/axios';
+} from "react-pro-sidebar";
+import { Link } from "react-router-dom";
+import { Button, Modal, Row, Col } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import useOrderContext from "../../Hooks/Context/OrderContext";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import axiosClient from "../../api/axios";
 
 export const HomeUser = () => {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);
@@ -33,7 +33,18 @@ export const HomeUser = () => {
   function closeUpdateAccessModal() {
     setUpdateAccessModal(false);
   }
+  // terms and condition modal
+  const [check, setCheck] = useState(false);
+  const handleCheckboxChange = (e) => {
+    setCheck(e.target.checked);
+    sessionStorage.setItem("check-subs-agreement", e.target.checked);
+  };
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  //
   const [validIdFront, setValidIdFront] = useState(null);
   const [validIdBack, setValidIdBack] = useState(null);
   const [imgFront, setImgFront] = useState(null);
@@ -64,14 +75,14 @@ export const HomeUser = () => {
     };
 
     axiosClient
-      .post('/update-access', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      .post("/update-access", data, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
         Notification({
-          title: 'Success',
+          title: "Success",
           message: res.data.status,
-          icon: 'success',
+          icon: "success",
         }).then(() => {
           closeUpdateAccessModal();
         });
@@ -81,8 +92,8 @@ export const HomeUser = () => {
 
   useEffect(() => {
     setDoneTransaction(false);
-    setImgFront('../../../images/default_image.png');
-    setImgBack('../../../images/default_image.png');
+    setImgFront("../../../images/default_image.png");
+    setImgBack("../../../images/default_image.png");
     return () => {
       setRegistrationSuccess(false);
       setEmailVerified(false);
@@ -91,14 +102,14 @@ export const HomeUser = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', height: '100%' }}>
+      <div style={{ display: "flex", height: "100%" }}>
         {/* <Sidebar
-          width='190px'
-          collapsedWidth='65px'
-          transitionDuration='500'
+          width="190px"
+          collapsedWidth="65px"
+          transitionDuration="500"
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
-              backgroundColor: '#19a9d0',
+              backgroundColor: "#19a9d0",
             },
           }}
         >
@@ -107,28 +118,28 @@ export const HomeUser = () => {
               button: ({ level, active, disabled }) => {
                 if (level === 0)
                   return {
-                    color: disabled ? '#f5d9ff' : '#white',
-                    backgroundColor: active ? '#eecef9' : undefined,
+                    color: disabled ? "#f5d9ff" : "#white",
+                    backgroundColor: active ? "#eecef9" : undefined,
                   };
               },
             }}
           >
-            <button className='btn ' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faBars} className='navs-icon' />
+            <button className="btn " onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className="navs-icon" />
             </button>
 
-            <MenuItem className='text-black ' component={<Link to='/' />}>
+            <MenuItem className="text-black " component={<Link to="/" />}>
               Home
             </MenuItem>
 
-            <MenuItem component={<Link to='/withdraw' />}> Withdraw </MenuItem>
-            <MenuItem component={<Link to='/recharge' />}> Recharge </MenuItem>
+            <MenuItem component={<Link to="/withdraw" />}> Withdraw </MenuItem>
+            <MenuItem component={<Link to="/recharge" />}> Recharge </MenuItem>
             {user.verified_user ? (
-              <MenuItem component={<Link to='/product' />}> Product </MenuItem>
+              <MenuItem component={<Link to="/product" />}> Product </MenuItem>
             ) : (
-              <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
+              <div className="d-flex flex-column justify-content-end flex-grow-1 h-100">
                 <Button
-                  className='btn btn-sm d-inline-block'
+                  className="btn btn-sm d-inline-block"
                   onClick={() => setUpdateAccessModal(true)}
                 >
                   Update Access
@@ -137,28 +148,28 @@ export const HomeUser = () => {
             )}
           </Menu>
         </Sidebar> */}
-        <main className='w-100 '>
+        <main className="w-100 ">
           <Modal
             show={updateAccessModal}
             onHide={closeUpdateAccessModal}
             animation={false}
-            size='lg'
+            size="lg"
           >
             <Modal.Header closeButton>
-              <Modal.Title className='fw-semibold'>
+              <Modal.Title className="fw-semibold">
                 Request Update Acccess
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Alert show={true} variant='success'>
-                <div className='d-flex justify-content-between'>
+              <Alert show={true} variant="success">
+                <div className="d-flex justify-content-between">
                   <Alert.Heading>Instruction </Alert.Heading>
 
                   <OverlayTrigger
-                    placement='bottom'
+                    placement="bottom"
                     overlay={
-                      <Tooltip id='button-tooltip-2'>
-                        <div className='p-2 text-start'>
+                      <Tooltip id="button-tooltip-2">
+                        <div className="p-2 text-start">
                           Once you didn't follow the instruction, we will
                           automatically reject your request.
                         </div>
@@ -175,66 +186,66 @@ export const HomeUser = () => {
                   </li>
                 </ul>
                 <hr />
-                <div className='clearfix'>
-                  <p className='float-end mb-0'> - System Administator</p>
+                <div className="clearfix">
+                  <p className="float-end mb-0"> - System Administator</p>
                 </div>
               </Alert>
-              <Form onSubmit={handleUpdateAccessForm} id='updateAccessForm'>
-                <div className='d-flex align-items-center clearfix mb-3'>
-                  <Form.Group controlId='formFile' className='mb-3 w-100'>
-                    <Form.Label className='text-secondary'>
+              <Form onSubmit={handleUpdateAccessForm} id="updateAccessForm">
+                <div className="d-flex align-items-center clearfix mb-3">
+                  <Form.Group controlId="formFile" className="mb-3 w-100">
+                    <Form.Label className="text-secondary">
                       Valid Government Id (Front)
                     </Form.Label>
                     <Form.Control
-                      type='file'
-                      id='formFile'
+                      type="file"
+                      id="formFile"
                       onChange={onImageChangeFront}
                       isInvalid={!!errors.valid_id_front}
                     />
                     {console.log(errors)}
-                    <Form.Control.Feedback type='invalid'>
+                    <Form.Control.Feedback type="invalid">
                       {errors.valid_id_front}
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <div className='w-50'>
-                    <div className='float-end'>
-                      <p className='mb-0'>ID Preview (Front)</p>
+                  <div className="w-50">
+                    <div className="float-end">
+                      <p className="mb-0">ID Preview (Front)</p>
                       <img
                         src={imgFront}
-                        className='rounded p-3 float-end'
+                        className="rounded p-3 float-end"
                         style={{
-                          height: '150px',
-                          width: '150px',
+                          height: "150px",
+                          width: "150px",
                         }}
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className='d-flex align-items-center clearfix'>
-                  <Form.Group controlId='formFile' className='w-100 mb-3'>
-                    <Form.Label className='text-secondary'>
+                <div className="d-flex align-items-center clearfix">
+                  <Form.Group controlId="formFile" className="w-100 mb-3">
+                    <Form.Label className="text-secondary">
                       Valid Government Id (Back)
                     </Form.Label>
                     <Form.Control
-                      type='file'
-                      id='formFile'
+                      type="file"
+                      id="formFile"
                       onChange={onImageChangeBack}
                       isInvalid={!!errors.valid_id_back}
                     />
-                    <Form.Control.Feedback type='invalid'>
+                    <Form.Control.Feedback type="invalid">
                       {errors.valid_id_back}
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <div className='w-50'>
-                    <div className='float-end'>
-                      <p className='mb-0'>ID Preview (Back)</p>
+                  <div className="w-50">
+                    <div className="float-end">
+                      <p className="mb-0">ID Preview (Back)</p>
                       <img
                         src={imgBack}
-                        className='rounded p-3 float-end'
+                        className="rounded p-3 float-end"
                         style={{
-                          height: '150px',
-                          width: '150px',
+                          height: "150px",
+                          width: "150px",
                         }}
                       />
                     </div>
@@ -242,34 +253,42 @@ export const HomeUser = () => {
                 </div>
 
                 <Form.Group>
-                  <Form.Check
-                    label={
+                  <Row xs="auto">
+                    <Col
+                      style={{
+                        padding: "0 0 0 12px",
+                      }}
+                    >
+                      <Form.Check
+                        checked={check}
+                        onChange={handleCheckboxChange}
+                        type="checkbox"
+                        id="termsAndCondition"
+                        isInvalid={!!errors.terms_and_conditions}
+                        feedbackType="invalid"
+                        feedback={
+                          errors.terms_and_conditions &&
+                          errors.terms_and_conditions.length > 0 &&
+                          errors.terms_and_conditions[0]
+                        }
+                      />
+                    </Col>
+                    <Col>
                       <Form.Label
-                        className='text-secondary fw-light mb-0'
-                        controlId='termsAndCondition'
+                        className="text-secondary fw-light mb-0"
+                        controlId="termsAndCondition"
                       >
-                        I agree to the{' '}
+                        I agree to the
                         <a
-                          href='/termsAndCondition'
-                          target='_blank'
-                          className='fw-bold'
+                          onClick={handleShow}
+                          target="_blank"
+                          className="fw-bold"
                         >
-                          {' '}
                           Terms and Condition
                         </a>
                       </Form.Label>
-                    }
-                    type='checkbox'
-                    id='termsAndCondition'
-                    isInvalid={!!errors.terms_and_conditions}
-                    onChange={(e) => setTermsAndCondition(e.target.checked)}
-                    feedbackType='invalid'
-                    feedback={
-                      errors.terms_and_conditions &&
-                      errors.terms_and_conditions.length > 0 &&
-                      errors.terms_and_conditions[0]
-                    }
-                  />
+                    </Col>
+                  </Row>
 
                   {/* <Form.Control.Feedback type='invalid' className='text-danger'>
                     {errors.length > 0 &&
@@ -281,19 +300,39 @@ export const HomeUser = () => {
             </Modal.Body>
             <Modal.Footer>
               <Button
-                variant='secondary'
-                className='rounded'
+                variant="secondary"
+                className="rounded"
                 onClick={closeUpdateAccessModal}
               >
                 Cancel
               </Button>
               <Button
-                variant='primary'
-                className='rounded'
-                form='updateAccessForm'
-                type='submit'
+                disabled={!check}
+                variant="primary"
+                className="rounded"
+                form="updateAccessForm"
+                type="submit"
               >
                 Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {/* terms and conditions modal */}
+
+          <Modal scrollable show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Terms and Conditions</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Woohoo, you are reading this text in a modal!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="primary"
+                className="rounded"
+                onClick={handleClose}
+              >
+                I understand
               </Button>
             </Modal.Footer>
           </Modal>
