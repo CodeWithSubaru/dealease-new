@@ -741,7 +741,11 @@ export function ShippingFee() {
                       type='submit'
                       disabled={
                         calculateGrandTotalPrice(step1) >
-                        Number(user.wallet.shell_coin_amount)
+                          Number(user.wallet.shell_coin_amount) ||
+                        (Object.values(step1).length > 0 &&
+                          Object.values(step1).map(
+                            (item, index) => item.weight <= 0
+                          ))
                       }
                       style={{
                         pointerEvents:
