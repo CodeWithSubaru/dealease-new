@@ -191,7 +191,7 @@ export function ShippingFee() {
           <h1 className='fw-bolder fs-1 mb-4'>Shipping</h1>
           <div className='d-flex' style={{ height: '65vh' }}>
             <div
-              className='w-50 ps-3'
+              className='w-50 px-3'
               style={{ height: '65vh', overflowY: 'auto' }}
             >
               {Object.values(step1).length > 0
@@ -199,7 +199,6 @@ export function ShippingFee() {
                     return (
                       <div>
                         <p className='mb-0' key={index}>
-                          Seller{' '}
                           <span className='badge rounded-pill text-bg-primary'>
                             {item.length > 1
                               ? item[index]
@@ -225,7 +224,7 @@ export function ShippingFee() {
                         {item.map((cartItem, index) => (
                           <>
                             <Card
-                              className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
+                              className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
                               key={index}
                             >
                               <div
@@ -322,7 +321,7 @@ export function ShippingFee() {
                   })
                 : ''}
               <div className='mt-5'>
-                <hr />
+                <hr className='border border-1 border-dark-subtle' />
                 <p className='fs-4 fw-bold mt-2 d-flex align-items-center text-secondary'>
                   {' '}
                   Grand Total:{' '}

@@ -221,8 +221,8 @@ export function OrdersBuyer() {
   ];
 
   function setUserOrdersTable(number) {
-    setLoading(true);
     setBody([]);
+    setLoading(true);
     axiosClient.get('/orders/orders-user/buyer/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
@@ -373,7 +373,6 @@ export function OrdersSeller() {
   const [viewOrders, setViewOrders] = useState([]);
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
-    setBody([]);
     axiosClient
       .get('/orders/order-status/seller/' + orderStatus)
       .then((res) => {
@@ -646,8 +645,8 @@ export function OrdersSeller() {
   }
 
   function setUserOrdersTable(number) {
-    setLoading(true);
     setBody([]);
+    setLoading(true);
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
