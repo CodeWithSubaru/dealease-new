@@ -54,6 +54,7 @@ export const HomeRider = () => {
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
   const [toPickUpData, setToPickUpData] = useState([]);
+  const [toDeliveredData, setDeliveredData] = useState([]);
   const [isDisabled, setDisabled] = useState(true);
   const navigate = useNavigate();
 
@@ -284,45 +285,23 @@ export const HomeRider = () => {
     });
   }
 
+  function delivered(url) {
+    setBody([]);
+    setLoading(true);
+    axiosClient.get(url).then((resp) => {
+      setToPickUpData(resp.data);
+      setDisabled(false);
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
     toPickUp('/rider/toPickUp');
+    // toPickUp('/rider/toPickUp');
   }, []);
 
   return (
     <>
-      {/* <Header>
-        {' '}
-        <div className='div-dropdown'>
-          <Dropdown as={ButtonGroup} className='dropdown-button'>
-            <Button variant='dark' className='dropdown-logout'>
-              <img
-                className='dropdown-logout-profile me-2'
-                src={PUBLIC_PATH + 'images/' + user.prof_img}
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '50%',
-                  objectFit: 'fit',
-                }}
-              />
-              {user.first_name}
-            </Button>
-
-            <Dropdown.Toggle split variant='dark' id='dropdown-split-basic' />
-
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={'/seller/profile'}>
-                My Profile
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={'/seller/change-password'}>
-                Change Password
-              </Dropdown.Item>
-              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </Header> */}
-
       <div style={{ display: 'flex', height: '100%' }}>
         <Sidebar
           width='190px'
@@ -386,7 +365,6 @@ export const HomeRider = () => {
               onClick={() => {
                 logout();
               }}
-              // icon={<FaHouse />}
             >
               Logout
             </MenuItem>
@@ -572,7 +550,7 @@ export const HomeRider = () => {
                   <Card.Body className='bg-warning '>
                     <p className='text-white'>Information</p>
                     <hr />
-                    <p className='small text-white  '>Total Cancel</p>
+                    <p className='small text-white'>Total Cancel</p>
                     <div className='small text-white'>
                       <i className='fas fa-angle-right'></i>
                     </div>
@@ -745,7 +723,7 @@ export const HomeRider = () => {
                               style={{ cursor: 'pointer' }}
                               className='badge rounded px-2'
                             >
-                              To Deliver
+                              Accept
                             </Button>
                           </>
                         ) : (
@@ -758,7 +736,7 @@ export const HomeRider = () => {
               ) : (
                 <div className='text-center w-100'>
                   {' '}
-                  <span> No Items Found </span>{' '}
+                  <span> No Orders Found </span>{' '}
                 </div>
               )}
             </div>

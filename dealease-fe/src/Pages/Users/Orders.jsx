@@ -30,7 +30,11 @@ export function OrdersBuyer() {
           orderStatus[3] === 5
         ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 6) {
+        } else if (
+          orderStatus[0] === 6 ||
+          orderStatus[1] === 7 ||
+          orderStatus[2] === 8
+        ) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -131,9 +135,9 @@ export function OrdersBuyer() {
 
   function cancel(id, grandTotal) {
     Finalize({
-      text: 'Once you cancel this order, Your money will be refunded',
+      text: 'Are you sure, you want to cancel your order?',
       confirmButton: 'Yes',
-      successMsg: 'Order Cancelled Successfully.',
+      successMsg: 'Order Cancelled Successfully',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
@@ -143,6 +147,24 @@ export function OrdersBuyer() {
           })
           .catch((e) => console.log(e));
         setUserOrdersTable(1);
+      }
+    });
+  }
+
+  function orderReceived(id, grandTotal) {
+    Finalize({
+      text: 'Are you sure, your deliver Received?',
+      confirmButton: 'Yes',
+      successMsg: 'Order Received',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/buyer/orderReceived/' + id)
+          .then((resp) => {
+            fetchUserInfo();
+          })
+          .catch((e) => console.log(e));
+        setUserOrdersTable([6, 7, 8]);
       }
     });
   }
@@ -199,8 +221,8 @@ export function OrdersBuyer() {
   ];
 
   function setUserOrdersTable(number) {
-    setLoading(true);
     setBody([]);
+    setLoading(true);
     axiosClient.get('/orders/orders-user/buyer/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
@@ -286,6 +308,21 @@ export function OrdersBuyer() {
               ) : (
                 ''
               )}
+
+              {order.order_trans_status == '6' ? (
+                <Button
+                  variant='danger'
+                  onClick={() => {
+                    orderReceived(order.order_trans_id);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className='badge rounded bg-success px-2'
+                >
+                  Order Received
+                </Button>
+              ) : (
+                ''
+              )}
             </div>
           ),
         };
@@ -298,7 +335,7 @@ export function OrdersBuyer() {
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
     fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-    fetchNumberOrdersByStatusUser(6);
+    fetchNumberOrdersByStatusUser([6, 7, 8]);
     setUserOrdersTable(1);
   }, []);
 
@@ -336,7 +373,6 @@ export function OrdersSeller() {
   const [viewOrders, setViewOrders] = useState([]);
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
-    setBody([]);
     axiosClient
       .get('/orders/order-status/seller/' + orderStatus)
       .then((res) => {
@@ -349,7 +385,11 @@ export function OrdersSeller() {
           orderStatus[3] === 5
         ) {
           setProcessingOrderNumber(res.data);
-        } else if (orderStatus === 6) {
+        } else if (
+          orderStatus[0] === 6 ||
+          orderStatus[1] === 7 ||
+          orderStatus[2] === 8
+        ) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -446,7 +486,7 @@ export function OrdersSeller() {
           .catch((e) => console.log(e));
         fetchNumberOrdersByStatusUser(1);
         fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-        fetchNumberOrdersByStatusUser(6);
+        fetchNumberOrdersByStatusUser([6, 7, 8]);
         setUserOrdersTable([2, 3, 4, 5]);
       }
     });
@@ -465,7 +505,7 @@ export function OrdersSeller() {
           .catch((e) => console.log(e));
         fetchNumberOrdersByStatusUser(1);
         fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-        fetchNumberOrdersByStatusUser(6);
+        fetchNumberOrdersByStatusUser([6, 7, 8]);
         setUserOrdersTable([2, 3, 4, 5]);
       }
     });
@@ -605,8 +645,8 @@ export function OrdersSeller() {
   }
 
   function setUserOrdersTable(number) {
-    setLoading(true);
     setBody([]);
+    setLoading(true);
     axiosClient.get('/orders/orders-user/seller/' + number).then((resp) => {
       const orders = resp.data.map((order, i) => {
         return {
@@ -779,7 +819,7 @@ export function OrdersSeller() {
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
     fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-    fetchNumberOrdersByStatusUser(6);
+    fetchNumberOrdersByStatusUser([6, 7, 8]);
     setUserOrdersTable(1);
   }, []);
 

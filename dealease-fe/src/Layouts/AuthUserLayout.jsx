@@ -108,7 +108,7 @@ export function AuthUserLayout() {
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body className='offCanvas'>
-                <Nav className='justify-content-center flex-grow-1 pe-4'>
+                <Nav className='justify-content-center flex-grow-1'>
                   <Nav.Link className='navLink' href='/home'>
                     Home
                   </Nav.Link>

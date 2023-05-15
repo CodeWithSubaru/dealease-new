@@ -73,7 +73,7 @@ export function SuccessfulUser() {
               <h4 className='fw-light mb-3'> Customer Information</h4>
               <div className='d-flex justify-content-between'>
                 <div>
-                  <h6 className='fw-light mb-1 text-secondary'>
+                  <h6 className='fw-semibold text-secondary'>
                     Customer Details
                   </h6>
                   <p>
@@ -88,8 +88,8 @@ export function SuccessfulUser() {
                       : ''}
                   </p>
                 </div>
-                <div>
-                  <h6 className='fw-light text-secondary'>Payment Method</h6>
+                <div className='mb-3'>
+                  <h6 className='fw-semibold text-secondary'>Payment Method</h6>
                   <p>
                     {' '}
                     Cash on Delivery (COD) - Php{' '}
@@ -104,8 +104,8 @@ export function SuccessfulUser() {
                   </p>
                 </div>
               </div>
-              <div>
-                <h6 className='fw-light mb-1 text-secondary'>Contact Number</h6>
+              <div className='mb-3'>
+                <h6 className='fw-semibold text-secondary'>Contact Number</h6>
                 <p>
                   {Object.keys(otherAddress).length > 0
                     ? otherAddress.shippingFee.contact_number
@@ -113,9 +113,7 @@ export function SuccessfulUser() {
                 </p>
               </div>
               <div>
-                <h6 className='fw-light mb-1 text-secondary'>
-                  Shipping Address
-                </h6>
+                <h6 className='fw-semibold text-secondary'>Shipping Address</h6>
 
                 {Object.keys(otherAddress).length > 0 ? (
                   <>
