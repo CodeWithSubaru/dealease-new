@@ -487,7 +487,7 @@ export function OrdersSeller() {
         fetchNumberOrdersByStatusUser(1);
         fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
         fetchNumberOrdersByStatusUser([6, 7, 8]);
-        setUserOrdersTable([2, 3, 4, 5]);
+        setUserOrdersTable(1);
       }
     });
   }

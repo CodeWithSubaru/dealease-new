@@ -379,13 +379,18 @@ export function ShippingFee() {
                 </div>
                 <hr className='border border-1 border-info rounded' />
                 <div className='d-flex'>
-                  <span className='w-25 fw-semibold text-secondary'> Contact #</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    {' '}
+                    Contact #
+                  </span>
                   <span>{user.user_details.contact_number} </span>
                   <div></div>
                 </div>
                 <hr className='border border-1 border-info rounded' />
                 <div className='d-flex'>
-                  <span className='w-25 fw-semibold text-secondary'>Delivery Address</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    Delivery Address
+                  </span>
                   <span className='w-50'>
                     {user.user_details ? user.user_details.street : ''}{' '}
                     {user.user_details ? user.user_details.barangay : ''}{' '}

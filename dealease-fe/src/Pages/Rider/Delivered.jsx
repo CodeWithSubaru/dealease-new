@@ -731,7 +731,7 @@ export const DeliveredRider = () => {
                 body.length > 0 &&
                 body.map((item) =>
                   item ? (
-                    <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
+                    <Card className='d-flex p-4 m-1 border border-1 border-black-subtle' style={{ width: '48%' }}>
                       <div
                         className={
                           'd-flex justify-content-between w-100 align-items-center align-items-center'
