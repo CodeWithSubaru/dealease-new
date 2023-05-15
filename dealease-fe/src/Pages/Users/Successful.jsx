@@ -90,9 +90,16 @@ export function SuccessfulUser() {
                 </div>
                 <div className='mb-3'>
                   <h6 className='fw-semibold text-secondary'>Payment Method</h6>
-                  <p>
+                  <p className='d-flex align-items-center'>
                     {' '}
-                    Cash on Delivery (COD) - Php{' '}
+                    Shells E-Wallet -{' '}
+                    <img
+                      src='/images/seashell.png'
+                      height={25}
+                      width={25}
+                      alt=''
+                      className='mx-2'
+                    />{' '}
                     {calculateGrandTotalDeliveryFee(
                       step1,
                       changeDeliveryFeePerBrgy(
