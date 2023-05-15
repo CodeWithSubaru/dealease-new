@@ -389,7 +389,7 @@ export function ShippingFee() {
                     {user.user_details ? user.user_details.city : ''}
                   </span>
                   <Link
-                    className='flex-grow-1 d-flex justify-content-end align-items-center text-secondary flex-shrink-0'
+                    className='flex-grow-1 d-flex justify-content-end align-items-center text-primary flex-shrink-0'
                     style={{ fontSize: '14px' }}
                     onClick={() => {
                       viewShippingAddressForm
