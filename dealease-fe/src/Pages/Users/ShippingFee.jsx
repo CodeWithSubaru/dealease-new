@@ -486,6 +486,7 @@ export function ShippingFee() {
                       <Form.Control
                         type='text'
                         onChange={(e) => setFullName(e.target.value)}
+                        value={fullName}
                         isInvalid={!!errors['shippingFee.full_name']}
                       />
 

@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Deliveries;
 use App\Models\DeliveryAddress;
 use App\Models\DeliveryStatus;
+use App\Models\ShippingAddressInfo;
+use App\Models\ShippingDeliveryInfo;
 use App\Models\UsersWallet;
 
 use function PHPSTORM_META\type;
@@ -192,9 +194,11 @@ class OrderController extends Controller
 
             if ($request->shippingFee) {
                 // option for other shipping address
-                $deliveryAddress = DeliveryAddress::create([
+                $deliveryAddress = ShippingDeliveryInfo::create([
                     'order_trans_id' => $orderTransaction->order_trans_id,
                     'rider_id' => null,
+                    'full_name' =>  $request->shippingFee['full_name'],
+                    'contact_number' => $request->shippingFee['contact_number'],
                     'delivery_status' => 1,
                     'city' => 'Obando',
                     'barangay' => $request->shippingFee['barangay'],

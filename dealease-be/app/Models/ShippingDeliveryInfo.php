@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShippingAddressInfo extends Model
+class ShippingDeliveryInfo extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'delivery_address_id';
+    protected $primaryKey = 'shipping_delivery_id';
 
     protected $guarded;
 }
