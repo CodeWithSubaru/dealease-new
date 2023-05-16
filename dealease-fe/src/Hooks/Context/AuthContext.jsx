@@ -132,7 +132,7 @@ export const AuthProvider = ({ children }) => {
             setUser({});
             setErrors([]);
             _setToken(data.token);
-            navigate('/home');
+            navigate('/');
           });
         }
       })

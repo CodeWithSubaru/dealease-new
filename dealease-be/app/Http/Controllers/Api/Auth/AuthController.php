@@ -39,6 +39,8 @@ class AuthController extends Controller
             'contact_number' => ['required', 'min:11', 'max:11'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'first_valid_id' => $request->has('first_valid_id') ? ['required', 'image'] : '',
+            'second_valid_id' =>  $request->has('second_valid_id') ? ['required', 'image'] : '',
         ]);
 
         $imageName = 'default_profile.jpg';
@@ -48,6 +50,21 @@ class AuthController extends Controller
             $imageName = time() . '.' . $request->file('profile_image')->getClientOriginalExtension();
 
             $request->file('profile_image')->move(public_path('images'), $imageName);
+        }
+
+        if ($request->has('first_valid_id') && $request->has('second_valid_id')) {
+            // uploading first valid id
+            $firstValidId = time() . '.' . $request->file('first_valid_id')->getClientOriginalExtension();
+            $request->file('first_valid_id')->move(public_path('images/valid-id/'), $firstValidId);
+
+            // uploading second valid id
+            $secondValidId = time() . '.' . $request->file('second_valid_id')->getClientOriginalExtension();
+            $request->file('second_valid_id')->move(public_path('images/valid-id'), $secondValidId);
+
+            AccountVerificationRequirement::create([
+                'valid_id_1' => $firstValidId,
+                'valid_id_2' => $secondValidId,
+            ]);
         }
 
         $user = new User();

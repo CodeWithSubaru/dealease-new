@@ -27,7 +27,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Register() {
   const [user, setUser] = useState({
-    profile_image: null,
+    profile_image: '',
     first_name: '',
     middle_name: '',
     last_name: '',

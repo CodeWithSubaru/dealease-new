@@ -368,6 +368,10 @@ export const HomeRider = () => {
             >
               Logout
             </MenuItem>
+
+            <MenuItem className='text-black'>
+              Wallet {user.shell_coin_amount}
+            </MenuItem>
           </Menu>
         </Sidebar>
         <Modal
