@@ -46,11 +46,11 @@ export function RegisterRider() {
     user_type: 2,
   });
 
-  const { errors, setErrors, register } = useAuthContext();
+  const { errors, setErrors, registerRider } = useAuthContext();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    register(user);
+    registerRider(user);
   };
 
   const [barangayData, setBarangay] = useState([]);

@@ -5,7 +5,7 @@ import useAuthContext from './AuthContext';
 const ProductContext = createContext('default');
 
 export const ProductProvider = ({ children }) => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({});
   const [loading, setLoading] = useState(false);
   const { user } = useAuthContext();
 

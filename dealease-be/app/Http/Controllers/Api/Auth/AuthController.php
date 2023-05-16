@@ -52,6 +52,8 @@ class AuthController extends Controller
             $request->file('profile_image')->move(public_path('images'), $imageName);
         }
 
+        $user = new User();
+        $avr = '';
         if ($request->has('first_valid_id') && $request->has('second_valid_id')) {
             // uploading first valid id
             $firstValidId = time() . '.' . $request->file('first_valid_id')->getClientOriginalExtension();
@@ -61,19 +63,19 @@ class AuthController extends Controller
             $secondValidId = time() . '.' . $request->file('second_valid_id')->getClientOriginalExtension();
             $request->file('second_valid_id')->move(public_path('images/valid-id'), $secondValidId);
 
-            AccountVerificationRequirement::create([
+            $avr = AccountVerificationRequirement::create([
                 'valid_id_1' => $firstValidId,
                 'valid_id_2' => $secondValidId,
             ]);
         }
 
-        $user = new User();
         $user->first_name = $request->first_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_type = $request->user_type ? $request->user_type : 1;
         $user->prof_img = $imageName;
         $user->user_details_id = 0;
+        $user->avr_id = $avr ? $avr->avr_id : null;
         $user->save();
         $user->user_details_id = $user->user_id;
         $user->save();

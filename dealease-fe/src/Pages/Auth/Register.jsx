@@ -68,6 +68,7 @@ export function Register() {
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
+      setUser({ ...user, profile_image: event.target.files[0] });
     }
   };
 

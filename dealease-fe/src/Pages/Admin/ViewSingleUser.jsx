@@ -36,13 +36,17 @@ export const ViewSingleUser = (props) => {
         <Modal.Body>
           {props.data ? (
             <div key={props.data.user_id}>
-              {console.log(props.data)}
+              {console.log('HERE', props.data)}
               {props.data.avr_id ? (
                 <>
                   <div>
                     <span className='d-block'> 1st Submitted Id :</span>{' '}
                     <img
-                      src={PUBLIC_URL + 'images/' + props.data.avr.valid_id_1}
+                      src={
+                        PUBLIC_URL +
+                        'images/' +
+                        (props.data.avr ? props.data.avr.valid_id_1 : '')
+                      }
                       alt=''
                       className='rounded'
                       onClick={() => {
@@ -53,7 +57,11 @@ export const ViewSingleUser = (props) => {
                   <div>
                     <span className='d-block'>2nd Submitted Id : </span>{' '}
                     <img
-                      src={PUBLIC_URL + 'images/' + props.data.avr.valid_id_2}
+                      src={
+                        PUBLIC_URL +
+                        'images/' +
+                        (props.data.avr ? props.data.avr.valid_id_2 : '')
+                      }
                       alt=''
                       onClick={() => {
                         previewImage(2);
@@ -146,7 +154,11 @@ export const ViewSingleUser = (props) => {
                 {imageToPreview === 1 ? (
                   <div>
                     <img
-                      src={PUBLIC_URL + 'images/' + props.data.avr.valid_id_1}
+                      src={
+                        PUBLIC_URL +
+                        'images/' +
+                        (props.data.avr ? props.data.avr.valid_id_1 : '')
+                      }
                       alt=''
                       className='rounded w-100 px-5'
                       onClick={() => {
@@ -160,7 +172,11 @@ export const ViewSingleUser = (props) => {
                 {imageToPreview === 2 ? (
                   <div>
                     <img
-                      src={PUBLIC_URL + 'images/' + props.data.avr.valid_id_2}
+                      src={
+                        PUBLIC_URL +
+                        'images/' +
+                        (props.data.avr ? props.data.avr.valid_id_2 : '')
+                      }
                       alt=''
                       className='rounded w-100 px-5'
                       onClick={() => {

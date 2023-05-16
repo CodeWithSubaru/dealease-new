@@ -370,7 +370,10 @@ export const HomeRider = () => {
             </MenuItem>
 
             <MenuItem className='text-black'>
-              Wallet {user.shell_coin_amount}
+              Wallet{' '}
+              {user.wallet.shell_coin_amount
+                ? user.wallet.shell_coin_amount
+                : ''}
             </MenuItem>
           </Menu>
         </Sidebar>

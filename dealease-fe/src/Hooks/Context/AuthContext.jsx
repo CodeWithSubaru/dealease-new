@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const register = ({ ...data }) => {
+  const register = ({ ...data }, redirect = '/') => {
     axiosClient
       .post('/register', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -132,7 +132,7 @@ export const AuthProvider = ({ children }) => {
             setUser({});
             setErrors([]);
             _setToken(data.token);
-            navigate('/');
+            navigate(redirect);
           });
         }
       })
@@ -145,6 +145,10 @@ export const AuthProvider = ({ children }) => {
         setErrors(e.response.data.errors);
       });
   };
+
+  function registerRider(data) {
+    register(data, '/rider/login');
+  }
 
   function fetchUserInfo() {
     axiosClient.get('/user').then((res) => setUser(res.data[0]));
@@ -204,6 +208,7 @@ export const AuthProvider = ({ children }) => {
         loginRider,
         loginAdmin,
         register,
+        registerRider,
         logout,
         setLoading,
         fetchUserInfo,

@@ -484,6 +484,12 @@ export const ToDeliverRider = () => {
             >
               Logout
             </MenuItem>
+            <MenuItem className='text-black'>
+              Wallet{' '}
+              {user.wallet.shell_coin_amount
+                ? user.wallet.shell_coin_amount
+                : ''}
+            </MenuItem>
           </Menu>
         </Sidebar>
         <Modal
