@@ -9,12 +9,16 @@ use Illuminate\Http\Request;
 use App\Models\ShellTransaction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AnalyticsControllers extends Controller
 {
     public function getNumOfUsers()
     {
+        $userId = auth()->user()->user_id;
+
         $usersCountByMonth = User::select(DB::raw('YEAR(created_at) year, MONTH(created_at) month, COUNT(*) count'))
+            ->where('user_id', '!=', $userId)
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
