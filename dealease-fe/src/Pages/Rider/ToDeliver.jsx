@@ -703,7 +703,10 @@ export const ToDeliverRider = () => {
                 </div>
               ) : body.length > 0 ? (
                 body.map((item, i) => (
-                  <Card className='d-flex p-4 m-1 border border-1 border-black-subtle' style={{ width: '48%' }}>
+                  <Card
+                    className='d-flex p-4 m-1 border border-1 border-black-subtle'
+                    style={{ width: '48%' }}
+                  >
                     <div
                       className={
                         'd-flex justify-content-between w-100 align-items-center align-items-center'
@@ -780,9 +783,20 @@ export const ToDeliverRider = () => {
                             delivered(item.deliveries_id);
                           }}
                           style={{ cursor: 'pointer' }}
-                          className='badge rounded px-2'
+                          className='badge rounded px-2 me-2'
                         >
                           Delivered
+                        </Button>
+
+                        <Button
+                          variant='danger'
+                          onClick={() => {
+                            view(item.order_to_deliver.order_number);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded px-2'
+                        >
+                          Return
                         </Button>
                       </div>
                     </div>

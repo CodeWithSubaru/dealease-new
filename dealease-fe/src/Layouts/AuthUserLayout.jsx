@@ -122,7 +122,7 @@ export function AuthUserLayout() {
                     Orders
                   </Nav.Link>
 
-                  {user.user_verified == 1 && (
+                  {user.verified_user == 1 && (
                     <Nav.Link className='navLink' href='/orders/seller'>
                       Orders(Seller)
                     </Nav.Link>

@@ -375,7 +375,7 @@ export function OrdersSeller() {
   const navigate = useNavigate();
   const { user } = useAuthContext();
 
-  if (user.user_verified != 1) {
+  if (user.verified_user == 0) {
     navigate('/orders');
   }
 

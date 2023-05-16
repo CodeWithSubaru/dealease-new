@@ -292,16 +292,16 @@ export function Users() {
           date_joined: dateFormat(user.created_at),
           action: (
             <div key={i} className='button-actions w-100 text-nowrap'>
+              <span
+                onClick={() => viewCompleteDetails(user.user_id)}
+                style={{ cursor: 'pointer' }}
+                className='badge rounded text-bg-primary px-2 me-2 btn'
+              >
+                View
+              </span>
               {uri == '/admin/users' ? (
                 <>
                   {' '}
-                  <span
-                    onClick={() => viewCompleteDetails(user.user_id)}
-                    style={{ cursor: 'pointer' }}
-                    className='badge rounded text-bg-primary px-2 me-2 btn'
-                  >
-                    View
-                  </span>
                   <span
                     onClick={() => findUser(user.user_id, uri)}
                     style={{ cursor: 'pointer' }}
