@@ -111,8 +111,6 @@ export function OrdersTable(props) {
                               {order.barangay
                                 ? order.barangay
                                 : user.user_details.barangay}{' '}
-                              {order.city ? order.city : ''}{' '}
-                              {'Bulacan Region III (Central Luzon)'}
                             </p>
                           </div>
                         </div>

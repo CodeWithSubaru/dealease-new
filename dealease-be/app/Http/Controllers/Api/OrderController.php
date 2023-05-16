@@ -206,7 +206,7 @@ class OrderController extends Controller
                 ]);
 
                 $orderTransaction->update([
-                    'delivery_address_id' => $deliveryAddress->delivery_address_id
+                    'delivery_address_id' => $deliveryAddress->shipping_delivery_id
                 ]);
             }
         }
