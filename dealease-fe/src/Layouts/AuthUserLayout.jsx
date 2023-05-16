@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
@@ -30,6 +30,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { OrdersBuyer } from '../Pages/Users/Orders';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthUserLayout() {
@@ -40,6 +41,7 @@ export function AuthUserLayout() {
   const [modalShow, setModalShow] = useState(false);
   const { user, token, user_type, logout } = useAuthContext();
   const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
+  const navigate = useNavigate();
 
   const closeMobileMenu = () => setClick(false);
   const handleLogout = () => {
@@ -115,12 +117,16 @@ export function AuthUserLayout() {
                   <Nav.Link className='navLink' href='/transactions'>
                     Shell Transactions
                   </Nav.Link>
+
                   <Nav.Link className='navLink' href='/orders'>
                     Orders
                   </Nav.Link>
-                  <Nav.Link className='navLink' href='/orders/seller'>
-                    Orders(Seller)
-                  </Nav.Link>
+
+                  {user.user_verified == 1 && (
+                    <Nav.Link className='navLink' href='/orders/seller'>
+                      Orders(Seller)
+                    </Nav.Link>
+                  )}
                   <OverlayTrigger
                     overlay={<Tooltip id='tooltip-disabled'>Cart</Tooltip>}
                     placement='bottom'

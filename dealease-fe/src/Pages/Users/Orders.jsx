@@ -5,6 +5,7 @@ import PUBLIC_URL from '../../api/public_url';
 import Button from 'react-bootstrap/Button';
 import { Finalize } from '../../Components/Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export function OrdersBuyer() {
   const title = 'Buyer';
@@ -371,6 +372,12 @@ export function OrdersSeller() {
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+
+  if (user.user_verified != 1) {
+    navigate('/orders');
+  }
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
     axiosClient
