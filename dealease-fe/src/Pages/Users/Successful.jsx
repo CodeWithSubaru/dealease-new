@@ -78,14 +78,19 @@ export function SuccessfulUser() {
                   </h6>
                   <p>
                     {' '}
-                    {user.first_name}{' '}
-                    {user.user_details.middle_name
-                      ? user.user_details.middle_name[0] + '. '
-                      : ''}{' '}
-                    {user.user_details ? user.user_details.last_name : ''}{' '}
-                    {user.user_details.ext_name
-                      ? user.user_details.ext_name
-                      : ''}
+                    {Object.keys(otherAddress).length > 0
+                      ? otherAddress.shippingFee.full_name
+                      : user.first_name +
+                        ' ' +
+                        (user.user_details.middle_name
+                          ? user.user_details.middle_name[0] + '. '
+                          : '') +
+                        ' ' +
+                        (user.user_details ? user.user_details.last_name : '') +
+                        ' ' +
+                        (user.user_details.ext_name
+                          ? user.user_details.ext_name
+                          : '')}
                   </p>
                 </div>
                 <div className='mb-3'>
