@@ -95,7 +95,7 @@ class RiderController extends Controller
         return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details', 'orderToDeliver.order.product')
             ->where('rider_id', '=', $rider)
             ->where('delivery_status', '=', '3')
-            ->whereDate('created_at', Carbon::now())->get();
+            ->whereDate('created_at', Carbon::now())->latest('created_at')->get();
     }
 
     public function onProcessDelivery()

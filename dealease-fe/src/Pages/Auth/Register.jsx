@@ -27,7 +27,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function Register() {
   const [user, setUser] = useState({
-    profile_image: null,
+    profile_image: '',
     first_name: '',
     middle_name: '',
     last_name: '',
@@ -68,6 +68,7 @@ export function Register() {
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setImage(URL.createObjectURL(event.target.files[0]));
+      setUser({ ...user, profile_image: event.target.files[0] });
     }
   };
 

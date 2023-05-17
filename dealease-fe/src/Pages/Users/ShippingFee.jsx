@@ -150,6 +150,17 @@ export function ShippingFee() {
     return Number(totalPrice + 20 * 1.5 * Object.keys(cart).length);
   }
 
+  function stocksByProduct() {
+    const arr = [];
+    Object.values(step1).map((item) => {
+      let stocks = item.map((itemProduct) => itemProduct.product.stocks_per_kg);
+      arr.push(stocks[0] === '0');
+    });
+    return arr;
+  }
+
+  console.log(stocksByProduct());
+
   function calculateGrandTotalDeliveryFee(cart, delFee) {
     let totalPrice = 0;
     Object.values(cart).forEach((cartItem) => {
@@ -379,13 +390,18 @@ export function ShippingFee() {
                 </div>
                 <hr className='border border-1 border-info rounded' />
                 <div className='d-flex'>
-                  <span className='w-25 fw-semibold text-secondary'> Contact #</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    {' '}
+                    Contact #
+                  </span>
                   <span>{user.user_details.contact_number} </span>
                   <div></div>
                 </div>
                 <hr className='border border-1 border-info rounded' />
                 <div className='d-flex'>
-                  <span className='w-25 fw-semibold text-secondary'>Delivery Address</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    Delivery Address
+                  </span>
                   <span className='w-50'>
                     {user.user_details ? user.user_details.street : ''}{' '}
                     {user.user_details ? user.user_details.barangay : ''}{' '}
@@ -470,6 +486,7 @@ export function ShippingFee() {
                       <Form.Control
                         type='text'
                         onChange={(e) => setFullName(e.target.value)}
+                        value={fullName}
                         isInvalid={!!errors['shippingFee.full_name']}
                       />
 
@@ -736,7 +753,8 @@ export function ShippingFee() {
                       type='submit'
                       disabled={
                         calculateGrandTotalPrice(step1) >
-                        Number(user.wallet.shell_coin_amount)
+                          Number(user.wallet.shell_coin_amount) ||
+                        stocksByProduct().includes(true)
                       }
                       style={{
                         pointerEvents:

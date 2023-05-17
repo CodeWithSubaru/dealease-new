@@ -29,7 +29,9 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 
 export function RegisterRider() {
   const [user, setUser] = useState({
-    profile_image: null,
+    profile_image: '',
+    first_valid_id: '',
+    second_valid_id: '',
     first_name: '',
     middle_name: '',
     last_name: '',
@@ -44,11 +46,11 @@ export function RegisterRider() {
     user_type: 2,
   });
 
-  const { errors, setErrors, register } = useAuthContext();
+  const { errors, setErrors, registerRider } = useAuthContext();
 
   const handleRegister = (e) => {
     e.preventDefault();
-    register(user);
+    registerRider(user);
   };
 
   const [barangayData, setBarangay] = useState([]);
@@ -66,17 +68,30 @@ export function RegisterRider() {
   };
 
   const [image, setImage] = useState();
+  const [firstValidId, setFirstValidId] = useState();
+  const [secondValidId, setSecondValidId] = useState();
 
-  const onImageChange = (event) => {
+  const onImageChange = (event, set) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
+      if (set === 1) {
+        setImage(URL.createObjectURL(event.target.files[0]));
+        setUser({ ...user, profile_image: event.target.files[0] });
+      } else if (set === 2) {
+        setFirstValidId(URL.createObjectURL(event.target.files[0]));
+        setUser({ ...user, first_valid_id: event.target.files[0] });
+      } else if (set === 3) {
+        setSecondValidId(URL.createObjectURL(event.target.files[0]));
+        setUser({ ...user, second_valid_id: event.target.files[0] });
+      }
     }
   };
 
   useEffect(() => {
     barangays('031414').then((barangay) => setBarangay(barangay));
     setImage('../../../images/default_image.png');
-    setErrors(null);
+    setFirstValidId('../../../images/default_image.png');
+    setSecondValidId('../../../images/default_image.png');
+    setErrors([]);
   }, []);
 
   return (
@@ -133,7 +148,7 @@ export function RegisterRider() {
                               className='form-control'
                               type='file'
                               name='upload-img'
-                              onChange={onImageChange}
+                              onChange={(e) => onImageChange(e, 1)}
                               id='upload-img'
                             />
                           </div>
@@ -144,6 +159,70 @@ export function RegisterRider() {
                           </small>
                         </Col>
                       </Row>
+                      <hr className='mx-4 mt-4' />
+
+                      <Row className='px-4'>
+                        <Col lg={9} className='d-flex flex-column'>
+                          <div className='pt-4 w-100'>
+                            <div
+                              htmlFor='upload-img'
+                              className='text-white reg-label'
+                            >
+                              Upload First Valid ID
+                            </div>
+                            <input
+                              className='form-control'
+                              type='file'
+                              name='upload-img'
+                              onChange={(e) => onImageChange(e, 2)}
+                              id='upload-img'
+                            />
+                          </div>
+                          <small className='errMsg d-block'>
+                            {errors &&
+                              errors.first_valid_id &&
+                              errors.first_valid_id[0]}
+                          </small>
+                        </Col>
+                        <Col lg={3}>
+                          <Image
+                            src={firstValidId}
+                            className='float-end rounded d-flex justify-content-center mb-3 w-100 p-4'
+                          />
+                        </Col>
+                      </Row>
+                      <Row className='px-4'>
+                        <Col lg={9} className='d-flex flex-column'>
+                          <div className='pt-4 w-100'>
+                            <div
+                              htmlFor='upload-img'
+                              className='text-white reg-label'
+                            >
+                              Upload Second Valid ID
+                            </div>
+                            <input
+                              className='form-control'
+                              type='file'
+                              name='upload-img'
+                              onChange={(e) => onImageChange(e, 3)}
+                              id='upload-img'
+                            />
+                          </div>
+
+                          <small>
+                            {errors &&
+                              errors.second_valid_id &&
+                              errors.second_valid_id[0]}
+                          </small>
+                        </Col>
+                        <Col lg={3}>
+                          <Image
+                            src={secondValidId}
+                            className='float-end rounded d-flex justify-content-center w-100 p-4'
+                          />
+                        </Col>
+                      </Row>
+                      <hr className='mx-4 mt-4' />
                       <Row className='px-4'>
                         <Col lg={6}>
                           <div>
@@ -336,7 +415,6 @@ export function RegisterRider() {
 
                     <div className='address-details'>
                       {/* <h3>Address Details</h3> */}
-                      {/* <hr /> */}
                       <Row className='px-4'>
                         <Col>
                           <div>

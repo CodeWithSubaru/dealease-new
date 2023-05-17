@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function EmailVerification() {
-  const { user, logout } = useAuthContext();
+  const { user, logout, user_type } = useAuthContext();
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
 
@@ -25,8 +25,12 @@ export function EmailVerification() {
     logout();
   };
 
-  if (user.email_verified_at && token) {
+  if (user.email_verified_at && token && user_type == 'User') {
     navigate('/home');
+  }
+
+  if (user.email_verified_at && token && user_type == 'Rider') {
+    navigate('/to-deliver');
   }
 
   return (

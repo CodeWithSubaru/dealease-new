@@ -5,6 +5,7 @@ import PUBLIC_URL from '../../api/public_url';
 import Button from 'react-bootstrap/Button';
 import { Finalize } from '../../Components/Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export function OrdersBuyer() {
   const title = 'Buyer';
@@ -151,7 +152,7 @@ export function OrdersBuyer() {
     });
   }
 
-  function orderReceived(id, grandTotal) {
+  function orderReceived(id) {
     Finalize({
       text: 'Are you sure, your deliver Received?',
       confirmButton: 'Yes',
@@ -371,6 +372,12 @@ export function OrdersSeller() {
   const [loading, setLoading] = useState(false);
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
+  const navigate = useNavigate();
+  const { user } = useAuthContext();
+
+  if (user.verified_user == 0) {
+    navigate('/orders');
+  }
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
     axiosClient
@@ -487,7 +494,7 @@ export function OrdersSeller() {
         fetchNumberOrdersByStatusUser(1);
         fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
         fetchNumberOrdersByStatusUser([6, 7, 8]);
-        setUserOrdersTable([2, 3, 4, 5]);
+        setUserOrdersTable(1);
       }
     });
   }

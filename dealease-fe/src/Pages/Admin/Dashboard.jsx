@@ -494,7 +494,7 @@ export function Dashboard() {
 function CardDetails(props) {
   return (
     <Card
-      className='card-details rounded p-4 my-3 d-flex justify-content-between'
+      className='card-details rounded p-4 my-3 d-flex justify-content-between border border-1 border-black-subtle'
       style={{ backgroundColor: '#fff', width: '32%' }}
     >
       <div className='d-flex justify-content-between'>

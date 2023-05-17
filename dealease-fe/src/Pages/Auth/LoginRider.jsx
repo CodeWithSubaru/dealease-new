@@ -16,7 +16,16 @@ export const LoginRider = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const role_type = 2;
-  const { loginRider, errors, setErrors, user_type, token } = useAuthContext();
+  const {
+    loginRider,
+    errors,
+    setErrors,
+    user_type,
+    token,
+    isEmailVerified,
+    isLogin,
+    emailVerificationMessage,
+  } = useAuthContext();
 
   if (token) {
     if (user_type == 'User') {
@@ -58,6 +67,14 @@ export const LoginRider = () => {
           <Modal.Body>
             <i></i>
             {/*  */}
+            {isEmailVerified && (
+              <div
+                className='fadeInDown alert alert-primary text-capitalize'
+                role='alert'
+              >
+                {emailVerificationMessage}
+              </div>
+            )}
             <div className='Auth-form-container'>
               <form
                 onSubmit={handleLogin}

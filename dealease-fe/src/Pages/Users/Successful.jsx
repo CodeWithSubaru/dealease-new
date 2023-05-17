@@ -78,21 +78,33 @@ export function SuccessfulUser() {
                   </h6>
                   <p>
                     {' '}
-                    {user.first_name}{' '}
-                    {user.user_details.middle_name
-                      ? user.user_details.middle_name[0] + '. '
-                      : ''}{' '}
-                    {user.user_details ? user.user_details.last_name : ''}{' '}
-                    {user.user_details.ext_name
-                      ? user.user_details.ext_name
-                      : ''}
+                    {Object.keys(otherAddress).length > 0
+                      ? otherAddress.shippingFee.full_name
+                      : user.first_name +
+                        ' ' +
+                        (user.user_details.middle_name
+                          ? user.user_details.middle_name[0] + '. '
+                          : '') +
+                        ' ' +
+                        (user.user_details ? user.user_details.last_name : '') +
+                        ' ' +
+                        (user.user_details.ext_name
+                          ? user.user_details.ext_name
+                          : '')}
                   </p>
                 </div>
                 <div className='mb-3'>
                   <h6 className='fw-semibold text-secondary'>Payment Method</h6>
-                  <p>
+                  <p className='d-flex align-items-center'>
                     {' '}
-                    Cash on Delivery (COD) - Php{' '}
+                    Shells E-Wallet -{' '}
+                    <img
+                      src='/images/seashell.png'
+                      height={25}
+                      width={25}
+                      alt=''
+                      className='mx-2'
+                    />{' '}
                     {calculateGrandTotalDeliveryFee(
                       step1,
                       changeDeliveryFeePerBrgy(
