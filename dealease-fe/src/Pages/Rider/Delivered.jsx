@@ -1,4 +1,5 @@
 // import { Adsense } from '@ctrl/react-adsense';
+import { SidebarRider } from '../../Components/Sidebar/Sidebar';
 import React, { useState, useEffect } from 'react';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Ridertransaction } from '../../Components/Pages/Ridertransaction';
@@ -416,115 +417,8 @@ export const DeliveredRider = () => {
 
   return (
     <>
-      {/* <Header>
-        {' '}
-        <div className='div-dropdown'>
-          <Dropdown as={ButtonGroup} className='dropdown-button'>
-            <Button variant='dark' className='dropdown-logout'>
-              <img
-                className='dropdown-logout-profile me-2'
-                src={PUBLIC_PATH + 'images/' + user.prof_img}
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '50%',
-                  objectFit: 'fit',
-                }}
-              />
-              {user.first_name}
-            </Button>
-
-            <Dropdown.Toggle split variant='dark' id='dropdown-split-basic' />
-
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={'/seller/profile'}>
-                My Profile
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={'/seller/change-password'}>
-                Change Password
-              </Dropdown.Item>
-              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </Header> */}
-
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar
-          width='190px'
-          collapsedWidth='65px'
-          transitionDuration='500'
-          rootStyles={{
-            [`.${sidebarClasses.container}`]: {
-              backgroundColor: '#1f98f4',
-            },
-          }}
-        >
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 0)
-                  return {
-                    color: disabled ? '#f5d9ff' : '#white',
-                    backgroundColor: active ? '#eecef9' : undefined,
-                  };
-              },
-            }}
-          >
-            <button className='btn' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faBars} className='navs-icon' />
-            </button>
-
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/rider/to-pick-up' />}
-              disabled={isDisabled || toPickUpData.length > 0}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              To Pick Up
-            </MenuItem>
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/rider/to-deliver' />}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              To Deliver
-            </MenuItem>
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/rider/delivered' />}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              Delivered
-            </MenuItem>
-
-            <SubMenu label='Transactions'>
-              <MenuItem component={<Link to='/withdraw' />}>
-                <FontAwesomeIcon icon={faInbox} className='navs-icon' />
-                Withdraw
-              </MenuItem>
-            </SubMenu>
-            <MenuItem
-              className='text-black '
-              onClick={() => {
-                logout();
-              }}
-              // icon={<FaHouse />}
-            >
-              Logout
-            </MenuItem>
-            <MenuItem className='text-black'>
-              Wallet{' '}
-              {user.wallet.shell_coin_amount
-                ? user.wallet.shell_coin_amount
-                : ''}
-            </MenuItem>
-          </Menu>
-        </Sidebar>
+        <SidebarRider />
         <Modal
           size='lg'
           show={viewOrderBuyerModal}
@@ -681,9 +575,6 @@ export const DeliveredRider = () => {
         </Modal>
 
         <main className='w-100' style={{ minHeight: '815px' }}>
-          <button className='btn btn-dark' to={'/recharge'}>
-            Withdraw
-          </button>
           <div className='mx-auto w-75 mb-5'>
             <div className='d-flex mx-auto justify-content-center'>
               <div className='flex-grow-1 me-4'>
