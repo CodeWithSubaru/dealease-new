@@ -7,7 +7,7 @@
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url('/images/wave.png');
+  background-image: url("/images/wave.png");
 }
 .recharge-card-img {
   width: 40%;
@@ -76,7 +76,7 @@
   height: 120vh;
 }
 .profimg {
-  margin-top: 80px;
+  margin-top: 20px;
   margin-left: 80px;
   display: flex;
   flex-flow: column;
@@ -139,16 +139,8 @@
   color: #1f98f4;
 }
 
-.disbutton {
-  background-color: #1f98f4;
-  background: #f5f5f5;
-  border-color: black;
-  color: black;
-  padding: 10px;
-  text-align: center;
-  width: 8.2vw;
-  font-size: 0.9vw;
-  height: 35px;
+.edbutton {
+  color: #0c6ffd;
 }
 
 .scbutton {
@@ -196,7 +188,7 @@
 }
 
 .text-home::after {
-  content: '';
+  content: "";
   display: block;
   width: 100px;
   border-bottom: 5px solid #1f98f4;
@@ -276,8 +268,8 @@
 }
 
 .cards_item_text {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   color: #252e48;
   font-size: 16px;
   line-height: 24px;
@@ -299,8 +291,8 @@ ul {
 }
 .price-deal {
   font-size: 20px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   // margin-top: 20px;
   position: absolute;
   bottom: 10px;
@@ -312,8 +304,8 @@ ul {
   background-color: #1f98f4;
   border-color: #1f98f4;
   font-size: 13px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-    'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   margin-left: auto;
   margin-right: auto;
   // margin-top: 20px;
