@@ -74,6 +74,15 @@ class RiderController extends Controller
         }
     }
 
+    public function onGoingOrders()
+    {
+        $rider = auth()->user()->user_id; //getting authenticated user id
+        return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details', 'orderToDeliver.order.product')
+            ->whereIn('delivery_status', ['1', '2'])
+            ->where('rider_id', '=', $rider)
+            ->whereDate('created_at', Carbon::now())->get();
+    }
+
     public function delivered(string $id)
     {
         $changeStatus = Deliveries::where('deliveries_id', $id)->update([

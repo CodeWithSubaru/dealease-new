@@ -251,26 +251,6 @@ export const HomeRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderDeliveryTable('/rider');
-      }
-    });
-  }
-
-  function toDeliver(orderTransId) {
-    Finalize({
-      text: 'Are you sure you want change status To Deliver Status?',
-      confirmButton: 'Yes',
-      successMsg: 'Order changed status To Deliver Successfully.',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        axiosClient
-          .post('/rider/toDeliver/' + orderTransId)
-          .then((resp) => {})
-          .catch((e) => console.log(e));
-        // fetchNumberOrdersByStatusUser(1);
-        // fetchNumberOrdersByStatusUser(2);
-        // fetchNumberOrdersByStatusUser(3);
-        // setRiderDeliveryTable('');
       }
     });
   }
@@ -296,8 +276,7 @@ export const HomeRider = () => {
   }
 
   useEffect(() => {
-    toPickUp('/rider/toPickUp');
-    // toPickUp('/rider/toPickUp');
+    toPickUp('/rider/onGoingOrders');
   }, []);
 
   return (
