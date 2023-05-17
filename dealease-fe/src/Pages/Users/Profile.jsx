@@ -31,6 +31,7 @@ import { Row } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 
 import { CustomNav } from "../../Components/Header/CustomNav";
+import { SidebarUser } from "../../Components/Sidebar/Sidebar";
 
 export const ProfileUser = () => {
   const { user } = useAuthContext();
@@ -43,112 +44,38 @@ export const ProfileUser = () => {
   return user ? (
     <>
       <div style={{ display: "flex", height: "100%" }}>
-        <Sidebar
-          width="190px"
-          collapsedWidth="65px"
-          transitionDuration="500"
-          rootStyles={{
-            [`.${sidebarClasses.container}`]: {
-              backgroundColor: "#1f98f4",
-            },
-          }}
+        <SidebarUser />
+        <main
+          className="w-100 bg-white m-3 mt-5 p-2 shadow"
+          style={{ minHeight: "815px" }}
         >
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 0)
-                  return {
-                    color: disabled ? "#f5d9ff" : "#white",
-                    backgroundColor: active ? "#eecef9" : undefined,
-                  };
-              },
-            }}
-          >
-            <button className="btn" onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faBars} className="navs-icon" />
-            </button>
-
-            <MenuItem
-              className="text-black "
-              // icon={<FaHouse />}
-              component={<Link to="/seller/home" />}
-            >
-              <FontAwesomeIcon icon={faHouse} className="navs-icon" />
-              Home
-            </MenuItem>
-            <SubMenu label="Transactions">
-              {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
-              <MenuItem component={<Link to="/seller/withdraw" />}>
-                Withdraw
-              </MenuItem>
-              {/* <MenuItem component={<Link to="/recharge" />}>Recharge</MenuItem> */}
-            </SubMenu>
-            <MenuItem
-              className="text-black"
-              component={<Link to="/seller/inbox" />}
-            >
-              <FontAwesomeIcon icon={faInbox} className="navs-icon" />
-              Inbox
-            </MenuItem>
-          </Menu>
-        </Sidebar>
-        <Row>
-          <Col md={4}>
-            <NavUser />
-          </Col>
-        </Row>
-        <p eventKey="home">s</p>
-        <p eventKey="news">d</p>
-        <main className="w-100" style={{ minHeight: "815px" }}>
           <div className="userprofile">
             <form method="">
               <div className="row">
-                <div className="col">
+                <div className="col  pt-5">
+                  <h5 className="">Account Information</h5>
                   <img
-                    className="profimg rounded-circle"
+                    className=" w-50 h-25 text-center rounded"
                     src={PUBLIC_PATH + "images/" + user.prof_img}
                     alt="profimg"
                   />
-                  <Row>
-                    <Col
-                      xs={3}
-                      style={{
-                        margin: "0 87px",
-                      }}
-                    >
-                      <h5>Account Information</h5>
-                    </Col>
 
-                    <Col
-                      style={{
-                        color: "#0c6ffd",
-                      }}
-                    >
-                      {/* <FaUserEdit size="0.7rem" /> &nbsp;
+                  {/* <FaUserEdit size="0.7rem" /> &nbsp;
                       <a href="#" onClick={handleShow}>
                         Edit Profile
                       </a> */}
-                    </Col>
-                  </Row>
 
-                  <br />
-                  <br />
-                  <div
-                    style={{
-                      margin: "0 75px",
-                    }}
-                  >
+                  <div>
                     <Row>
-                      <Col xs={2}>Full Name:</Col>
-                      <Col xs={3}>
+                      <Col xs={3}>Full Name:</Col>
+                      <Col xs={5}>
                         {user ? user.first_name : ""}{" "}
                         {user.user_details ? user.user_details.middle_name : ""}{" "}
                         {user.user_details ? user.user_details.last_name : ""}{" "}
                         {user.user_details ? user.user_details.ext_name : ""}
                       </Col>
                       <Col
-                        xs={2}
+                        xs={3}
                         style={{
                           color: "#0c6ffd",
                         }}
@@ -285,7 +212,6 @@ export const ProfileUser = () => {
           </div>
         </main>
       </div>
-      <Footer />
     </>
   ) : (
     <p>Loading...</p>
@@ -301,6 +227,6 @@ function NavUser() {
       reversed
       active={active}
       onSelect={setActive}
-    ></CustomNav>
+    />
   );
 }
