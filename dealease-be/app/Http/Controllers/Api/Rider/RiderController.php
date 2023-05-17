@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Rider;
 use App\Http\Controllers\Controller;
 use App\Models\Deliveries;
 use App\Models\OrderTransaction;
+use App\Models\UsersWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -115,9 +116,27 @@ class RiderController extends Controller
 
         if ($changeStatus) {
             // will update status of order transaction table at the same time.
-            $product = Deliveries::find($id);
-            OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([
+            $delivery = Deliveries::with('orderToDeliver')->find($id)->first();
+            OrderTransaction::where('order_trans_id', $delivery->order_trans_id)->update([
                 'order_trans_status' => '8',
+            ]);
+
+            // Add the delivery fee to rider's wallet account 
+            $totalShellAmount = 0;
+            $riderWallet = UsersWallet::where('user_id', $delivery->rider_id);
+            $totalShellAmount = $riderWallet->first()->shell_coin_amount + $delivery->orderToDeliver->delivery_fee;
+
+            $riderWallet->update([
+                'shell_coin_amount' => $totalShellAmount,
+            ]);
+
+            // Add the total amount to buyers's wallet account 
+            $totalBuyerShellAmount = 0;
+            $buyerWallet = UsersWallet::where('user_id', $delivery->orderToDeliver->buyer_id);
+            $totalBuyerShellAmount = $buyerWallet->first()->shell_coin_amount + $delivery->orderToDeliver->total_amount;
+
+            $buyerWallet->update([
+                'shell_coin_amount' => $totalBuyerShellAmount,
             ]);
         }
     }

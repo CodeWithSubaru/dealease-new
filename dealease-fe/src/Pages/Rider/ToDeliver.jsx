@@ -283,6 +283,26 @@ export const ToDeliverRider = () => {
     });
   }
 
+  function returnItem(orderTransId) {
+    Finalize({
+      text: 'You want to change status to Return Item?',
+      confirmButton: 'Yes',
+      successMsg: 'Updated to Return Item Status Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/rider/returnItem/' + orderTransId)
+          .then((resp) => {
+            setRiderTable('/rider/onGoingOrders');
+          })
+          .catch((e) => console.log(e));
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
+      }
+    });
+  }
+
   function setRiderTable(url) {
     setBody([]);
     setLoading(true);
@@ -820,10 +840,11 @@ export const ToDeliverRider = () => {
                         ) : (
                           ''
                         )}
+
                         <Button
                           variant='danger'
                           onClick={() => {
-                            returnItem(item.order_to_deliver.order_number);
+                            returnItem(item.deliveries_id);
                           }}
                           style={{ cursor: 'pointer' }}
                           className='badge rounded px-2'
