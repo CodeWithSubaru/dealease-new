@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Card } from '../../Components/Card/Card';
 import { Footer } from '../../Components/Footer/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,10 +9,12 @@ import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 import { Link } from 'react-router-dom';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import axiosClient from '../../api/axios';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import axiosClient from '../../api/axios';
 
 export const HomeUser = () => {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);

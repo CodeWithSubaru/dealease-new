@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { Ridertransaction } from '../../Components/Pages/Ridertransaction';
 import { Footer } from '../../Components/Footer/Footer';
+import { SidebarRider } from '../../Components/Sidebar/Sidebar';
 import {
   Modal,
   Row,
@@ -282,80 +283,7 @@ export const HomeRider = () => {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar
-          width='190px'
-          collapsedWidth='65px'
-          transitionDuration='500'
-          rootStyles={{
-            [`.${sidebarClasses.container}`]: {
-              backgroundColor: '#1f98f4',
-            },
-          }}
-        >
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 0)
-                  return {
-                    color: disabled ? '#f5d9ff' : '#white',
-                    backgroundColor: active ? '#eecef9' : undefined,
-                  };
-              },
-            }}
-          >
-            <button className='btn' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faBars} className='navs-icon' />
-            </button>
-
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/rider/to-pick-up' />}
-              disabled={isDisabled || toPickUpData.length > 0}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              To Pick Up
-            </MenuItem>
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/rider/to-deliver' />}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              To Deliver
-            </MenuItem>
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/rider/delivered' />}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              Delivered
-            </MenuItem>
-            <SubMenu label='Transactions'>
-              <MenuItem component={<Link to='/withdraw' />}>
-                <FontAwesomeIcon icon={faInbox} className='navs-icon' />
-                Withdraw
-              </MenuItem>
-            </SubMenu>
-            <MenuItem
-              className='text-black '
-              onClick={() => {
-                logout();
-              }}
-            >
-              Logout
-            </MenuItem>
-
-            <MenuItem className='text-black'>
-              Wallet{' '}
-              {user.wallet.shell_coin_amount
-                ? user.wallet.shell_coin_amount
-                : ''}
-            </MenuItem>
-          </Menu>
-        </Sidebar>
+        <SidebarRider />
         <Modal
           size='lg'
           show={viewOrderBuyerModal}
@@ -514,9 +442,6 @@ export const HomeRider = () => {
         </Modal>
 
         <main className='w-100' style={{ minHeight: '815px' }}>
-          <button className='btn btn-dark' to={'/recharge'}>
-            Withdraw
-          </button>
           <div className='mx-auto w-75 mb-5'>
             <div className='d-flex mx-auto justify-content-center'>
               <div className='flex-grow-1 me-4'>

@@ -114,7 +114,115 @@ export function SidebarUser() {
                     <Nav.Item href='/change-password' eventKey='4-2'>
                       Change Password
                     </Nav.Item>
-                    <Nav.Item eventKey='4-3'>Update Access</Nav.Item>
+                    {/* {user.verified_user ? (
+                      <Nav.Item
+                        component={<Link to='/product' />}
+                        eventKey='4-3'
+                      >
+                        Product
+                      </Nav.Item>
+                    ) : (
+                      <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
+                        <Button
+                          className='btn btn-sm d-inline-block'
+                          onClick={() => setUpdateAccessModal(true)}
+                        >
+                          Update Access
+                        </Button>
+                      </div>
+                    )} */}
+                  </Nav.Menu>
+                </Nav>
+              </Sidenav.Body>
+            </Sidenav>
+          </Sidebar>
+
+          {/* <Container>
+            <Header>
+              <h2>Page Title</h2>
+            </Header>
+            <Content>Content</Content>
+          </Container> */}
+        </Container>
+      </div>
+    </>
+  );
+}
+export function SidebarRider() {
+  // const [expand, setExpand] = useState(true);
+  return (
+    <>
+      <div className='show-fake-browser sidebar-page'>
+        <Container style={{ width: '250px' }}>
+          <Sidebar
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              background: '#fff',
+              height: '100%',
+              position: 'fixed',
+              top: '0',
+            }}
+          >
+            <Sidenav
+              className='mt-5'
+              defaultOpenKeys={['3']}
+              appearance='subtle'
+            >
+              <Sidenav.Body className='mt-4'>
+                <Nav>
+                  <Nav.Item
+                    href='/'
+                    eventKey='1'
+                    active
+                    icon={<DashboardIcon />}
+                  >
+                    To Pick Up
+                  </Nav.Item>
+                  <Nav.Item
+                    href='/rider/to-deliver'
+                    eventKey='2'
+                    icon={<GroupIcon />}
+                  >
+                    To Deliver
+                  </Nav.Item>
+                  <Nav.Item
+                    href='/rider/delivered'
+                    eventKey='2'
+                    icon={<GroupIcon />}
+                  >
+                    Delivered
+                  </Nav.Item>
+                  <Nav.Menu
+                    eventKey='4'
+                    trigger='hover'
+                    title='Settings'
+                    icon={<GearCircleIcon />}
+                    placement='rightStart'
+                  >
+                    <Nav.Item href='/rider/profile' eventKey='4-1'>
+                      Profile
+                    </Nav.Item>
+                    <Nav.Item href='/rider/change-password' eventKey='4-2'>
+                      Change Password
+                    </Nav.Item>
+                    {/* {user.verified_user ? (
+                      <Nav.Item
+                        component={<Link to='/product' />}
+                        eventKey='4-3'
+                      >
+                        Product
+                      </Nav.Item>
+                    ) : (
+                      <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
+                        <Button
+                          className='btn btn-sm d-inline-block'
+                          onClick={() => setUpdateAccessModal(true)}
+                        >
+                          Update Access
+                        </Button>
+                      </div>
+                    )} */}
                   </Nav.Menu>
                 </Nav>
               </Sidenav.Body>
