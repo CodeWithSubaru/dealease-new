@@ -98,12 +98,36 @@ class RiderController extends Controller
             ->whereDate('created_at', Carbon::now())->latest('created_at')->get();
     }
 
-    public function onProcessDelivery()
+    public function returnItem(string $id)
+    {
+        $changeStatus = Deliveries::where('deliveries_id', $id)->update([
+            'delivery_status' => '5',
+        ]);
+
+        if ($changeStatus) {
+            // will update status of order transaction table at the same time.
+            $product = Deliveries::find($id);
+            OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([
+                'order_trans_status' => '8',
+            ]);
+        }
+    }
+
+    public function failedDelivery()
     {
         $rider = auth()->user()->user_id; //getting authenticated user id
         return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details', 'orderToDeliver.order.product')
             ->where('rider_id', '=', $rider)
-            ->where('delivery_status', '=', '3')
-            ->whereDate('created_at', Carbon::now())->get();
+            ->where('delivery_status', '=', '5')
+            ->whereDate('created_at', Carbon::now())->latest('created_at')->get();
+    }
+
+    public function successDelivery()
+    {
+        $rider = auth()->user()->user_id; //getting authenticated user id
+        return Deliveries::with('orderToDeliver', 'orderToDeliver.buyer', 'orderToDeliver.buyer.user_details', 'orderToDeliver.order.product')
+            ->where('rider_id', '=', $rider)
+            ->where('delivery_status', '=', '4')
+            ->whereDate('created_at', Carbon::now())->latest('created_at')->get();
     }
 }
