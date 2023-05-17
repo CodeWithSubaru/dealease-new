@@ -39,7 +39,7 @@ import useProductContext from '../../Hooks/Context/ProductContext';
 
 export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
   const { user } = useAuthContext();
-  const { searchProduct } = useProductContext();
+  const { searchProduct1 } = useProductContext();
   const { loading } = useAuthContext();
 
   const [UserNavbarMobilenew, setUserNavbarMobile] =
@@ -78,8 +78,10 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
           <InputGroup inside style={styles}>
             <Input
               type='search'
-              placeholder='Search...'
-              onChange={(e) => searchProduct(e)}
+              className='input'
+              onChange={(e) => {
+                searchProduct1(e);
+              }}
             />
             <InputGroup.Addon>
               <SearchIcon />

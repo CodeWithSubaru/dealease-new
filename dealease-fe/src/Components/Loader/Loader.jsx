@@ -4,7 +4,7 @@ export function Loader({ visibility }) {
   return (
     <div
       className='d-flex align-items-center justify-content-center'
-      style={{ height: '10vh' }}
+      style={{ height: '100vh' }}
     >
       <LineWave
         height='100'
