@@ -32,7 +32,7 @@ export function Card() {
   return (
     <div className='cards '>
       <div className='cards_container '>
-        <Container className='mt-5 '>
+        <div className='mt-5 justify-content-between w-100 px-3'>
           {msgStatus && (
             <div className='d-flex justify-content-center'>
               <div
@@ -109,7 +109,7 @@ export function Card() {
               </Col>
             </Row>
           </div>
-        </Container>
+        </div>
         <div className='cards_wrapper'>
           {/* Card for Seller */}
           {loading ? (
