@@ -1,13 +1,12 @@
-import useAuthContext from '../../Hooks/Context/AuthContext';
-import Table from 'react-bootstrap/Table';
-import { Footer } from '../../Components/Footer/Footer';
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { FaUserEdit } from 'react-icons/fa';
-import { FaEdit } from 'react-icons/fa';
-import PUBLIC_PATH from '../../api/public_url';
-import { MobileHeader } from '../../Components/MobileHeader/MobileHeader';
+import useAuthContext from "../../Hooks/Context/AuthContext";
+import Table from "react-bootstrap/Table";
+import { Footer } from "../../Components/Footer/Footer";
+import { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import { Button } from "react-bootstrap";
+import { FaUserEdit } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import PUBLIC_PATH from "../../api/public_url";
 import {
   Sidebar,
   Menu,
@@ -15,9 +14,8 @@ import {
   SubMenu,
   useProSidebar,
   sidebarClasses,
-  menuClasses,
-} from 'react-pro-sidebar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+} from "react-pro-sidebar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faBurger,
@@ -27,8 +25,12 @@ import {
   faTable,
   faToggleOn,
   faInbox,
-} from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
+
+import { CustomNav } from "../../Components/Header/CustomNav";
 
 export const ProfileUser = () => {
   const { user } = useAuthContext();
@@ -40,90 +42,169 @@ export const ProfileUser = () => {
 
   return user ? (
     <>
-      <MobileHeader
-        className=' w-100'
-        appearance='inverse'
-        activeKey={activeKey}
-        onSelect={setActiveKey}
-      ></MobileHeader>
-      <div style={{ display: 'flex', height: '100%' }}>
-        <main className='w-100' style={{ minHeight: '815px' }}>
-          <div className='userprofile'>
-            <form method=''>
-              <div className='row'>
-                <div className='col-md-4'>
+      <div style={{ display: "flex", height: "100%" }}>
+        <Sidebar
+          width="190px"
+          collapsedWidth="65px"
+          transitionDuration="500"
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: "#1f98f4",
+            },
+          }}
+        >
+          <Menu
+            menuItemStyles={{
+              button: ({ level, active, disabled }) => {
+                // only apply styles on first level elements of the tree
+                if (level === 0)
+                  return {
+                    color: disabled ? "#f5d9ff" : "#white",
+                    backgroundColor: active ? "#eecef9" : undefined,
+                  };
+              },
+            }}
+          >
+            <button className="btn" onClick={() => collapseSidebar()}>
+              <FontAwesomeIcon icon={faBars} className="navs-icon" />
+            </button>
+
+            <MenuItem
+              className="text-black "
+              // icon={<FaHouse />}
+              component={<Link to="/seller/home" />}
+            >
+              <FontAwesomeIcon icon={faHouse} className="navs-icon" />
+              Home
+            </MenuItem>
+            <SubMenu label="Transactions">
+              {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
+              <MenuItem component={<Link to="/seller/withdraw" />}>
+                Withdraw
+              </MenuItem>
+              {/* <MenuItem component={<Link to="/recharge" />}>Recharge</MenuItem> */}
+            </SubMenu>
+            <MenuItem
+              className="text-black"
+              component={<Link to="/seller/inbox" />}
+            >
+              <FontAwesomeIcon icon={faInbox} className="navs-icon" />
+              Inbox
+            </MenuItem>
+          </Menu>
+        </Sidebar>
+        <Row>
+          <Col md={4}>
+            <NavUser />
+          </Col>
+        </Row>
+        <p eventKey="home">s</p>
+        <p eventKey="news">d</p>
+        <main className="w-100" style={{ minHeight: "815px" }}>
+          <div className="userprofile">
+            <form method="">
+              <div className="row">
+                <div className="col">
                   <img
-                    className='profimg rounded-circle'
-                    src={PUBLIC_PATH + 'images/' + user.prof_img}
-                    alt='profimg'
+                    className="profimg rounded-circle"
+                    src={PUBLIC_PATH + "images/" + user.prof_img}
+                    alt="profimg"
                   />
-                  <div className='proffirst'>
-                    {user ? user.first_name : ''}{' '}
+                  <Row>
+                    <Col
+                      xs={3}
+                      style={{
+                        margin: "0 87px",
+                      }}
+                    >
+                      <h5>Account Information</h5>
+                    </Col>
+
+                    <Col
+                      style={{
+                        color: "#0c6ffd",
+                      }}
+                    >
+                      {/* <FaUserEdit size="0.7rem" /> &nbsp;
+                      <a href="#" onClick={handleShow}>
+                        Edit Profile
+                      </a> */}
+                    </Col>
+                  </Row>
+
+                  <br />
+                  <br />
+                  <div
+                    style={{
+                      margin: "0 75px",
+                    }}
+                  >
+                    <Row>
+                      <Col xs={2}>Full Name:</Col>
+                      <Col xs={3}>
+                        {user ? user.first_name : ""}{" "}
+                        {user.user_details ? user.user_details.middle_name : ""}{" "}
+                        {user.user_details ? user.user_details.last_name : ""}{" "}
+                        {user.user_details ? user.user_details.ext_name : ""}
+                      </Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp; Change
+                      </Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={2}>Email:</Col>
+                      <Col xs={3}>{user ? user.email : ""} </Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp; Change
+                      </Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={2}>Phone:</Col>
+                      <Col xs={3}>
+                        {user.user_details
+                          ? user.user_details.contact_number
+                          : ""}
+                      </Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp; Change
+                      </Col>
+                    </Row>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={2}>Password:</Col>
+                      <Col
+                        xs={2}
+                        style={{
+                          color: "#0c6ffd",
+                        }}
+                      >
+                        <FaUserEdit size="0.7rem" /> &nbsp;
+                        <a href="change-password">Change</a>
+                      </Col>
+                    </Row>
                   </div>
-                  <div className='profemail'>{user ? user.email : ''} </div>
-                  <div className='backgrnd'></div>
-                  <div className='accountinfo'>
-                    <h5>Account Information</h5>
-                  </div>
-                  <div className='proftable'>
-                    <Table striped>
-                      <tbody>
-                        <tr>
-                          <td>Full Name</td>
-                          <td>
-                            {user ? user.first_name : ''}{' '}
-                            {user ? user.middle_name : ''}{' '}
-                            {user ? user.last_name : ''}{' '}
-                            {user ? user.ext_name : ''}
-                          </td>
-                        </tr>
 
-                        <tr>
-                          <td>Email</td>
-                          <td>{user ? user.email : ''}</td>
-                        </tr>
-
-                        <tr>
-                          <td>Address</td>
-                          <td>
-                            {user.user_details ? user.user_details.street : ''}
-                            {user.user_details
-                              ? user.user_details.barangay
-                              : ''}
-                            {user.user_details ? user.user_details.city : ''}{' '}
-                            {user.user_details
-                              ? user.user_details.province
-                              : ''}
-                            {user.user_details ? user.user_details.region : ''}
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>Contact Number</td>
-                          <td>
-                            {user.user_details
-                              ? user.user_details.contact_number
-                              : ''}
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>Birthday </td>
-                          <td>
-                            {user.user_details
-                              ? user.user_details.birth_date
-                              : ''}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-
-                  <div className='modalprof'>
-                    <Button className='disbutton' onClick={handleShow}>
-                      <FaUserEdit size='0.7rem' /> &nbsp; Edit Profile
-                    </Button>
-
+                  <div className="modalprof">
                     <Modal show={show} onHide={handleClose}>
                       <Modal.Header closeButton>
                         <Modal.Title>Edit Profile</Modal.Title>
@@ -134,16 +215,16 @@ export const ProfileUser = () => {
                             <tr>
                               <td>Full Name</td>
                               <td>
-                                {user ? user.first_name : ''}{' '}
-                                {user ? user.middle_name : ''}{' '}
-                                {user ? user.last_name : ''}{' '}
-                                {user ? user.ext_name : ''}
+                                {user ? user.first_name : ""}{" "}
+                                {user ? user.middle_name : ""}{" "}
+                                {user ? user.last_name : ""}{" "}
+                                {user ? user.ext_name : ""}
                               </td>
                             </tr>
 
                             <tr>
                               <td>Email</td>
-                              <td>{user ? user.email : ''} </td>
+                              <td>{user ? user.email : ""} </td>
                             </tr>
 
                             <tr>
@@ -151,19 +232,19 @@ export const ProfileUser = () => {
                               <td>
                                 {user.user_details
                                   ? user.user_details.street
-                                  : ''}
+                                  : ""}
                                 {user.user_details
                                   ? user.user_details.barangay
-                                  : ''}
+                                  : ""}
                                 {user.user_details
                                   ? user.user_details.city
-                                  : ''}{' '}
+                                  : ""}{" "}
                                 {user.user_details
                                   ? user.user_details.province
-                                  : ''}
+                                  : ""}
                                 {user.user_details
                                   ? user.user_details.region
-                                  : ''}
+                                  : ""}
                               </td>
                             </tr>
 
@@ -172,7 +253,7 @@ export const ProfileUser = () => {
                               <td>
                                 {user.user_details
                                   ? user.user_details.contact_number
-                                  : ''}
+                                  : ""}
                               </td>
                             </tr>
 
@@ -181,7 +262,7 @@ export const ProfileUser = () => {
                               <td>
                                 {user.user_details
                                   ? user.user_details.birth_date
-                                  : ''}
+                                  : ""}
                                 <FaEdit />
                               </td>
                             </tr>
@@ -189,10 +270,10 @@ export const ProfileUser = () => {
                         </Table>
                       </Modal.Body>
                       <Modal.Footer>
-                        <Button variant='danger' onClick={handleClose}>
+                        <Button variant="danger" onClick={handleClose}>
                           Close
                         </Button>
-                        <Button className='scbutton' onClick={handleClose}>
+                        <Button className="scbutton" onClick={handleClose}>
                           Save
                         </Button>
                       </Modal.Footer>
@@ -210,3 +291,16 @@ export const ProfileUser = () => {
     <p>Loading...</p>
   );
 };
+
+function NavUser() {
+  const [active, setActive] = useState("home");
+
+  return (
+    <CustomNav
+      appearance="subtle"
+      reversed
+      active={active}
+      onSelect={setActive}
+    ></CustomNav>
+  );
+}
