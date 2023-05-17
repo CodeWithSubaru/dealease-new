@@ -2,7 +2,6 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import Table from 'react-bootstrap/Table';
 import { Footer } from '../../Components/Footer/Footer';
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FaUserEdit } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
@@ -30,6 +29,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Row, Col, Container, Button } from 'react-bootstrap';
+import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 
 export const ProfileUser = () => {
   const { user } = useAuthContext();
@@ -42,56 +42,7 @@ export const ProfileUser = () => {
   return user ? (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        <Sidebar
-          width='190px'
-          collapsedWidth='65px'
-          transitionDuration='500'
-          rootStyles={{
-            [`.${sidebarClasses.container}`]: {
-              backgroundColor: '#1f98f4',
-            },
-          }}
-        >
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 0)
-                  return {
-                    color: disabled ? '#f5d9ff' : '#white',
-                    backgroundColor: active ? '#eecef9' : undefined,
-                  };
-              },
-            }}
-          >
-            <button className='btn' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faBars} className='navs-icon' />
-            </button>
-
-            <MenuItem
-              className='text-black '
-              // icon={<FaHouse />}
-              component={<Link to='/seller/home' />}
-            >
-              <FontAwesomeIcon icon={faHouse} className='navs-icon' />
-              Home
-            </MenuItem>
-            <SubMenu label='Transactions'>
-              {/* <FontAwesomeIcon icon={faInbox} className="navs-icon" /> */}
-              <MenuItem component={<Link to='/seller/withdraw' />}>
-                Withdraw
-              </MenuItem>
-              {/* <MenuItem component={<Link to="/recharge" />}>Recharge</MenuItem> */}
-            </SubMenu>
-            <MenuItem
-              className='text-black'
-              component={<Link to='/seller/inbox' />}
-            >
-              <FontAwesomeIcon icon={faInbox} className='navs-icon' />
-              Inbox
-            </MenuItem>
-          </Menu>
-        </Sidebar>
+        <SidebarUser />
         <main className='w-100' style={{ minHeight: '815px' }}>
           <div className='userprofile'>
             <form method=''>
@@ -277,7 +228,6 @@ export const ProfileUser = () => {
           </div>
         </main>
       </div>
-      <Footer />
     </>
   ) : (
     <p>Loading...</p>

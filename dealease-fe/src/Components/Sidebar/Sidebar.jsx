@@ -114,7 +114,7 @@ export function SidebarUser() {
                     <Nav.Item href='/change-password' eventKey='4-2'>
                       Change Password
                     </Nav.Item>
-                    {user.verified_user ? (
+                    {/* {user.verified_user ? (
                       <Nav.Item
                         component={<Link to='/product' />}
                         eventKey='4-3'
@@ -130,8 +130,7 @@ export function SidebarUser() {
                           Update Access
                         </Button>
                       </div>
-                    )}
-                    {/* <Nav.Item component={<Link to="/product" />}  eventKey='4-3'>Update Access</Nav.Item> */}
+                    )} */}
                   </Nav.Menu>
                 </Nav>
               </Sidenav.Body>
