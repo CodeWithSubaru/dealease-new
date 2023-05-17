@@ -1,27 +1,18 @@
 import 'rsuite/dist/rsuite.min.css';
 import { useState, useEffect } from 'react';
-import { Navbar, Nav, Input, InputGroup } from 'rsuite';
-import CogIcon from '@rsuite/icons/legacy/Cog';
+import { Navbar, Nav, Input, InputGroup, Badge } from 'rsuite';
 import SearchIcon from '@rsuite/icons/Search';
-import InfoIcon from '@rsuite/icons/legacy/Info';
-import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Avatar from 'rsuite/Avatar';
 import {
   faBagShopping,
   faBox,
-  faBoxOpen,
-  faBoxTissue,
   faBoxesAlt,
   faBoxesPacking,
   faCartShopping,
-  faCheckSquare,
-  faHouse,
   faShop,
-  faShoppingBasket,
   faUserAlt,
   faUserAstronaut,
-  faUserGear,
   faWallet,
 } from '@fortawesome/free-solid-svg-icons';
 import PUBLIC_PATH from '../../api/public_url';
@@ -73,11 +64,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
   }, []);
   return (
     <>
-      <Navbar
-        className={UserNavbarMobilenew}
-        {...props}
-        // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
-      >
+      <Navbar className={UserNavbarMobilenew} {...props}>
         <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
           <img
             alt=''
@@ -150,20 +137,15 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
             <Nav.Item
               href='/orders/seller'
               className='flex-column d-flex text-center'
-              eventKey='orders'
+              eventKey='orders/seller'
             >
               <div className='position-relative'>
-                <FontAwesomeIcon
-                  className='mobile-icon mx-auto'
-                  icon={faBagShopping}
-                />
-
-                <small
-                  className='badge rounded-pill text-bg-primary position-absolute p-1'
-                  style={{ top: '-5px', right: '-12px' }}
-                >
-                  Seller
-                </small>
+                <Badge content='Seller'>
+                  <FontAwesomeIcon
+                    className='mobile-icon mx-auto'
+                    icon={faBagShopping}
+                  />
+                </Badge>
               </div>
               <span className='mobile-icon-label'>Orders</span>
             </Nav.Item>
