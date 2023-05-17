@@ -17,6 +17,7 @@ import {
   faWallet,
 } from '@fortawesome/free-solid-svg-icons';
 import PUBLIC_PATH from '../../api/public_url';
+import { Loader } from '../Loader/Loader';
 
 const styles = {
   width: 'auto',
@@ -39,6 +40,7 @@ import useProductContext from '../../Hooks/Context/ProductContext';
 export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
   const { user } = useAuthContext();
   const { searchProduct } = useProductContext();
+  const { loading } = useAuthContext();
 
   const [UserNavbarMobilenew, setUserNavbarMobile] =
     useState('UserNavbarMobile');
@@ -56,46 +58,49 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
     return () => window.removeEventListener('scroll', listenScrollEvent);
   }, []);
   return (
-    <Navbar
-      className={UserNavbarMobilenew}
-      {...props}
-      // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
-    >
-      <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
-        <img
-          alt=''
-          src='/images/dealeasefavicon.png'
-          width='25'
-          height='25'
-          className='d-inline-block align-top me-2'
-        />
-        DEALEASE
-      </Navbar.Brand>
-      <Nav onSelect={onSelectTop} activeKey={activeKeyTop}>
-        <InputGroup inside style={styles}>
-          <Input
-            type='search'
-            placeholder='Search...'
-            onChange={(e) => searchProduct(e)}
+    <>
+      <Navbar
+        className={UserNavbarMobilenew}
+        {...props}
+        // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
+      >
+        <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
+          <img
+            alt=''
+            src='/images/dealeasefavicon.png'
+            width='25'
+            height='25'
+            className='d-inline-block align-top me-2'
           />
-          <InputGroup.Addon>
-            <SearchIcon />
-          </InputGroup.Addon>
-        </InputGroup>
-      </Nav>
-      <Nav pullRight>
-        <Nav.Item>
-          <Avatar
-            circle
-            // src='https://avatars.githubusercontent.com/u/1203827'
-            src={PUBLIC_PATH + 'images/' + user.prof_img}
-            alt='@simonguo'
-            className='me-3'
-          />
-          {user.first_name ? user.first_name : ''}
-        </Nav.Item>
-      </Nav>
-    </Navbar>
+          DEALEASE
+        </Navbar.Brand>
+        <Nav onSelect={onSelectTop} activeKey={activeKeyTop}>
+          <InputGroup inside style={styles}>
+            <Input
+              type='search'
+              placeholder='Search...'
+              onChange={(e) => searchProduct(e)}
+            />
+            <InputGroup.Addon>
+              <SearchIcon />
+            </InputGroup.Addon>
+          </InputGroup>
+        </Nav>
+        <Nav pullRight>
+          <Nav.Item>
+            <Avatar
+              circle
+              // src='https://avatars.githubusercontent.com/u/1203827'
+              src={PUBLIC_PATH + 'images/' + user.prof_img}
+              alt='@simonguo'
+              className='me-3'
+            />
+            {user.first_name ? user.first_name : ''}
+          </Nav.Item>
+        </Nav>
+      </Navbar>
+      {loading && <Loader visibility={loading}></Loader>}
+    </>
   );
 }
 
