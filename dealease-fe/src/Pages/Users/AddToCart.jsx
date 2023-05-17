@@ -190,7 +190,7 @@ export function AddToCart() {
                                   {item.map((cartItem, index) => (
                                     <>
                                       <Card
-                                        className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
+                                        className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
                                         key={index}
                                       >
                                         <div
@@ -302,7 +302,7 @@ export function AddToCart() {
                       </div>
                       {Object.values(cartHistoryBySellerId).length > 0 && (
                         <div className='mt-2 d-flex'>
-                          <Card className='mt-5 p-3 align-self-baseline flex-shrink-0'>
+                          <Card className='mt-5 p-3 align-self-baseline flex-shrink-0 border border-1 border-dark-subtle'>
                             <Form
                               className=' mt-2 p-2 px-3'
                               onSubmit={(e) => {

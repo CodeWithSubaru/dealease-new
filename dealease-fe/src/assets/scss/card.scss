@@ -193,8 +193,13 @@
 .text-home {
   margin-left: 10px;
   color: #1f98f4;
+}
+
+.text-home::after {
+  content: '';
+  display: block;
+  width: 100px;
   border-bottom: 5px solid #1f98f4;
-  width: 20%;
 }
 
 .cards_container {

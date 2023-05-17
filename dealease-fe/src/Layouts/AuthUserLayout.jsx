@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
@@ -35,6 +35,7 @@ import {
   NavbarUser,
 } from '../Components/MobileHeader/MobileHeader';
 
+import { OrdersBuyer } from '../Pages/Users/Orders';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
 
 export function AuthUserLayout() {
@@ -47,6 +48,7 @@ export function AuthUserLayout() {
   const [modalShow, setModalShow] = useState(false);
   const { user, token, user_type, logout } = useAuthContext();
   const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
+  const navigate = useNavigate();
 
   const closeMobileMenu = () => setClick(false);
   const handleLogout = () => {

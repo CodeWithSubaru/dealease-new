@@ -65,12 +65,6 @@ export const ToDeliverRider = () => {
   };
 
   useEffect(() => {
-    axiosClient
-      .get('/rider/toPickUp')
-      .then((res) => {
-        setBody(res.data);
-      })
-      .catch((e) => console.log(e));
     return () => {
       setRegistrationSuccess(false);
       setEmailVerified(false);
@@ -248,6 +242,27 @@ export const ToDeliverRider = () => {
     });
   }
 
+  function toDeliver(orderTransId) {
+    Finalize({
+      text: 'Are you sure you want change status To Deliver Status?',
+      confirmButton: 'Yes',
+      successMsg: 'Order changed status To Deliver Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/rider/toDeliver/' + orderTransId)
+          .then((resp) => {
+            setRiderTable('/rider/onGoingOrders');
+          })
+          .catch((e) => console.log(e));
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
+        // setRiderDeliveryTable('');
+      }
+    });
+  }
+
   function delivered(orderTransId) {
     Finalize({
       text: 'You want to change status to delivered?',
@@ -268,10 +283,31 @@ export const ToDeliverRider = () => {
     });
   }
 
+  function returnItem(orderTransId) {
+    Finalize({
+      text: 'You want to change status to Return Item?',
+      confirmButton: 'Yes',
+      successMsg: 'Updated to Return Item Status Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/rider/returnItem/' + orderTransId)
+          .then((resp) => {
+            setRiderTable('/rider/onGoingOrders');
+          })
+          .catch((e) => console.log(e));
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
+      }
+    });
+  }
+
   function setRiderTable(url) {
     setBody([]);
     setLoading(true);
     axiosClient.get(url).then((resp) => {
+      console.log(resp);
       setBody(resp.data);
       setDisabled(false);
       setLoading(false);
@@ -378,7 +414,7 @@ export const ToDeliverRider = () => {
   }
 
   useEffect(() => {
-    setRiderTable('/rider/toPickUp');
+    setRiderTable('/rider/onGoingOrders');
   }, []);
 
   return (
@@ -482,6 +518,12 @@ export const ToDeliverRider = () => {
               // icon={<FaHouse />}
             >
               Logout
+            </MenuItem>
+            <MenuItem className='text-black'>
+              Wallet{' '}
+              {user.wallet.shell_coin_amount
+                ? user.wallet.shell_coin_amount
+                : ''}
             </MenuItem>
           </Menu>
         </Sidebar>
@@ -694,98 +736,130 @@ export const ToDeliverRider = () => {
                 <div className='d-flex justify-content-center flex-grow-1'>
                   <Load />
                 </div>
-              ) : (
-                body.length > 0 &&
-                body.map((item, i) =>
-                  item.length > 0 ? (
-                    <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
-                      <div
-                        className={
-                          'd-flex justify-content-between w-100 align-items-center align-items-center'
-                        }
-                      >
-                        <div className='d-flex flex-grow-1 me-4'>
-                          {/* Icon */}
-                          <div className='d-flex flex-column me-3'>
-                            <FontAwesomeIcon
-                              icon={faCircleDot}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='text-success mb-0'
-                            />
-                            <FontAwesomeIcon
-                              icon={faEllipsisVertical}
-                              className='mb-1 text-success'
-                            />
-                            <FontAwesomeIcon
-                              icon={faLocationDot}
-                              className='text-success'
-                            />
-                          </div>
-                          {console.log(item)}
-                          {/* To Deliver action */}
-                          {
-                            <div className='w-100 mt-2' key={i}>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_to_deliver.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order_to_deliver.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.order_to_deliver.delivery_fee}
-                                  </span>
-                                </div>
+              ) : body.length > 0 ? (
+                body.map((item, i) => (
+                  <Card
+                    className='d-flex p-4 m-1 border border-1 border-black-subtle'
+                    style={{ width: '48%' }}
+                  >
+                    <div
+                      className={
+                        'd-flex justify-content-between w-100 align-items-center align-items-center'
+                      }
+                    >
+                      <div className='d-flex flex-grow-1 me-4'>
+                        {/* Icon */}
+                        <div className='d-flex flex-column me-3'>
+                          <FontAwesomeIcon
+                            icon={faCircleDot}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='text-success mb-0'
+                          />
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className='mb-1 text-success'
+                          />
+                          <FontAwesomeIcon
+                            icon={faLocationDot}
+                            className='text-success'
+                          />
+                        </div>
+                        {console.log(item)}
+                        {/* To Deliver action */}
+                        {
+                          <div className='w-100 mt-2' key={i}>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_to_deliver.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order_to_deliver.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.order_to_deliver.delivery_fee}
+                                </span>
                               </div>
                             </div>
-                          }
-                        </div>
+                          </div>
+                        }
+                      </div>
 
-                        <div className='d-flex justify-content-center'>
+                      <div className='d-flex justify-content-center'>
+                        <Button
+                          variant='primary'
+                          onClick={() => {
+                            view(item.order_to_deliver.order_number);
+                            setViewOrderBuyerModal(true);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded text-bg-primary px-2 me-2'
+                        >
+                          View
+                        </Button>
+                        {item.delivery_status === '1' ? (
                           <Button
-                            variant='primary'
+                            variant='success'
                             onClick={() => {
-                              view(item.order_to_deliver.order_number);
-                              setViewOrderBuyerModal(true);
+                              toDeliver(item.deliveries_id);
                             }}
                             style={{ cursor: 'pointer' }}
-                            className='badge rounded text-bg-primary px-2 me-2'
+                            className='badge rounded px-2 me-2'
                           >
-                            View
+                            To Deliver
                           </Button>
+                        ) : (
+                          ''
+                        )}
+                        {item.delivery_status === '2' ? (
                           <Button
                             variant='success'
                             onClick={() => {
                               delivered(item.deliveries_id);
                             }}
                             style={{ cursor: 'pointer' }}
-                            className='badge rounded px-2'
+                            className='badge rounded px-2 me-2'
                           >
                             Delivered
                           </Button>
-                        </div>
+                        ) : (
+                          ''
+                        )}
+
+                        <Button
+                          variant='danger'
+                          onClick={() => {
+                            returnItem(item.deliveries_id);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className='badge rounded px-2'
+                        >
+                          Return
+                        </Button>
                       </div>
-                    </Card>
-                  ) : (
-                    'No Items Found'
-                  )
-                )
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <div className='text-center w-100'>
+                  {' '}
+                  <span> No Items Found </span>{' '}
+                </div>
               )}
             </div>
           </Card>

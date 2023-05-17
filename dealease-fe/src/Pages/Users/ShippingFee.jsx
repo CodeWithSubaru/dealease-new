@@ -38,6 +38,7 @@ export function ShippingFee() {
   const { user, fetchUserInfo } = useAuthContext();
   const [barangayForm, setBarangay] = useState('');
   const [street, setStreet] = useState('');
+  const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
 
   const [viewShippingAddressForm, setViewShippingAddressForm] = useState(false);
@@ -149,6 +150,17 @@ export function ShippingFee() {
     return Number(totalPrice + 20 * 1.5 * Object.keys(cart).length);
   }
 
+  function stocksByProduct() {
+    const arr = [];
+    Object.values(step1).map((item) => {
+      let stocks = item.map((itemProduct) => itemProduct.product.stocks_per_kg);
+      arr.push(stocks[0] === '0');
+    });
+    return arr;
+  }
+
+  console.log(stocksByProduct());
+
   function calculateGrandTotalDeliveryFee(cart, delFee) {
     let totalPrice = 0;
     Object.values(cart).forEach((cartItem) => {
@@ -190,138 +202,142 @@ export function ShippingFee() {
           <h1 className='fw-bolder fs-1 mb-4'>Shipping</h1>
           <div className='d-flex' style={{ height: '65vh' }}>
             <div
-              className='w-50 ps-3'
+              className='w-50 px-3'
               style={{ height: '65vh', overflowY: 'auto' }}
             >
               {Object.values(step1).length > 0
                 ? Object.values(step1).map((item, index) => {
                     return (
-                      <div>
-                        <p className='mb-0' key={index}>
-                          Seller{' '}
-                          <span className='badge rounded-pill text-bg-primary'>
-                            {item.length > 1
-                              ? item[index]
-                                ? item[index].product.user.first_name +
+                      <>
+                        <div>
+                          <p className='mb-0' key={index}>
+                            <span className='badge rounded-pill text-bg-primary'>
+                              {item.length > 1
+                                ? item[index]
+                                  ? item[index].product.user.first_name +
+                                    ' ' +
+                                    item[index].product.user.user_details
+                                      .middle_name[0] +
+                                    '.' +
+                                    item[index].product.user.user_details
+                                      .last_name
+                                  : ''
+                                : item[0].product.user.first_name +
                                   ' ' +
-                                  item[index].product.user.user_details
-                                    .middle_name[0] +
-                                  '.' +
-                                  item[index].product.user.user_details
-                                    .last_name
-                                : ''
-                              : item[0].product.user.first_name +
-                                ' ' +
-                                (item[0].product.user.user_details.middle_name
-                                  ? item[0].product.user.user_details
-                                      .middle_name[0] + '. '
-                                  : '') +
-                                (item[0].product.user.user_details.last_name
-                                  ? item[0].product.user.user_details.last_name
-                                  : '')}
-                          </span>
-                        </p>
-                        {item.map((cartItem, index) => (
-                          <>
-                            <Card
-                              className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2'
-                              key={index}
-                            >
-                              <div
-                                style={{
-                                  width: '120px',
-                                  height: '120px',
-                                  overflow: 'hidden',
-                                }}
+                                  (item[0].product.user.user_details.middle_name
+                                    ? item[0].product.user.user_details
+                                        .middle_name[0] + '. '
+                                    : '') +
+                                  (item[0].product.user.user_details.last_name
+                                    ? item[0].product.user.user_details
+                                        .last_name
+                                    : '')}
+                            </span>
+                          </p>
+                          {item.map((cartItem, index) => (
+                            <>
+                              <Card
+                                className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
+                                key={index}
                               >
-                                <img
-                                  src={
-                                    PUBLIC_URL +
-                                    'images/' +
-                                    cartItem.product.image
-                                  }
-                                  alt={
-                                    cartItem.product.image
-                                      ? cartItem.product.image
-                                      : ''
-                                  }
+                                <div
                                   style={{
-                                    objectFit: 'cover',
+                                    width: '120px',
+                                    height: '120px',
+                                    overflow: 'hidden',
                                   }}
-                                  className='rounded w-100 h-100'
-                                />
-                              </div>
-                              <div className='flex-grow-1 d-flex justify-content-between ms-3'>
-                                <div>
-                                  <H3 className='fs-3 '>
-                                    {cartItem.product.title}
-                                  </H3>
-                                  <div className='d-flex flex-column text-secondary'>
-                                    <span>
-                                      Price: Php {cartItem.product.price_per_kg}
-                                    </span>
-                                    <span>
-                                      Available Stocks :{' '}
-                                      {cartItem.product.stocks_per_kg} kg
-                                    </span>
-                                  </div>
+                                >
+                                  <img
+                                    src={
+                                      PUBLIC_URL +
+                                      'images/' +
+                                      cartItem.product.image
+                                    }
+                                    alt={
+                                      cartItem.product.image
+                                        ? cartItem.product.image
+                                        : ''
+                                    }
+                                    style={{
+                                      objectFit: 'cover',
+                                    }}
+                                    className='rounded w-100 h-100'
+                                  />
                                 </div>
-                                <div className='flex-shrink-0 align-self-end justify-content-end'>
-                                  <div className='d-flex align-items-end justify-content-end'>
-                                    <Button
-                                      variant='primary'
-                                      className='w-25 py-2 px-0 me-2 rounded'
-                                      onClick={() => decrement(cartItem.id)}
-                                      disabled={cartItem.weight == 1}
-                                    >
-                                      -
-                                    </Button>
-                                    <input
-                                      type='text'
-                                      className='w-25 py-1 text-center'
-                                      value={cartItem.weight}
-                                      disabled
-                                    />
-                                    <Button
-                                      variant='primary'
-                                      className='w-25 py-2 px-0 ms-2 rounded me-2'
-                                      onClick={() => increment(cartItem.id)}
-                                      disabled={
-                                        cartItem.product.stocks_per_kg <=
-                                        cartItem.weight
-                                      }
-                                    >
-                                      +
-                                    </Button>
+                                <div className='flex-grow-1 d-flex justify-content-between ms-3'>
+                                  <div>
+                                    <H3 className='fs-3 '>
+                                      {cartItem.product.title}
+                                    </H3>
+                                    <div className='d-flex flex-column text-secondary'>
+                                      <span>
+                                        Price: Php{' '}
+                                        {cartItem.product.price_per_kg}
+                                      </span>
+                                      <span>
+                                        Available Stocks :{' '}
+                                        {cartItem.product.stocks_per_kg} kg
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className='flex-shrink-0 align-self-end justify-content-end'>
+                                    <div className='d-flex align-items-end justify-content-end'>
+                                      <Button
+                                        variant='primary'
+                                        className='w-25 py-2 px-0 me-2 rounded'
+                                        onClick={() => decrement(cartItem.id)}
+                                        disabled={cartItem.weight == 1}
+                                      >
+                                        -
+                                      </Button>
+                                      <input
+                                        type='text'
+                                        className='w-25 py-1 text-center'
+                                        value={cartItem.weight}
+                                        disabled
+                                      />
+                                      <Button
+                                        variant='primary'
+                                        className='w-25 py-2 px-0 ms-2 rounded me-2'
+                                        onClick={() => increment(cartItem.id)}
+                                        disabled={
+                                          cartItem.product.stocks_per_kg <=
+                                          cartItem.weight
+                                        }
+                                      >
+                                        +
+                                      </Button>
 
-                                    <Button
-                                      className='btn btn-danger rounded'
-                                      onClick={() =>
-                                        removeFromCart(cartItem.id)
-                                      }
-                                    >
-                                      Remove
-                                    </Button>
+                                      <Button
+                                        className='btn btn-danger rounded'
+                                        onClick={() =>
+                                          removeFromCart(cartItem.id)
+                                        }
+                                      >
+                                        Remove
+                                      </Button>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </Card>
-                          </>
-                        ))}
-                        <p className='mb-1'>
-                          <span className='fw-semibold '> Sub Total:</span> Php{' '}
-                          {calculateSubTotalPrice(item)}
-                        </p>
-                        <p>
-                          <span className='fw-semibold'> Delivery Fee: </span>{' '}
-                          {20 * 1.5}
-                        </p>
-                      </div>
+                              </Card>
+                            </>
+                          ))}
+                          <p className='mb-1'>
+                            <span className='fw-semibold '> Sub Total:</span>{' '}
+                            Php {calculateSubTotalPrice(item)}
+                          </p>
+                          <p>
+                            <span className='fw-semibold'> Delivery Fee: </span>{' '}
+                            {20 * 1.5}
+                          </p>
+                        </div>
+                        <br />
+                      </>
                     );
                   })
                 : ''}
-              <div className='mt-5'>
-                <hr />
+              <div className='mt-2'>
+                <hr className='border border-1 border-dark-subtle' />
                 <p className='fs-4 fw-bold mt-2 d-flex align-items-center text-secondary'>
                   {' '}
                   Grand Total:{' '}
@@ -355,7 +371,10 @@ export function ShippingFee() {
               </Link>
               <div className='border border-2 border-info rounded p-3 mb-5'>
                 <div className='d-flex'>
-                  <span className='w-25 text-secondary'> Deliver to</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    {' '}
+                    Deliver to
+                  </span>
                   <span>
                     {' '}
                     {user.first_name}{' '}
@@ -371,20 +390,25 @@ export function ShippingFee() {
                 </div>
                 <hr className='border border-1 border-info rounded' />
                 <div className='d-flex'>
-                  <span className='w-25 text-secondary'> Contact #</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    {' '}
+                    Contact #
+                  </span>
                   <span>{user.user_details.contact_number} </span>
                   <div></div>
                 </div>
                 <hr className='border border-1 border-info rounded' />
                 <div className='d-flex'>
-                  <span className='w-25 text-secondary'>Delivery Address</span>
+                  <span className='w-25 fw-semibold text-secondary'>
+                    Delivery Address
+                  </span>
                   <span className='w-50'>
                     {user.user_details ? user.user_details.street : ''}{' '}
                     {user.user_details ? user.user_details.barangay : ''}{' '}
                     {user.user_details ? user.user_details.city : ''}
                   </span>
                   <Link
-                    className='flex-grow-1 d-flex justify-content-end align-items-center text-secondary'
+                    className='flex-grow-1 d-flex justify-content-end align-items-center text-primary flex-shrink-0'
                     style={{ fontSize: '14px' }}
                     onClick={() => {
                       viewShippingAddressForm
@@ -416,6 +440,7 @@ export function ShippingFee() {
 
                           const data = {
                             shippingFee: {
+                              full_name: fullName,
                               barangay: barangayForm,
                               street: street,
                               contact_number: contactNumber,
@@ -452,7 +477,25 @@ export function ShippingFee() {
                     }}
                     id='shippingForm'
                   >
-                    <h3 className='mb-3'>Shipping Address</h3>
+                    <h3 className=''>Shipping Address</h3>
+                    <p className='text-secondary mb-3'>
+                      Please fill up the form.
+                    </p>
+                    <Form.Group className='mb-3'>
+                      <Form.Label className='text-dark'> Full Name </Form.Label>
+                      <Form.Control
+                        type='text'
+                        onChange={(e) => setFullName(e.target.value)}
+                        value={fullName}
+                        isInvalid={!!errors['shippingFee.full_name']}
+                      />
+
+                      {errors['shippingFee.full_name'] ? (
+                        <Form.Control.Feedback type='invalid'>
+                          {errors['shippingFee.full_name'][0]}
+                        </Form.Control.Feedback>
+                      ) : null}
+                    </Form.Group>
 
                     <div className='d-flex mb-3'>
                       <Form.Group className='flex-grow-1 me-2'>
@@ -652,6 +695,7 @@ export function ShippingFee() {
                                         {calculateSubTotalPrice(item)}
                                       </td>
                                     </tr>
+                                    <br />
                                   </table>
                                 </div>
                               </div>
@@ -709,7 +753,8 @@ export function ShippingFee() {
                       type='submit'
                       disabled={
                         calculateGrandTotalPrice(step1) >
-                        Number(user.wallet.shell_coin_amount)
+                          Number(user.wallet.shell_coin_amount) ||
+                        stocksByProduct().includes(true)
                       }
                       style={{
                         pointerEvents:

@@ -73,26 +73,38 @@ export function SuccessfulUser() {
               <h4 className='fw-light mb-3'> Customer Information</h4>
               <div className='d-flex justify-content-between'>
                 <div>
-                  <h6 className='fw-light mb-1 text-secondary'>
+                  <h6 className='fw-semibold text-secondary'>
                     Customer Details
                   </h6>
                   <p>
                     {' '}
-                    {user.first_name}{' '}
-                    {user.user_details.middle_name
-                      ? user.user_details.middle_name[0] + '. '
-                      : ''}{' '}
-                    {user.user_details ? user.user_details.last_name : ''}{' '}
-                    {user.user_details.ext_name
-                      ? user.user_details.ext_name
-                      : ''}
+                    {Object.keys(otherAddress).length > 0
+                      ? otherAddress.shippingFee.full_name
+                      : user.first_name +
+                        ' ' +
+                        (user.user_details.middle_name
+                          ? user.user_details.middle_name[0] + '. '
+                          : '') +
+                        ' ' +
+                        (user.user_details ? user.user_details.last_name : '') +
+                        ' ' +
+                        (user.user_details.ext_name
+                          ? user.user_details.ext_name
+                          : '')}
                   </p>
                 </div>
-                <div>
-                  <h6 className='fw-light text-secondary'>Payment Method</h6>
-                  <p>
+                <div className='mb-3'>
+                  <h6 className='fw-semibold text-secondary'>Payment Method</h6>
+                  <p className='d-flex align-items-center'>
                     {' '}
-                    Cash on Delivery (COD) - Php{' '}
+                    Shells E-Wallet -{' '}
+                    <img
+                      src='/images/seashell.png'
+                      height={25}
+                      width={25}
+                      alt=''
+                      className='mx-2'
+                    />{' '}
                     {calculateGrandTotalDeliveryFee(
                       step1,
                       changeDeliveryFeePerBrgy(
@@ -104,8 +116,8 @@ export function SuccessfulUser() {
                   </p>
                 </div>
               </div>
-              <div>
-                <h6 className='fw-light mb-1 text-secondary'>Contact Number</h6>
+              <div className='mb-3'>
+                <h6 className='fw-semibold text-secondary'>Contact Number</h6>
                 <p>
                   {Object.keys(otherAddress).length > 0
                     ? otherAddress.shippingFee.contact_number
@@ -113,9 +125,7 @@ export function SuccessfulUser() {
                 </p>
               </div>
               <div>
-                <h6 className='fw-light mb-1 text-secondary'>
-                  Shipping Address
-                </h6>
+                <h6 className='fw-semibold text-secondary'>Shipping Address</h6>
 
                 {Object.keys(otherAddress).length > 0 ? (
                   <>

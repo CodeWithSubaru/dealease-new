@@ -104,15 +104,33 @@ export function OrdersTable(props) {
                               <span className='d-block fw-bold text-secondary'>
                                 Shipping Information:
                               </span>{' '}
-                              <span className='fw-semibold'>Address: </span>
-                              {order.barangay
-                                ? order.street
-                                : user.user_details.street}{' '}
-                              {order.barangay
-                                ? order.barangay
-                                : user.user_details.barangay}{' '}
-                              {order.city ? order.city : ''}{' '}
-                              {'Bulacan Region III (Central Luzon)'}
+                              {order.delivery_address
+                                ? (order.delivery_address.full_name
+                                    ? order.delivery_address.full_name
+                                    : '') +
+                                  ' - ' +
+                                  (order.delivery_address.contact_number
+                                    ? order.delivery_address.contact_number
+                                    : ' ') +
+                                  ' - ' +
+                                  (order.delivery_address.street
+                                    ? order.delivery_address.street
+                                    : '') +
+                                  ' ' +
+                                  (order.delivery_address.barangay
+                                    ? order.delivery_address.barangay
+                                    : '') +
+                                  ' ' +
+                                  (order.delivery_address.city
+                                    ? order.delivery_address.city
+                                    : '')
+                                : (order.barangay
+                                    ? order.street
+                                    : user.user_details.street) +
+                                  ' ' +
+                                  (order.barangay
+                                    ? order.barangay
+                                    : user.user_details.barangay)}
                             </p>
                           </div>
                         </div>
@@ -246,10 +264,37 @@ export function OrdersTable(props) {
                               </span>
                             </p>
                             <p>
-                              <span className='fw-bold text-secondary'>
-                                Rider Name:
-                              </span>
-                              {console.log(order)}
+                              {' '}
+                              <span className='d-block fw-bold text-secondary'>
+                                Shipping Information:
+                              </span>{' '}
+                              {order.delivery_address
+                                ? (order.delivery_address.full_name
+                                    ? order.delivery_address.full_name
+                                    : '') +
+                                  ' - ' +
+                                  (order.delivery_address.contact_number
+                                    ? order.delivery_address.contact_number
+                                    : ' ') +
+                                  ' - ' +
+                                  (order.delivery_address.street
+                                    ? order.delivery_address.street
+                                    : '') +
+                                  ' ' +
+                                  (order.delivery_address.barangay
+                                    ? order.delivery_address.barangay
+                                    : '') +
+                                  ' ' +
+                                  (order.delivery_address.city
+                                    ? order.delivery_address.city
+                                    : '')
+                                : (order.barangay
+                                    ? order.street
+                                    : user.user_details.street) +
+                                  ' ' +
+                                  (order.barangay
+                                    ? order.barangay
+                                    : user.user_details.barangay)}
                             </p>
                           </div>
                         </div>
@@ -257,7 +302,9 @@ export function OrdersTable(props) {
                     );
                   })
                 : 'Loading...'}
-              {props.viewOrders.length > 1 && <hr />}
+              {props.viewOrders.length > 0 && (
+                <hr className='border border-1 border-black-subtle' />
+              )}
               <div className='d-flex'>
                 <div className='w-50 me-5'></div>
                 <div className='me-5'>
@@ -311,7 +358,7 @@ export function OrdersTable(props) {
                       props.setUserOrdersTable(1);
                       props.fetchNumberOrdersByStatusUser(1);
                       props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                      props.fetchNumberOrdersByStatusUser(6);
+                      props.fetchNumberOrdersByStatusUser([6, 7, 8]);
                     }}
                     disabled={props.loading}
                   >
@@ -332,7 +379,7 @@ export function OrdersTable(props) {
                       props.setUserOrdersTable([2, 3, 4, 5]);
                       props.fetchNumberOrdersByStatusUser(1);
                       props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                      props.fetchNumberOrdersByStatusUser(6);
+                      props.fetchNumberOrdersByStatusUser([6, 7, 8]);
                     }}
                     disabled={props.loading}
                   >
@@ -351,10 +398,10 @@ export function OrdersTable(props) {
                   <Nav.Link
                     eventKey='third'
                     onClick={() => {
-                      props.setUserOrdersTable(6);
+                      props.setUserOrdersTable([6, 7, 8]);
                       props.fetchNumberOrdersByStatusUser(1);
                       props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                      props.fetchNumberOrdersByStatusUser(6);
+                      props.fetchNumberOrdersByStatusUser([6, 7, 8]);
                     }}
                     disabled={props.loading}
                   >

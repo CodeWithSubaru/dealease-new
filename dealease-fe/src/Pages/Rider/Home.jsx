@@ -54,6 +54,7 @@ export const HomeRider = () => {
   const [viewOrderBuyerModal, setViewOrderBuyerModal] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
   const [toPickUpData, setToPickUpData] = useState([]);
+  const [toDeliveredData, setDeliveredData] = useState([]);
   const [isDisabled, setDisabled] = useState(true);
   const navigate = useNavigate();
 
@@ -250,26 +251,6 @@ export const HomeRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderDeliveryTable('/rider');
-      }
-    });
-  }
-
-  function toDeliver(orderTransId) {
-    Finalize({
-      text: 'Are you sure you want change status To Deliver Status?',
-      confirmButton: 'Yes',
-      successMsg: 'Order changed status To Deliver Successfully.',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        axiosClient
-          .post('/rider/toDeliver/' + orderTransId)
-          .then((resp) => {})
-          .catch((e) => console.log(e));
-        // fetchNumberOrdersByStatusUser(1);
-        // fetchNumberOrdersByStatusUser(2);
-        // fetchNumberOrdersByStatusUser(3);
-        // setRiderDeliveryTable('');
       }
     });
   }
@@ -284,45 +265,22 @@ export const HomeRider = () => {
     });
   }
 
+  function delivered(url) {
+    setBody([]);
+    setLoading(true);
+    axiosClient.get(url).then((resp) => {
+      setToPickUpData(resp.data);
+      setDisabled(false);
+      setLoading(false);
+    });
+  }
+
   useEffect(() => {
-    toPickUp('/rider/toPickUp');
+    toPickUp('/rider/onGoingOrders');
   }, []);
 
   return (
     <>
-      {/* <Header>
-        {' '}
-        <div className='div-dropdown'>
-          <Dropdown as={ButtonGroup} className='dropdown-button'>
-            <Button variant='dark' className='dropdown-logout'>
-              <img
-                className='dropdown-logout-profile me-2'
-                src={PUBLIC_PATH + 'images/' + user.prof_img}
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '50%',
-                  objectFit: 'fit',
-                }}
-              />
-              {user.first_name}
-            </Button>
-
-            <Dropdown.Toggle split variant='dark' id='dropdown-split-basic' />
-
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to={'/seller/profile'}>
-                My Profile
-              </Dropdown.Item>
-              <Dropdown.Item as={Link} to={'/seller/change-password'}>
-                Change Password
-              </Dropdown.Item>
-              <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </Header> */}
-
       <div style={{ display: 'flex', height: '100%' }}>
         <Sidebar
           width='190px'
@@ -386,9 +344,15 @@ export const HomeRider = () => {
               onClick={() => {
                 logout();
               }}
-              // icon={<FaHouse />}
             >
               Logout
+            </MenuItem>
+
+            <MenuItem className='text-black'>
+              Wallet{' '}
+              {user.wallet.shell_coin_amount
+                ? user.wallet.shell_coin_amount
+                : ''}
             </MenuItem>
           </Menu>
         </Sidebar>
@@ -572,7 +536,7 @@ export const HomeRider = () => {
                   <Card.Body className='bg-warning '>
                     <p className='text-white'>Information</p>
                     <hr />
-                    <p className='small text-white  '>Total Cancel</p>
+                    <p className='small text-white'>Total Cancel</p>
                     <div className='small text-white'>
                       <i className='fas fa-angle-right'></i>
                     </div>
@@ -598,16 +562,20 @@ export const HomeRider = () => {
             <h1 className='fw-bold mb-4'>To Pick Up</h1>
             {/* Card  */}
 
-            <div className='d-flex flex-wrap justify-content-start'>
-              {loading ? (
-                <div className='d-flex justify-content-center flex-grow-1'>
-                  <Load />
-                </div>
-              ) : (
-                body.length > 0 &&
-                body.map((item) =>
-                  item ? (
-                    <Card className='d-flex p-4 m-1' style={{ width: '48%' }}>
+            {user.verified_user == 0 ? (
+              'Once your account has been verified, you will receive orders to pick up.'
+            ) : (
+              <div className='d-flex flex-wrap justify-content-start'>
+                {loading ? (
+                  <div className='d-flex justify-content-center flex-grow-1'>
+                    <Load />
+                  </div>
+                ) : body.length > 0 ? (
+                  body.map((item) => (
+                    <Card
+                      className='d-flex p-4 m-1 border border-1 border-dark-subtle'
+                      style={{ width: '48%' }}
+                    >
                       <div
                         className={
                           'd-flex justify-content-between w-100 align-items-center align-items-center' +
@@ -672,56 +640,56 @@ export const HomeRider = () => {
 
                           {/* To Deliver action */}
                           {/* {item.order_trans_status === '4' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
                               </div>
                             </div>
-                          )} */}
+                          </div>
+                        )} */}
                           {/* delivered / receiver action button */}
                           {/* {item.order_trans_status === '5' && (
-                            <div className='w-100 mt-2'>
-                              <div className='d-flex flex-column'>
-                                <small className='fs-6 text-secondary'>
-                                  # {item.order_number}
-                                </small>
-                                <h4 className='mb-3'>
-                                  {item.order.product.title}
-                                </h4>
-                              </div>
-                              <div className='text-end'>
-                                <div className='d-flex justify-content-between'>
-                                  <span> Delivery Fee</span>{' '}
-                                  <span className='d-flex justify-content-center'>
-                                    <img
-                                      src='/images/seashell.png'
-                                      style={{ height: '20px' }}
-                                      className='me-1'
-                                    />{' '}
-                                    {item.delivery_fee}
-                                  </span>
-                                </div>
+                          <div className='w-100 mt-2'>
+                            <div className='d-flex flex-column'>
+                              <small className='fs-6 text-secondary'>
+                                # {item.order_number}
+                              </small>
+                              <h4 className='mb-3'>
+                                {item.order.product.title}
+                              </h4>
+                            </div>
+                            <div className='text-end'>
+                              <div className='d-flex justify-content-between'>
+                                <span> Delivery Fee</span>{' '}
+                                <span className='d-flex justify-content-center'>
+                                  <img
+                                    src='/images/seashell.png'
+                                    style={{ height: '20px' }}
+                                    className='me-1'
+                                  />{' '}
+                                  {item.delivery_fee}
+                                </span>
                               </div>
                             </div>
-                          )} */}
+                          </div>
+                        )} */}
                         </div>
                         <div className='d-flex justify-content-center'>
                           <Button
@@ -746,7 +714,7 @@ export const HomeRider = () => {
                                 style={{ cursor: 'pointer' }}
                                 className='badge rounded px-2'
                               >
-                                To Deliver
+                                Accept
                               </Button>
                             </>
                           ) : (
@@ -755,12 +723,15 @@ export const HomeRider = () => {
                         </div>
                       </div>
                     </Card>
-                  ) : (
-                    'No Items Found'
-                  )
-                )
-              )}
-            </div>
+                  ))
+                ) : (
+                  <div className='text-center w-100'>
+                    {' '}
+                    <span> No Orders Found </span>{' '}
+                  </div>
+                )}
+              </div>
+            )}
           </Card>
         </main>
         {/* <Footer /> */}

@@ -67,7 +67,7 @@ class ProductContoller extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::find($id);
+        $product = Product::with('seller', 'seller.user_details')->find($id);
         return response()->json(['data' => $product], 200);
     }
 

@@ -45,6 +45,7 @@ export const ProductProvider = ({ children }) => {
   function fetchAvailable(id) {
     setProducts({});
     setLoading(true);
+
     axiosClient.get('/product/available/' + id).then((resp) => {
       setProducts(resp.data);
       setLoading(false);
@@ -52,14 +53,16 @@ export const ProductProvider = ({ children }) => {
   }
 
   function searchProduct(e) {
-    if (e.target.value !== '') {
-      setProducts({});
-      setLoading(true);
-      axiosClient.get('product/search/' + e.target.value).then((res) => {
-        setProducts(res.data);
-        setLoading(false);
-      });
-    }
+    setTimeout(() => {
+      if (e.target.value !== '') {
+        setProducts({});
+        setLoading(true);
+        axiosClient.get('product/search/' + e.target.value).then((res) => {
+          setProducts(res.data);
+          setLoading(false);
+        });
+      }
+    }, 1500);
   }
 
   return (

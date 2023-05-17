@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Deliveries;
 use App\Models\DeliveryAddress;
 use App\Models\DeliveryStatus;
+use App\Models\ShippingAddressInfo;
+use App\Models\ShippingDeliveryInfo;
 use App\Models\UsersWallet;
 
 use function PHPSTORM_META\type;
@@ -119,6 +121,7 @@ class OrderController extends Controller
     {
         if ($request->shippingFee) {
             $request->validate([
+                'shippingFee.full_name' => 'required',
                 'shippingFee.barangay' => 'required',
                 'shippingFee.street' => 'required',
                 'shippingFee.contact_number' => ['required', 'min:11', 'max:11'],
@@ -185,15 +188,17 @@ class OrderController extends Controller
             $userWallet->update(['shell_coin_amount' => $customerShells]);
 
             // seller coins will be added after the deduction to customers wallet
-            $sellerWallet = UsersWallet::where('user_id', $sellerId);
-            $sellerShells = $sellerWallet->first()->shell_coin_amount + ($rate + $totalPrice);
-            $sellerWallet->update(['shell_coin_amount' => $sellerShells]);
+            // $sellerWallet = UsersWallet::where('user_id', $sellerId);
+            // $sellerShells = $sellerWallet->first()->shell_coin_amount + ($rate + $totalPrice);
+            // $sellerWallet->update(['shell_coin_amount' => $sellerShells]);
 
             if ($request->shippingFee) {
                 // option for other shipping address
-                $deliveryAddress = DeliveryAddress::create([
+                $deliveryAddress = ShippingDeliveryInfo::create([
                     'order_trans_id' => $orderTransaction->order_trans_id,
                     'rider_id' => null,
+                    'full_name' =>  $request->shippingFee['full_name'],
+                    'contact_number' => $request->shippingFee['contact_number'],
                     'delivery_status' => 1,
                     'city' => 'Obando',
                     'barangay' => $request->shippingFee['barangay'],
@@ -201,7 +206,7 @@ class OrderController extends Controller
                 ]);
 
                 $orderTransaction->update([
-                    'delivery_address_id' => $deliveryAddress->delivery_address_id
+                    'delivery_address_id' => $deliveryAddress->shipping_delivery_id
                 ]);
             }
         }
@@ -215,9 +220,9 @@ class OrderController extends Controller
     public function show($order)
     {
 
-        return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details', 'deliveryAddress')
+        return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details', 'deliveryAddress', 'deliveryAddress.rider', 'deliveryAddress.rider.user_details')
             ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
-            ->leftJoin('delivery_addresses', 'delivery_addresses.delivery_address_id', 'order_transactions.delivery_address_id')
+            ->leftJoin('shipping_delivery_infos', 'shipping_delivery_infos.shipping_delivery_id', 'order_transactions.delivery_address_id')
             ->where('orders.order_number', $order)
             ->where('order_transactions.order_trans_status', '!=', 0)
             ->get();
@@ -353,26 +358,30 @@ class OrderController extends Controller
             // fetching the deliveries_id from deliveries table
             $deliveries = OrderTransaction::find($id);
             // buyer will update deliveries status into received
-            $deliveriesChangeStatus = Deliveries::where('deliveries_id', $deliveries->deliveries_id)->update([
+            $deliveriesChangeStatus = Deliveries::where('order_trans_id', $deliveries->order_trans_id)->update([
                 'delivery_status' => '4',
             ]);
 
             // if the update is succeeded
             if ($deliveriesChangeStatus) {
                 // fetch for delivery details
-                $delivery = Deliveries::find($id);
+                $delivery = Deliveries::find($deliveries->first()->order_trans_id);
                 $rider_id = $delivery->rider_id;
+
                 // fetch for order details
-                $order = OrderTransaction::find($id);
+                $order = OrderTransaction::find($id)->first();
                 $seller_id = $order->seller_id;
+
                 // seller amount to add
                 $seller_revenue = $order->total_amount;
+
                 // rider fees to add
                 $rider_fee = $order->delivery_fee;
 
                 // fetching for rider's wallet
-                $riderWallet = UsersWallet::find($rider_id);
+                $riderWallet = UsersWallet::find($rider_id)->first();
                 $riderCurrentWallet = $riderWallet->shell_coin_amount;
+
                 // current wallet amount + delivery fee
                 $updatedRiderWallet = $riderCurrentWallet + $rider_fee;
                 $updateRiderWallet = UsersWallet::where('wallet_id', $rider_id)->update([
@@ -382,10 +391,10 @@ class OrderController extends Controller
                 // if succeeded in updating the wallet of rider will trigger this.
                 if ($updateRiderWallet) {
                     // fetching for seller's wallet
-                    $sellerWallet = UsersWallet::find($seller_id);
+                    $sellerWallet = UsersWallet::find($seller_id)->first();
                     $sellerCurrentWallet = $sellerWallet->shell_coin_amount;
                     // current wallet amount + amount revenue
-                    $updatedSellerWallet = $sellerCurrentWallet + $seller_revenue;
+                    $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue - ($seller_revenue * 0.04));
                     UsersWallet::where('wallet_id', $seller_id)->update([
                         'shell_coin_amount' => $updatedSellerWallet,
                     ]);

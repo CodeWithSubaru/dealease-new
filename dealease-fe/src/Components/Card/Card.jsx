@@ -3,8 +3,6 @@ import { InputGroup, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { CardItem } from './CardItem';
-import '../../assets/scss/card.scss';
-import '../../assets/scss/button.scss';
 import useProductContext from '../../Hooks/Context/ProductContext';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
@@ -91,28 +89,25 @@ export function Card() {
                     style={{
                       transition: '.5s all ease',
                     }}
-                    aria-label='Search'
-                    onChange={searchProduct}
                   />
+                  All
                 </InputGroup>
+                <span
+                  className={
+                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    fetchThisDay(user.user_id);
+                    setCurrentColor(1);
+                  }}
+                >
+                  Today
+                </span>
               </Col>
             </Row>
           </div>
         </Container>
-
-        {msgStatus && (
-          <div
-            className={
-              'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed bg-opacity-100 ' +
-              (status ? 'alert-primary' : 'alert-danger')
-            }
-            style={{ top: '100px', zIndex: '10' }}
-            role='alert'
-          >
-            {msgStatus}
-          </div>
-        )}
-
         <div className='cards_wrapper'>
           {/* Card for Seller */}
           {loading ? (
@@ -145,6 +140,79 @@ export function Card() {
               ) : (
                 <div className='h-100 d-flex align-items-center'>
                   No Products Found
+                </div>
+              )}
+              <Form
+                className='d-flex justify-content-end mt-3'
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <InputGroup className='mt-3'>
+                  <InputGroup.Text id='basic-addon1'>
+                    {' '}
+                    <FontAwesomeIcon icon={faSearch} style={{ opacity: 0.5 }} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type='search'
+                    placeholder='Search here...'
+                    className={' search-input'}
+                    style={{
+                      transition: '.5s all ease',
+                    }}
+                    aria-label='Search'
+                    onChange={searchProduct}
+                  />
+                </InputGroup>
+              </Form>
+            </Row>
+          )}
+        </div>
+        {msgStatus && (
+          <div className='d-flex justify-content-center'>
+            <div
+              className={
+                'fadeInDown text-capitalize w-50 p-3 text-center mx-auto alert position-fixed bg-opacity-100 ' +
+                (status ? 'alert-primary' : 'alert-danger')
+              }
+              style={{ top: '100px', zIndex: '10' }}
+              role='alert'
+            >
+              {msgStatus}
+            </div>
+          </div>
+        )}
+
+        <div className='cards_wrapper' style={{ minHeight: '85vh' }}>
+          {/* Card for Seller */}
+          {loading ? (
+            <Load />
+          ) : (
+            <Row className='mx-2 h-100'>
+              {products.length > 0 ? (
+                products.map((product, data) =>
+                  product && !product.deleted_at ? (
+                    <Col className='mb-4' key={data}>
+                      <CardItem
+                        key={product.id}
+                        id={product.id}
+                        src={'http://localhost:8000/images/' + product.image}
+                        createdAt={product.created_at}
+                        title={product.title}
+                        text={product.description}
+                        price={product.price_per_kg}
+                        seller={product.seller}
+                        button='Add to cart'
+                        editbutton='Edit'
+                        delbutton='Delete'
+                        path='/services'
+                      />
+                    </Col>
+                  ) : (
+                    ''
+                  )
+                )
+              ) : (
+                <div className='h-100 text-center'>
+                  <span>No Products Found</span>
                 </div>
               )}
             </Row>

@@ -16,10 +16,19 @@ export const LoginRider = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const role_type = 2;
-  const { loginRider, errors, setErrors, user_type, token } = useAuthContext();
+  const {
+    loginRider,
+    errors,
+    setErrors,
+    user_type,
+    token,
+    isEmailVerified,
+    isLogin,
+    emailVerificationMessage,
+  } = useAuthContext();
 
   if (token) {
-    if (user_type == 'Buyer') {
+    if (user_type == 'User') {
       return <Navigate to='/home' />;
     }
 
@@ -49,7 +58,7 @@ export const LoginRider = () => {
     <>
       <Modal
         className='modal'
-        ddialogClassName='modal-md login-modal'
+        dialogClassName='modal-md login-modal'
         show={true}
         keyboard
         aria-labelledby='contained-modal-title-vcenter'
@@ -58,6 +67,14 @@ export const LoginRider = () => {
           <Modal.Body>
             <i></i>
             {/*  */}
+            {isEmailVerified && (
+              <div
+                className='fadeInDown alert alert-primary text-capitalize'
+                role='alert'
+              >
+                {emailVerificationMessage}
+              </div>
+            )}
             <div className='Auth-form-container'>
               <form
                 onSubmit={handleLogin}
