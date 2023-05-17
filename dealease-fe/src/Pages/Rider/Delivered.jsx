@@ -410,7 +410,8 @@ export const DeliveredRider = () => {
 
   useEffect(() => {
     setRiderTable('/rider/delivered');
-    toPickUp('/rider/toPickUp');
+
+    toPickUp('/rider/onGoingOrders');
   }, []);
 
   return (

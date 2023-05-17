@@ -65,12 +65,6 @@ export const ToDeliverRider = () => {
   };
 
   useEffect(() => {
-    axiosClient
-      .get('/rider/toPickUp')
-      .then((res) => {
-        setBody(res.data);
-      })
-      .catch((e) => console.log(e));
     return () => {
       setRegistrationSuccess(false);
       setEmailVerified(false);
@@ -248,6 +242,27 @@ export const ToDeliverRider = () => {
     });
   }
 
+  function toDeliver(orderTransId) {
+    Finalize({
+      text: 'Are you sure you want change status To Deliver Status?',
+      confirmButton: 'Yes',
+      successMsg: 'Order changed status To Deliver Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/rider/toDeliver/' + orderTransId)
+          .then((resp) => {
+            setRiderTable('/rider/onGoingOrders');
+          })
+          .catch((e) => console.log(e));
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
+        // setRiderDeliveryTable('');
+      }
+    });
+  }
+
   function delivered(orderTransId) {
     Finalize({
       text: 'You want to change status to delivered?',
@@ -259,6 +274,26 @@ export const ToDeliverRider = () => {
           .post('/rider/delivered/' + orderTransId)
           .then((resp) => {
             navigate('/rider/delivered');
+          })
+          .catch((e) => console.log(e));
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
+      }
+    });
+  }
+
+  function returnItem(orderTransId) {
+    Finalize({
+      text: 'You want to change status to Return Item?',
+      confirmButton: 'Yes',
+      successMsg: 'Updated to Return Item Status Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/rider/returnItem/' + orderTransId)
+          .then((resp) => {
+            setRiderTable('/rider/onGoingOrders');
           })
           .catch((e) => console.log(e));
         // fetchNumberOrdersByStatusUser(1);
@@ -379,7 +414,7 @@ export const ToDeliverRider = () => {
   }
 
   useEffect(() => {
-    setRiderTable('/rider/toPickUp');
+    setRiderTable('/rider/onGoingOrders');
   }, []);
 
   return (
@@ -777,21 +812,39 @@ export const ToDeliverRider = () => {
                         >
                           View
                         </Button>
-                        <Button
-                          variant='success'
-                          onClick={() => {
-                            delivered(item.deliveries_id);
-                          }}
-                          style={{ cursor: 'pointer' }}
-                          className='badge rounded px-2 me-2'
-                        >
-                          Delivered
-                        </Button>
+                        {item.delivery_status === '1' ? (
+                          <Button
+                            variant='success'
+                            onClick={() => {
+                              toDeliver(item.deliveries_id);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            className='badge rounded px-2 me-2'
+                          >
+                            To Deliver
+                          </Button>
+                        ) : (
+                          ''
+                        )}
+                        {item.delivery_status === '2' ? (
+                          <Button
+                            variant='success'
+                            onClick={() => {
+                              delivered(item.deliveries_id);
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            className='badge rounded px-2 me-2'
+                          >
+                            Delivered
+                          </Button>
+                        ) : (
+                          ''
+                        )}
 
                         <Button
                           variant='danger'
                           onClick={() => {
-                            view(item.order_to_deliver.order_number);
+                            returnItem(item.deliveries_id);
                           }}
                           style={{ cursor: 'pointer' }}
                           className='badge rounded px-2'

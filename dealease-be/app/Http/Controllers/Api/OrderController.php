@@ -220,9 +220,9 @@ class OrderController extends Controller
     public function show($order)
     {
 
-        return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details', 'deliveryAddress')
+        return Order::with('product', 'product.user', 'product.user.user_details', 'order_by', 'order_by.user_details', 'deliveryAddress', 'deliveryAddress.rider', 'deliveryAddress.rider.user_details')
             ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
-            ->leftJoin('delivery_addresses', 'delivery_addresses.delivery_address_id', 'order_transactions.delivery_address_id')
+            ->leftJoin('shipping_delivery_infos', 'shipping_delivery_infos.shipping_delivery_id', 'order_transactions.delivery_address_id')
             ->where('orders.order_number', $order)
             ->where('order_transactions.order_trans_status', '!=', 0)
             ->get();
