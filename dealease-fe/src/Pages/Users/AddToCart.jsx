@@ -40,6 +40,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Load } from '../../Components/Loader/Load';
+import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
@@ -124,6 +125,8 @@ export function AddToCart() {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
+        <SidebarUser />
+
         <main className='w-100' style={{ height: '85vh' }}>
           <div className='mx-auto w-75 d-flex h-100'>
             <Card className='flex-grow-1'>
@@ -431,8 +434,6 @@ export function AddToCart() {
               )}
             </Card>
           </div>
-
-          <Footer />
         </main>
       </div>
     </>

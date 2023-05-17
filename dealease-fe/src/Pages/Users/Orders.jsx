@@ -5,6 +5,7 @@ import PUBLIC_URL from '../../api/public_url';
 import Button from 'react-bootstrap/Button';
 import { Finalize } from '../../Components/Notification/Notification';
 import useAuthContext from '../../Hooks/Context/AuthContext';
+import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 
 export function OrdersBuyer() {
   const title = 'Buyer';
@@ -303,24 +304,27 @@ export function OrdersBuyer() {
   }, []);
 
   return (
-    <div>
-      <OrdersTable
-        loading={loading}
-        setLoading={setLoading}
-        header={header}
-        body={body}
-        title={title}
-        pendingOrderNumber={pendingOrderNumber}
-        processingOrderNumber={processingOrderNumber}
-        deliveredOrderNumber={deliveredOrderNumber}
-        viewOrderProduct={viewOrderProduct}
-        closeViewOrderProduct={closeViewOrderProduct}
-        viewOrders={viewOrders}
-        status={status}
-        calculateGrandTotalPrice={calculateGrandTotalPrice}
-        setUserOrdersTable={setUserOrdersTable}
-        fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-      />
+    <div style={{ display: 'flex', height: '100%' }}>
+      <SidebarUser />
+      <main className='w-100'>
+        <OrdersTable
+          loading={loading}
+          setLoading={setLoading}
+          header={header}
+          body={body}
+          title={title}
+          pendingOrderNumber={pendingOrderNumber}
+          processingOrderNumber={processingOrderNumber}
+          deliveredOrderNumber={deliveredOrderNumber}
+          viewOrderProduct={viewOrderProduct}
+          closeViewOrderProduct={closeViewOrderProduct}
+          viewOrders={viewOrders}
+          status={status}
+          calculateGrandTotalPrice={calculateGrandTotalPrice}
+          setUserOrdersTable={setUserOrdersTable}
+          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+        />
+      </main>
     </div>
   );
 }
@@ -784,25 +788,28 @@ export function OrdersSeller() {
   }, []);
 
   return (
-    <div>
-      <OrdersTable
-        loading={loading}
-        setLoading={setLoading}
-        header={header}
-        header1={header1}
-        body={body}
-        title={title}
-        pendingOrderNumber={pendingOrderNumber}
-        processingOrderNumber={processingOrderNumber}
-        deliveredOrderNumber={deliveredOrderNumber}
-        viewOrders={viewOrders}
-        viewOrderBuyerModal={viewOrderBuyerModal}
-        closeViewOrderBuyerModal={closeViewOrderBuyerModal}
-        status={status}
-        calculateGrandTotalPrice={calculateGrandTotalPrice}
-        setUserOrdersTable={setUserOrdersTable}
-        fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-      />
+    <div style={{ display: 'flex', height: '100%' }}>
+      <SidebarUser />
+      <main className='w-100'>
+        <OrdersTable
+          loading={loading}
+          setLoading={setLoading}
+          header={header}
+          header1={header1}
+          body={body}
+          title={title}
+          pendingOrderNumber={pendingOrderNumber}
+          processingOrderNumber={processingOrderNumber}
+          deliveredOrderNumber={deliveredOrderNumber}
+          viewOrders={viewOrders}
+          viewOrderBuyerModal={viewOrderBuyerModal}
+          closeViewOrderBuyerModal={closeViewOrderBuyerModal}
+          status={status}
+          calculateGrandTotalPrice={calculateGrandTotalPrice}
+          setUserOrdersTable={setUserOrdersTable}
+          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+        />
+      </main>
     </div>
   );
 }

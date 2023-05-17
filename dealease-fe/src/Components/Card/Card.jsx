@@ -32,9 +32,9 @@ export function Card() {
   }, []);
 
   return (
-    <div className='cards'>
-      <div className='cards_container'>
-        <Container className='mt-5'>
+    <div className='cards '>
+      <div className='cards_container '>
+        <Container className='mt-5 '>
           <h1 className='text-home mb-3'>{token ? 'Home' : 'Products'}</h1>
           <div className='justify-content-between'>
             <Row>
@@ -113,7 +113,7 @@ export function Card() {
           </div>
         )}
 
-        <div className='cards_wrapper' style={{ minHeight: '85vh' }}>
+        <div className='cards_wrapper'>
           {/* Card for Seller */}
           {loading ? (
             <Load />

@@ -6,15 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import Alert from 'react-bootstrap/Alert';
 import { Notification } from '../../Components/Notification/Notification';
-
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-  useProSidebar,
-  sidebarClasses,
-} from 'react-pro-sidebar';
+import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 import { Link } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
@@ -26,7 +18,6 @@ import axiosClient from '../../api/axios';
 export const HomeUser = () => {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);
   const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
-  const { collapseSidebar } = useProSidebar();
   const { setDoneTransaction } = useOrderContext();
   const [errors, setErrors] = useState([]);
 
@@ -92,52 +83,10 @@ export const HomeUser = () => {
   return (
     <>
       <div style={{ display: 'flex', height: '100%' }}>
-        {/* <Sidebar
-          width='190px'
-          collapsedWidth='65px'
-          transitionDuration='500'
-          rootStyles={{
-            [`.${sidebarClasses.container}`]: {
-              backgroundColor: '#19a9d0',
-            },
-          }}
-        >
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                if (level === 0)
-                  return {
-                    color: disabled ? '#f5d9ff' : '#white',
-                    backgroundColor: active ? '#eecef9' : undefined,
-                  };
-              },
-            }}
-          >
-            <button className='btn ' onClick={() => collapseSidebar()}>
-              <FontAwesomeIcon icon={faBars} className='navs-icon' />
-            </button>
+        <div className='homeBlue bg-primary h-100'></div>
+        <SidebarUser />
 
-            <MenuItem className='text-black ' component={<Link to='/' />}>
-              Home
-            </MenuItem>
-
-            <MenuItem component={<Link to='/withdraw' />}> Withdraw </MenuItem>
-            <MenuItem component={<Link to='/recharge' />}> Recharge </MenuItem>
-            {user.verified_user ? (
-              <MenuItem component={<Link to='/product' />}> Product </MenuItem>
-            ) : (
-              <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
-                <Button
-                  className='btn btn-sm d-inline-block'
-                  onClick={() => setUpdateAccessModal(true)}
-                >
-                  Update Access
-                </Button>
-              </div>
-            )}
-          </Menu>
-        </Sidebar> */}
-        <main className='w-100 '>
+        <main className='w-100'>
           <Modal
             show={updateAccessModal}
             onHide={closeUpdateAccessModal}

@@ -10,6 +10,7 @@ import App from './App';
 import { ProductProvider } from './Hooks/Context/ProductContext';
 import { AddToCartProvider } from './Hooks/Context/AddToCartContext';
 import { ProSidebarProvider } from 'react-pro-sidebar';
+import { CustomProvider } from 'rsuite';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
