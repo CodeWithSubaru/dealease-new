@@ -597,12 +597,12 @@ export function OrdersSeller() {
       prop: 'buyer_name',
     },
     {
-      title: 'Rider Name',
-      prop: 'rider_name',
-    },
-    {
       title: 'Shipping Address',
       prop: 'shipping_address',
+    },
+    {
+      title: 'Rider Name',
+      prop: 'rider_name',
     },
     {
       title: 'Status',
@@ -681,6 +681,20 @@ export function OrdersSeller() {
               </div>
             </div>
           ),
+          shipping_address:
+            (order.delivery_address_id
+              ? order.delivery_address_id
+              : order.buyer.user_details.street
+              ? order.buyer.user_details.street
+              : '') +
+            ' ' +
+            (order.buyer.user_details.barangay
+              ? order.buyer.user_details.barangay
+              : '') +
+            ' ' +
+            (order.buyer.user_details.city
+              ? order.buyer.user_details.city
+              : ''),
           rider_name: (
             <div key={order.order_trans_id}>
               <div>
@@ -712,15 +726,6 @@ export function OrdersSeller() {
               </div>
             </div>
           ),
-          shipping_address: order.delivery_address_id
-            ? order.delivery_address_id
-            : (order.buyer.user_details.street
-                ? order.buyer.user_details.street
-                : '') +
-              ' ' +
-              (order.buyer.user_details.barangay
-                ? order.buyer.user_details.barangay
-                : ''),
           order_status: (
             <span
               className={
@@ -728,6 +733,7 @@ export function OrdersSeller() {
                 switchColor(order.order_trans_status)
               }
             >
+              {console.log('HERE', order)}
               {status(order.order_trans_status)}
             </span>
           ),

@@ -43,6 +43,11 @@ class Order extends Model
 
     public function deliveryAddress()
     {
-        return  $this->belongsTo(\App\Models\Deliveries::class, 'delivery_address_id', 'delivery_address_id');
+        return  $this->belongsTo(\App\Models\ShippingDeliveryInfo::class, 'delivery_address_id', 'shipping_delivery_id');
+    }
+
+    public function rider()
+    {
+        return  $this->belongsTo(\App\Models\User::class, 'user_id', 'rider_id');
     }
 }
