@@ -114,7 +114,24 @@ export function SidebarUser() {
                     <Nav.Item href='/change-password' eventKey='4-2'>
                       Change Password
                     </Nav.Item>
-                    <Nav.Item eventKey='4-3'>Update Access</Nav.Item>
+                    {user.verified_user ? (
+                      <Nav.Item
+                        component={<Link to='/product' />}
+                        eventKey='4-3'
+                      >
+                        Product
+                      </Nav.Item>
+                    ) : (
+                      <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
+                        <Button
+                          className='btn btn-sm d-inline-block'
+                          onClick={() => setUpdateAccessModal(true)}
+                        >
+                          Update Access
+                        </Button>
+                      </div>
+                    )}
+                    {/* <Nav.Item component={<Link to="/product" />}  eventKey='4-3'>Update Access</Nav.Item> */}
                   </Nav.Menu>
                 </Nav>
               </Sidenav.Body>
