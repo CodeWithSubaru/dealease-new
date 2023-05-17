@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClose, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import PUBLIC_URL from '../../api/public_url';
+import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 
 export function TransactionsUser() {
   const [body, setBody] = useState([]);
@@ -229,18 +230,23 @@ export function TransactionsUser() {
 
   return (
     <>
-      <Transactions
-        header={header}
-        body={body}
-        changePaymentStatus={setUserTransactionsDataTable}
-        loading={loading}
-        numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
-        numberOfApprovedTransaction={numberOfApprovedTransaction}
-        numberOfCancelledTransaction={numberOfCancelledTransaction}
-        fetchUnderReviewTransaction={fetchUnderReviewTransaction}
-        fetchApprovedTransaction={fetchApprovedTransaction}
-        fetchCancelledTransaction={fetchCancelledTransaction}
-      />
+      <div style={{ display: 'flex', height: '100%' }}>
+        <SidebarUser />
+        <main className='w-100' style={{ height: '85vh' }}>
+          <Transactions
+            header={header}
+            body={body}
+            changePaymentStatus={setUserTransactionsDataTable}
+            loading={loading}
+            numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
+            numberOfApprovedTransaction={numberOfApprovedTransaction}
+            numberOfCancelledTransaction={numberOfCancelledTransaction}
+            fetchUnderReviewTransaction={fetchUnderReviewTransaction}
+            fetchApprovedTransaction={fetchApprovedTransaction}
+            fetchCancelledTransaction={fetchCancelledTransaction}
+          />
+        </main>
+      </div>
     </>
   );
 }
