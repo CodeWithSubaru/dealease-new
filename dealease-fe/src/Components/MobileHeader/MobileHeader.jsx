@@ -16,6 +16,7 @@ import {
   faUserAlt,
   faWallet,
 } from '@fortawesome/free-solid-svg-icons';
+import PUBLIC_PATH from '../../api/public_url';
 
 const styles = {
   width: 'auto',
@@ -32,8 +33,13 @@ const headerStyles = {
 };
 // import { Navbar, Nav } from 'rsuite';
 import HomeIcon from '@rsuite/icons/legacy/Home';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import useProductContext from '../../Hooks/Context/ProductContext';
 
 export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
+  const { user } = useAuthContext();
+  const { searchProduct } = useProductContext();
+
   const [UserNavbarMobilenew, setUserNavbarMobile] =
     useState('UserNavbarMobile');
 
@@ -55,7 +61,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
       {...props}
       // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
     >
-      <Navbar.Brand href='/' className=' fw-bold fst-italic'>
+      <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
         <img
           alt=''
           src='/images/dealeasefavicon.png'
@@ -67,7 +73,11 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
       </Navbar.Brand>
       <Nav onSelect={onSelectTop} activeKey={activeKeyTop}>
         <InputGroup inside style={styles}>
-          <Input />
+          <Input
+            type='search'
+            placeholder='Search...'
+            onChange={(e) => searchProduct(e)}
+          />
           <InputGroup.Addon>
             <SearchIcon />
           </InputGroup.Addon>
@@ -77,11 +87,12 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
         <Nav.Item>
           <Avatar
             circle
-            src='https://avatars.githubusercontent.com/u/1203827'
+            // src='https://avatars.githubusercontent.com/u/1203827'
+            src={PUBLIC_PATH + 'images/' + user.prof_img}
             alt='@simonguo'
             className='me-3'
           />
-          Name
+          {user.first_name ? user.first_name : ''}
         </Nav.Item>
       </Nav>
     </Navbar>
@@ -89,11 +100,13 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
 }
 
 export function MobileHeader({ onSelect, activeKey, ...props }) {
+  const { user } = useAuthContext();
+
   return (
     <div className='customNav bg-white'>
       <Nav justified {...props} activeKey={activeKey} onSelect={onSelect}>
         <Nav.Item
-          href='/'
+          href='/home'
           className='flex-column d-flex text-center'
           eventKey='home'
         >
@@ -111,6 +124,32 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           />
           <span className='mobile-icon-label'>Orders</span>
         </Nav.Item>
+        {user.verified_user == 1 ? (
+          <>
+            <Nav.Item
+              href='/orders/seller'
+              className='flex-column d-flex text-center'
+              eventKey='orders'
+            >
+              <div className='position-relative'>
+                <FontAwesomeIcon
+                  className='mobile-icon mx-auto'
+                  icon={faBagShopping}
+                />
+
+                <small
+                  className='badge rounded-pill text-bg-primary position-absolute p-1'
+                  style={{ top: '-5px', right: '-12px' }}
+                >
+                  Seller
+                </small>
+              </div>
+              <span className='mobile-icon-label'>Orders</span>
+            </Nav.Item>
+          </>
+        ) : (
+          ''
+        )}
         <Nav.Item
           href='/add-to-cart'
           className='flex-column d-flex text-center'

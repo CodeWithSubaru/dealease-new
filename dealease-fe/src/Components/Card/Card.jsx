@@ -100,6 +100,7 @@ export function Card() {
                     type='search'
                     placeholder='Search here...'
                     className={' search-input'}
+                    onChange={(e) => searchProduct(e)}
                     style={{
                       transition: '.5s all ease',
                     }}
