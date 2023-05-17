@@ -115,10 +115,10 @@ export const ProfileUser = () => {
                         color: "#0c6ffd",
                       }}
                     >
-                      <FaUserEdit size="0.7rem" /> &nbsp;
+                      {/* <FaUserEdit size="0.7rem" /> &nbsp;
                       <a href="#" onClick={handleShow}>
                         Edit Profile
-                      </a>
+                      </a> */}
                     </Col>
                   </Row>
 

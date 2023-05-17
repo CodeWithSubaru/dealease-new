@@ -103,7 +103,7 @@ export const HomeUser = () => {
   return (
     <>
       <div style={{ display: "flex", height: "100%" }}>
-        {/* <Sidebar
+        <Sidebar
           width="190px"
           collapsedWidth="65px"
           transitionDuration="500"
@@ -147,7 +147,7 @@ export const HomeUser = () => {
               </div>
             )}
           </Menu>
-        </Sidebar> */}
+        </Sidebar>
         <main className="w-100 ">
           <Modal
             show={updateAccessModal}
