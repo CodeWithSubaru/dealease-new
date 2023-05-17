@@ -2,24 +2,24 @@ import { LineWave } from 'react-loader-spinner';
 
 export function Loader({ visibility }) {
   return (
-    <div>
+    <div
+      className='d-flex align-items-center justify-content-center'
+      style={{ height: '100vh' }}
+    >
       <LineWave
-        height='200'
+        height='100'
         width='100'
         color='#4fa94d'
         ariaLabel='line-wave'
         wrapperClass={'loader ' + (visibility ? '' : 'opacity')}
         wrapperStyle={{
-          width: '100%',
-          height: '100%',
           backgroundColor: 'white',
-          position: 'absolute',
-          zIndex: 1,
           display: 'flex',
           alignText: 'center',
-          justifyContent: 'center',
           alignItems: 'center',
           overflow: 'hidden',
+          position: 'relative',
+          transform: 'translate(20%)',
         }}
         visible={visibility}
         firstLineColor='green'

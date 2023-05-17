@@ -24,6 +24,8 @@ import {
   faUserGear,
   faWallet,
 } from '@fortawesome/free-solid-svg-icons';
+import PUBLIC_PATH from '../../api/public_url';
+import { Loader } from '../Loader/Loader';
 
 const styles = {
   width: 'auto',
@@ -46,8 +48,14 @@ import {
   FaUserAstronaut,
   FaUserNinja,
 } from 'react-icons/fa';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import useProductContext from '../../Hooks/Context/ProductContext';
 
 export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
+  const { user } = useAuthContext();
+  const { searchProduct1 } = useProductContext();
+  const { loading } = useAuthContext();
+
   const [UserNavbarMobilenew, setUserNavbarMobile] =
     useState('UserNavbarMobile');
 
@@ -64,50 +72,62 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
     return () => window.removeEventListener('scroll', listenScrollEvent);
   }, []);
   return (
-    <Navbar
-      className={UserNavbarMobilenew}
-      {...props}
-      // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
-    >
-      <Navbar.Brand href='/' className=' fw-bold fst-italic'>
-        <img
-          alt=''
-          src='/images/dealeasefavicon.png'
-          width='25'
-          height='25'
-          className='d-inline-block align-top me-2'
-        />
-        DEALEASE
-      </Navbar.Brand>
-      <Nav onSelect={onSelectTop} activeKey={activeKeyTop}>
-        <InputGroup inside style={styles}>
-          <Input />
-          <InputGroup.Addon>
-            <SearchIcon />
-          </InputGroup.Addon>
-        </InputGroup>
-      </Nav>
-      <Nav pullRight>
-        <Nav.Item>
-          <Avatar
-            circle
-            src='https://avatars.githubusercontent.com/u/1203827'
-            alt='@simonguo'
-            className='me-3'
+    <>
+      <Navbar
+        className={UserNavbarMobilenew}
+        {...props}
+        // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
+      >
+        <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
+          <img
+            alt=''
+            src='/images/dealeasefavicon.png'
+            width='25'
+            height='25'
+            className='d-inline-block align-top me-2'
           />
-          Name
-        </Nav.Item>
-      </Nav>
-    </Navbar>
+          DEALEASE
+        </Navbar.Brand>
+        <Nav onSelect={onSelectTop} activeKey={activeKeyTop}>
+          <InputGroup inside style={styles}>
+            <Input
+              type='search'
+              className='input'
+              onChange={(e) => {
+                searchProduct1(e);
+              }}
+            />
+            <InputGroup.Addon>
+              <SearchIcon />
+            </InputGroup.Addon>
+          </InputGroup>
+        </Nav>
+        <Nav pullRight>
+          <Nav.Item>
+            <Avatar
+              circle
+              // src='https://avatars.githubusercontent.com/u/1203827'
+              src={PUBLIC_PATH + 'images/' + user.prof_img}
+              alt='@simonguo'
+              className='me-3'
+            />
+            {user.first_name ? user.first_name : ''}
+          </Nav.Item>
+        </Nav>
+      </Navbar>
+      {loading && <Loader visibility={loading}></Loader>}
+    </>
   );
 }
 
 export function MobileHeader({ onSelect, activeKey, ...props }) {
+  const { user } = useAuthContext();
+
   return (
     <div className='customNav bg-white'>
       <Nav justified {...props} activeKey={activeKey} onSelect={onSelect}>
         <Nav.Item
-          href='/'
+          href='/home'
           className='flex-column d-flex text-center'
           eventKey='home'
         >
@@ -125,6 +145,32 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           />
           <span className='mobile-icon-label'>Orders</span>
         </Nav.Item>
+        {user.verified_user == 1 ? (
+          <>
+            <Nav.Item
+              href='/orders/seller'
+              className='flex-column d-flex text-center'
+              eventKey='orders'
+            >
+              <div className='position-relative'>
+                <FontAwesomeIcon
+                  className='mobile-icon mx-auto'
+                  icon={faBagShopping}
+                />
+
+                <small
+                  className='badge rounded-pill text-bg-primary position-absolute p-1'
+                  style={{ top: '-5px', right: '-12px' }}
+                >
+                  Seller
+                </small>
+              </div>
+              <span className='mobile-icon-label'>Orders</span>
+            </Nav.Item>
+          </>
+        ) : (
+          ''
+        )}
         <Nav.Item
           href='/add-to-cart'
           className='flex-column d-flex text-center'

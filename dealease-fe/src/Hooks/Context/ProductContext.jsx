@@ -52,6 +52,21 @@ export const ProductProvider = ({ children }) => {
     });
   }
 
+  function searchProduct1(e) {
+    setTimeout(() => {
+      if (e !== '') {
+        setProducts({});
+        setLoading(true);
+        axiosClient.get('product/search/' + e).then((res) => {
+          setProducts(res.data);
+          setLoading(false);
+        });
+      } else {
+        fetchPublicProducts(user.user_id);
+      }
+    }, 1500);
+  }
+
   function searchProduct(e) {
     setTimeout(() => {
       if (e.target.value !== '') {
@@ -61,6 +76,8 @@ export const ProductProvider = ({ children }) => {
           setProducts(res.data);
           setLoading(false);
         });
+      } else {
+        fetchPublicProducts(user.user_id);
       }
     }, 1500);
   }
@@ -77,6 +94,7 @@ export const ProductProvider = ({ children }) => {
         fetchThisDay,
         fetchAvailable,
         searchProduct,
+        searchProduct1,
       }}
     >
       {children}

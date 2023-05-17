@@ -7,11 +7,11 @@ import Alert from 'react-bootstrap/Alert';
 import { Notification } from '../../Components/Notification/Notification';
 import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 import { Link } from 'react-router-dom';
+import { Button, Modal, Row, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import axiosClient from '../../api/axios';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 
-import { Button, Modal, Row, Col } from 'react-bootstrap';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -129,7 +129,7 @@ export const HomeUser = () => {
                     <FontAwesomeIcon icon={faExclamationCircle} />
                   </OverlayTrigger>
                 </div>
-                <ul>
+                <ul className='ms-4'>
                   <li>
                     Please make sure that both pictures of the government IDs
                     are clear and valid.
@@ -144,7 +144,7 @@ export const HomeUser = () => {
                 <div className='d-flex align-items-center clearfix mb-3'>
                   <Form.Group controlId='formFile' className='mb-3 w-100'>
                     <Form.Label className='text-secondary'>
-                      Valid Government Id (Front)
+                      First Valid Government Id
                     </Form.Label>
                     <Form.Control
                       type='file'
@@ -159,7 +159,7 @@ export const HomeUser = () => {
                   </Form.Group>
                   <div className='w-50'>
                     <div className='float-end'>
-                      <p className='mb-0'>ID Preview (Front)</p>
+                      <p className='mb-0 text-center'>First ID Preview </p>
                       <img
                         src={imgFront}
                         className='rounded p-3 float-end'
@@ -175,7 +175,7 @@ export const HomeUser = () => {
                 <div className='d-flex align-items-center clearfix'>
                   <Form.Group controlId='formFile' className='w-100 mb-3'>
                     <Form.Label className='text-secondary'>
-                      Valid Government Id (Back)
+                      Second Valid Government Id
                     </Form.Label>
                     <Form.Control
                       type='file'
@@ -189,7 +189,7 @@ export const HomeUser = () => {
                   </Form.Group>
                   <div className='w-50'>
                     <div className='float-end'>
-                      <p className='mb-0'>ID Preview (Back)</p>
+                      <p className='mb-0 text-center'>Second ID Preview </p>
                       <img
                         src={imgBack}
                         className='rounded p-3 float-end'
