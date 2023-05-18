@@ -28,7 +28,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Row } from "react-bootstrap";
-import { Col } from "react-bootstrap";
+import { Col, Container } from "react-bootstrap";
 
 import { CustomNav } from "../../Components/Header/CustomNav";
 import { SidebarUser } from "../../Components/Sidebar/Sidebar";
@@ -52,23 +52,34 @@ export const ProfileUser = () => {
           <div className="userprofile">
             <form method="">
               <div className="row">
-                <div className="col  pt-5">
-                  <h5 className="">Account Information</h5>
-                  <img
-                    className=" w-50 h-25 text-center rounded"
-                    src={PUBLIC_PATH + "images/" + user.prof_img}
-                    alt="profimg"
-                  />
-
+                <div className="col pt-4">
+                  <center>
+                    <h5 className="">Account Information</h5>
+                    <img
+                      className="text-center rounded"
+                      src={PUBLIC_PATH + "images/" + user.prof_img}
+                      alt="profimg"
+                      style={{ minWidth: "200px", height: "50vh" }}
+                    />
+                  </center>
+                  <br />
                   {/* <FaUserEdit size="0.7rem" /> &nbsp;
                       <a href="#" onClick={handleShow}>
                         Edit Profile
                       </a> */}
-
-                  <div>
+                  <Container>
                     <Row>
                       <Col xs={3}>Full Name:</Col>
                       <Col xs={5}>
+                        {/* <InputGroup size="sm" className="mb-3">
+                          <InputGroup.Text id="inputGroup-sizing-sm">
+                            Small
+                          </InputGroup.Text>
+                          <Form.Control
+                            aria-label="Small"
+                            aria-describedby="inputGroup-sizing-sm"
+                          />
+                        </InputGroup> */}
                         {user ? user.first_name : ""}{" "}
                         {user.user_details ? user.user_details.middle_name : ""}{" "}
                         {user.user_details ? user.user_details.last_name : ""}{" "}
@@ -86,8 +97,8 @@ export const ProfileUser = () => {
                     <br />
                     <br />
                     <Row>
-                      <Col xs={2}>Email:</Col>
-                      <Col xs={3}>{user ? user.email : ""} </Col>
+                      <Col xs={3}>Email:</Col>
+                      <Col xs={5}>{user ? user.email : ""} </Col>
                       <Col
                         xs={2}
                         style={{
@@ -100,8 +111,8 @@ export const ProfileUser = () => {
                     <br />
                     <br />
                     <Row>
-                      <Col xs={2}>Phone:</Col>
-                      <Col xs={3}>
+                      <Col xs={3}>Phone:</Col>
+                      <Col xs={5}>
                         {user.user_details
                           ? user.user_details.contact_number
                           : ""}
@@ -118,9 +129,9 @@ export const ProfileUser = () => {
                     <br />
                     <br />
                     <Row>
-                      <Col xs={2}>Password:</Col>
+                      <Col xs={3}>Password:</Col>
                       <Col
-                        xs={2}
+                        xs={5}
                         style={{
                           color: "#0c6ffd",
                         }}
@@ -129,8 +140,7 @@ export const ProfileUser = () => {
                         <a href="change-password">Change</a>
                       </Col>
                     </Row>
-                  </div>
-
+                  </Container>
                   <div className="modalprof">
                     <Modal show={show} onHide={handleClose}>
                       <Modal.Header closeButton>
