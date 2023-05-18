@@ -27,6 +27,7 @@ import {
 import { Link } from "react-router-dom";
 import { Footer } from "../../Components/Footer/Footer";
 import { SidebarUser } from "../../Components/Sidebar/Sidebar";
+
 export function ChangePasswordUser() {
   const [errors, setErrors] = useState({});
   const [password, setPassword] = useState({});
@@ -69,7 +70,7 @@ export function ChangePasswordUser() {
         <SidebarUser />
         <main className="w-100" style={{ minHeight: "828px" }}>
           <br />
-          <Container style={{ margin: "0px", width: "100%" }}>
+          <Container style={{ margin: "50px 0px 0px  0px", width: "100%" }}>
             <Card style={{ width: "100%", minWidth: "200px" }}>
               <form onSubmit={handleSubmit}>
                 <h3 style={{ marginLeft: "5px" }}>Change Password</h3>
@@ -96,7 +97,6 @@ export function ChangePasswordUser() {
                       errors.old_password[0]}
                   </Form.Control.Feedback>
                 </Form.Group>
-
                 <Form.Group className="mb-3">
                   <Form.Label
                     className="text-black"
@@ -152,7 +152,6 @@ export function ChangePasswordUser() {
           </Container>
         </main>
       </div>
-      <Footer />
     </>
   );
 }
