@@ -17,6 +17,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import PUBLIC_PATH from '../../api/public_url';
 import { Loader } from '../Loader/Loader';
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 
 const styles = {
   width: 'auto',
@@ -108,6 +109,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
 }
 
 export function MobileHeader({ onSelect, activeKey, ...props }) {
+  const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
   const { user } = useAuthContext();
 
   return (
@@ -158,10 +160,15 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           className='flex-column d-flex text-center'
           eventKey='cart'
         >
-          <FontAwesomeIcon
+          <Badge
+            content={countItemsInCart === 9 ? '9+' : countItemsInCart}
             className='mobile-icon mx-auto'
-            icon={faCartShopping}
-          />
+          >
+            <FontAwesomeIcon
+              className='mobile-icon mx-auto'
+              icon={faCartShopping}
+            />
+          </Badge>
           <span className='mobile-icon-label'>Cart</span>
         </Nav.Item>
         <Nav.Item className='flex-column d-flex text-center' eventKey='wallet'>

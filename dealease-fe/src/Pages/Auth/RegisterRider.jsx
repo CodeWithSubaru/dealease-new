@@ -158,6 +158,7 @@ export function RegisterRider() {
                 <Uploader
                   listType='picture-text'
                   action='//jsonplaceholder.typicode.com/posts/'
+                  accept='jpg'
                 />
                 <Row className='px-4'>
                   <Col lg={9} className='d-flex flex-column'>
