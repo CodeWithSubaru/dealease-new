@@ -127,22 +127,25 @@ export function AddToCart() {
       <div style={{ display: 'flex', height: '100%' }}>
         <SidebarUser />
 
-        <main className='w-100' style={{ height: '85vh' }}>
-          <div className='mx-auto w-75 d-flex h-100'>
+        <main className='w-100 my-5 mx-3 shadow' style={{ height: '85vh' }}>
+          <div className='d-flex h-100'>
             <Card className='flex-grow-1'>
               {loading ? (
                 <Load />
               ) : (
-                <div className='p-5 h-100'>
-                  <H1 className='mb-4'>Add to Cart</H1>
-                  <Link className='btn btn-primary rounded float-end' to='/'>
+                <div className='p-3 h-100'>
+                  <H1 className='mb-3 pt-2'>Add to Cart</H1>
+                  <Link
+                    className='btn btn-primary rounded float-end'
+                    to='/home'
+                  >
                     <FontAwesomeIcon icon={faPlus} /> Add More
                   </Link>
                   <div
-                    className=' rounded p-5 pt-0'
+                    className=' rounded pt-0'
                     style={{ height: '70vh', overflowY: 'auto' }}
                   >
-                    <div className='d-flex h-100'>
+                    <div className='d-flex flex-wrap h-100'>
                       <div className='flex-grow-1 me-2 h-75'>
                         {Object.values(cartHistoryBySellerId).length > 0 ? (
                           Object.values(cartHistoryBySellerId).map(
