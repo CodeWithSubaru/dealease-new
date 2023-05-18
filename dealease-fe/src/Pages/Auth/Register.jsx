@@ -85,17 +85,25 @@ export function Register() {
       <main>
         <Container className='bg-light p-5'>
           <div>
-            <div className='d-flex justify-content-between'>
-              <div className='register-description mb-1'>
-                <h1 className=' fw-bold'>Register</h1>
-                <p className='register-details '>Please provide your details</p>
-                <li className=''>All fields with asterisk (*) are required</li>
-              </div>
-              <Image
-                src={image}
-                className='float-end rounded-circle d-flex justify-content-center '
-                style={{ height: '160px', width: '160px' }}
-              />
+            <div className=''>
+              <Row>
+                <Col>
+                  <div className='register-description mb-1 mx-auto'>
+                    <h1 className=' fw-bold'>Register</h1>
+                    <p className='register-details '>
+                      Please provide your details
+                    </p>
+                    <li className=''>
+                      All fields with asterisk (*) are required
+                    </li>
+                  </div>
+                  <Image
+                    src={image}
+                    className='float-end rounded-circle d-flex justify-content-center '
+                    style={{ height: '160px', width: '160px' }}
+                  />
+                </Col>
+              </Row>
             </div>
 
             <form

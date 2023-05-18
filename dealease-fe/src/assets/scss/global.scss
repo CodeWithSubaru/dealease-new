@@ -308,7 +308,19 @@
 .UserNavbarMobile {
   display: none;
 }
+.to-pick-up {
+  width: 80%;
+}
+.card-pick-up {
+  width: 50%;
+}
 @media screen and (max-width: 960px) {
+  .card-pick-up {
+    width: 100%;
+  }
+  .to-pick-up {
+    width: 100%;
+  }
   .UserNavbar {
     display: none;
   }

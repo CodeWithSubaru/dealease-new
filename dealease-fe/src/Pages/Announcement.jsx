@@ -3,7 +3,7 @@ import PUBLIC_URL from '../api/public_url';
 import { H1 } from '../Components/Helpers/index.style';
 import { useState, useEffect } from 'react';
 import axiosClient from '../api/axios';
-import { Card } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import '../../src/assets/scss/announcement.scss';
 
 export function Announcement() {
@@ -64,7 +64,7 @@ export function Announcement() {
       }
     >
       <Card className='announcement-card p-4 rounded mx-auto'>
-        <H1 className='d-block w-100'>Announcement</H1>
+        <H1 className='title-announcement d-block w-100'>Announcement</H1>
 
         <Carousel
           fade
@@ -76,8 +76,8 @@ export function Announcement() {
             announcements
           ) : (
             <Carousel.Item>
-              <div className='d-flex justify-content-center fs-1 mt-5 h-100'>
-                No Announcement for now...
+              <div className='d-flex carousel-no-announcement justify-content-center'>
+                <Container>No Announcement for now...</Container>
               </div>
             </Carousel.Item>
           )}
