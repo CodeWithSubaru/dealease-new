@@ -9,26 +9,16 @@ use Illuminate\Http\Request;
 
 class ManageProfile extends Controller
 {
-    public function editProfile(Request $request, $id)
+    public function editProfile(Request $request)
     {
-        $user = User::find($id)->update([
-            'first_name' => $request->first_name,
+        $request->validate([
+            'contact_number' => ['required', 'min:11', 'max:11'],
         ]);
 
-        if ($user) {
-            UserDetail::where('user_details_id', $id)->update([
-                'middle_name' => $request->middle_name,
-                'last_name' => $request->last_name,
-                'ext_name' => $request->ext_name,
-            ]);
+        UserDetail::where('user_details_id', auth()->user()->user_id)->update([
+            'contact_number' => $request->contact_number,
+        ]);
 
-            if ($user) {
-                UserDetail::where('user_details_id', $id)->update([
-                    'middle_name' => $request->middle_name,
-                    'last_name' => $request->last_name,
-                    'ext_name' => $request->ext_name,
-                ]);
-            }
-        }
+        return response()->json(['status' => 'Profile Updated Successfully'], 200);
     }
 }

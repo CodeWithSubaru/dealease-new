@@ -77,7 +77,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Utilities
     Route::post('/change-password', [AuthController::class, 'changePass']);
-    Route::post('/edit-profile', [ManageProfile::class, 'editProfile']);
+    Route::put('/edit-profile', [ManageProfile::class, 'editProfile']);
     Route::post('/update-access', [AuthController::class, 'updateAccess']);
 
     Route::apiResource('/transactions', PaymentController::class);
