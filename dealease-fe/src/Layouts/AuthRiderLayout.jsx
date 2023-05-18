@@ -135,6 +135,7 @@ export function AuthRiderLayout() {
         activeKey={activeKey}
         onSelect={setActiveKey}
       />
+
       <Offcanvas show={show} onHide={helpClose}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Offcanvas</Offcanvas.Title>
