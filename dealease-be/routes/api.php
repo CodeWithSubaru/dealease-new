@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Admin\AnnouncementController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\Admin\AdminPaymentController;
+use App\Http\Controllers\Api\ManageProfile;
 use App\Http\Controllers\Api\ProductFilterController;
 use App\Http\Controllers\Api\Rider\RiderController;
 
@@ -69,12 +70,15 @@ Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // User
-    Route::post('/update-access', [AuthController::class, 'updateAccess']);
     Route::get('email/resend', [VerificationController::class, 'resend']);
     Route::get('/user', [AuthController::class, 'index']);
-    Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::post('/logout', [AuthController::class, 'destroy'])
         ->middleware('auth');
+
+    // Utilities
+    Route::post('/change-password', [AuthController::class, 'changePass']);
+    Route::post('/edit-profile', [ManageProfile::class, 'editProfile']);
+    Route::post('/update-access', [AuthController::class, 'updateAccess']);
 
     Route::apiResource('/transactions', PaymentController::class);
     Route::get('/orders/buyer/{order_number}', [OrderController::class, 'viewOrderByOrdNumber']);
