@@ -1,31 +1,33 @@
 import 'rsuite/dist/rsuite.min.css';
 import { useState, useEffect } from 'react';
-import { Navbar, Nav, Input, InputGroup } from 'rsuite';
-import CogIcon from '@rsuite/icons/legacy/Cog';
+import {
+  Panel,
+  PanelGroup,
+  Drawer,
+  Placeholder,
+  IconButton,
+  Divider,
+} from 'rsuite';
+import { Navbar, Nav, Input, InputGroup, Badge } from 'rsuite';
 import SearchIcon from '@rsuite/icons/Search';
-import InfoIcon from '@rsuite/icons/legacy/Info';
-import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Avatar from 'rsuite/Avatar';
 import {
   faBagShopping,
   faBox,
-  faBoxOpen,
-  faBoxTissue,
   faBoxesAlt,
   faBoxesPacking,
   faCartShopping,
-  faCheckSquare,
-  faHouse,
   faShop,
-  faShoppingBasket,
   faUserAlt,
   faUserAstronaut,
-  faUserGear,
   faWallet,
 } from '@fortawesome/free-solid-svg-icons';
 import PUBLIC_PATH from '../../api/public_url';
 import { Loader } from '../Loader/Loader';
+import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+import { RechargeWallet } from '../RechargeWallet/RechargeWallet';
+import GearIcon from '@rsuite/icons/Gear';
 
 const styles = {
   width: 'auto',
@@ -73,11 +75,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
   }, []);
   return (
     <>
-      <Navbar
-        className={UserNavbarMobilenew}
-        {...props}
-        // style={{ position: 'fixed', zIndex: 1, backgroundColor: '#0c6ffd' }}
-      >
+      <Navbar className={UserNavbarMobilenew} {...props}>
         <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
           <img
             alt=''
@@ -119,9 +117,93 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
     </>
   );
 }
+export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
+  const { user } = useAuthContext();
+  const { loading } = useAuthContext();
+  const [openProfile, setOpenProfile] = useState(false);
+
+  return (
+    <>
+      <Navbar className='RiderProfileNavbarMobile' {...props}>
+        <Navbar.Brand>
+          <Avatar
+            onClick={() => setOpenProfile(true)}
+            circle
+            // src='https://avatars.githubusercontent.com/u/1203827'
+            src={PUBLIC_PATH + 'images/' + user.prof_img}
+            alt='@simonguo'
+            className='avatarProfile'
+          />
+        </Navbar.Brand>
+        <Nav>
+          <div style={{ marginTop: '35px' }}>
+            <span className='nameProfile'>
+              {user.first_name ? user.first_name : ''}
+              <Divider vertical />
+              <Badge className='' content='Rider' />
+              <p className='nameEmail'>{user.email ? user.email : ''}</p>
+            </span>
+          </div>
+        </Nav>
+        <Nav pullRight>
+          <div style={{ marginTop: '40px' }}>
+            <IconButton
+              onClick={() => setOpenProfile(true)}
+              color='blue'
+              appearance='primary'
+              icon={<GearIcon />}
+              circle
+              size='lg'
+              className='me-4'
+            />
+          </div>
+        </Nav>
+      </Navbar>
+      <Drawer
+        // size='full'
+        style={{ width: '100%' }}
+        open={openProfile}
+        onClose={() => setOpenProfile(false)}
+      >
+        <Drawer.Header>
+          <Drawer.Title className='text-center'>Account Settings</Drawer.Title>
+          <Drawer.Actions>
+            {/* <Button onClick={() => setOpenProfile(false)}>Cancel</Button>
+            <Button onClick={() => setOpenProfile(false)} appearance='primary'>
+              Confirm
+            </Button> */}
+          </Drawer.Actions>
+        </Drawer.Header>
+        <Drawer.Body className='panelGroupSettings'>
+          <PanelGroup accordion defaultActiveKey={1} bordered>
+            <Panel shaded header='Profile' eventKey={1} id='panel1'>
+              <Placeholder.Paragraph />
+              <Avatar
+                circle
+                // src='https://avatars.githubusercontent.com/u/1203827'
+                src={PUBLIC_PATH + 'images/' + user.prof_img}
+                alt='@simonguo'
+                className='mx-auto '
+              />
+            </Panel>
+            <Panel shaded header='Change Password' eventKey={2} id='panel2'>
+              <Placeholder.Paragraph />
+            </Panel>
+            <Panel shaded header='Update Access' eventKey={3} id='panel3'>
+              <Placeholder.Paragraph />
+            </Panel>
+          </PanelGroup>
+        </Drawer.Body>
+      </Drawer>
+      {loading && <Loader visibility={loading}></Loader>}
+    </>
+  );
+}
 
 export function MobileHeader({ onSelect, activeKey, ...props }) {
+  const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
   const { user } = useAuthContext();
+  const [modalShow, setModalShow] = useState(false);
 
   return (
     <div className='customNav bg-white'>
@@ -150,20 +232,15 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
             <Nav.Item
               href='/orders/seller'
               className='flex-column d-flex text-center'
-              eventKey='orders'
+              eventKey='orders/seller'
             >
               <div className='position-relative'>
-                <FontAwesomeIcon
-                  className='mobile-icon mx-auto'
-                  icon={faBagShopping}
-                />
-
-                <small
-                  className='badge rounded-pill text-bg-primary position-absolute p-1'
-                  style={{ top: '-5px', right: '-12px' }}
-                >
-                  Seller
-                </small>
+                <Badge content='Seller'>
+                  <FontAwesomeIcon
+                    className='mobile-icon mx-auto'
+                    icon={faBagShopping}
+                  />
+                </Badge>
               </div>
               <span className='mobile-icon-label'>Orders</span>
             </Nav.Item>
@@ -176,13 +253,22 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           className='flex-column d-flex text-center'
           eventKey='cart'
         >
-          <FontAwesomeIcon
+          <Badge
+            content={countItemsInCart === 9 ? '9+' : countItemsInCart}
             className='mobile-icon mx-auto'
-            icon={faCartShopping}
-          />
-          <span className='mobile-icon-label'>Cart</span>
+          >
+            <FontAwesomeIcon
+              className='mobile-icon mx-auto'
+              icon={faCartShopping}
+            />
+          </Badge>
+          <span className='mobile-icon-label mt-2'>Cart</span>
         </Nav.Item>
-        <Nav.Item className='flex-column d-flex text-center' eventKey='wallet'>
+        <Nav.Item
+          className='flex-column d-flex text-center'
+          eventKey='wallet'
+          onClick={() => setModalShow(true)}
+        >
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faWallet} />
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>
@@ -191,6 +277,8 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>Me</span>
         </Nav.Item>
       </Nav>
+
+      <RechargeWallet modalShow={modalShow} setModalShow={setModalShow} />
     </div>
   );
 }
@@ -226,11 +314,19 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faBoxesAlt} />
           <span className='mobile-icon-label'>Delivered</span>
         </Nav.Item>
-        <Nav.Item className='flex-column d-flex text-center' eventKey='wallet'>
+        <Nav.Item
+          className='flex-column d-flex text-center'
+          eventKey='wallet'
+          onClick={() => setModalShow(true)}
+        >
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faWallet} />
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>
-        <Nav.Item className='flex-column d-flex text-center' eventKey='Me'>
+        <Nav.Item
+          href='/rider/profile'
+          className='flex-column d-flex text-center'
+          eventKey='Me'
+        >
           <FontAwesomeIcon
             className='mobile-icon mx-auto'
             icon={faUserAstronaut}

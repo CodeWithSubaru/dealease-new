@@ -18,6 +18,7 @@ return new class extends Migration
             $table->char('payment_status', 1);
             $table->text('payment_description');
             $table->decimal('payment_total_amount', 8, 2);
+            $table->decimal('shells', 8, 2);
             $table->string('checkout_session_id')->nullable();
             $table->timestamps();
         });

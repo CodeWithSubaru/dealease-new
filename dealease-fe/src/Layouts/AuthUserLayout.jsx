@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import Modal from 'react-bootstrap/Modal';
+import { RechargeWallet } from '../Components/RechargeWallet/RechargeWallet';
+
 import {
   Offcanvas,
   Form,
@@ -253,62 +255,8 @@ export function AuthUserLayout() {
           </div>
         </li>
       </Header> */}
-      <Modal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        dialogClassName='wallet-modal modal-md mx-auto'
-        aria-labelledby='contained-modal-title-vcenter'
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Wallet balance{' '}
-            <img
-              src='/images/seashell.png'
-              className='ms-2 me-2 d-inline-block align-top'
-              width='30'
-              height='30'
-            ></img>
-            {user.wallet ? user.wallet.shell_coin_amount : null}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body closeButton>
-          <Row>
-            <Col>
-              <div className='wallet-modal-container'>
-                <a href='/withdraw'>
-                  <img
-                    alt=''
-                    src='/images/cashout.png'
-                    width='auto'
-                    height='220px'
-                    className='wallet-modal-image d-inline-block align-top'
-                  />
-                  <div class='wallet-modal-middle'>
-                    <div class='wallet-modal-text'>Withdraw</div>
-                  </div>
-                </a>
-              </div>
-            </Col>
-            <Col>
-              <div className='wallet-modal-container'>
-                <a href='/recharge'>
-                  <img
-                    alt=''
-                    src='/images/cashin.png'
-                    width='auto'
-                    height='220px'
-                    className='wallet-modal-image d-inline-block align-top'
-                  />
-                  <div class='wallet-modal-middle'>
-                    <div class='wallet-modal-text'>Recharge </div>
-                  </div>
-                </a>
-              </div>
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
+      <RechargeWallet modalShow={modalShow} setModalShow={setModalShow} />
+
       <Offcanvas show={show} onHide={helpClose}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Offcanvas</Offcanvas.Title>
