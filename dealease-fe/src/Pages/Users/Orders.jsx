@@ -945,6 +945,7 @@ export function OrdersSeller() {
           setUserOrdersTable={setUserOrdersTable}
           fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
         /> */}
+
         <div className='mt-5'>
           <div className='d-flex mb-2'>
             <span
@@ -1013,8 +1014,6 @@ export function OrdersSeller() {
           pendingOrderNumber={pendingOrderNumber}
           processingOrderNumber={processingOrderNumber}
           deliveredOrderNumber={deliveredOrderNumber}
-          // viewOrderProduct={viewOrderProduct}
-          // closeViewOrderProduct={closeViewOrderProduct}
           viewOrders={viewOrders}
           status={status}
           calculateGrandTotalPrice={calculateGrandTotalPrice}

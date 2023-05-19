@@ -27,6 +27,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axios';
+import { FaBoxOpen } from 'react-icons/fa';
 
 const headerStyles = {
   padding: 18,
@@ -181,12 +182,28 @@ export function SidebarUser() {
                   <Nav.Item href='/orders' eventKey='2' icon={<GroupIcon />}>
                     Orders
                   </Nav.Item>
+
                   <Nav.Item
                     href='/orders/seller'
                     eventKey='2'
                     icon={<GroupIcon />}
                   >
                     Orders (Seller)
+                  </Nav.Item>
+
+                  <Nav.Item
+                    href='/product'
+                    eventKey='7'
+                    style={{ paddingLeft: '20px' }}
+                  >
+                    <div>
+                      {' '}
+                      <span className='me-3'>
+                        {' '}
+                        <FaBoxOpen />{' '}
+                      </span>{' '}
+                      <span> Product </span>{' '}
+                    </div>
                   </Nav.Item>
 
                   <Nav.Menu
