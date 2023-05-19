@@ -238,6 +238,11 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
       setValidIdBack(event.target.files[0]);
     }
   };
+  const { logout } = useAuthContext();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   function handleUpdateAccessForm(e) {
     e.preventDefault();
@@ -315,7 +320,7 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
           </Drawer.Actions>
         </Drawer.Header>
         <Drawer.Body className='panelGroupSettings'>
-          <PanelGroup accordion defaultActiveKey={1} bordered>
+          <PanelGroup accordion bordered>
             <Panel shaded header='Update Access' eventKey={1} id='panel1'>
               <Alert show={true} variant='success'>
                 <div className='d-flex justify-content-between'>
@@ -484,7 +489,17 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
                 </Modal.Footer>
               </Modal>
             </Panel>
+            {/* <Panel shaded header='Logout' eventKey={1} id='panel1'></Panel> */}
           </PanelGroup>
+          <div className='p-5'>
+            <button
+              className='btn btn-danger p-3'
+              style={{ bottom: '0' }}
+              onClick={handleLogout}
+            >
+              Sign out
+            </button>
+          </div>
         </Drawer.Body>
       </Drawer>
       {loading && <Loader visibility={loading}></Loader>}
