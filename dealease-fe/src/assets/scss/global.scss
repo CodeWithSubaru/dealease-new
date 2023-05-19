@@ -67,9 +67,10 @@
   font-weight: 600;
 }
 .avatarProfile {
-  height: 70px !important;
-  width: 70px !important;
+  // height: 70px !important;
+  // width: 70px !important;
   margin-top: 8px;
+  object-fit: fill;
 }
 
 .panelGroupSettings {
@@ -353,7 +354,19 @@
   margin: 0 auto;
   margin-top: 25px;
 }
+.deskchangeprof {
+  display: block;
+}
+.mobilechangeprof {
+  display: none;
+}
 @media screen and (max-width: 960px) {
+  .deskchangeprof {
+    display: none;
+  }
+  .mobilechangeprof {
+    display: block;
+  }
   .card-add-to-cart {
     width: 100%;
     margin: 0 auto;
@@ -429,7 +442,7 @@
 }
 
 .customNav {
-  z-index: 99999;
+  z-index: 3;
   bottom: 0;
   position: fixed;
   height: auto;

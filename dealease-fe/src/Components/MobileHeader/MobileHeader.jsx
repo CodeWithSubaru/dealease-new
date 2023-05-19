@@ -28,6 +28,12 @@ import { Loader } from '../Loader/Loader';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import { RechargeWallet } from '../RechargeWallet/RechargeWallet';
 import GearIcon from '@rsuite/icons/Gear';
+import { UpdateAccess } from '../../Pages/Auth/UpdateAccess';
+import Alert from 'react-bootstrap/Alert';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 
 const styles = {
   width: 'auto',
@@ -128,6 +134,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
         <Navbar.Brand>
           <Avatar
             onClick={() => setOpenProfile(true)}
+            size='lg'
             circle
             // src='https://avatars.githubusercontent.com/u/1203827'
             src={PUBLIC_PATH + 'images/' + user.prof_img}
@@ -176,7 +183,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
         </Drawer.Header>
         <Drawer.Body className='panelGroupSettings'>
           <PanelGroup accordion defaultActiveKey={1} bordered>
-            <Panel shaded header='Profile' eventKey={1} id='panel1'>
+            <Panel shaded header='Update Access' eventKey={1} id='panel1'>
               <Placeholder.Paragraph />
               <Avatar
                 circle
@@ -191,6 +198,291 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
             </Panel>
             <Panel shaded header='Update Access' eventKey={3} id='panel3'>
               <Placeholder.Paragraph />
+            </Panel>
+          </PanelGroup>
+        </Drawer.Body>
+      </Drawer>
+      {loading && <Loader visibility={loading}></Loader>}
+    </>
+  );
+}
+export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
+  const { user } = useAuthContext();
+  const { loading } = useAuthContext();
+  const [openProfile, setOpenProfile] = useState(false);
+  const [validIdFront, setValidIdFront] = useState(null);
+  const [validIdBack, setValidIdBack] = useState(null);
+  const [imgFront, setImgFront] = useState(null);
+  const [imgBack, setImgBack] = useState(null);
+  const [termsAndCondition, setTermsAndCondition] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [check, setCheck] = useState(false);
+  const handleCheckboxChange = (e) => {
+    setCheck(e.target.checked);
+    sessionStorage.setItem('check-subs-agreement', e.target.checked);
+  };
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const onImageChangeFront = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImgFront(URL.createObjectURL(event.target.files[0]));
+      setValidIdFront(event.target.files[0]);
+    }
+  };
+
+  const onImageChangeBack = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImgBack(URL.createObjectURL(event.target.files[0]));
+      setValidIdBack(event.target.files[0]);
+    }
+  };
+
+  function handleUpdateAccessForm(e) {
+    e.preventDefault();
+
+    const data = {
+      valid_id_front: validIdFront,
+      valid_id_back: validIdBack,
+      terms_and_conditions: termsAndCondition,
+    };
+
+    axiosClient
+      .post('/update-access', data, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => {
+        Notification({
+          title: 'Success',
+          message: res.data.status,
+          icon: 'success',
+        }).then(() => {});
+      })
+      .catch((e) => setErrors(e.response.data.errors));
+  }
+  return (
+    <>
+      <Navbar className='RiderProfileNavbarMobile' {...props}>
+        <Navbar.Brand>
+          <Avatar
+            onClick={() => setOpenProfile(true)}
+            size='lg'
+            circle
+            // src='https://avatars.githubusercontent.com/u/1203827'
+            src={PUBLIC_PATH + 'images/' + user.prof_img}
+            alt='@simonguo'
+            className='avatarProfile'
+          />
+        </Navbar.Brand>
+        <Nav>
+          <div style={{ marginTop: '35px' }}>
+            <span className='nameProfile'>
+              {user.first_name ? user.first_name : ''}
+              <Divider vertical />
+              <Badge className='' content='User' />
+              <p className='nameEmail'>{user.email ? user.email : ''}</p>
+            </span>
+          </div>
+        </Nav>
+        <Nav pullRight>
+          <div style={{ marginTop: '40px' }}>
+            <IconButton
+              onClick={() => setOpenProfile(true)}
+              color='blue'
+              appearance='primary'
+              icon={<GearIcon />}
+              circle
+              size='lg'
+              className='me-4'
+            />
+          </div>
+        </Nav>
+      </Navbar>
+      <Drawer
+        // size='full'
+        style={{ width: '100%' }}
+        open={openProfile}
+        onClose={() => setOpenProfile(false)}
+      >
+        <Drawer.Header>
+          <Drawer.Title className='text-center'>Account Settings</Drawer.Title>
+          <Drawer.Actions>
+            {/* <Button onClick={() => setOpenProfile(false)}>Cancel</Button>
+            <Button onClick={() => setOpenProfile(false)} appearance='primary'>
+              Confirm
+            </Button> */}
+          </Drawer.Actions>
+        </Drawer.Header>
+        <Drawer.Body className='panelGroupSettings'>
+          <PanelGroup accordion defaultActiveKey={1} bordered>
+            <Panel shaded header='Update Access' eventKey={1} id='panel1'>
+              <Alert show={true} variant='success'>
+                <div className='d-flex justify-content-between'>
+                  <Alert.Heading style={{ fontSize: '14px' }}>
+                    Instruction{' '}
+                  </Alert.Heading>
+
+                  <OverlayTrigger
+                    placement='bottom'
+                    overlay={
+                      <Tooltip id='button-tooltip-2'>
+                        <div className='p-2 text-start'>
+                          Once you didn't follow the instruction, we will
+                          automatically reject your request.
+                        </div>
+                      </Tooltip>
+                    }
+                  >
+                    <FontAwesomeIcon icon={faExclamationCircle} />
+                  </OverlayTrigger>
+                </div>
+                <ul className='ms-4'>
+                  <li>
+                    Please make sure that both pictures of the government IDs
+                    are clear and valid.
+                  </li>
+                </ul>
+                <hr />
+                <div className='clearfix'>
+                  <p className='float-end mb-0'> - System Administator</p>
+                </div>
+              </Alert>
+              <Form onSubmit={handleUpdateAccessForm} id='updateAccessForm'>
+                <div className='d-flex flex-column align-items-center clearfix mb-3'>
+                  <div className='w-auto'>
+                    <div className='float-end'>
+                      <p className='mb-0 text-center'>First ID Preview </p>
+                      <img
+                        src={imgFront}
+                        className='rounded p-3 float-end'
+                        style={{
+                          height: '300px',
+                          width: '300px',
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <Form.Group controlId='formFile' className='mb-3 w-100'>
+                    <Form.Label className='text-secondary'>
+                      First Valid Government Id
+                    </Form.Label>
+                    <Form.Control
+                      type='file'
+                      id='formFile'
+                      onChange={onImageChangeFront}
+                      isInvalid={!!errors.valid_id_front}
+                    />
+                    {console.log(errors)}
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.valid_id_front}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
+
+                <div className='d-flex flex-column align-items-center clearfix'>
+                  <div className='w-auto'>
+                    <div className='float-end'>
+                      <p className='mb-0 text-center'>Second ID Preview </p>
+                      <img
+                        src={imgBack}
+                        className='rounded p-3 float-end'
+                        style={{
+                          height: '300px',
+                          width: '300px',
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <Form.Group controlId='formFile' className='w-100 mb-3'>
+                    <Form.Label className='text-secondary'>
+                      Second Valid Government Id
+                    </Form.Label>
+                    <Form.Control
+                      type='file'
+                      id='formFile'
+                      onChange={onImageChangeBack}
+                      isInvalid={!!errors.valid_id_back}
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.valid_id_back}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
+
+                <Form.Group className='my-2'>
+                  <Row xs='auto'>
+                    <Col
+                      style={{
+                        padding: '0 0 0 12px',
+                      }}
+                    >
+                      <Form.Check
+                        checked={check}
+                        onChange={handleCheckboxChange}
+                        type='checkbox'
+                        id='termsAndCondition'
+                        isInvalid={!!errors.terms_and_conditions}
+                        feedbackType='invalid'
+                        feedback={
+                          errors.terms_and_conditions &&
+                          errors.terms_and_conditions.length > 0 &&
+                          errors.terms_and_conditions[0]
+                        }
+                      />
+                    </Col>
+                    <Col>
+                      <Form.Label
+                        className='text-secondary fw-light mb-0'
+                        controlId='termsAndCondition'
+                      >
+                        I agree to the
+                        <a
+                          onClick={handleShow}
+                          target='_blank'
+                          className='fw-bold'
+                        >
+                          Terms and Condition
+                        </a>
+                      </Form.Label>
+                    </Col>
+                  </Row>
+
+                  {/* <Form.Control.Feedback type='invalid' className='text-danger'>
+                    {errors.length > 0 &&
+                      errors.terms_and_conditions.length > 0 &&
+                      errors.terms_and_conditions[0]}
+                  </Form.Control.Feedback> */}
+                </Form.Group>
+              </Form>
+
+              <Button
+                disabled={!check}
+                variant='primary'
+                className='rounded'
+                form='updateAccessForm'
+                type='submit'
+              >
+                Submit
+              </Button>
+
+              <Modal scrollable show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Terms and Conditions</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  Woohoo, you are reading this text in a modal!
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant='primary'
+                    className='rounded'
+                    onClick={handleClose}
+                  >
+                    I understand
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </Panel>
           </PanelGroup>
         </Drawer.Body>
@@ -272,7 +564,11 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faWallet} />
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>
-        <Nav.Item className='flex-column d-flex text-center' eventKey='Me'>
+        <Nav.Item
+          href='/profile'
+          className='flex-column d-flex text-center'
+          eventKey='Me'
+        >
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faUserAlt} />
           <span className='mobile-icon-label'>Me</span>
         </Nav.Item>

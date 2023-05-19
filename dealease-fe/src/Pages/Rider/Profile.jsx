@@ -5,7 +5,7 @@ import { Card, Row, Col, Container } from 'react-bootstrap';
 import PUBLIC_URL from '../../api/public_url';
 import axiosClient from '../../api/axios';
 import useAuthContext from '../../Hooks/Context/AuthContext';
-
+import { SidebarRider } from '../../Components/Sidebar/Sidebar';
 import { NavbarRiderProfile } from '../../Components/MobileHeader/MobileHeader';
 
 export const ProfileRider = () => {
@@ -37,6 +37,7 @@ export const ProfileRider = () => {
         onSelectTop={setActiveKeyTop}
       />
       <div style={{ display: 'flex', height: '100%' }}>
+        <SidebarRider />
         <main className='w-100' style={{ minHeight: '815px' }}>
           <div style={{ height: '150px' }}></div>
           <div className='mx-auto w-100 mb-5'>
