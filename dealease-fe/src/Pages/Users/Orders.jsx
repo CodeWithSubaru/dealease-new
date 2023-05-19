@@ -346,105 +346,108 @@ export function OrdersBuyer() {
   }, []);
 
   return (
-    <div className='mt-4 pt-2 mx-2'>
+    <div className='d-flex'>
       <SidebarUser />
-      {/* <main className='w-100'>
-        <OrdersTable
-          loading={loading}
-          setLoading={setLoading}
-          header={header}
-          body={body}
-          title={title}
-          pendingOrderNumber={pendingOrderNumber}
-          processingOrderNumber={processingOrderNumber}
-          deliveredOrderNumber={deliveredOrderNumber}
-          viewOrderProduct={viewOrderProduct}
-          closeViewOrderProduct={closeViewOrderProduct}
-          viewOrders={viewOrders}
-          status={status}
-          calculateGrandTotalPrice={calculateGrandTotalPrice}
-          setUserOrdersTable={setUserOrdersTable}
-          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        />
-      </main> */}
 
-      <div className='mt-5'>
-        <div className='d-flex mb-2'>
-          <span
-            className={
-              'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
-              (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
-            }
-            onClick={() => {
-              setUserOrdersTable(1);
-              fetchNumberOrdersByStatusUser(1);
-              fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-              fetchNumberOrdersByStatusUser([6, 7, 8]);
-              setPageTitle('Pending Orders');
-              setCurrentColor(0);
-            }}
-            disabled={loading}
-          >
-            Pending
-          </span>
-
-          <span
-            className={
-              'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
-              (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
-            }
-            onClick={() => {
-              setUserOrdersTable([2, 3, 4, 5]);
-              fetchNumberOrdersByStatusUser(1);
-              fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-              fetchNumberOrdersByStatusUser([6, 7, 8]);
-              setPageTitle('Processing Orders');
-              setCurrentColor(1);
-            }}
-            disabled={loading}
-          >
-            Processing
-          </span>
-
-          <span
-            className={
-              'px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
-              (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
-            }
-            onClick={() => {
-              setUserOrdersTable([6, 7, 8]);
-              fetchNumberOrdersByStatusUser(1);
-              fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-              fetchNumberOrdersByStatusUser([6, 7, 8]);
-              setPageTitle('Delivered Orders');
-              setCurrentColor(2);
-              disabled = { loading };
-            }}
-            disabled={loading}
-          >
-            Delivered
-          </span>
+      <main className='w-100'>
+        <div className='ordersTableDesktopView'>
+          <OrdersTable
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            body={body}
+            title={title}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrderProduct={viewOrderProduct}
+            closeViewOrderProduct={closeViewOrderProduct}
+            viewOrders={viewOrders}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
         </div>
 
-        <CustomList
-          data={body}
-          title={title}
-          pageTitle={pageTitle}
-          loading={loading}
-          setLoading={setLoading}
-          header={header}
-          pendingOrderNumber={pendingOrderNumber}
-          processingOrderNumber={processingOrderNumber}
-          deliveredOrderNumber={deliveredOrderNumber}
-          viewOrderProduct={viewOrderProduct}
-          closeViewOrderProduct={closeViewOrderProduct}
-          viewOrders={viewOrders}
-          status={status}
-          calculateGrandTotalPrice={calculateGrandTotalPrice}
-          setUserOrdersTable={setUserOrdersTable}
-          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        />
-      </div>
+        <div className='ordersTableMobileView mx-2 mt-5 pt-5'>
+          <div className='d-flex mb-2'>
+            <span
+              className={
+                'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
+                (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
+              }
+              onClick={() => {
+                setUserOrdersTable(1);
+                fetchNumberOrdersByStatusUser(1);
+                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                setPageTitle('Pending Orders');
+                setCurrentColor(0);
+              }}
+              disabled={loading}
+            >
+              Pending
+            </span>
+
+            <span
+              className={
+                'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
+                (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+              }
+              onClick={() => {
+                setUserOrdersTable([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser(1);
+                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                setPageTitle('Processing Orders');
+                setCurrentColor(1);
+              }}
+              disabled={loading}
+            >
+              Processing
+            </span>
+
+            <span
+              className={
+                'px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
+              }
+              onClick={() => {
+                setUserOrdersTable([6, 7, 8]);
+                fetchNumberOrdersByStatusUser(1);
+                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                setPageTitle('Delivered Orders');
+                setCurrentColor(2);
+                disabled = { loading };
+              }}
+              disabled={loading}
+            >
+              Delivered
+            </span>
+          </div>
+
+          <CustomList
+            data={body}
+            title={title}
+            pageTitle={pageTitle}
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrderProduct={viewOrderProduct}
+            closeViewOrderProduct={closeViewOrderProduct}
+            viewOrders={viewOrders}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
+        </div>
+      </main>
     </div>
   );
 }
@@ -924,102 +927,108 @@ export function OrdersSeller() {
   }, []);
 
   return (
-    <div className='mt-4 pt-2 mx-2'>
+    <div className='d-flex'>
       <SidebarUser />
       <main className='w-100'>
-        {/* <OrdersTable
-          loading={loading}
-          setLoading={setLoading}
-          header={header}
-          header1={header1}
-          body={body}
-          title={title}
-          pendingOrderNumber={pendingOrderNumber}
-          processingOrderNumber={processingOrderNumber}
-          deliveredOrderNumber={deliveredOrderNumber}
-          viewOrders={viewOrders}
-          viewOrderBuyerModal={viewOrderBuyerModal}
-          closeViewOrderBuyerModal={closeViewOrderBuyerModal}
-          status={status}
-          calculateGrandTotalPrice={calculateGrandTotalPrice}
-          setUserOrdersTable={setUserOrdersTable}
-          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        /> */}
-
-        <div className='mt-5'>
-          <div className='d-flex mb-2'>
-            <span
-              className={
-                'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
-                (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
-              }
-              onClick={() => {
-                setUserOrdersTable(1);
-                fetchNumberOrdersByStatusUser(1);
-                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                fetchNumberOrdersByStatusUser([6, 7, 8]);
-                setPageTitle('Pending Orders');
-                setCurrentColor(0);
-              }}
-              disabled={loading}
-            >
-              Pending
-            </span>
-
-            <span
-              className={
-                'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
-                (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
-              }
-              onClick={() => {
-                setUserOrdersTable([2, 3, 4, 5]);
-                fetchNumberOrdersByStatusUser(1);
-                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                fetchNumberOrdersByStatusUser([6, 7, 8]);
-                setPageTitle('Processing Orders');
-                setCurrentColor(1);
-              }}
-              disabled={loading}
-            >
-              Processing
-            </span>
-
-            <span
-              className={
-                'px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
-                (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
-              }
-              onClick={() => {
-                setUserOrdersTable([6, 7, 8]);
-                fetchNumberOrdersByStatusUser(1);
-                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                fetchNumberOrdersByStatusUser([6, 7, 8]);
-                setPageTitle('Delivered Orders');
-                setCurrentColor(2);
-              }}
-              disabled={loading}
-            >
-              Delivered
-            </span>
-          </div>
+        {/* Desktop View */}
+        <div className='ordersTableDesktopView'>
+          <OrdersTable
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            header1={header1}
+            body={body}
+            title={title}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrders={viewOrders}
+            viewOrderBuyerModal={viewOrderBuyerModal}
+            closeViewOrderBuyerModal={closeViewOrderBuyerModal}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
         </div>
 
-        <CustomList
-          data={body}
-          title={title}
-          pageTitle={pageTitle + ' (Seller)'}
-          loading={loading}
-          setLoading={setLoading}
-          header={header}
-          pendingOrderNumber={pendingOrderNumber}
-          processingOrderNumber={processingOrderNumber}
-          deliveredOrderNumber={deliveredOrderNumber}
-          viewOrders={viewOrders}
-          status={status}
-          calculateGrandTotalPrice={calculateGrandTotalPrice}
-          setUserOrdersTable={setUserOrdersTable}
-          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        />
+        {/* Mobile View */}
+        <div className='ordersTableMobileView mx-2 mt-5 pt-1'>
+          <div className='mt-5'>
+            <div className='d-flex mb-2'>
+              <span
+                className={
+                  'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
+                  (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
+                }
+                onClick={() => {
+                  setUserOrdersTable(1);
+                  fetchNumberOrdersByStatusUser(1);
+                  fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser([6, 7, 8]);
+                  setPageTitle('Pending Orders');
+                  setCurrentColor(0);
+                }}
+                disabled={loading}
+              >
+                Pending
+              </span>
+
+              <span
+                className={
+                  'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
+                  (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+                }
+                onClick={() => {
+                  setUserOrdersTable([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser(1);
+                  fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser([6, 7, 8]);
+                  setPageTitle('Processing Orders');
+                  setCurrentColor(1);
+                }}
+                disabled={loading}
+              >
+                Processing
+              </span>
+
+              <span
+                className={
+                  'px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                  (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
+                }
+                onClick={() => {
+                  setUserOrdersTable([6, 7, 8]);
+                  fetchNumberOrdersByStatusUser(1);
+                  fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser([6, 7, 8]);
+                  setPageTitle('Delivered Orders');
+                  setCurrentColor(2);
+                }}
+                disabled={loading}
+              >
+                Delivered
+              </span>
+            </div>
+          </div>
+
+          <CustomList
+            data={body}
+            title={title}
+            pageTitle={pageTitle + ' (Seller)'}
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrders={viewOrders}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
+        </div>
       </main>
     </div>
   );

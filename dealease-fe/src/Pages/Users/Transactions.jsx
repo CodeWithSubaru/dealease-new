@@ -228,76 +228,80 @@ export function TransactionsUser() {
 
   return (
     <>
-      <div className='mt-5 pt-1'>
+      <div className='d-flex transactionsDesktopView'>
         <SidebarUser />
         <main className='mx-2'>
-          {/* <Transactions
-            header={header}
-            body={body}
-            changePaymentStatus={setUserTransactionsDataTable}
-            loading={loading}
-            numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
-            numberOfApprovedTransaction={numberOfApprovedTransaction}
-            numberOfCancelledTransaction={numberOfCancelledTransaction}
-            fetchUnderReviewTransaction={fetchUnderReviewTransaction}
-            fetchApprovedTransaction={fetchApprovedTransaction}
-            fetchCancelledTransaction={fetchCancelledTransaction}
-          /> */}
-
-          <div className='mt-5 mb-2'>
-            <div className='d-flex mb-2'>
-              <span
-                className={
-                  'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
-                  (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
-                }
-                onClick={() => {
-                  setUserTransactionsDataTable(1);
-                  setPageTitle('Under Review Trasaction');
-                  setCurrentColor(0);
-                }}
-                disabled={loading}
-              >
-                Under Review
-              </span>
-
-              <span
-                className={
-                  'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
-                  (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
-                }
-                onClick={() => {
-                  setUserTransactionsDataTable(2);
-                  setPageTitle('Approved Trasaction');
-                  setCurrentColor(1);
-                }}
-                disabled={loading}
-              >
-                Approved
-              </span>
-
-              <span
-                className={
-                  'px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
-                  (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
-                }
-                onClick={() => {
-                  setUserTransactionsDataTable(0);
-                  setPageTitle('Delivered Orders');
-                  setCurrentColor(2);
-                }}
-                disabled={loading}
-              >
-                Cancelled
-              </span>
-            </div>
+          <div className='transactionsDesktopView'>
+            <Transactions
+              header={header}
+              body={body}
+              changePaymentStatus={setUserTransactionsDataTable}
+              loading={loading}
+              numberOfUnderReviewTransaction={numberOfUnderReviewTransaction}
+              numberOfApprovedTransaction={numberOfApprovedTransaction}
+              numberOfCancelledTransaction={numberOfCancelledTransaction}
+              fetchUnderReviewTransaction={fetchUnderReviewTransaction}
+              fetchApprovedTransaction={fetchApprovedTransaction}
+              fetchCancelledTransaction={fetchCancelledTransaction}
+            />
           </div>
 
-          <CustomListTransaction
-            pageTitle={pageTitle}
-            loading={loading}
-            data={body}
-          />
+          <div className='transactionsMobileView mx-2 mt-5 pt-2'>
+            <div className='mt-5 mb-2 w-100'>
+              <div className='d-flex mb-2'>
+                <span
+                  className={
+                    'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
+                    (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    setUserTransactionsDataTable(1);
+                    setPageTitle('Under Review Trasaction');
+                    setCurrentColor(0);
+                  }}
+                  disabled={loading}
+                >
+                  Under Review
+                </span>
+
+                <span
+                  className={
+                    'px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold ' +
+                    (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    setUserTransactionsDataTable(2);
+                    setPageTitle('Approved Trasaction');
+                    setCurrentColor(1);
+                  }}
+                  disabled={loading}
+                >
+                  Approved
+                </span>
+
+                <span
+                  className={
+                    'px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
+                  }
+                  onClick={() => {
+                    setUserTransactionsDataTable(0);
+                    setPageTitle('Delivered Orders');
+                    setCurrentColor(2);
+                  }}
+                  disabled={loading}
+                >
+                  Cancelled
+                </span>
+              </div>
+            </div>
+
+            <CustomListTransaction
+              pageTitle={pageTitle}
+              loading={loading}
+              data={body}
+            />
+          </div>
         </main>
       </div>
     </>

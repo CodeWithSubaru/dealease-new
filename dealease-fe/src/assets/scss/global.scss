@@ -178,7 +178,24 @@
 .verify-card-email {
   padding: 50px 100px 100px 100px;
 }
+
+.ordersTableMobileView {
+  display: none;
+}
+
+.transactionsMobileView {
+  display: none;
+}
+
 @media only screen and (max-width: 600px) {
+  .transactionsDesktopView {
+    display: none;
+  }
+
+  .d-flex.transactionsDesktopView {
+    display: block !important;
+  }
+
   .verify-card-email {
     padding: 40px 2px;
   }
@@ -374,6 +391,7 @@
 .withdraw-card {
   width: 100% !important;
 }
+
 @media screen and (max-width: 960px) {
   .request-title {
     font-size: 23px !important;
@@ -479,8 +497,16 @@
   .contacts-footer {
     height: 490px;
   }
-}
 
+  .ordersTableMobileView {
+    display: block;
+  }
+
+  .transactionsMobileView {
+    display: block;
+  }
+}
+// Nav
 .customNav {
   z-index: 3;
   bottom: 0;
