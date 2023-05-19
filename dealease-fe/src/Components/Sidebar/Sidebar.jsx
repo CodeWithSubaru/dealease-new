@@ -26,6 +26,7 @@ import MagicIcon from '@rsuite/icons/legacy/Magic';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link } from 'react-router-dom';
+import axiosClient from '../../api/axios';
 
 const headerStyles = {
   padding: 18,
