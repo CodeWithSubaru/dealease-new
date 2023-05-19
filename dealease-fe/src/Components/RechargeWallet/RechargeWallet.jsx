@@ -13,9 +13,20 @@ export function RechargeWallet(props) {
   const { user } = useAuthContext();
   const [active, setActive] = useState(-1);
   const [amount, setAmount] = useState(0);
+  const [shellsAmount, setShellsAmount] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [erorrs, setErrors] = useState([]);
   const navigate = useNavigate();
+
+  function calculateTotalShellConverted(shell) {
+    let totalShells = shell * Math.trunc(quantity);
+
+    if (totalShells > 100000) {
+      return 100000;
+    } else {
+      return totalShells;
+    }
+  }
 
   function calculateTotal(amount) {
     let totalAmount = amount * Math.trunc(quantity);
@@ -29,6 +40,7 @@ export function RechargeWallet(props) {
 
   const data = {
     amount: calculateTotal(amount),
+    shells: calculateTotalShellConverted(shellsAmount),
   };
 
   // Submit Recharge
@@ -105,17 +117,19 @@ export function RechargeWallet(props) {
                     name='plan'
                     type='radio'
                     className='mt-1'
-                    value={40}
+                    id='50'
+                    value={90}
                     onClick={() => {
                       setActive(0);
-                      setAmount(40);
+                      setShellsAmount(90);
+                      setAmount(100);
                     }}
                   />
                   <Form.Label
                     className='fw-semibold text-black ms-2'
                     htmlFor='50'
                   >
-                    Php 50
+                    Php 100
                   </Form.Label>
                 </Form.Check>
               </div>
@@ -127,7 +141,7 @@ export function RechargeWallet(props) {
                   alt=''
                   className='mx-2'
                 />{' '}
-                <span>40</span>
+                <span>90</span>
               </span>
             </div>
           </div>
@@ -149,17 +163,18 @@ export function RechargeWallet(props) {
                   type='radio'
                   id='100'
                   className='mt-1'
-                  value={85}
+                  value={230}
                   onClick={() => {
                     setActive(1);
-                    setAmount(85);
+                    setShellsAmount(230);
+                    setAmount(250);
                   }}
                 />
                 <Form.Label
                   className='fw-semibold text-black ms-2'
                   htmlFor='100'
                 >
-                  Php 100
+                  Php 250
                 </Form.Label>
               </Form.Check>
               <span className='d-flex align-items-center'>
@@ -171,7 +186,7 @@ export function RechargeWallet(props) {
                   className='mx-2'
                 />{' '}
                 <div className='position-relative'>
-                  <span>80 + 5 </span>
+                  <span>220 + 10 </span>
                 </div>
               </span>
             </div>
@@ -194,17 +209,18 @@ export function RechargeWallet(props) {
                   type='radio'
                   id='250'
                   className='mt-1'
-                  value={210}
+                  value={465}
                   onClick={() => {
                     setActive(2);
-                    setAmount(210);
+                    setShellsAmount(465);
+                    setAmount(500);
                   }}
                 />
                 <Form.Label
                   className='fw-semibold text-black ms-2'
                   htmlFor='250'
                 >
-                  Php 250
+                  Php 500
                 </Form.Label>
               </Form.Check>
               <span className='d-flex align-items-center'>
@@ -216,7 +232,7 @@ export function RechargeWallet(props) {
                   className='mx-2'
                   htmlFor='250'
                 />{' '}
-                <span>200 + 10</span>
+                <span>450 + 15</span>
               </span>
             </div>
           </div>
@@ -238,17 +254,18 @@ export function RechargeWallet(props) {
                   type='radio'
                   id='500'
                   className='mt-1'
-                  value={460}
+                  value={970}
                   onClick={() => {
                     setActive(3);
-                    setAmount(460);
+                    setShellsAmount(970);
+                    setAmount(1000);
                   }}
                 />
                 <Form.Label
                   className='fw-semibold text-black ms-2'
                   htmlFor='500'
                 >
-                  Php 500
+                  Php 1000
                 </Form.Label>
               </Form.Check>
               <span className='d-flex align-items-center'>
@@ -259,7 +276,7 @@ export function RechargeWallet(props) {
                   alt=''
                   className='mx-2'
                 />{' '}
-                <span>450 + 15</span>
+                <span>950 + 20</span>
               </span>
             </div>
           </div>
@@ -278,19 +295,20 @@ export function RechargeWallet(props) {
                 }}
               />
             </Form.Group>
-            <div className='d-flex flex-column text-end'>
-              <h4>
-                {' '}
+            <div className='d-flex flex-column align-items-end text-end'>
+              <h6 className='text-nowrap'>
+                <span> Php {calculateTotal(amount).toLocaleString()} </span>
+                {' = '}
                 <img
                   src='/images/seashell.png'
-                  height={25}
-                  width={25}
+                  height={20}
+                  width={20}
                   alt=''
                   className='ml-1'
                   htmlFor='250'
                 />{' '}
-                {calculateTotal(amount).toLocaleString()}
-              </h4>
+                {calculateTotalShellConverted(shellsAmount).toLocaleString()}
+              </h6>
               <p className='text-nowrap'>Grand total</p>
             </div>
           </div>

@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Notification, Finalize } from "../Notification/Notification";
-import { useNavigate } from "react-router-dom";
-import axiosClient from "../../api/axios";
-import Form from "react-bootstrap/Form";
-import useAuthContext from "../../Hooks/Context/AuthContext";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import { Container } from "react-bootstrap";
-import "../../assets/scss/withdraw.scss";
+import { useState } from 'react';
+import { Notification, Finalize } from '../Notification/Notification';
+import { useNavigate } from 'react-router-dom';
+import axiosClient from '../../api/axios';
+import Form from 'react-bootstrap/Form';
+import useAuthContext from '../../Hooks/Context/AuthContext';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import { Container } from 'react-bootstrap';
+import '../../assets/scss/withdraw.scss';
 export function Withdraw() {
   // Withdraw from shell into money
   const { user, fetchUserInfo } = useAuthContext();
@@ -15,45 +15,55 @@ export function Withdraw() {
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
+  // get the total fee
+  function calculateFee() {
+    if (shellToConvert === 1000) {
+      return 20;
+    } else {
+      let amountToMultiply = Math.ceil(shellToConvert / 500);
+      return amountToMultiply * 10;
+    }
+  }
+
   return (
-    <Container className="withdraw-container">
+    <Container className='withdraw-container'>
       <Card
-        className="withdraw-card"
+        className='withdraw-card'
         style={{
-          width: "100%",
-          minWidth: "200px",
-          margin: "80px 50px 0px  0px",
+          width: '100%',
+          minWidth: '200px',
+          margin: '80px 50px 0px  0px',
         }}
       >
-        <div className="p-5">
+        <div className='p-3'>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
 
               Finalize({
-                text: "Are you sure, Withdraw?",
-                confirmButton: "Yes",
-                successMsg: "Transaction Confirmed Successfully.",
+                text: 'Are you sure, Withdraw?',
+                confirmButton: 'Yes',
+                successMsg: 'Transaction Confirmed Successfully.',
               }).then((res) => {
                 if (res.isConfirmed) {
                   axiosClient
-                    .post("/request-withdrawal", {
-                      wallet: 0,
+                    .post('/request-withdrawal', {
+                      amountToWithdraw: shellToConvert - calculateFee(),
                       shell_coin_amount: shellToConvert,
                     })
                     .then((res) => {
                       if (res.status === 200) {
-                        setShellToConvert("");
+                        setShellToConvert('');
                         setErrors([]);
                         fetchUserInfo();
-                        navigate("/transactions");
+                        navigate('/transactions');
                       }
                     })
                     .catch((e) => {
                       Notification({
-                        title: "Error",
-                        message: "Something went wrong",
-                        icon: "error",
+                        title: 'Error',
+                        message: 'Something went wrong',
+                        icon: 'error',
                       }).then(() => {
                         setErrors(e.response.data.message);
                         console.log(e);
@@ -63,12 +73,12 @@ export function Withdraw() {
               });
             }}
           >
-            <h1>Request for Withdrawal</h1>
+            <h1 className='fs-1 lh-sm mb-3'>Request for Withdrawal</h1>
             <Form.Group>
-              <Form.Label className="text-black">Shell amount</Form.Label>
+              <Form.Label className='text-black'>Shell amount</Form.Label>
               <Form.Control
-                style={{ margin: "0px 10px 0px  5px", width: "95%" }}
-                type="number"
+                style={{ margin: '0px 10px 0px  5px', width: '95%' }}
+                type='number'
                 onChange={(e) => {
                   setShellToConvert(e.target.value);
                   setErrors([]);
@@ -78,28 +88,33 @@ export function Withdraw() {
                     Number(user.wallet ? user.wallet.shell_coin_amount : 0) ||
                   !!errors.length > 0
                 }
+                className='mb-3'
               />
-              <Form.Control.Feedback type="invalid">
+              <Form.Control.Feedback type='invalid'>
                 {errors.length > 0
                   ? errors
-                  : shellToConvert >
+                  : shellToConvert - calculateFee() >
                       Number(user.wallet ? user.wallet.shell_coin_amount : 0) &&
-                    "Insufficient Balance!"}
+                    'Insufficient Balance!'}
               </Form.Control.Feedback>
-              Converted to Peso
-              <br />
-              Php {Number(shellToConvert).toFixed(2)}
+              <span className=''>
+                <span className='mb-2'> Converted to Peso </span>
+                <br />
+                Shell {shellToConvert} - Fee {calculateFee()}
+                {' = '}
+                Php {shellToConvert - calculateFee()}
+              </span>
             </Form.Group>
 
             <Button
-              type="submit"
-              variant="primary"
+              type='submit'
+              variant='primary'
               disabled={
                 shellToConvert >
                   Number(user.wallet ? user.wallet.shell_coin_amount : 0) ||
-                shellToConvert < 100
+                shellToConvert < 1000
               }
-              className="rounded"
+              className='rounded'
             >
               Withdraw
             </Button>
