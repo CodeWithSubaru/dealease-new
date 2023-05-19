@@ -1,6 +1,7 @@
 import 'rsuite/dist/rsuite.min.css';
 import { useState, useEffect } from 'react';
-import { Navbar, Nav, Input, InputGroup, Badge } from 'rsuite';
+import { Navbar, Nav, Input, InputGroup, Badge, Row, Col } from 'rsuite';
+import Form from 'react-bootstrap/Form';
 import SearchIcon from '@rsuite/icons/Search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Avatar from 'rsuite/Avatar';
@@ -18,6 +19,7 @@ import {
 import PUBLIC_PATH from '../../api/public_url';
 import { Loader } from '../Loader/Loader';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
+import { RechargeWallet } from '../RechargeWallet/RechargeWallet';
 
 const styles = {
   width: 'auto',
@@ -111,6 +113,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
 export function MobileHeader({ onSelect, activeKey, ...props }) {
   const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
   const { user } = useAuthContext();
+  const [modalShow, setModalShow] = useState(false);
 
   return (
     <div className='customNav bg-white'>
@@ -171,7 +174,11 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           </Badge>
           <span className='mobile-icon-label'>Cart</span>
         </Nav.Item>
-        <Nav.Item className='flex-column d-flex text-center' eventKey='wallet'>
+        <Nav.Item
+          className='flex-column d-flex text-center'
+          eventKey='wallet'
+          onClick={() => setModalShow(true)}
+        >
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faWallet} />
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>
@@ -180,6 +187,8 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>Me</span>
         </Nav.Item>
       </Nav>
+
+      <RechargeWallet modalShow={modalShow} setModalShow={setModalShow} />
     </div>
   );
 }
@@ -215,7 +224,11 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faBoxesAlt} />
           <span className='mobile-icon-label'>Delivered</span>
         </Nav.Item>
-        <Nav.Item className='flex-column d-flex text-center' eventKey='wallet'>
+        <Nav.Item
+          className='flex-column d-flex text-center'
+          eventKey='wallet'
+          onClick={() => setModalShow(true)}
+        >
           <FontAwesomeIcon className='mobile-icon mx-auto' icon={faWallet} />
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>

@@ -194,17 +194,25 @@ export function ShippingFee() {
   }, []);
 
   return (
-    <Card className='mx-auto w-75' style={{ height: '85vh' }}>
+    <Card
+      className='mx-2 mt-5 py-5 mb-5 shadow rounded'
+      style={{ minHeight: '140vh' }}
+    >
       {loading ? (
         <Load />
       ) : (
-        <div className='p-5'>
-          <h1 className='fw-bolder fs-1 mb-4'>Shipping</h1>
-          <div className='d-flex' style={{ height: '65vh' }}>
-            <div
-              className='w-50 px-3'
-              style={{ height: '65vh', overflowY: 'auto' }}
+        <div className='p-2'>
+          <div className='d-flex justify-content-between'>
+            <h1 className='fw-bolder fs-1 mb-4'>Shipping</h1>
+            <Link
+              to='../add-to-cart'
+              className='text-decoration-none text-opacity-25 d-flex align-items-center mb-2'
             >
+              {'< Return to cart'}
+            </Link>
+          </div>
+          <div className='d-flex flex-column w-100' style={{ height: '65vh' }}>
+            <div className='px-3'>
               {Object.values(step1).length > 0
                 ? Object.values(step1).map((item, index) => {
                     return (
@@ -237,16 +245,10 @@ export function ShippingFee() {
                           {item.map((cartItem, index) => (
                             <>
                               <Card
-                                className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
+                                className='d-flex flex-row flex-xs-column mb-3 mt-2 p-2 border border-1 border-dark-subtle'
                                 key={index}
                               >
-                                <div
-                                  style={{
-                                    width: '120px',
-                                    height: '120px',
-                                    overflow: 'hidden',
-                                  }}
-                                >
+                                <div>
                                   <img
                                     src={
                                       PUBLIC_URL +
@@ -261,7 +263,7 @@ export function ShippingFee() {
                                     style={{
                                       objectFit: 'cover',
                                     }}
-                                    className='rounded w-100 h-100'
+                                    className='rounded '
                                   />
                                 </div>
                                 <div className='flex-grow-1 d-flex justify-content-between ms-3'>
@@ -280,34 +282,35 @@ export function ShippingFee() {
                                       </span>
                                     </div>
                                   </div>
-                                  <div className='flex-shrink-0 align-self-end justify-content-end'>
-                                    <div className='d-flex align-items-end justify-content-end'>
-                                      <Button
-                                        variant='primary'
-                                        className='w-25 py-2 px-0 me-2 rounded'
-                                        onClick={() => decrement(cartItem.id)}
-                                        disabled={cartItem.weight == 1}
-                                      >
-                                        -
-                                      </Button>
-                                      <input
-                                        type='text'
-                                        className='w-25 py-1 text-center'
-                                        value={cartItem.weight}
-                                        disabled
-                                      />
-                                      <Button
-                                        variant='primary'
-                                        className='w-25 py-2 px-0 ms-2 rounded me-2'
-                                        onClick={() => increment(cartItem.id)}
-                                        disabled={
-                                          cartItem.product.stocks_per_kg <=
-                                          cartItem.weight
-                                        }
-                                      >
-                                        +
-                                      </Button>
-
+                                  <div className='align-self-end justify-content-end'>
+                                    <div className=''>
+                                      <div className='mb-2'>
+                                        <Button
+                                          variant='primary'
+                                          className='w-25 py-2 px-0 me-2 rounded'
+                                          onClick={() => decrement(cartItem.id)}
+                                          disabled={cartItem.weight == 1}
+                                        >
+                                          -
+                                        </Button>
+                                        <input
+                                          type='text'
+                                          className='w-25 py-1 text-center'
+                                          value={cartItem.weight}
+                                          disabled
+                                        />
+                                        <Button
+                                          variant='primary'
+                                          className='w-25 py-2 px-0 ms-2 rounded me-2'
+                                          onClick={() => increment(cartItem.id)}
+                                          disabled={
+                                            cartItem.product.stocks_per_kg <=
+                                            cartItem.weight
+                                          }
+                                        >
+                                          +
+                                        </Button>
+                                      </div>
                                       <Button
                                         className='btn btn-danger rounded'
                                         onClick={() =>
@@ -359,17 +362,8 @@ export function ShippingFee() {
             </div>
 
             {/* Right Side */}
-            <div
-              className='border-start border-2 border-info w-50 px-3 ms-2'
-              style={{ height: '65vh', overflowY: 'auto' }}
-            >
-              <Link
-                to='../add-to-cart'
-                className='text-decoration-none text-opacity-25 d-flex align-items-center mb-2'
-              >
-                {'< Return to cart'}
-              </Link>
-              <div className='border border-2 border-info rounded p-3 mb-5'>
+            <div className='px-2 mt-4 mb-5 pb-5'>
+              <div className='border border-2 border-info rounded mb-5 p-3'>
                 <div className='d-flex'>
                   <span className='w-25 fw-semibold text-secondary'>
                     {' '}
@@ -418,8 +412,8 @@ export function ShippingFee() {
                     }}
                   >
                     {viewShippingAddressForm
-                      ? 'Use Current Address'
-                      : 'Use Different Address'}
+                      ? 'Use Current Details'
+                      : 'Use Other Details'}
                   </Link>
                 </div>
               </div>
@@ -477,7 +471,7 @@ export function ShippingFee() {
                     }}
                     id='shippingForm'
                   >
-                    <h3 className=''>Shipping Address</h3>
+                    <h3 className=''>Shipping Details</h3>
                     <p className='text-secondary mb-3'>
                       Please fill up the form.
                     </p>
@@ -682,7 +676,9 @@ export function ShippingFee() {
                                       </td>
                                     </tr>
                                     <tr>
-                                      <td className='d-flex ms-3'>Sub Total</td>
+                                      <td className='d-flex ms-3 text-nowrap'>
+                                        Sub Total
+                                      </td>
                                       <td></td>
                                       <td className='text-end'>
                                         <img
@@ -706,7 +702,7 @@ export function ShippingFee() {
                     );
                   })}
                 <hr />
-                <div className='d-flex justify-content-between'>
+                <div className='d-flex justify-content-between mb-5'>
                   <span className='fw-semibold'>Total Order Amount</span>
                   <span className='d-flex align-items-center'>
                     <img

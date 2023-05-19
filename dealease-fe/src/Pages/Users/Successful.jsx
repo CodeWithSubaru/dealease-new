@@ -61,14 +61,11 @@ export function SuccessfulUser() {
   }
 
   return (
-    <div className='mx-auto w-75'>
-      <Card style={{ height: '85vh' }}>
-        <h1 className='fw-bold mb-0 p-5 pb-0'>Payment Receipt</h1>
-        <div className='d-flex justify-content-center align-items-center h-100 p-5 pt-0'>
-          <div
-            className='border-end border-2 border-info pe-3 w-50'
-            style={{ height: '65vh', overflowY: 'auto' }}
-          >
+    <div className='mx-2 shadow mt-3 py-4'>
+      <Card className='mt-3' style={{ minHeight: '85vh' }}>
+        <h1 className='fw-bold mb-0 p-4 pb-0 fs-2'>Payment Receipt</h1>
+        <div className='d-flex flex-column justify-content-center align-items-center h-100 pt-0'>
+          <div className=''>
             <div className='border border-2 border-info rounded p-3 mb-5'>
               <h4 className='fw-light mb-3'> Customer Information</h4>
               <div className='d-flex justify-content-between'>
@@ -227,10 +224,10 @@ export function SuccessfulUser() {
             </div>
 
             <div className='d-flex justify-content-end'>
-              <span className='d-block'>
+              <span className='d-flex align-items-center'>
                 <Link
                   to='/home'
-                  className='rounded px-3 me-2 text-decoration-none text-success'
+                  className='rounded x-3 me-2 text-decoration-none text-success text-nowrap'
                   type='submit'
                 >
                   Shop Again
@@ -246,13 +243,13 @@ export function SuccessfulUser() {
               </span>
             </div>
           </div>
-          <div className='d-flex flex-column justify-content-center align-items-center ps-3 w-50'>
+          <div className='d-flex flex-column justify-content-center align-items-center ps-3 my-5'>
             <FontAwesomeIcon
               icon={faCircleCheck}
               className='text-success mb-2'
               style={{ fontSize: '70px' }}
             />
-            <h1 className='fw-semibold capitalize mb-3'>Successful</h1>
+            <h1 className='fw-semibold capitalize mb-3 fs-2'>Successful</h1>
             <p className='mb-0'>Your order is on pending.</p>
             <p>Please wait for the confirmation of Seller</p>
             <hr />

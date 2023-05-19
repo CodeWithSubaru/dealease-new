@@ -124,10 +124,10 @@ export function AddToCart() {
 
   return (
     <>
-      <div style={{ display: 'flex', height: '100%' }}>
+      <div>
         <SidebarUser />
 
-        <main className='w-100 my-5 mx-3 shadow' style={{ height: '85vh' }}>
+        <main className='mx-2 mt-5 pt-5 shadow' style={{ minHeight: '85vh' }}>
           <div className='d-flex h-100'>
             <Card className='flex-grow-1'>
               {loading ? (
@@ -135,10 +135,7 @@ export function AddToCart() {
               ) : (
                 <div className='p-3 h-100'>
                   <H1 className='mb-3 pt-2'>Add to Cart</H1>
-                  <Link
-                    className='btn btn-primary rounded float-end'
-                    to='/home'
-                  >
+                  <Link className='btn btn-primary rounded' to='/home'>
                     <FontAwesomeIcon icon={faPlus} /> Add More
                   </Link>
                   <div
@@ -146,7 +143,7 @@ export function AddToCart() {
                     style={{ height: '70vh', overflowY: 'auto' }}
                   >
                     <div className='d-flex flex-wrap h-100'>
-                      <div className='flex-grow-1 me-2 h-75'>
+                      <div className='flex-grow-1 me-2'>
                         {Object.values(cartHistoryBySellerId).length > 0 ? (
                           Object.values(cartHistoryBySellerId).map(
                             (item, index) => {
@@ -193,13 +190,11 @@ export function AddToCart() {
                                   {item.map((cartItem, index) => (
                                     <>
                                       <Card
-                                        className='d-flex flex-row flex-xs-column w-100 p-2 mb-3 mt-2 border border-1 border-dark-subtle'
+                                        className='d-flex flex-row p-2 mb-3 mt-2 border border-1 border-dark-subtle'
                                         key={index}
                                       >
                                         <div
                                           style={{
-                                            width: '120px',
-                                            height: '120px',
                                             overflow: 'hidden',
                                           }}
                                         >
@@ -217,7 +212,7 @@ export function AddToCart() {
                                             style={{
                                               objectFit: 'cover',
                                             }}
-                                            className='rounded w-100 h-100'
+                                            className='rounded h-100 w-100'
                                           />
                                         </div>
                                         <div className='flex-grow-1 d-flex justify-content-between ms-3'>
@@ -237,8 +232,8 @@ export function AddToCart() {
                                               </span>
                                             </div>
                                           </div>
-                                          <div className='flex-shrink-0 align-self-end justify-content-end'>
-                                            <div className='d-flex align-items-end justify-content-end'>
+                                          <div className='d-flex flex-xs-column align-self-end justify-content-end'>
+                                            <div>
                                               <Button
                                                 variant='primary'
                                                 className='w-25 py-2 px-0 me-2 rounded'
@@ -271,7 +266,7 @@ export function AddToCart() {
                                               </Button>
 
                                               <Button
-                                                className='btn btn-danger rounded'
+                                                className='btn btn-danger rounded mt-2'
                                                 onClick={() =>
                                                   removeFromCart(cartItem.id)
                                                 }
@@ -304,8 +299,8 @@ export function AddToCart() {
                         } */}
                       </div>
                       {Object.values(cartHistoryBySellerId).length > 0 && (
-                        <div className='mt-2 d-flex'>
-                          <Card className='mt-5 p-3 align-self-baseline flex-shrink-0 border border-1 border-dark-subtle'>
+                        <div className='mt-2 w-100'>
+                          <Card className='my-5 p-3 border border-1 border-dark-subtle'>
                             <Form
                               className=' mt-2 p-2 px-3'
                               onSubmit={(e) => {
