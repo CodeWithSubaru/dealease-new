@@ -123,7 +123,7 @@ export function AddToCart() {
             {loading ? (
               <Load />
             ) : (
-              <div className='addtocart-container p-3 h-100'>
+              <div className='addtocart-container p-3 h-100 mx-2'>
                 <H1 className='mb-3 pt-2'>Add to Cart</H1>
                 <Link className='btn btn-primary rounded' to='/home'>
                   <FontAwesomeIcon icon={faPlus} /> Add More
