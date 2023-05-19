@@ -593,47 +593,7 @@ export const ToDeliverRider = () => {
         </Modal>
 
         <main className='w-100' style={{ minHeight: '815px' }}>
-          <div className='mx-auto w-75 mb-5'>
-            <div className='d-flex mx-auto justify-content-center'>
-              <div className='flex-grow-1 me-4'>
-                <Card className='rounded overflow-hidden'>
-                  <Card.Body className='bg-primary'>
-                    <p className='text-white'>Information</p>
-                    <hr />
-                    <p className='small text-white'>Total Deliver</p>
-                    <div className='small text-white'>
-                      <i className='fas fa-angle-right'></i>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </div>
-              <div className='flex-grow-1 me-4'>
-                <Card className='rounded overflow-hidden'>
-                  <Card.Body className='bg-warning '>
-                    <p className='text-white'>Information</p>
-                    <hr />
-                    <p className='small text-white  '>Total Cancel</p>
-                    <div className='small text-white'>
-                      <i className='fas fa-angle-right'></i>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </div>
-              <div className='flex-grow-1'>
-                <Card className='rounded overflow-hidden'>
-                  <Card.Body className='bg-success'>
-                    <p className='text-white'>Information</p>
-                    <hr />
-                    <p className='small text-white'>Total Wallet Balance</p>
-                    <div className='small text-white'>
-                      <i className='fas fa-angle-right'></i>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </div>
-            </div>
-          </div>
-
+          <div style={{ height: '150px' }}></div>
           <Card className='mx-auto w-75 mb-5 p-5'>
             <h1 className='fw-bold mb-4'>To Deliver</h1>
             {/* Card  */}

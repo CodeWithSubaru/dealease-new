@@ -349,45 +349,53 @@ export function EmailVerification() {
                   </div>
                 </Col>
               </Row>
-              <div className='d-flex justify-content-end mt-5'>
-                <h5 className='my-auto me-5'>Follow us on </h5>
-                <a href='https://www.facebook.com/'>
-                  <img
-                    alt=''
-                    src='/images/socmed/fblogo.png'
-                    width='40'
-                    height='40'
-                    className='me-3 d-inline-block align-top'
-                  />
-                </a>
-                <a href='https://www.instagram.com/'>
-                  <img
-                    alt=''
-                    src='/images/socmed/instagramlogo.png'
-                    width='40'
-                    height='40'
-                    className='me-3 d-inline-block align-top'
-                  />
-                </a>
-                <a href='https://www.youtube.com/'>
-                  <img
-                    alt=''
-                    src='/images/socmed/youtubelogo.png'
-                    width='40'
-                    height='40'
-                    className='me-3 d-inline-block align-top'
-                  />
-                </a>
-                <a href='https://www.linkedin.com/'>
-                  <img
-                    alt=''
-                    src='/images/socmed/linkedinlogo.png'
-                    width='40'
-                    height='40'
-                    className='me-3 d-inline-block align-top'
-                  />
-                </a>
-              </div>
+              <Row>
+                <div className=' mt-5'>
+                  <Col lg={6}>
+                    <h5 className='mb-3 me-5 text-center'>Follow us on </h5>
+                  </Col>
+                  <Col lg={6}>
+                    <div className='text-center'>
+                      <a href='https://www.facebook.com/'>
+                        <img
+                          alt=''
+                          src='/images/socmed/fblogo.png'
+                          width='40'
+                          height='40'
+                          className='me-3 d-inline-block align-top'
+                        />
+                      </a>
+                      <a href='https://www.instagram.com/'>
+                        <img
+                          alt=''
+                          src='/images/socmed/instagramlogo.png'
+                          width='40'
+                          height='40'
+                          className='me-3 d-inline-block align-top'
+                        />
+                      </a>
+                      <a href='https://www.youtube.com/'>
+                        <img
+                          alt=''
+                          src='/images/socmed/youtubelogo.png'
+                          width='40'
+                          height='40'
+                          className='me-3 d-inline-block align-top'
+                        />
+                      </a>
+                      <a href='https://www.linkedin.com/'>
+                        <img
+                          alt=''
+                          src='/images/socmed/linkedinlogo.png'
+                          width='40'
+                          height='40'
+                          className='me-3 d-inline-block align-top'
+                        />
+                      </a>
+                    </div>
+                  </Col>
+                </div>
+              </Row>
             </Col>
           </Row>
         </Container>
