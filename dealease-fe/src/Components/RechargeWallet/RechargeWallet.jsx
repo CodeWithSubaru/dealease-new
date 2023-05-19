@@ -105,10 +105,10 @@ export function RechargeWallet(props) {
                     name='plan'
                     type='radio'
                     className='mt-1'
-                    value={50}
+                    value={40}
                     onClick={() => {
                       setActive(0);
-                      setAmount(50);
+                      setAmount(40);
                     }}
                   />
                   <Form.Label
@@ -127,7 +127,7 @@ export function RechargeWallet(props) {
                   alt=''
                   className='mx-2'
                 />{' '}
-                <span>50</span>
+                <span>40</span>
               </span>
             </div>
           </div>
@@ -148,10 +148,10 @@ export function RechargeWallet(props) {
                   name='plan'
                   type='radio'
                   className='mt-1'
-                  value={100}
+                  value={85}
                   onClick={() => {
                     setActive(1);
-                    setAmount(100);
+                    setAmount(85);
                   }}
                 />
                 <Form.Label
@@ -169,7 +169,9 @@ export function RechargeWallet(props) {
                   alt=''
                   className='mx-2'
                 />{' '}
-                <span>100</span>
+                <div className='position-relative'>
+                  <span>80 + 5 </span>
+                </div>
               </span>
             </div>
           </div>
@@ -190,10 +192,10 @@ export function RechargeWallet(props) {
                   name='plan'
                   type='radio'
                   className='mt-1'
-                  value={250}
+                  value={210}
                   onClick={() => {
                     setActive(2);
-                    setAmount(250);
+                    setAmount(210);
                   }}
                 />
                 <Form.Label
@@ -212,7 +214,7 @@ export function RechargeWallet(props) {
                   className='mx-2'
                   htmlFor='250'
                 />{' '}
-                <span>250</span>
+                <span>200 + 10</span>
               </span>
             </div>
           </div>
@@ -233,10 +235,10 @@ export function RechargeWallet(props) {
                   name='plan'
                   type='radio'
                   className='mt-1'
-                  value={500}
+                  value={460}
                   onClick={() => {
                     setActive(3);
-                    setAmount(500);
+                    setAmount(460);
                   }}
                 />
                 <Form.Label
@@ -254,7 +256,7 @@ export function RechargeWallet(props) {
                   alt=''
                   className='mx-2'
                 />{' '}
-                <span>500</span>
+                <span>450 + 15</span>
               </span>
             </div>
           </div>
