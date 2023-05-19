@@ -8,14 +8,7 @@ import { Button } from 'react-bootstrap';
 import { FaUserEdit } from 'react-icons/fa';
 import { FaEdit } from 'react-icons/fa';
 import PUBLIC_PATH from '../../api/public_url';
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-  useProSidebar,
-  sidebarClasses,
-} from 'react-pro-sidebar';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBars,
@@ -29,7 +22,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
-import { Col, Container } from 'react-bootstrap';
+import { Col, Container, Form } from 'react-bootstrap';
 
 import { CustomNav } from '../../Components/Header/CustomNav';
 import { SidebarUser } from '../../Components/Sidebar/Sidebar';
@@ -39,7 +32,6 @@ import { Notification } from '../../Components/Notification/Notification';
 export const ProfileUser = () => {
   const { user, fetchUserInfo } = useAuthContext();
   const [show, setShow] = useState(false);
-  const { collapseSidebar } = useProSidebar();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [activeKey, setActiveKey] = useState(null);

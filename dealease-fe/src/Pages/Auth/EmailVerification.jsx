@@ -245,7 +245,7 @@ export function EmailVerification() {
       {/* <div className='bg-primary forgot-password-header'></div> */}
       <div>
         <Container>
-          <Card className='verify-card-email'>
+          <Card className='verify-card-email m-5'>
             {message && (
               <div
                 className='text-center fadeInDown alert alert-primary text-capitalize'
