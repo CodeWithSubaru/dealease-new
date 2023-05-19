@@ -262,7 +262,7 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
               icon={faCartShopping}
             />
           </Badge>
-          <span className='mobile-icon-label'>Cart</span>
+          <span className='mobile-icon-label mt-2'>Cart</span>
         </Nav.Item>
         <Nav.Item
           className='flex-column d-flex text-center'

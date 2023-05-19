@@ -71,6 +71,7 @@
   width: 70px !important;
   margin-top: 8px;
 }
+
 .panelGroupSettings {
   padding: 30px 20px !important;
 }
@@ -347,7 +348,17 @@
 .RiderProfileNavbarMobile {
   display: none;
 }
+.card-add-to-cart {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 25px;
+}
 @media screen and (max-width: 960px) {
+  .card-add-to-cart {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 95px;
+  }
   .RiderProfileNavbarMobile {
     display: block;
   }

@@ -105,6 +105,7 @@ export function RechargeWallet(props) {
                     name='plan'
                     type='radio'
                     className='mt-1'
+                    id='50'
                     value={50}
                     onClick={() => {
                       setActive(0);
@@ -147,6 +148,7 @@ export function RechargeWallet(props) {
                 <Form.Check.Input
                   name='plan'
                   type='radio'
+                  id='100'
                   className='mt-1'
                   value={100}
                   onClick={() => {
@@ -189,6 +191,7 @@ export function RechargeWallet(props) {
                 <Form.Check.Input
                   name='plan'
                   type='radio'
+                  id='250'
                   className='mt-1'
                   value={250}
                   onClick={() => {
@@ -232,6 +235,7 @@ export function RechargeWallet(props) {
                 <Form.Check.Input
                   name='plan'
                   type='radio'
+                  id='500'
                   className='mt-1'
                   value={500}
                   onClick={() => {
