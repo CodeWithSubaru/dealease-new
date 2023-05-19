@@ -68,24 +68,41 @@ class AdminPaymentController extends Controller
         //
     }
 
-    // Confirm withdraw Shell to Peso
+    // Confirm recharge peso to shell
     public function confirmRecharge($id)
     {
         $shellTransaction = ShellTransaction::where('payment_number', $id);
         $shellTransaction->update(['payment_status' => 2]);
         $usersWallet = UsersWallet::find($shellTransaction->first()->user_id);
-        $amount = $usersWallet->shell_coin_amount + $shellTransaction->first()->payment_total_amount;
+        $amount = $usersWallet->shell_coin_amount + $shellTransaction->first()->shells;
         $usersWallet->update(['shell_coin_amount' =>  $amount]);
 
         return response()->json(['status' => 'Transaction successfully'], 200);
     }
 
-    public function decline($id)
+    // Confirm withdraw Shell to Peso
+    public function confirmWithdraw($id)
+    {
+        $shellTransaction = ShellTransaction::where('payment_number', $id);
+        $shellTransaction->update(['payment_status' => 2]);
+
+        return response()->json(['status' => 'Transaction successfully'], 200);
+    }
+
+    public function declineRecharge($id)
+    {
+        $shellTransaction = ShellTransaction::where('payment_number', $id);
+        $shellTransaction->update(['payment_status' => 0]);
+
+        return response()->json(['status' => 'Transaction successfully'], 200);
+    }
+
+    public function declineWithdraw($id)
     {
         $shellTransaction = ShellTransaction::where('payment_number', $id);
         $shellTransaction->update(['payment_status' => 0]);
         $usersWallet = UsersWallet::find($shellTransaction->first()->user_id);
-        $amount = $usersWallet->shell_coin_amount + $shellTransaction->first()->payment_total_amount;
+        $amount = $usersWallet->shell_coin_amount + $shellTransaction->first()->shells;
         $usersWallet->update(['shell_coin_amount' =>  $amount]);
 
         return response()->json(['status' => 'Transaction successfully'], 200);

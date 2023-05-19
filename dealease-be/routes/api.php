@@ -34,8 +34,6 @@ use App\Http\Controllers\Api\Rider\RiderController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/public/product/{id}', [ProductContoller::class, 'getProductsForPublic']);
-Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
-Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
 
 // Product Filter
 Route::get('/product/this-week/{id}', [ProductFilterController::class, 'thisWeek']);
@@ -43,26 +41,6 @@ Route::get('/product/this-day/{id}', [ProductFilterController::class, 'thisDay']
 Route::get('/product/available/{id}', [ProductFilterController::class, 'availableProducts']);
 Route::get('/product/search/{product}', [ProductFilterController::class, 'searchProduct']);
 
-// Payment
-Route::post('/recharge', [PaymentController::class, 'recharge']);
-Route::post('/payment', [PaymentController::class, 'payment']);
-Route::post('/request-withdrawal', [PaymentController::class, 'widthdraw'])
-    ->middleware('throttle:5,1');
-
-// Rider
-Route::get('/rider', [RiderController::class, 'availableOrdersToPickUp']);
-Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
-Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
-Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
-Route::get('/rider/onGoingOrders', [RiderController::class, 'onGoingOrders']);
-Route::post('/rider/delivered/{id}', [RiderController::class, 'delivered']);
-Route::get('/rider/delivered', [RiderController::class, 'itemDelivered']);
-Route::post('/rider/returnItem/{id}', [RiderController::class, 'returnItem']);
-Route::get('/rider/failedDelivery', [RiderController::class, 'failedDelivery']);
-Route::get('/rider/successDelivery', [RiderController::class, 'successDelivery']);
-
-// Buyer Order Received
-Route::post('/buyer/orderReceived/{id}', [OrderController::class, 'orderReceived']);
 
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
@@ -79,6 +57,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/change-password', [AuthController::class, 'changePass']);
     Route::put('/edit-profile', [ManageProfile::class, 'editProfile']);
     Route::post('/update-access', [AuthController::class, 'updateAccess']);
+
+    // Payment
+    Route::post('/recharge', [PaymentController::class, 'recharge']);
+    Route::post('/payment', [PaymentController::class, 'payment']);
+
+
+    // Rider
+    Route::get('/rider', [RiderController::class, 'availableOrdersToPickUp']);
+    Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
+    Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
+    Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
+    Route::get('/rider/onGoingOrders', [RiderController::class, 'onGoingOrders']);
+    Route::post('/rider/delivered/{id}', [RiderController::class, 'delivered']);
+    Route::get('/rider/delivered', [RiderController::class, 'itemDelivered']);
+    Route::post('/rider/returnItem/{id}', [RiderController::class, 'returnItem']);
+    Route::get('/rider/failedDelivery', [RiderController::class, 'failedDelivery']);
+    Route::get('/rider/successDelivery', [RiderController::class, 'successDelivery']);
+
+    // Buyer Order Received
+    Route::post('/buyer/orderReceived/{id}', [OrderController::class, 'orderReceived']);
+
 
     Route::apiResource('/transactions', PaymentController::class);
     Route::get('/orders/buyer/{order_number}', [OrderController::class, 'viewOrderByOrdNumber']);
@@ -127,6 +126,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/pending-shell-transaction', [AnalyticsControllers::class, 'getNumberOfPendingTransactions']);
     Route::get('/admin/success-shell-transaction', [AnalyticsControllers::class, 'getNumberOfSuccessTransactions']);
     Route::get('/admin/get-number-of-message', [AnalyticsControllers::class, 'getNumOfMessages']);
+
+    // announcement
+    Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
+    Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
     Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
     Route::apiResource('/admin/announcement', AnnouncementController::class);
     Route::post('/admin/announcement/publish/{id}', [AnnouncementController::class, 'publish']);
@@ -141,6 +144,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/transactions/cancelled', [AdminPaymentController::class, 'numberOfCancelledTransaction']);
     Route::apiResource('/admin/transactions', AdminPaymentController::class);
     Route::put('/admin/confirm-recharge/{id}', [AdminPaymentController::class, 'confirmRecharge']);
-    Route::put('/admin/confirm-withdraw/{id}', [AdminPaymentController::class, 'confirmRecharge']);
-    Route::put('/admin/decline/{id}', [AdminPaymentController::class, 'decline']);
+    Route::put('/admin/confirm-withdraw/{id}', [AdminPaymentController::class, 'confirmWithdraw']);
+    Route::put('/admin/decline-withdraw/{id}', [AdminPaymentController::class, 'declineWithdraw']);
+    Route::put('/admin/decline-recharge/{id}', [AdminPaymentController::class, 'declineRecharge']);
 });

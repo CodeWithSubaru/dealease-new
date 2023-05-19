@@ -83,15 +83,16 @@ export function TransactionsAdmin() {
     });
   }
 
-  function decline(id) {
+  function decline(url, id) {
+    console.log(url);
     Finalize({
-      text: 'Once you decline this request',
+      text: 'You want to decline this request?',
       confirmButton: 'Yes',
       successMsg: 'Transaction Declined Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .put('/admin/decline/' + id)
+          .put(url + id)
           .then((resp) => {
             console.log(resp);
           })
@@ -131,7 +132,7 @@ export function TransactionsAdmin() {
       isSortable: true,
     },
     {
-      title: 'Total Amount',
+      title: 'Amount',
       prop: 'payment_total_amount',
       isSortable: true,
     },
@@ -270,16 +271,37 @@ export function TransactionsAdmin() {
             ),
             payment_description: transaction.payment_description,
             payment_total_amount: (
-              <div className='d-flex'>
+              <div className='d-flex align-items-center text-nowrap'>
                 {' '}
-                <img
-                  src='/images/seashell.png'
-                  height={25}
-                  width={25}
-                  className='mx-1 me-2'
-                  alt=''
-                />{' '}
-                {transaction.payment_total_amount}
+                {transaction.payment_description === 'Recharge' ? (
+                  <>
+                    <span> Php {transaction.payment_total_amount}</span>{' '}
+                    <span className='mx-1'> &rarr; </span>{' '}
+                    <img
+                      src='/images/seashell.png'
+                      height={20}
+                      width={20}
+                      className='mx-1 me-1'
+                      alt=''
+                    />{' '}
+                    {transaction.shells}
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      <img
+                        src='/images/seashell.png'
+                        height={20}
+                        width={20}
+                        className='mx-1 me-1'
+                        alt=''
+                      />{' '}
+                      {transaction.shells}{' '}
+                    </span>{' '}
+                    <span className='mx-1'> &rarr; </span> Php{' '}
+                    {transaction.payment_total_amount}
+                  </>
+                )}
               </div>
             ),
             created_at: dateFormat(transaction.created_at),
@@ -311,7 +333,17 @@ export function TransactionsAdmin() {
                     </Button>
                     <Button
                       variant='danger'
-                      onClick={() => decline(transaction.payment_number)}
+                      onClick={() =>
+                        transaction.payment_description === 'Recharge'
+                          ? decline(
+                              '/admin/decline-recharge/',
+                              transaction.payment_number
+                            )
+                          : decline(
+                              '/admin/decline-withdraw/',
+                              transaction.payment_number
+                            )
+                      }
                       style={{ cursor: 'pointer' }}
                       className='badge rounded px-2 me-2 btn'
                     >

@@ -128,7 +128,10 @@ export const LoginRider = () => {
                   </small>
 
                   <div className='d-flex mt-5'>
-                    <button type='submit' className='btn btn-submit'>
+                    <button
+                      type='submit'
+                      className='btn btn-outline btn-light btn-submit-login'
+                    >
                       Sign in
                     </button>
                   </div>

@@ -29,7 +29,8 @@ class PaymentController extends Controller
             'payment_number' => $paymentNumber,
             'payment_status' => 1,
             'payment_description' => 'Withdraw',
-            'payment_total_amount' => $request->shell_coin_amount,
+            'payment_total_amount' => $request->amountToWithdraw,
+            'shells' => $request->shell_coin_amount,
         ]);
 
         $shells = UsersWallet::where('user_id', auth()->user()->user_id);
@@ -57,6 +58,7 @@ class PaymentController extends Controller
             'payment_description' => 'Recharge',
             'payment_total_amount' => $request->amount,
             'checkout_session_id' => null,
+            'shells' => $request->shells,
         ]);
 
         $authUser = User::with('user_details')->where('user_id', auth()->user()->user_id)->get()[0];
