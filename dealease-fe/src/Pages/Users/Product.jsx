@@ -22,6 +22,8 @@ import PUBLIC_URL from '../../api/public_url';
 import '../../assets/scss/card.scss';
 import '../../assets/scss/button.scss';
 import '../../assets/scss/post-section.scss';
+import { SidebarUser } from '../../Components/Sidebar/Sidebar';
+
 import axiosClient from '../../api/axios';
 import {
   Notification,
@@ -156,7 +158,7 @@ export const ProductUser = () => {
   // Submit Edit Form
   const handlePostEdit = (e) => {
     e.preventDefault();
-   
+
     axiosClient
       .post('/seller/product/' + product_id, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -293,385 +295,396 @@ export const ProductUser = () => {
 
   return (
     <>
-      <div className='post_container mb-5'>
-        <Container className='container_item px-5'>
-          <H1>Products</H1>
-          {/* Single View Product */}
-          <Modal
-            size='lg'
-            show={showSpecificProduct}
-            onHide={closeSpecificProductModal}
-            centered
-            keyboard
-            scrollable
-            contentClassName={'mt-0'}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title className='fw-bold'>View Product</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <Row>
-                <div className='text-center mb-5'>
-                  <img
-                    src={PUBLIC_URL + 'images/' + showSpecificProductData.image}
-                    style={{ width: '100px' }}
-                    className='rounded'
-                  />
-                </div>
-                <div className='d-flex justify-content-center'>
-                  <div className='d-flex flex-column mx-auto'>
-                    <div>
-                      <p className='text-secondary mb-0 fw-bold'>
-                        Product Name
-                      </p>
-                      <p className='text-black'>
-                        {showSpecificProductData.title}
-                      </p>
-                    </div>
-                    <div>
-                      <p className='text-secondary mb-0 fw-bold'>
-                        Product Description
-                      </p>
-                      <p className='text-black'>
-                        {showSpecificProductData.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div className='d-flex flex-column mx-auto'>
-                    <div>
-                      <p className='text-secondary mb-0 fw-bold'>
-                        Stocks (in kg)
-                      </p>
-                      <p className='text-black'>
-                        {showSpecificProductData.stocks_per_kg}
-                      </p>
-                    </div>
-                    <div>
-                      <p className='text-secondary mb-0 fw-bold'>
-                        {' '}
-                        Price (per kg)
-                      </p>
-                      <p className='text-black'>
-                        {showSpecificProductData.price_per_kg}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </Row>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant='secondary'
-                className='rounded'
-                onClick={closeSpecificProductModal}
+      <div style={{ display: 'flex', height: '100%' }}>
+        <SidebarUser />
+        <main className='w-100' style={{ minHeight: '815px' }}>
+          <div className='margin-top-mobile' style={{ height: '130px' }}></div>
+          <div className='post_container mb-5'>
+            <Container className='container_item px-5'>
+              <H1>Products</H1>
+              {/* Single View Product */}
+              <Modal
+                size='lg'
+                show={showSpecificProduct}
+                onHide={closeSpecificProductModal}
+                centered
+                keyboard
+                scrollable
+                contentClassName={'mt-0'}
               >
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
+                <Modal.Header closeButton>
+                  <Modal.Title className='fw-bold'>View Product</Modal.Title>
+                </Modal.Header>
 
-          <Modal
-            size='lg'
-            show={showCreateProduct}
-            onHide={closeCreateProductModal}
-            centered
-            keyboard
-            scrollable
-            contentClassName={'mt-0'}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Create New Product</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <Form
-                id='createProductForm'
-                onSubmit={handlePost}
-                className='mb-5'
-              >
-                <Row>
-                  <Col>
-                    <Form.Group className='mt-2'>
-                      <Form.Label className='text-black'>
-                        Product Name
-                      </Form.Label>
-                      <Form.Control
-                        type='text'
-                        className='form-control'
-                        autoComplete='none'
-                        value={title ? title : ''}
-                        onChange={(e) => setTitle(e.target.value)}
-                        isInvalid={!!errors.title}
-                      />
-                      <Form.Control.Feedback type='invalid'>
-                        {errors.title}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className='mt-2'>
-                      <Form.Label className='text-black'>
-                        Product Description
-                      </Form.Label>
-                      <Form.Control
-                        as='textarea'
-                        className='form-control textarea-input'
-                        aria-label='Small'
-                        aria-describedby='inputGroup-sizing-sm'
-                        placeholder="What's on your mind?"
-                        autoComplete='none'
-                        value={description ? description : ''}
-                        onChange={(e) => setDescription(e.target.value)}
-                        isInvalid={!!errors.description}
-                      />
-                      <Form.Control.Feedback type='invalid'>
-                        {errors.description}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className='mt-2'>
-                      <Form.Label className='text-black'>
-                        Product Image
-                      </Form.Label>
-                      <Form.Control
-                        type='file'
-                        className='form-control mb-3'
-                        autoComplete='none'
-                        onChange={onImageChange}
-                        isInvalid={!!errors.image}
-                      />
-                      <Form.Control.Feedback type='invalid'>
-                        {errors.image}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className='mt-2'>
-                      <img src={imageDefault} width={100} className='rounded' />
-                    </Form.Group>
-
-                    <Row>
-                      <Col>
-                        <Form.Group className=''>
-                          <Form.Label className='text-black'>
-                            Stocks (in kg)
-                          </Form.Label>
-                          <Form.Control
-                            type='number'
-                            className='form-control'
-                            autoComplete='none'
-                            value={stocks_per_kg ? stocks_per_kg : ''}
-                            onChange={(e) => setStocks(e.target.value)}
-                            isInvalid={!!errors.stocks_per_kg}
-                          />
-                          <Form.Control.Feedback type='invalid'>
-                            {errors.stocks_per_kg}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group className=''>
-                          <Form.Label className='text-black'>
-                            Price (per kg)
-                          </Form.Label>
-                          <Form.Control
-                            type='number'
-                            className='form-control'
-                            autoComplete='none'
-                            value={price_per_kg ? price_per_kg : ''}
-                            onChange={(e) => setPrice(e.target.value)}
-                            isInvalid={!!errors.price_per_kg}
-                          />
-                          <Form.Control.Feedback type='invalid'>
-                            {errors.price_per_kg}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant='secondary'
-                className='rounded'
-                onClick={closeCreateProductModal}
-              >
-                Close
-              </Button>
-              <Button
-                variant='primary'
-                className='rounded'
-                type='submit'
-                form='createProductForm'
-              >
-                Add
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
-          {/* edit Modal */}
-          <Modal
-            size='lg'
-            show={showEditProduct}
-            onHide={closeEditProductModal}
-            centered
-            keyboard
-            scrollable
-            contentClassName={'mt-0'}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title className='fw-bold'>Edit Product</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <Form
-                id='editProductForm'
-                onSubmit={handlePostEdit}
-                className='mb-5'
-              >
-                <Row>
-                  <Col>
-                    <Form.Group className='mt-2'>
-                      <Form.Label className='text-secondary fw-bold'>
-                        Product Name
-                      </Form.Label>
-                      <Form.Control
-                        type='text'
-                        className='form-control'
-                        autoComplete='none'
-                        value={title ? title : ''}
-                        onChange={(e) => setTitle(e.target.value)}
-                        isInvalid={!!errors.title}
-                      />
-                      <Form.Control.Feedback type='invalid'>
-                        {errors.title}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className='mt-2'>
-                      <Form.Label className='text-secondary fw-bold'>
-                        Product Description
-                      </Form.Label>
-                      <Form.Control
-                        as='textarea'
-                        className='form-control textarea-input'
-                        aria-label='Small'
-                        aria-describedby='inputGroup-sizing-sm'
-                        placeholder="What's on your mind?"
-                        autoComplete='none'
-                        value={description ? description : ''}
-                        onChange={(e) => setDescription(e.target.value)}
-                        isInvalid={!!errors.description}
-                      />
-                      <Form.Control.Feedback type='invalid'>
-                        {errors.description}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className='mt-2'>
-                      <Form.Label className='text-secondary fw-bold'>
-                        Product Image
-                      </Form.Label>
-                      <Form.Control
-                        type='file'
-                        className='form-control mb-3'
-                        autoComplete='none'
-                        onChange={() => {}}
-                        isInvalid={!!errors.image}
-                      />
-                      <Form.Control.Feedback type='invalid'>
-                        {errors.image}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className='mt-2'>
+                <Modal.Body>
+                  <Row>
+                    <div className='text-center mb-5'>
                       <img
-                        src={PUBLIC_URL + 'images/' + image}
-                        width={100}
+                        src={
+                          PUBLIC_URL + 'images/' + showSpecificProductData.image
+                        }
+                        style={{ width: '100px' }}
                         className='rounded'
                       />
-                    </Form.Group>
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                      <div className='d-flex flex-column mx-auto'>
+                        <div>
+                          <p className='text-secondary mb-0 fw-bold'>
+                            Product Name
+                          </p>
+                          <p className='text-black'>
+                            {showSpecificProductData.title}
+                          </p>
+                        </div>
+                        <div>
+                          <p className='text-secondary mb-0 fw-bold'>
+                            Product Description
+                          </p>
+                          <p className='text-black'>
+                            {showSpecificProductData.description}
+                          </p>
+                        </div>
+                      </div>
+                      <div className='d-flex flex-column mx-auto'>
+                        <div>
+                          <p className='text-secondary mb-0 fw-bold'>
+                            Stocks (in kg)
+                          </p>
+                          <p className='text-black'>
+                            {showSpecificProductData.stocks_per_kg}
+                          </p>
+                        </div>
+                        <div>
+                          <p className='text-secondary mb-0 fw-bold'>
+                            {' '}
+                            Price (per kg)
+                          </p>
+                          <p className='text-black'>
+                            {showSpecificProductData.price_per_kg}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Row>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant='secondary'
+                    className='rounded'
+                    onClick={closeSpecificProductModal}
+                  >
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
+              <Modal
+                size='lg'
+                show={showCreateProduct}
+                onHide={closeCreateProductModal}
+                centered
+                keyboard
+                scrollable
+                contentClassName={'mt-0'}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Create New Product</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                  <Form
+                    id='createProductForm'
+                    onSubmit={handlePost}
+                    className='mb-5'
+                  >
                     <Row>
                       <Col>
-                        <Form.Group className=''>
-                          <Form.Label className='text-secondary fw-bold'>
-                            Stocks (in kg)
+                        <Form.Group className='mt-2'>
+                          <Form.Label className='text-black'>
+                            Product Name
                           </Form.Label>
                           <Form.Control
-                            type='number'
+                            type='text'
                             className='form-control'
                             autoComplete='none'
-                            value={stocks_per_kg ? stocks_per_kg : ''}
-                            onChange={(e) => setStocks(e.target.value)}
-                            isInvalid={!!errors.stocks_per_kg}
+                            value={title ? title : ''}
+                            onChange={(e) => setTitle(e.target.value)}
+                            isInvalid={!!errors.title}
                           />
                           <Form.Control.Feedback type='invalid'>
-                            {errors.stocks_per_kg}
+                            {errors.title}
                           </Form.Control.Feedback>
                         </Form.Group>
-                      </Col>
-                      <Col>
-                        <Form.Group className=''>
-                          <Form.Label className='text-secondary fw-bold'>
-                            Price (per kg)
+                        <Form.Group className='mt-2'>
+                          <Form.Label className='text-black'>
+                            Product Description
                           </Form.Label>
                           <Form.Control
-                            type='number'
-                            className='form-control'
+                            as='textarea'
+                            className='form-control textarea-input'
+                            aria-label='Small'
+                            aria-describedby='inputGroup-sizing-sm'
+                            placeholder="What's on your mind?"
                             autoComplete='none'
-                            value={price_per_kg ? price_per_kg : ''}
-                            onChange={(e) => setPrice(e.target.value)}
-                            isInvalid={!!errors.price_per_kg}
+                            value={description ? description : ''}
+                            onChange={(e) => setDescription(e.target.value)}
+                            isInvalid={!!errors.description}
                           />
                           <Form.Control.Feedback type='invalid'>
-                            {errors.price_per_kg}
+                            {errors.description}
                           </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className='mt-2'>
+                          <Form.Label className='text-black'>
+                            Product Image
+                          </Form.Label>
+                          <Form.Control
+                            type='file'
+                            className='form-control mb-3'
+                            autoComplete='none'
+                            onChange={onImageChange}
+                            isInvalid={!!errors.image}
+                          />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.image}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className='mt-2'>
+                          <img
+                            src={imageDefault}
+                            width={100}
+                            className='rounded'
+                          />
+                        </Form.Group>
 
-                          <Form.Control
-                            type='hidden'
-                            className='form-control'
-                            value={product_id ? product_id : ''}
-                            onChange={(e) => setProductId(e.target.value)}
-                          />
-                        </Form.Group>
+                        <Row>
+                          <Col>
+                            <Form.Group className=''>
+                              <Form.Label className='text-black'>
+                                Stocks (in kg)
+                              </Form.Label>
+                              <Form.Control
+                                type='number'
+                                className='form-control'
+                                autoComplete='none'
+                                value={stocks_per_kg ? stocks_per_kg : ''}
+                                onChange={(e) => setStocks(e.target.value)}
+                                isInvalid={!!errors.stocks_per_kg}
+                              />
+                              <Form.Control.Feedback type='invalid'>
+                                {errors.stocks_per_kg}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                          <Col>
+                            <Form.Group className=''>
+                              <Form.Label className='text-black'>
+                                Price (per kg)
+                              </Form.Label>
+                              <Form.Control
+                                type='number'
+                                className='form-control'
+                                autoComplete='none'
+                                value={price_per_kg ? price_per_kg : ''}
+                                onChange={(e) => setPrice(e.target.value)}
+                                isInvalid={!!errors.price_per_kg}
+                              />
+                              <Form.Control.Feedback type='invalid'>
+                                {errors.price_per_kg}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
-                  </Col>
-                </Row>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant='secondary'
-                className='rounded'
-                onClick={closeEditProductModal}
-              >
-                Close
-              </Button>
-              <Button
-                variant='primary'
-                className='rounded'
-                type='submit'
-                form='editProductForm'
-              >
-                Update
-              </Button>
-            </Modal.Footer>
-          </Modal>
+                  </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant='secondary'
+                    className='rounded'
+                    onClick={closeCreateProductModal}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    variant='primary'
+                    className='rounded'
+                    type='submit'
+                    form='createProductForm'
+                  >
+                    Add
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
-          <TableComponent
-            header={header}
-            body={body}
-            button={
-              <Button
-                variant='primary'
-                className='rounded'
-                onClick={showCreateProductModal}
+              {/* edit Modal */}
+              <Modal
+                size='lg'
+                show={showEditProduct}
+                onHide={closeEditProductModal}
+                centered
+                keyboard
+                scrollable
+                contentClassName={'mt-0'}
               >
-                Add Product
-              </Button>
-            }
-          />
-        </Container>
+                <Modal.Header closeButton>
+                  <Modal.Title className='fw-bold'>Edit Product</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                  <Form
+                    id='editProductForm'
+                    onSubmit={handlePostEdit}
+                    className='mb-5'
+                  >
+                    <Row>
+                      <Col>
+                        <Form.Group className='mt-2'>
+                          <Form.Label className='text-secondary fw-bold'>
+                            Product Name
+                          </Form.Label>
+                          <Form.Control
+                            type='text'
+                            className='form-control'
+                            autoComplete='none'
+                            value={title ? title : ''}
+                            onChange={(e) => setTitle(e.target.value)}
+                            isInvalid={!!errors.title}
+                          />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.title}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className='mt-2'>
+                          <Form.Label className='text-secondary fw-bold'>
+                            Product Description
+                          </Form.Label>
+                          <Form.Control
+                            as='textarea'
+                            className='form-control textarea-input'
+                            aria-label='Small'
+                            aria-describedby='inputGroup-sizing-sm'
+                            placeholder="What's on your mind?"
+                            autoComplete='none'
+                            value={description ? description : ''}
+                            onChange={(e) => setDescription(e.target.value)}
+                            isInvalid={!!errors.description}
+                          />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.description}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className='mt-2'>
+                          <Form.Label className='text-secondary fw-bold'>
+                            Product Image
+                          </Form.Label>
+                          <Form.Control
+                            type='file'
+                            className='form-control mb-3'
+                            autoComplete='none'
+                            onChange={() => {}}
+                            isInvalid={!!errors.image}
+                          />
+                          <Form.Control.Feedback type='invalid'>
+                            {errors.image}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className='mt-2'>
+                          <img
+                            src={PUBLIC_URL + 'images/' + image}
+                            width={100}
+                            className='rounded'
+                          />
+                        </Form.Group>
+
+                        <Row>
+                          <Col>
+                            <Form.Group className=''>
+                              <Form.Label className='text-secondary fw-bold'>
+                                Stocks (in kg)
+                              </Form.Label>
+                              <Form.Control
+                                type='number'
+                                className='form-control'
+                                autoComplete='none'
+                                value={stocks_per_kg ? stocks_per_kg : ''}
+                                onChange={(e) => setStocks(e.target.value)}
+                                isInvalid={!!errors.stocks_per_kg}
+                              />
+                              <Form.Control.Feedback type='invalid'>
+                                {errors.stocks_per_kg}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                          <Col>
+                            <Form.Group className=''>
+                              <Form.Label className='text-secondary fw-bold'>
+                                Price (per kg)
+                              </Form.Label>
+                              <Form.Control
+                                type='number'
+                                className='form-control'
+                                autoComplete='none'
+                                value={price_per_kg ? price_per_kg : ''}
+                                onChange={(e) => setPrice(e.target.value)}
+                                isInvalid={!!errors.price_per_kg}
+                              />
+                              <Form.Control.Feedback type='invalid'>
+                                {errors.price_per_kg}
+                              </Form.Control.Feedback>
+
+                              <Form.Control
+                                type='hidden'
+                                className='form-control'
+                                value={product_id ? product_id : ''}
+                                onChange={(e) => setProductId(e.target.value)}
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant='secondary'
+                    className='rounded'
+                    onClick={closeEditProductModal}
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    variant='primary'
+                    className='rounded'
+                    type='submit'
+                    form='editProductForm'
+                  >
+                    Update
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+
+              <TableComponent
+                header={header}
+                body={body}
+                button={
+                  <Button
+                    variant='primary'
+                    className='rounded'
+                    onClick={showCreateProductModal}
+                  >
+                    Add Product
+                  </Button>
+                }
+              />
+            </Container>
+          </div>
+        </main>
       </div>
       {/* <Card /> */}
-      <Footer />
     </>
   );
 };

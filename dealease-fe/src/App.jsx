@@ -23,6 +23,7 @@ import { HomeRider } from './Pages/Rider/Home';
 import { ToDeliverRider } from './Pages/Rider/ToDeliver';
 import { DeliveredRider } from './Pages/Rider/Delivered';
 import { ProfileRider } from './Pages/Rider/Profile';
+import { WithdrawRider } from './Pages/Rider/Withdraw';
 import { LoginRider } from './Pages/Auth/LoginRider';
 import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
 
@@ -98,6 +99,7 @@ function App() {
             <Route path='/rider/to-deliver' element={<ToDeliverRider />} />
             <Route path='/rider/delivered' element={<DeliveredRider />} />
             <Route path='/rider/profile' element={<ProfileRider />} />
+            <Route path='/rider/withdraw' element={<WithdrawRider />} />
           </Route>
 
           <Route element={<GuestLayout />}>
