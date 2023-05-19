@@ -394,7 +394,7 @@ class OrderController extends Controller
                     $sellerWallet = UsersWallet::find($seller_id)->first();
                     $sellerCurrentWallet = $sellerWallet->shell_coin_amount;
                     // current wallet amount + amount revenue
-                    $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue - ($seller_revenue * 0.04));
+                    $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue - ($seller_revenue * 0.02));
                     UsersWallet::where('wallet_id', $seller_id)->update([
                         'shell_coin_amount' => $updatedSellerWallet,
                     ]);

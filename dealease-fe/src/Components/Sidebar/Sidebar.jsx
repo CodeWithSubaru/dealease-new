@@ -26,6 +26,7 @@ import MagicIcon from '@rsuite/icons/legacy/Magic';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link } from 'react-router-dom';
+import axiosClient from '../../api/axios';
 
 const headerStyles = {
   padding: 18,
@@ -71,16 +72,6 @@ export function SidebarUser() {
   function closeUpdateAccessModal() {
     setUpdateAccessModal(false);
   }
-  // terms and condition modal
-  const [check, setCheck] = useState(false);
-  const handleCheckboxChange = (e) => {
-    setCheck(e.target.checked);
-    sessionStorage.setItem('check-subs-agreement', e.target.checked);
-  };
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   //
   const [validIdFront, setValidIdFront] = useState(null);
@@ -88,6 +79,19 @@ export function SidebarUser() {
   const [imgFront, setImgFront] = useState(null);
   const [imgBack, setImgBack] = useState(null);
   const [termsAndCondition, setTermsAndCondition] = useState(false);
+
+  // terms and condition modal
+  const [check, setCheck] = useState(false);
+  const handleCheckboxChange = (e) => {
+    setCheck(e.target.checked);
+    sessionStorage.setItem('check-subs-agreement', e.target.checked);
+    setTermsAndCondition(e.target.checked);
+  };
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const onImageChangeFront = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -137,7 +141,7 @@ export function SidebarUser() {
       setEmailVerified(false);
     };
   }, []);
-  // const [expand, setExpand] = useState(true);
+
   return (
     <>
       <div className='show-fake-browser sidebar-page'>
@@ -282,7 +286,6 @@ export function SidebarUser() {
                   onChange={onImageChangeFront}
                   isInvalid={!!errors.valid_id_front}
                 />
-                {console.log(errors)}
                 <Form.Control.Feedback type='invalid'>
                   {errors.valid_id_front}
                 </Form.Control.Feedback>
@@ -366,11 +369,11 @@ export function SidebarUser() {
                 </Col>
               </Row>
 
-              {/* <Form.Control.Feedback type='invalid' className='text-danger'>
-                    {errors.length > 0 &&
-                      errors.terms_and_conditions.length > 0 &&
-                      errors.terms_and_conditions[0]}
-                  </Form.Control.Feedback> */}
+              <Form.Control.Feedback type='invalid' className='text-danger'>
+                {errors.length > 0 &&
+                  errors.terms_and_conditions.length > 0 &&
+                  errors.terms_and_conditions[0]}
+              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
