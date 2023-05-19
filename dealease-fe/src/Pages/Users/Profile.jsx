@@ -201,136 +201,132 @@ export const ProfileUser = () => {
 
           <form>
             <div className='row'>
-              <div className='col pt-5'>
-                {/* <FaUserEdit size="0.7rem" /> &nbsp;
+              {/* <FaUserEdit size="0.7rem" /> &nbsp;
                       <a href="#" onClick={handleShow}>
                         Edit Profile
                       </a> */}
 
-                <div className='modalprof'>
-                  <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Edit Profile</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <Table striped>
-                        <tbody>
-                          <tr>
-                            <td>Full Name</td>
-                            <td>
-                              {user ? user.first_name : ''}{' '}
-                              {user ? user.middle_name : ''}{' '}
-                              {user ? user.last_name : ''}{' '}
-                              {user ? user.ext_name : ''}
-                            </td>
-                          </tr>
+              <div className='modalprof'>
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Edit Profile</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Table striped>
+                      <tbody>
+                        <tr>
+                          <td>Full Name</td>
+                          <td>
+                            {user ? user.first_name : ''}{' '}
+                            {user ? user.middle_name : ''}{' '}
+                            {user ? user.last_name : ''}{' '}
+                            {user ? user.ext_name : ''}
+                          </td>
+                        </tr>
 
-                          <tr>
-                            <td>Email</td>
-                            <td>{user ? user.email : ''} </td>
-                          </tr>
+                        <tr>
+                          <td>Email</td>
+                          <td>{user ? user.email : ''} </td>
+                        </tr>
 
-                          <tr>
-                            <td>Address</td>
-                            <td>
-                              {user.user_details
-                                ? user.user_details.street
-                                : ''}
-                              {user.user_details
-                                ? user.user_details.barangay
-                                : ''}
-                            </td>
-                          </tr>
+                        <tr>
+                          <td>Address</td>
+                          <td>
+                            {user.user_details ? user.user_details.street : ''}
+                            {user.user_details
+                              ? user.user_details.barangay
+                              : ''}
+                          </td>
+                        </tr>
 
-                          <tr>
-                            <td>Birthday </td>
-                            <td>
-                              {user.user_details
-                                ? user.user_details.birth_date
-                                : ''}
-                            </td>
-                          </tr>
+                        <tr>
+                          <td>Birthday </td>
+                          <td>
+                            {user.user_details
+                              ? user.user_details.birth_date
+                              : ''}
+                          </td>
+                        </tr>
 
-                          <tr>
-                            <td>Contact Number</td>
-                            <td>
-                              <Form
-                                id='editProfile'
-                                onSubmit={(e) => {
-                                  e.preventDefault();
-                                  axiosClient
-                                    .put('/edit-profile', userProfile)
-                                    .then((res) => {
-                                      setErrors([]);
-                                      handleClose();
-                                      fetchUserInfo();
-                                      Notification({
-                                        title: 'Success',
-                                        message: res.data.status,
-                                        icon: 'success',
-                                      })
-                                        .catch((err) =>
-                                          Notification({
-                                            title: 'Error',
-                                            message: 'Something went wrong',
-                                            icon: 'error',
-                                          })
-                                        )
-                                        .then(() =>
-                                          setErrors(err.response.data.errors)
-                                        );
+                        <tr>
+                          <td>Contact Number</td>
+                          <td>
+                            <Form
+                              id='editProfile'
+                              onSubmit={(e) => {
+                                e.preventDefault();
+                                axiosClient
+                                  .put('/edit-profile', userProfile)
+                                  .then((res) => {
+                                    setErrors([]);
+                                    handleClose();
+                                    fetchUserInfo();
+                                    Notification({
+                                      title: 'Success',
+                                      message: res.data.status,
+                                      icon: 'success',
                                     })
-                                    .catch((err) =>
-                                      setErrors(err.response.data.errors)
-                                    );
-                                }}
-                              >
-                                <Form.Group>
-                                  <Form.Control
-                                    type='text'
-                                    onChange={(e) =>
-                                      setUserProfile({
-                                        ...userProfile,
-                                        contact_number: e.target.value,
-                                      })
-                                    }
-                                    value={userProfile.contact_number}
-                                    isInvalid={
-                                      !!errors && !!errors.contact_number
-                                    }
-                                  />
-                                  {errors.contact_number ? (
-                                    <Form.Control.Feedback type='invalid'>
-                                      {errors.contact_number[0]}
-                                    </Form.Control.Feedback>
-                                  ) : (
-                                    ''
-                                  )}
-                                </Form.Group>
-                              </Form>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </Table>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button
-                        variant='danger'
-                        className='rounded'
-                        onClick={handleClose}
-                      >
-                        Close
-                      </Button>
-                      <Button
-                        className='scbutton rounded'
-                        type='submit'
-                        form='editProfile'
-                      >
-                        Save
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                </div>
+                                      .catch((err) =>
+                                        Notification({
+                                          title: 'Error',
+                                          message: 'Something went wrong',
+                                          icon: 'error',
+                                        })
+                                      )
+                                      .then(() =>
+                                        setErrors(err.response.data.errors)
+                                      );
+                                  })
+                                  .catch((err) =>
+                                    setErrors(err.response.data.errors)
+                                  );
+                              }}
+                            >
+                              <Form.Group>
+                                <Form.Control
+                                  type='text'
+                                  onChange={(e) =>
+                                    setUserProfile({
+                                      ...userProfile,
+                                      contact_number: e.target.value,
+                                    })
+                                  }
+                                  value={userProfile.contact_number}
+                                  isInvalid={
+                                    !!errors && !!errors.contact_number
+                                  }
+                                />
+                                {errors.contact_number ? (
+                                  <Form.Control.Feedback type='invalid'>
+                                    {errors.contact_number[0]}
+                                  </Form.Control.Feedback>
+                                ) : (
+                                  ''
+                                )}
+                              </Form.Group>
+                            </Form>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant='danger'
+                      className='rounded'
+                      onClick={handleClose}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      className='scbutton rounded'
+                      type='submit'
+                      form='editProfile'
+                    >
+                      Save
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div>
             </div>
           </form>
