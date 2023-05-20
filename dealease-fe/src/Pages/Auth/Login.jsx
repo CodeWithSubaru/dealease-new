@@ -105,11 +105,6 @@ export const Login = () => {
               </Link>
             </div>
 
-            {/* <PrimaryBtnStyle
-          backgroundColor="#efa726"
-          hoverBgColor="#d69215"
-          btnTitle="Login"
-        /> */}
             <div className=' mt-3'>
               <button
                 type='submit'

@@ -27,6 +27,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axios';
+import { FaBoxOpen } from 'react-icons/fa';
 
 const headerStyles = {
   padding: 18,
@@ -181,6 +182,7 @@ export function SidebarUser() {
                   <Nav.Item href='/orders' eventKey='2' icon={<GroupIcon />}>
                     Orders
                   </Nav.Item>
+
                   <Nav.Item
                     href='/orders/seller'
                     eventKey='2'
@@ -189,6 +191,26 @@ export function SidebarUser() {
                     Orders (Seller)
                   </Nav.Item>
 
+                  {user.verified_user == 1 ? (
+                    <>
+                      <Nav.Item
+                        href='/product'
+                        eventKey='7'
+                        style={{ paddingLeft: '20px' }}
+                      >
+                        <div>
+                          {' '}
+                          <span className='me-3'>
+                            {' '}
+                            <FaBoxOpen />{' '}
+                          </span>{' '}
+                          <span> Product </span>{' '}
+                        </div>
+                      </Nav.Item>
+                    </>
+                  ) : (
+                    ''
+                  )}
                   <Nav.Menu
                     eventKey='4'
                     trigger='hover'
@@ -211,12 +233,16 @@ export function SidebarUser() {
                       </Nav.Item>
                     ) : (
                       <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
-                        <Button
-                          className='btn btn-sm d-inline-block'
-                          onClick={() => setUpdateAccessModal(true)}
-                        >
-                          Update Access
-                        </Button>
+                        {user.verified_user == 0 ? (
+                          <Button
+                            className='btn btn-sm d-inline-block'
+                            onClick={() => setUpdateAccessModal(true)}
+                          >
+                            Update Access
+                          </Button>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     )}
                   </Nav.Menu>

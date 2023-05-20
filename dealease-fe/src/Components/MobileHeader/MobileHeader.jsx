@@ -49,7 +49,7 @@ const headerStyles = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
 };
-// import { Navbar, Nav } from 'rsuite';
+
 import HomeIcon from '@rsuite/icons/legacy/Home';
 import {
   FaMale,
