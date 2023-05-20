@@ -8,6 +8,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import { Load } from '../../Components/Loader/Load';
+import PUBLIC_URL from '../../api/public_url';
 
 export function Card() {
   const { user, token } = useAuthContext();
@@ -123,7 +124,7 @@ export function Card() {
                       <CardItem
                         key={product.id}
                         id={product.id}
-                        src={'http://localhost:8000/images/' + product.image}
+                        src={PUBLIC_URL + 'images/' + product.image}
                         createdAt={product.created_at}
                         title={product.title}
                         text={product.description}
