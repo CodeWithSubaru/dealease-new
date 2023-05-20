@@ -61,19 +61,19 @@ export function TransactionsUser() {
   ];
 
   function fetchUnderReviewTransaction() {
-    axiosClient.get('/admin/transactions/under-review').then((res) => {
+    axiosClient.get('/transactions/', 1).then((res) => {
       setNumberOfUnderReviewTransaction(res.data);
     });
   }
 
   function fetchApprovedTransaction() {
-    axiosClient.get('/admin/transactions/approved').then((res) => {
+    axiosClient.get('/transactions/', 2).then((res) => {
       setNumberOfApprovedTransaction(res.data);
     });
   }
 
   function fetchCancelledTransaction() {
-    axiosClient.get('/admin/transactions/cancelled').then((res) => {
+    axiosClient.get('/transactions/', 0).then((res) => {
       console.log(res);
       setNumberOfCancelledTransaction(res.data);
     });
