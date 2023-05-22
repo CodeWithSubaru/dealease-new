@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
+import { Load } from '../../Components/Loader/Load';
 
 export function AnnouncementAdmin() {
   const announcementData = {
@@ -21,6 +22,7 @@ export function AnnouncementAdmin() {
 
   const [errors, setErrors] = useState([]);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -202,7 +204,11 @@ export function AnnouncementAdmin() {
   }
 
   function fetchAnnouncement() {
-    axiosClient.get('/admin/announcement').then((res) => setData(res.data));
+    setLoading(true);
+    axiosClient.get('/admin/announcement').then((res) => {
+      setData(res.data);
+      setLoading(false);
+    });
   }
 
   useEffect(() => {
@@ -296,7 +302,6 @@ export function AnnouncementAdmin() {
                       {errors && errors.title && errors.title[0]}
                     </Form.Control.Feedback>
                   </Form.Group>
-                  {console.log('ERRORS', errors)}
                   <Form.Group className='mb-3'>
                     <Form.Label className='text-black-50'>
                       Description *
@@ -366,18 +371,22 @@ export function AnnouncementAdmin() {
             </Modal>
 
             <div className='d-flex flex-wrap'>
-              {data && data.length > 0 ? (
+              {loading ? (
+                <div className='d-flex justify-content-center flex-grow-1 mt-5'>
+                  <Load />
+                </div>
+              ) : data && data.length > 0 ? (
                 data.map((item) =>
                   item ? (
                     <Card
-                      className='d-flex flex-row flex-xs-column w-100 p-2 mt-2'
+                      className='d-flex flex-row flex-xs-column w-100 p-2 mt-2 border border-1 border-black-subtle mb-2'
                       key={item.id}
                     >
                       <div className='flex-shrink-1' style={{ width: '150px' }}>
                         <img
                           src={PUBLIC_URL + 'images/' + item.image}
                           alt={item.image ? item.image : ''}
-                          className='w-100'
+                          className='w-100 rounded'
                           style={{ height: '150px', objectFit: 'cover' }}
                         />
                       </div>

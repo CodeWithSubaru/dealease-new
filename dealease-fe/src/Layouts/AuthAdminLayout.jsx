@@ -140,7 +140,7 @@ export function AuthAdminLayout() {
                     overlay={<Tooltip id='tooltip-disabled'>Settings</Tooltip>}
                     placement='bottom'
                   >
-                    <Nav.Link as={NavLink} href='/settings'>
+                    <Nav.Link as={NavLink} href='/admin/settings'>
                       <FontAwesomeIcon icon={faCog} className='navs-icon' />{' '}
                     </Nav.Link>
                   </OverlayTrigger>
