@@ -34,6 +34,7 @@ class UserDetailFactory extends Factory
         ];
 
         return [
+            'first_name' => fake()->firstName(),
             'middle_name' => fake()->lastName(),
             'last_name' => fake()->lastName(),
             'ext_name' => fake()->suffix(),

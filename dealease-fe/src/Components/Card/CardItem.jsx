@@ -89,7 +89,7 @@ export function CardItem(props) {
                   {' '}
                   - Seller{' '}
                   <span className='text-black-50'>
-                    {props.seller.first_name}{' '}
+                    {props.seller.user_details.first_name}{' '}
                     {props.seller.user_details.last_name}
                   </span>
                 </p>

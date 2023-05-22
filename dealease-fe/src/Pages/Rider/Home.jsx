@@ -339,7 +339,7 @@ export const HomeRider = () => {
 
                       <tr>
                         <td className='d-flex ms-3'>
-                          {order.product.user.first_name}{' '}
+                          {order.product.user.user_details.first_name}{' '}
                           {order.product.user.user_details.middle_name
                             ? order.product.user.user_details.middle_name[0] +
                               '. '

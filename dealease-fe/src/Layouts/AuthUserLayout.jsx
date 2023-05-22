@@ -230,7 +230,7 @@ export function AuthUserLayout() {
                         objectFit: 'fit',
                       }}
                     />{' '}
-                    {user.first_name}
+                    {user.user_details.first_name}
                   </Button>
 
                   <Dropdown.Toggle

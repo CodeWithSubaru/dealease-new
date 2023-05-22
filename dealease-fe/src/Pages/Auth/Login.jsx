@@ -25,7 +25,7 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     loginBuyer({
-      email,
+      login: email,
       password,
       role_type,
     });
@@ -57,7 +57,7 @@ export const Login = () => {
                 <div className='login-wrapper'>
                   <FontAwesomeIcon icon={faEnvelope} className='login-icon' />
                   <input
-                    type='email'
+                    type='text'
                     className='login-input form-control '
                     name='email'
                     onChange={(e) => setEmail(e.target.value)}
@@ -68,6 +68,7 @@ export const Login = () => {
                 </div>
                 <small className='errMsg'>
                   {errors && errors.email ? errors.email[0] : ''}
+                  {errors && errors.username ? errors.username[0] : ''}
                 </small>
               </div>
             </div>

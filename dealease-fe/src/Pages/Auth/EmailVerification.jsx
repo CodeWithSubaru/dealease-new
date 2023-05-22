@@ -206,7 +206,7 @@ export function EmailVerification() {
                         objectFit: 'fit',
                       }}
                     />{' '}
-                    {user.first_name}
+                    {user.user_details.first_name}
                   </Button>
 
                   <Dropdown.Toggle

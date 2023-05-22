@@ -93,7 +93,11 @@ export const FormUser = ({
               type='text'
               placeholder='Enter First Name'
               className='form-control'
-              value={edit ? updateUserDetails.first_name : user.first_name}
+              value={
+                edit
+                  ? updateUserDetails.first_name
+                  : user.user_details.first_name
+              }
               onChange={(e) =>
                 edit
                   ? setUpdateUserDetails({

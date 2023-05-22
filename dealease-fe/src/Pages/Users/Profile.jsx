@@ -117,7 +117,7 @@ export const ProfileUser = () => {
             />
             <Container bordered className='my-3 text-center'>
               <h5>
-                {user ? user.first_name : ''}{' '}
+                {user ? user.user_details.first_name : ''}{' '}
                 {user.user_details ? user.user_details.middle_name : ''}{' '}
                 {user.user_details ? user.user_details.last_name : ''}{' '}
                 {user.user_details ? user.user_details.ext_name : ''}
@@ -217,7 +217,7 @@ export const ProfileUser = () => {
                         <tr>
                           <td>Full Name</td>
                           <td>
-                            {user ? user.first_name : ''}{' '}
+                            {user ? user.user_details.first_name : ''}{' '}
                             {user ? user.middle_name : ''}{' '}
                             {user ? user.last_name : ''}{' '}
                             {user ? user.ext_name : ''}
@@ -362,7 +362,7 @@ export const ProfileUser = () => {
                   <tr>
                     <td>Full Name</td>
                     <td>
-                      {user ? user.first_name : ''}{' '}
+                      {user ? user.user_details.first_name : ''}{' '}
                       {user ? user.middle_name : ''}{' '}
                       {user ? user.last_name : ''} {user ? user.ext_name : ''}
                     </td>

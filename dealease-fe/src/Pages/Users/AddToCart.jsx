@@ -144,9 +144,11 @@ export function AddToCart() {
                                   <span className='badge rounded-pill text-bg-primary'>
                                     {item.length > 1
                                       ? item[index]
-                                        ? item[index].product.user.first_name
+                                        ? item[index].product.user.user_details
+                                            .first_name
                                         : ''
-                                      : item[0].product.user.first_name}{' '}
+                                      : item[0].product.user.user_details
+                                          .first_name}{' '}
                                     {item.length > 1
                                       ? item[index].product.user.user_details
                                           .middle_name
@@ -315,7 +317,8 @@ export function AddToCart() {
                                   <strong>
                                     {item.length > 1
                                       ? item[index]
-                                        ? item[index].product.user.first_name +
+                                        ? item[index].product.user.user_details
+                                            .first_name +
                                           ' ' +
                                           (item[index].product.user.user_details
                                             .middle_name
@@ -326,7 +329,8 @@ export function AddToCart() {
                                           item[index].product.user.user_details
                                             .last_name
                                         : ''
-                                      : item[0].product.user.first_name +
+                                      : item[0].product.user.user_details
+                                          .first_name +
                                         ' ' +
                                         (item[0].product.user.user_details
                                           .middle_name

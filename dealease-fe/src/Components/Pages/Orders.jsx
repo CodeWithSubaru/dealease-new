@@ -59,7 +59,7 @@ export function OrdersTable(props) {
                               <span className='d-block fw-bold text-secondary'>
                                 Seller:
                               </span>{' '}
-                              {order.product.user.first_name}{' '}
+                              {order.product.user.user_details.first_name}{' '}
                               {order.product.user.user_details.middle_name
                                 ? order.product.user.user_details
                                     .middle_name[0] + '. '

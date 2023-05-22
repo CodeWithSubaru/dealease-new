@@ -242,7 +242,7 @@ export function OrdersBuyer() {
             >
               <div>
                 <p className='mb-0'>
-                  {order.seller.first_name}{' '}
+                  {order.seller.user_details.first_name}{' '}
                   {order.seller.user_details.middle_name
                     ? order.seller.user_details.middle_name[0] + '. '
                     : ''}

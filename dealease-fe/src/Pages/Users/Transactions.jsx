@@ -137,7 +137,7 @@ export function TransactionsUser() {
             <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
               <div>
                 <p className='mb-0'>
-                  {transaction.user.first_name + ' '}
+                  {transaction.user.user_details.first_name + ' '}
                   {transaction.user.user_details.middle_name
                     ? transaction.user.user_details.middle_name[0] + '. '
                     : ''}

@@ -260,7 +260,7 @@ export function Users() {
               />
               <div>
                 <p className='mb-0'>
-                  {user.first_name + ' '}
+                  {user.user_details.first_name + ' '}
                   {user.user_details
                     ? user.user_details.middle_name
                       ? user.user_details.middle_name[0] + '. '

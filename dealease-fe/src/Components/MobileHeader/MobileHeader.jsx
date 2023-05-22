@@ -116,7 +116,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
               alt='@simonguo'
               className='me-3'
             />
-            {user.first_name ? user.first_name : ''}
+            {user.user_details.first_name ? user.user_details.first_name : ''}
           </Nav.Item>
         </Nav>
       </Navbar>
@@ -133,6 +133,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
   const handleLogout = () => {
     logout();
   };
+  console.log('USER', user);
   const editUserDetails = {
     // first_name: '',
     // middle_name: '',
@@ -192,7 +193,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
         <Nav>
           <div style={{ marginTop: '35px' }}>
             <span className='nameProfile'>
-              {user.first_name ? user.first_name : ''}
+              {user.user_details.first_name ? user.user_details.first_name : ''}
               <Divider vertical />
               <Badge className='' content='Rider' />
               <p className='nameEmail'>{user.email ? user.email : ''}</p>
@@ -243,7 +244,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
                   <tr>
                     <td>Full Name</td>
                     <td>
-                      {user ? user.first_name : ''}{' '}
+                      {user ? user.user_details.first_name : ''}{' '}
                       {user ? user.middle_name : ''}{' '}
                       {user ? user.last_name : ''} {user ? user.ext_name : ''}
                     </td>
@@ -540,7 +541,7 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
         <Nav>
           <div style={{ marginTop: '35px' }}>
             <span className='nameProfile'>
-              {user.first_name ? user.first_name : ''}
+              {user.user_details.first_name ? user.user_details.first_name : ''}
               <Divider vertical />
               <Badge className='' content='User' />
               <p className='nameEmail'>{user.email ? user.email : ''}</p>
