@@ -169,7 +169,7 @@ export function SidebarUser() {
               appearance='subtle'
             >
               <Sidenav.Body className='mt-4'>
-                <Nav>
+                <Nav className='h-100'>
                   <Nav.Item
                     as={NavLink}
                     href='/'
@@ -255,16 +255,20 @@ export function SidebarUser() {
                         Product
                       </Nav.Item>
                     ) : (
-                      <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
-                        {user.verified_user == 0 ? (
-                          <Button
-                            className='btn btn-sm d-inline-block'
-                            onClick={() => setUpdateAccessModal(true)}
-                          >
-                            Update Access
-                          </Button>
+                      <div className='d-flex flex-column justify-content-end align-items-center'>
+                        {user.verified_user == 0 && !user.avr_id ? (
+                          <>
+                            <Button
+                              className='btn d-inline-block rounded mx-3'
+                              onClick={() => setUpdateAccessModal(true)}
+                            >
+                              Update Access
+                            </Button>
+                          </>
                         ) : (
-                          ''
+                          <span className='bg-secondary text-white p-2 rounded'>
+                            Wait for Admin Approval
+                          </span>
                         )}
                       </div>
                     )}
@@ -312,7 +316,7 @@ export function SidebarUser() {
                 <FontAwesomeIcon icon={faExclamationCircle} />
               </OverlayTrigger>
             </div>
-            <ul className='ms-4'>
+            <ul className='ms-4 d-flex flex-grow-1 h-100'>
               <li>
                 Please make sure that both pictures of the government IDs are
                 clear and valid.
