@@ -61,9 +61,9 @@ class PaymentController extends Controller
             'shells' => $request->shells,
         ]);
 
-        $authUser = User::with('user_details')->where('user_id', auth()->user()->user_id)->get()[0];
+        $authUser = User::with('user_details')->where('user_id', auth()->user()->user_id)->first();
         $amount = $request->amount . '00';
-        $pay = $this->payment($paymentTransaction->payment_number, $authUser->first_name, $authUser->email, $amount, $authUser->user_details->contact_number);
+        $pay = $this->payment($paymentTransaction->payment_number, $authUser->user_details->first_name . ' ' . $authUser->user_details->last_name, $authUser->email, $amount, $authUser->user_details->contact_number);
 
         return response()->json(['status' => 'Request Created Successfully', $pay], 200);
     }

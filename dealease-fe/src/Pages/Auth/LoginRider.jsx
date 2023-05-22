@@ -96,7 +96,7 @@ export const LoginRider = () => {
                         <input
                           type='email'
                           className='login-input form-control mt-1'
-                          name='email'
+                          name='text'
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder='Email'
                           autoFocus

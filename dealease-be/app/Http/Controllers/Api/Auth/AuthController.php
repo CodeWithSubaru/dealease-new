@@ -37,6 +37,7 @@ class AuthController extends Controller
             'barangay' => ['required'],
             'birth_date' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
+            'username' => ['required', 'string', 'regex:/\w*$/', 'min:3', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'first_valid_id' => $request->has('first_valid_id') ? ['required', 'image'] : '',
@@ -69,7 +70,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $user->first_name = $request->first_name;
+        $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_type = $request->user_type ? $request->user_type : 1;
@@ -82,6 +83,7 @@ class AuthController extends Controller
 
         if ($user) {
             $userDetails = UserDetail::create([
+                'first_name' => $request->first_name,
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
                 'ext_name' => $request->ext_name,

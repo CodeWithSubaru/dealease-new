@@ -39,7 +39,7 @@ export const LoginAdmin = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     loginAdmin({
-      email,
+      login: email,
       password,
       role_type,
     });
@@ -79,7 +79,7 @@ export const LoginAdmin = () => {
                         <input
                           type='email'
                           className='login-input form-control mt-1'
-                          name='email'
+                          name='text'
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder='Email'
                           autoFocus
