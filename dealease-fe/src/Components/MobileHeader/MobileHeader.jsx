@@ -35,10 +35,18 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { Form, Button, Modal, Row, Col, Table } from 'react-bootstrap';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const styles = {
   width: 'auto',
 };
+
+const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+  <Link ref={ref} to={href} {...rest}>
+    {children}
+  </Link>
+));
 
 const headerStyles = {
   padding: 18,
@@ -85,7 +93,11 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
   return (
     <>
       <Navbar className={UserNavbarMobilenew} {...props}>
-        <Navbar.Brand href='/home' className='text-nowrap fw-bold fst-italic'>
+        <Navbar.Brand
+          as={NavLink}
+          href='/home'
+          className='text-nowrap fw-bold fst-italic'
+        >
           <img
             alt=''
             src='/images/dealeasefavicon.png'
@@ -776,6 +788,7 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
     <div className='customNav bg-white'>
       <Nav justified {...props} activeKey={activeKey} onSelect={onSelect}>
         <Nav.Item
+          as={NavLink}
           href='/home'
           className='flex-column d-flex text-center'
           eventKey='home'
@@ -784,6 +797,7 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>Home</span>
         </Nav.Item>
         <Nav.Item
+          as={NavLink}
           href='/orders'
           className='flex-column d-flex text-center'
           eventKey='orders'
@@ -797,6 +811,7 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
         {user.verified_user == 1 ? (
           <>
             <Nav.Item
+              as={NavLink}
               href='/orders/seller'
               className='flex-column d-flex text-center'
               eventKey='orders/seller'
@@ -816,6 +831,7 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           ''
         )}
         <Nav.Item
+          as={NavLink}
           href='/add-to-cart'
           className='flex-column d-flex text-center'
           eventKey='cart'
@@ -840,6 +856,7 @@ export function MobileHeader({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>
         <Nav.Item
+          as={NavLink}
           href='/profile'
           className='flex-column d-flex text-center'
           eventKey='Me'
@@ -859,6 +876,7 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
     <div className='customNav bg-white'>
       <Nav justified {...props} activeKey={activeKey} onSelect={onSelect}>
         <Nav.Item
+          as={NavLink}
           href='/'
           className='flex-column d-flex text-center'
           eventKey='to-pick-up'
@@ -867,6 +885,7 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>To Pick Up</span>
         </Nav.Item>
         <Nav.Item
+          as={NavLink}
           href='/rider/to-deliver'
           className='flex-column d-flex text-center'
           eventKey='to-deliver'
@@ -878,6 +897,7 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>To Deliver</span>
         </Nav.Item>
         <Nav.Item
+          as={NavLink}
           href='/rider/delivered'
           className='flex-column d-flex text-center'
           eventKey='to-delivered'
@@ -886,6 +906,7 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>Delivered</span>
         </Nav.Item>
         <Nav.Item
+          as={NavLink}
           href='/rider/withdraw'
           className='flex-column d-flex text-center'
           eventKey='wallet'
@@ -895,6 +916,7 @@ export function MobileHeaderRider({ onSelect, activeKey, ...props }) {
           <span className='mobile-icon-label'>Wallet</span>
         </Nav.Item>
         <Nav.Item
+          as={NavLink}
           href='/rider/profile'
           className='flex-column d-flex text-center'
           eventKey='Me'
