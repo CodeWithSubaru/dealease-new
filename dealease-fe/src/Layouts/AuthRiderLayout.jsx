@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import React from 'react';
 import Header from '../Components/Header/Header';
 import useAuthContext from '../Hooks/Context/AuthContext';
 import '../assets/scss/button.scss';
@@ -43,6 +44,11 @@ export function AuthRiderLayout() {
   const handleLogout = () => {
     logout();
   };
+  const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+    <Link ref={ref} to={href} {...rest}>
+      {children}
+    </Link>
+  ));
   const [activeKeyTop, setActiveKeyTop] = useState(null);
 
   const [activeKey, setActiveKey] = useState(null);
@@ -53,7 +59,7 @@ export function AuthRiderLayout() {
     <>
       <Navbar bg='primary' variant='dark' sticky='top' className='UserNavbar'>
         <Container>
-          <Navbar.Brand href='/'>
+          <Navbar.Brand as={NavLink} href='/'>
             <span className='fs-3 text-white fw-bold fst-italic'>
               <img
                 alt=''

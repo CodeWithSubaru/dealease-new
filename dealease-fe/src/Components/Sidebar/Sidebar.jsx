@@ -28,6 +28,7 @@ import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link } from 'react-router-dom';
 import axiosClient from '../../api/axios';
 import { FaBoxOpen } from 'react-icons/fa';
+import React from 'react';
 
 const headerStyles = {
   padding: 18,
@@ -63,6 +64,11 @@ const headerStyles = {
 //     </Navbar>
 //   );
 // };
+const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+  <Link ref={ref} to={href} {...rest}>
+    {children}
+  </Link>
+));
 
 export function SidebarUser() {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);
@@ -165,6 +171,7 @@ export function SidebarUser() {
               <Sidenav.Body className='mt-4'>
                 <Nav>
                   <Nav.Item
+                    as={NavLink}
                     href='/'
                     eventKey='1'
                     active
@@ -173,18 +180,25 @@ export function SidebarUser() {
                     Home
                   </Nav.Item>
                   <Nav.Item
+                    as={NavLink}
                     href='/transactions'
                     eventKey='2'
                     icon={<GroupIcon />}
                   >
                     Shell Transactions
                   </Nav.Item>
-                  <Nav.Item href='/orders' eventKey='2' icon={<GroupIcon />}>
+                  <Nav.Item
+                    as={NavLink}
+                    href='/orders'
+                    eventKey='2'
+                    icon={<GroupIcon />}
+                  >
                     Orders
                   </Nav.Item>
 
                   {user.verified_user == 1 ? (
                     <Nav.Item
+                      as={NavLink}
                       href='/orders/seller'
                       eventKey='2'
                       icon={<GroupIcon />}
@@ -198,6 +212,7 @@ export function SidebarUser() {
                   {user.verified_user == 1 ? (
                     <>
                       <Nav.Item
+                        as={NavLink}
                         href='/product'
                         eventKey='7'
                         style={{ paddingLeft: '20px' }}
@@ -222,10 +237,14 @@ export function SidebarUser() {
                     icon={<GearCircleIcon />}
                     placement='rightStart'
                   >
-                    <Nav.Item href='/profile' eventKey='4-1'>
+                    <Nav.Item as={NavLink} href='/profile' eventKey='4-1'>
                       Profile
                     </Nav.Item>
-                    <Nav.Item href='/change-password' eventKey='4-2'>
+                    <Nav.Item
+                      as={NavLink}
+                      href='/change-password'
+                      eventKey='4-2'
+                    >
                       Change Password
                     </Nav.Item>
                     {user.verified_user === '1' ? (
@@ -464,6 +483,7 @@ export function SidebarRider() {
               <Sidenav.Body className='mt-4'>
                 <Nav>
                   <Nav.Item
+                    as={NavLink}
                     href='/'
                     eventKey='1'
                     active
@@ -472,6 +492,7 @@ export function SidebarRider() {
                     To Pick Up
                   </Nav.Item>
                   <Nav.Item
+                    as={NavLink}
                     href='/rider/to-deliver'
                     eventKey='2'
                     icon={<GroupIcon />}
@@ -479,6 +500,7 @@ export function SidebarRider() {
                     To Deliver
                   </Nav.Item>
                   <Nav.Item
+                    as={NavLink}
                     href='/rider/delivered'
                     eventKey='2'
                     icon={<GroupIcon />}
@@ -492,10 +514,14 @@ export function SidebarRider() {
                     icon={<GearCircleIcon />}
                     placement='rightStart'
                   >
-                    <Nav.Item href='/rider/profile' eventKey='4-1'>
+                    <Nav.Item as={NavLink} href='/rider/profile' eventKey='4-1'>
                       Profile
                     </Nav.Item>
-                    <Nav.Item href='/rider/change-password' eventKey='4-2'>
+                    <Nav.Item
+                      as={NavLink}
+                      href='/rider/change-password'
+                      eventKey='4-2'
+                    >
                       Change Password
                     </Nav.Item>
                     {/* {user.verified_user ? (
