@@ -58,6 +58,7 @@ class UsersController extends Controller
             'barangay' => ['required'],
             'birth_date' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
+            'username' => ['required', 'string', 'regex:/\w*$/', 'min:3', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'user_type' => ['required'],
@@ -74,7 +75,7 @@ class UsersController extends Controller
 
         $user = new User();
         $user->prof_img = $imageName;
-        $user->first_name = $request->first_name;
+        $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_type = $request->user_type;
@@ -84,6 +85,7 @@ class UsersController extends Controller
 
         if ($user) {
             $userDetails = UserDetail::create([
+                'first_name' => $request->first_name,
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
                 'ext_name' => $request->ext_name,
@@ -117,6 +119,7 @@ class UsersController extends Controller
 
         $request->validate([
             'first_name' => ['required', 'string', 'max:50'],
+            'username' => ['required', 'string', 'regex:/\w*$/', 'min:3', 'max:255'],
             'last_name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'barangay' => ['required'],
@@ -147,12 +150,13 @@ class UsersController extends Controller
 
         User::where('user_id', $request->user_id)->update([
             'prof_img' => $imageName,
-            'first_name' => $request->first_name,
+            'username' => $request->username,
             'email' => $request->email,
             'role_type' => $role_type,
         ]);
 
         UserDetail::where('user_details_id', $request->user_id)->update([
+            'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,
             'last_name' => $request->last_name,
             'ext_name' => $request->ext_name,

@@ -21,6 +21,8 @@ export const FormUser = ({
           ...updateUserDetails,
           barangay: e.target.selectedOptions[0].text,
         })
+      : e.target.value === ''
+      ? setUser({ ...user, barangay: '' })
       : setUser({ ...user, barangay: e.target.selectedOptions[0].text });
   };
 
@@ -96,7 +98,9 @@ export const FormUser = ({
               value={
                 edit
                   ? updateUserDetails.first_name
-                  : user.user_details.first_name
+                  : user.user_details
+                  ? user.user_details.first_name
+                  : ''
               }
               onChange={(e) =>
                 edit
@@ -226,17 +230,7 @@ export const FormUser = ({
 
           <Form.Group className=''>
             <Form.Label className='text-dark'>Barangay *</Form.Label>
-            <Form.Select
-              value={
-                user.barangay
-                  ? user.barangay
-                  : updateUserDetails
-                  ? updateUserDetails.barangay
-                  : 'default'
-              }
-              onChange={brgy}
-              isInvalid={!!errors.barangay}
-            >
+            <Form.Select onChange={brgy} isInvalid={!!errors.barangay}>
               <option value={'default'} disabled>
                 {updateUserDetails
                   ? updateUserDetails.barangay
@@ -286,6 +280,30 @@ export const FormUser = ({
         <div className='account-details'>
           <h3>Account Details</h3>
           <hr />
+
+          <Form.Group className='mb-3'>
+            <Form.Label className='text-dark'>Username *</Form.Label>
+            <Form.Control
+              type='text'
+              name='email'
+              placeholder={edit ? '' : 'Enter Username'}
+              value={edit ? updateUserDetails.username : user.username}
+              onChange={(e) =>
+                edit
+                  ? setUpdateUserDetails({
+                      ...updateUserDetails,
+                      username: e.target.value,
+                    })
+                  : setUser({ ...user, username: e.target.value })
+              }
+              isInvalid={!!errors.username}
+            />
+            {errors && errors.username ? (
+              <Form.Control.Feedback type='invalid'>
+                {errors.username}
+              </Form.Control.Feedback>
+            ) : null}
+          </Form.Group>
 
           <Form.Group className='mb-3'>
             <Form.Label className='text-dark'>Email *</Form.Label>

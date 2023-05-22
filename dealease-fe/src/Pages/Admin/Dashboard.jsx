@@ -146,7 +146,7 @@ export function Dashboard() {
               />
               <div>
                 <p className='mb-0'>
-                  {user.user_details.first_name + ' '}
+                  {user.user_details ? user.user_details.first_name : ''}
                   {user.user_details
                     ? user.user_details.middle_name
                       ? user.user_details.middle_name + '. '

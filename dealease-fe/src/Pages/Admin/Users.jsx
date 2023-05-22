@@ -128,6 +128,7 @@ export function Users() {
           contact_number: '',
           barangay: '',
           street: '',
+          username: '',
           email: '',
           password: '',
           password_confirmation: '',
