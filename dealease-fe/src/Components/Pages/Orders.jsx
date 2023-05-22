@@ -6,6 +6,7 @@ import { Nav, Tab, Row, Col, Button } from 'react-bootstrap';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import Modal from 'react-bootstrap/Modal';
 import { Load } from '../Loader/Load';
+import { H1 } from '../Helpers/index.style';
 
 export function OrdersTable(props) {
   const [pendingOrderNumberSeller, setPendingOrderNumberSeller] = useState(0);
@@ -419,9 +420,9 @@ export function OrdersTable(props) {
               <Tab.Content>
                 <Tab.Pane eventKey='first'>
                   <Card className='p-5 pb-1 rounded'>
-                    <h1 className='mb-4 fw-bold'>
+                    <H1 className='text-home mb-4 fw-bold'>
                       {props.title == 'Buyer' ? 'My' : ''} Pending Orders
-                    </h1>
+                    </H1>
                     {props.loading ? (
                       <Load />
                     ) : (
@@ -431,9 +432,9 @@ export function OrdersTable(props) {
                 </Tab.Pane>
                 <Tab.Pane eventKey='second'>
                   <Card className='p-5 pb-1 rounded'>
-                    <h1 className='mb-4 fw-bold'>
+                    <H1 className='text-home mb-4 fw-bold'>
                       {props.title == 'Buyer' ? 'My' : ''} Processing Orders
-                    </h1>
+                    </H1>
                     {props.loading ? (
                       <Load />
                     ) : (
@@ -446,9 +447,9 @@ export function OrdersTable(props) {
                 </Tab.Pane>
                 <Tab.Pane eventKey='third'>
                   <Card className='p-5 pb-1 rounded'>
-                    <h1 className='mb-4 fw-bold'>
+                    <H1 className='text-home mb-4 fw-bold'>
                       {props.title == 'Buyer' ? 'My' : ''} Delivered Orders
-                    </h1>
+                    </H1>
                     {props.loading ? (
                       <Load />
                     ) : (

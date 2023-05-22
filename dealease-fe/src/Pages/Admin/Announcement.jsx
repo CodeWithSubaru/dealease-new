@@ -219,8 +219,8 @@ export function AnnouncementAdmin() {
     <div>
       <Card className='w-75 mx-auto'>
         <div className='p-5'>
-          <H1>Announcement</H1>
-          <div className='rounded p-5'>
+          <H1 className='text-home mx-5'>Announcement</H1>
+          <div className='rounded px-5 text-end'>
             {/* Create Modal */}
             <Button
               variant='primary'

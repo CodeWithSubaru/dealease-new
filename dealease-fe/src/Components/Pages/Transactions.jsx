@@ -7,6 +7,7 @@ import { Load } from '../../Components/Loader/Load';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { H1 } from '../Helpers/index.style';
 
 export function Transactions(props) {
   const { fetchUserInfo } = useAuthContext();
@@ -117,7 +118,7 @@ export function Transactions(props) {
                     <Load />
                   ) : (
                     <>
-                      <h1 className='mb-4 fw-bold'> Under Review</h1>
+                      <H1 className='text-home mb-4 fw-bold'> Under Review</H1>
                       <TableComponent header={props.header} body={props.body} />
                     </>
                   )}
@@ -129,7 +130,10 @@ export function Transactions(props) {
                     <Load />
                   ) : (
                     <>
-                      <h1 className='mb-4 fw-bold'> Request Approved</h1>
+                      <H1 className='text-home mb-4 fw-bold'>
+                        {' '}
+                        Request Approved
+                      </H1>
                       <TableComponent header={props.header} body={props.body} />
                     </>
                   )}
@@ -141,7 +145,10 @@ export function Transactions(props) {
                     <Load />
                   ) : (
                     <>
-                      <h1 className='mb-4 fw-bold'> Request Cancelled</h1>
+                      <H1 className='text-home mb-4 fw-bold'>
+                        {' '}
+                        Request Cancelled
+                      </H1>
                       <TableComponent header={props.header} body={props.body} />
                     </>
                   )}

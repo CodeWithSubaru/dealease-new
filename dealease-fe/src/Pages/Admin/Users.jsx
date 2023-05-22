@@ -437,7 +437,7 @@ export function Users() {
           <Tab.Content>
             <Tab.Pane eventKey='first'>
               <Card className='p-5 pb-1 rounded'>
-                <h1 className='mb-4 fw-bold'>All Users</h1>
+                <H1 className='text-home mb-4 fw-bold'>All Users</H1>
                 {loading ? (
                   <Load />
                 ) : (
@@ -459,7 +459,7 @@ export function Users() {
             </Tab.Pane>
             <Tab.Pane eventKey='second'>
               <Card className='p-5 pb-1 rounded'>
-                <h1 className='mb-4 fw-bold'>Unverified Users</h1>
+                <H1 className='text-home mb-4 fw-bold'>Unverified Users</H1>
                 {loading ? (
                   <Load />
                 ) : (

@@ -27,6 +27,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Footer } from '../../Components/Footer/Footer';
 import { SidebarUser } from '../../Components/Sidebar/Sidebar';
+import { H1 } from '../../Components/Helpers/index.style';
 
 export function ChangePasswordUser() {
   const [errors, setErrors] = useState({});
@@ -72,7 +73,9 @@ export function ChangePasswordUser() {
           <Container style={{ margin: '50px 0px 0px  0px', width: '100%' }}>
             <Card style={{ width: '100%', minWidth: '200px' }}>
               <form onSubmit={handleSubmit}>
-                <h3 style={{ marginLeft: '5px' }}>Change Password</h3>
+                <H1 className='text-home' style={{ marginLeft: '5px' }}>
+                  Change Password
+                </H1>
                 <Form.Group className='mb-3'>
                   <Form.Label
                     className='text-black'

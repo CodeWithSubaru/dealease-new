@@ -9,6 +9,7 @@ import useAuthContext from '../../Hooks/Context/AuthContext';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import { Load } from '../../Components/Loader/Load';
 import PUBLIC_URL from '../../api/public_url';
+import { H1 } from '../Helpers/index.style';
 
 export function Card() {
   const { user, token } = useAuthContext();
@@ -32,7 +33,7 @@ export function Card() {
 
   return (
     <div className='cards '>
-      <div className='cards_container '>
+      <div className='cards_container'>
         <div className='mt-5 justify-content-between w-100 px-3'>
           {msgStatus && (
             <div className='d-flex justify-content-center'>
@@ -48,13 +49,13 @@ export function Card() {
               </div>
             </div>
           )}
-          <h1 className='text-home mb-3'>{token ? 'Home' : 'Products'}</h1>
+          <H1 className='text-home mb-0'>{token ? 'Home' : 'Products'}</H1>
           <div className='justify-content-between'>
             <Row>
-              <Col className='d-flex '>
+              <Col className='d-flex align-items-center'>
                 <span
                   className={
-                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    'badge rounded-pill btn fw-semibold me-2 fs-6 ' +
                     (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
@@ -67,7 +68,7 @@ export function Card() {
 
                 <span
                   className={
-                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    'badge rounded-pill btn fw-semibold me-2 fs-6 ' +
                     (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
@@ -80,7 +81,7 @@ export function Card() {
 
                 <span
                   className={
-                    'rounded-pill btn btn-filter-product mt-3  fw-semibold ' +
+                    'badge rounded-pill btn fw-semibold fs-6 ' +
                     (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
