@@ -36,6 +36,12 @@ const header = [
     prop: 'fullname',
   },
   {
+    title: 'Username',
+    prop: 'username',
+    isFilterable: true,
+    isSortable: true,
+  },
+  {
     title: 'Email Address',
     prop: 'email',
     isFilterable: true,
@@ -289,6 +295,7 @@ export function Users() {
               </div>
             </div>
           ),
+          username: user.username,
           email: user.email,
           date_joined: dateFormat(user.created_at),
           action: (

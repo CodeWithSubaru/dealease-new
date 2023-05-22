@@ -73,8 +73,6 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
   const { searchProduct1 } = useProductContext();
   const { loading } = useAuthContext();
 
-  console.log('USER', user);
-
   const [UserNavbarMobilenew, setUserNavbarMobile] =
     useState('UserNavbarMobile');
 

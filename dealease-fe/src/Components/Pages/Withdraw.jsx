@@ -66,12 +66,13 @@ export function Withdraw() {
               });
             }}
           >
+            Your Current Balance:{' '}
             <img
               src='/images/seashell.png'
-              className='me-2 d-inline-block align-top'
-              width='25'
-              height='25'
-            ></img>
+              className='ml-2 mr-1 d-inline-block align-top'
+              width='20'
+              height='20'
+            ></img>{' '}
             {user.wallet ? user.wallet.shell_coin_amount : null}
             <h1 className='fs-1 request-title mb-3'>Request for Withdrawal</h1>
             <Form.Group>
@@ -105,7 +106,6 @@ export function Withdraw() {
                 Php {shellToConvert - calculateFee()}
               </span>
             </Form.Group>
-
             <Button
               type='submit'
               variant='primary'
