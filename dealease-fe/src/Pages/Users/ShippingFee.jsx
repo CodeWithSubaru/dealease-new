@@ -22,6 +22,7 @@ import {
 } from '../../Components/Notification/Notification';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { H1 } from '../../Components/Helpers/index.style';
 
 export function ShippingFee() {
   const {
@@ -203,7 +204,7 @@ export function ShippingFee() {
       ) : (
         <div className='p-2'>
           <div className='d-flex justify-content-between'>
-            <h1 className='fw-bolder fs-1 mb-4'>Shipping</h1>
+            <H1 className='text-home mb-4'>Shipping</H1>
             <Link
               to='../add-to-cart'
               className='text-decoration-none text-opacity-25 d-flex align-items-center mb-2'

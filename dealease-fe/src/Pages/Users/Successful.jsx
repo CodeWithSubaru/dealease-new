@@ -249,7 +249,7 @@ export function SuccessfulUser() {
               className='text-success mb-2'
               style={{ fontSize: '70px' }}
             />
-            <h1 className='fw-semibold capitalize mb-3 fs-2'>Successful</h1>
+            <H1 className='text-home'>Successful</H1>
             <p className='mb-0'>Your order is on pending.</p>
             <p>Please wait for the confirmation of Seller</p>
             <hr />
