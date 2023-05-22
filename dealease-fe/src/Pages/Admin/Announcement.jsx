@@ -9,7 +9,13 @@ import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
 
 export function AnnouncementAdmin() {
-  const [announcement, setAnnouncement] = useState({});
+  const announcementData = {
+    image: '',
+    title: '',
+    description: '',
+  };
+
+  const [announcement, setAnnouncement] = useState(announcementData);
   const [data, setData] = useState([]);
   const [is_published, setIsPublished] = useState(0);
 
@@ -39,6 +45,7 @@ export function AnnouncementAdmin() {
           setIsPublished(0);
           setErrors([]);
           handleClose();
+          setAnnouncement(data);
           fetchAnnouncement();
         })
       )
@@ -47,7 +54,7 @@ export function AnnouncementAdmin() {
           title: 'Error',
           message: 'Something went wrong',
           icon: 'error',
-        }).then(() => setErrors(e.response.data.errors))
+        }).then(() => setErrors(err.response.data.errors))
       );
   }
 
@@ -209,7 +216,11 @@ export function AnnouncementAdmin() {
           <H1>Announcement</H1>
           <div className='rounded p-5'>
             {/* Create Modal */}
-            <Button variant='primary' onClick={handleShow} className='mb-3'>
+            <Button
+              variant='primary'
+              onClick={handleShow}
+              className='mb-3 rounded'
+            >
               Create Announcement
             </Button>
 
@@ -223,7 +234,7 @@ export function AnnouncementAdmin() {
               contentClassName={'mt-0'}
             >
               <Modal.Header closeButton>
-                <Modal.Title>New Announcemnet</Modal.Title>
+                <Modal.Title>New Announcement</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form onSubmit={handleSubmit} id='announcementId'>
@@ -244,7 +255,9 @@ export function AnnouncementAdmin() {
                   </div>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Select Announcement Image</Form.Label>
+                    <Form.Label className='text-black-50'>
+                      Select Announcement Image
+                    </Form.Label>
                     <Form.Control
                       type='file'
                       id='formFile'
@@ -266,7 +279,7 @@ export function AnnouncementAdmin() {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Title *</Form.Label>
+                    <Form.Label className='text-black-50'>Title *</Form.Label>
                     <Form.Control
                       type='text'
                       className='form-control'
@@ -278,15 +291,16 @@ export function AnnouncementAdmin() {
                       }
                       isInvalid={!!errors && !!errors.title}
                     />
+
                     <Form.Control.Feedback type='invalid'>
-                      {errors &&
-                        errors.title &&
-                        errors.title.length > 0 &&
-                        errors.title[0]}
+                      {errors && errors.title && errors.title[0]}
                     </Form.Control.Feedback>
                   </Form.Group>
+                  {console.log('ERRORS', errors)}
                   <Form.Group className='mb-3'>
-                    <Form.Label>Description *</Form.Label>
+                    <Form.Label className='text-black-50'>
+                      Description *
+                    </Form.Label>
                     <Form.Control
                       as='textarea'
                       onChange={(e) =>
@@ -305,270 +319,302 @@ export function AnnouncementAdmin() {
                     </Form.Control.Feedback>
                   </Form.Group>
 
-                  <Form.Check
-                    inline
-                    label='Publish'
-                    name='status'
-                    type='radio'
-                    value='1'
-                    onChange={() => setIsPublished(1)}
-                  />
+                  <Form.Group className='text-black-50'>
+                    <Form.Check
+                      inline
+                      label={
+                        <Form.Label className='text-black-50'>
+                          Publish
+                        </Form.Label>
+                      }
+                      name='status'
+                      type='radio'
+                      value='1'
+                      onChange={() => setIsPublished(1)}
+                    />
 
-                  <Form.Check
-                    inline
-                    label='Draft'
-                    name='status'
-                    type='radio'
-                    value='0'
-                    onChange={() => setIsPublished(0)}
-                  />
+                    <Form.Check
+                      inline
+                      label={
+                        <Form.Label className='text-black-50'>Draft</Form.Label>
+                      }
+                      name='status'
+                      type='radio'
+                      value='0'
+                      onChange={() => setIsPublished(0)}
+                    />
+                  </Form.Group>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant='secondary' onClick={handleClose}>
+                <Button
+                  variant='secondary'
+                  onClick={handleClose}
+                  className='rounded'
+                >
                   Close
                 </Button>
-                <Button type='submit' form='announcementId' variant='primary'>
+                <Button
+                  type='submit'
+                  form='announcementId'
+                  variant='primary'
+                  className='rounded'
+                >
                   Save Changes
                 </Button>
               </Modal.Footer>
             </Modal>
 
             <div className='d-flex flex-wrap'>
-              {data && data.length > 0
-                ? data.map((item) =>
-                    item ? (
-                      <Card
-                        className='d-flex flex-row flex-xs-column w-100 p-2 mt-2'
-                        key={item.id}
-                      >
-                        <div
-                          className='flex-shrink-1'
-                          style={{ width: '150px' }}
-                        >
-                          <img
-                            src={PUBLIC_URL + 'images/' + item.image}
-                            alt={item.image ? item.image : ''}
-                            className='w-100'
-                            style={{ height: '150px', objectFit: 'cover' }}
-                          />
+              {data && data.length > 0 ? (
+                data.map((item) =>
+                  item ? (
+                    <Card
+                      className='d-flex flex-row flex-xs-column w-100 p-2 mt-2'
+                      key={item.id}
+                    >
+                      <div className='flex-shrink-1' style={{ width: '150px' }}>
+                        <img
+                          src={PUBLIC_URL + 'images/' + item.image}
+                          alt={item.image ? item.image : ''}
+                          className='w-100'
+                          style={{ height: '150px', objectFit: 'cover' }}
+                        />
+                      </div>
+                      <div className='flex-grow-1 d-flex justify-content-between ms-3'>
+                        <div>
+                          <H3 className='fs-3'>{item.title}</H3>
+                          <p>{item.description}</p>
                         </div>
-                        <div className='flex-grow-1 d-flex justify-content-between ms-3'>
-                          <div>
-                            <H3 className='fs-3'>{item.title}</H3>
-                            <p>{item.description}</p>
-                          </div>
-                          <div className='flex-shrink-0 align-self-end'>
-                            {/* Edit Modal */}
+                        <div className='flex-shrink-0 align-self-end'>
+                          {/* Edit Modal */}
+                          <Button
+                            variant='secondary'
+                            className='me-2 rounded'
+                            onClick={() => handleEditShow(item.id)}
+                          >
+                            Edit
+                          </Button>
+
+                          <Modal
+                            show={edit}
+                            onHide={handleEditClose}
+                            size='lg'
+                            centered
+                            keyboard
+                            scrollable
+                            contentClassName={'mt-0'}
+                          >
+                            <Modal.Header closeButton>
+                              <Modal.Title>Edit Announcement</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              {Object.keys(updateAnnouncement).length > 0 ? (
+                                <Form
+                                  onSubmit={handleUpdate}
+                                  id='announcementEditId'
+                                >
+                                  <div className='text-center'>
+                                    <img
+                                      src={
+                                        typeof updateAnnouncement.image ===
+                                        'object'
+                                          ? URL.createObjectURL(
+                                              updateAnnouncement.image
+                                            )
+                                          : PUBLIC_URL +
+                                            'images/' +
+                                            updateAnnouncement.image
+                                      }
+                                      className='rounded-circle'
+                                      style={{
+                                        objectFit: 'cover',
+                                        width: '250px',
+                                        height: '250px',
+                                      }}
+                                    />
+                                  </div>
+                                  <Form.Group className='mb-3'>
+                                    <Form.Label className='text-black-50'>
+                                      Select Announcement Image
+                                    </Form.Label>
+                                    <Form.Control
+                                      type='file'
+                                      id='formFile'
+                                      className='form-control'
+                                      onChange={(e) => {
+                                        setUpdateAnnouncement({
+                                          ...updateAnnouncement,
+                                          image: e.target.files[0],
+                                        });
+                                      }}
+                                      isInvalid={!!errors && !!errors.image}
+                                    />
+                                    <Form.Control.Feedback type='invalid'>
+                                      {errors &&
+                                        errors.image &&
+                                        errors.image.length > 0 &&
+                                        errors.image[0]}
+                                    </Form.Control.Feedback>
+                                  </Form.Group>
+                                  <Form.Group className='mb-3'>
+                                    <Form.Label className='text-black-50'>
+                                      Title *
+                                    </Form.Label>
+                                    <Form.Control
+                                      type='text'
+                                      className='form-control'
+                                      value={updateAnnouncement.title}
+                                      onChange={(e) =>
+                                        setUpdateAnnouncement({
+                                          ...updateAnnouncement,
+                                          title: e.target.value,
+                                        })
+                                      }
+                                      isInvalid={!!errors && !!errors.title}
+                                    />
+                                    <Form.Control.Feedback type='invalid'>
+                                      {errors &&
+                                        errors.title &&
+                                        errors.title.length > 0 &&
+                                        errors.title[0]}
+                                    </Form.Control.Feedback>
+                                  </Form.Group>
+                                  <Form.Group className='mb-3'>
+                                    <Form.Label className='text-black-50'>
+                                      Description *
+                                    </Form.Label>
+                                    <Form.Control
+                                      as='textarea'
+                                      value={updateAnnouncement.description}
+                                      onChange={(e) =>
+                                        setUpdateAnnouncement({
+                                          ...updateAnnouncement,
+                                          description: e.target.value,
+                                        })
+                                      }
+                                      isInvalid={
+                                        !!errors && !!errors.description
+                                      }
+                                    />
+                                    <Form.Control.Feedback type='invalid'>
+                                      {errors &&
+                                        errors.description &&
+                                        errors.description.length > 0 &&
+                                        errors.description[0]}
+                                    </Form.Control.Feedback>
+                                  </Form.Group>
+
+                                  <Form.Check
+                                    inline
+                                    label={
+                                      <Form.Label className='text-black-50'>
+                                        Publish
+                                      </Form.Label>
+                                    }
+                                    name='status'
+                                    type='radio'
+                                    value='1'
+                                    checked={
+                                      updateAnnouncement.is_published === 1
+                                    }
+                                    onChange={() =>
+                                      setUpdateAnnouncement({
+                                        ...updateAnnouncement,
+                                        is_published: 1,
+                                      })
+                                    }
+                                  />
+
+                                  <Form.Check
+                                    inline
+                                    label={
+                                      <Form.Label className='text-black-50'>
+                                        Draft
+                                      </Form.Label>
+                                    }
+                                    name='status'
+                                    type='radio'
+                                    value='0'
+                                    checked={
+                                      updateAnnouncement.is_published === 0
+                                    }
+                                    onChange={() =>
+                                      setUpdateAnnouncement({
+                                        ...updateAnnouncement,
+                                        is_published: 0,
+                                      })
+                                    }
+                                  />
+                                </Form>
+                              ) : (
+                                'Loading...'
+                              )}
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <Button
+                                variant='secondary'
+                                onClick={handleEditClose}
+                                className='rounded'
+                              >
+                                Close
+                              </Button>
+                              <Button
+                                type='submit'
+                                form='announcementEditId'
+                                variant='primary'
+                                className='rounded'
+                              >
+                                Save Changes
+                              </Button>
+                            </Modal.Footer>
+                          </Modal>
+
+                          {!item.deleted_at && (
                             <Button
                               variant='primary'
-                              className='me-2'
-                              onClick={() => handleEditShow(item.id)}
-                            >
-                              Edit
-                            </Button>
-
-                            <Modal
-                              show={edit}
-                              onHide={handleEditClose}
-                              size='lg'
-                              centered
-                              keyboard
-                              scrollable
-                              contentClassName={'mt-0'}
-                            >
-                              <Modal.Header closeButton>
-                                <Modal.Title>Edit Announcement</Modal.Title>
-                              </Modal.Header>
-                              <Modal.Body>
-                                {Object.keys(updateAnnouncement).length > 0 ? (
-                                  <Form
-                                    onSubmit={handleUpdate}
-                                    id='announcementEditId'
-                                  >
-                                    <div className='text-center'>
-                                      <img
-                                        src={
-                                          typeof updateAnnouncement.image ===
-                                          'object'
-                                            ? URL.createObjectURL(
-                                                updateAnnouncement.image
-                                              )
-                                            : PUBLIC_URL +
-                                              'images/' +
-                                              updateAnnouncement.image
-                                        }
-                                        className='rounded-circle'
-                                        style={{
-                                          objectFit: 'cover',
-                                          width: '250px',
-                                          height: '250px',
-                                        }}
-                                      />
-                                    </div>
-                                    <Form.Group className='mb-3'>
-                                      <Form.Label>
-                                        Select Announcement Image
-                                      </Form.Label>
-                                      <Form.Control
-                                        type='file'
-                                        id='formFile'
-                                        className='form-control'
-                                        onChange={(e) => {
-                                          setUpdateAnnouncement({
-                                            ...updateAnnouncement,
-                                            image: e.target.files[0],
-                                          });
-                                        }}
-                                        isInvalid={!!errors && !!errors.image}
-                                      />
-                                      <Form.Control.Feedback type='invalid'>
-                                        {errors &&
-                                          errors.image &&
-                                          errors.image.length > 0 &&
-                                          errors.image[0]}
-                                      </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group className='mb-3'>
-                                      <Form.Label>Title *</Form.Label>
-                                      <Form.Control
-                                        type='text'
-                                        className='form-control'
-                                        value={updateAnnouncement.title}
-                                        onChange={(e) =>
-                                          setUpdateAnnouncement({
-                                            ...updateAnnouncement,
-                                            title: e.target.value,
-                                          })
-                                        }
-                                        isInvalid={!!errors && !!errors.title}
-                                      />
-                                      <Form.Control.Feedback type='invalid'>
-                                        {errors &&
-                                          errors.title &&
-                                          errors.title.length > 0 &&
-                                          errors.title[0]}
-                                      </Form.Control.Feedback>
-                                    </Form.Group>
-                                    <Form.Group className='mb-3'>
-                                      <Form.Label>Description *</Form.Label>
-                                      <Form.Control
-                                        as='textarea'
-                                        value={updateAnnouncement.description}
-                                        onChange={(e) =>
-                                          setUpdateAnnouncement({
-                                            ...updateAnnouncement,
-                                            description: e.target.value,
-                                          })
-                                        }
-                                        isInvalid={
-                                          !!errors && !!errors.description
-                                        }
-                                      />
-                                      <Form.Control.Feedback type='invalid'>
-                                        {errors &&
-                                          errors.description &&
-                                          errors.description.length > 0 &&
-                                          errors.description[0]}
-                                      </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    <Form.Check
-                                      inline
-                                      label='Publish'
-                                      name='status'
-                                      type='radio'
-                                      value='1'
-                                      checked={
-                                        updateAnnouncement.is_published === 1
-                                      }
-                                      onChange={() =>
-                                        setUpdateAnnouncement({
-                                          ...updateAnnouncement,
-                                          is_published: 1,
-                                        })
-                                      }
-                                    />
-
-                                    <Form.Check
-                                      inline
-                                      label='Draft'
-                                      name='status'
-                                      type='radio'
-                                      value='0'
-                                      checked={
-                                        updateAnnouncement.is_published === 0
-                                      }
-                                      onChange={() =>
-                                        setUpdateAnnouncement({
-                                          ...updateAnnouncement,
-                                          is_published: 0,
-                                        })
-                                      }
-                                    />
-                                  </Form>
-                                ) : (
-                                  'Loading...'
-                                )}
-                              </Modal.Body>
-                              <Modal.Footer>
-                                <Button
-                                  variant='secondary'
-                                  onClick={handleEditClose}
-                                >
-                                  Close
-                                </Button>
-                                <Button
-                                  type='submit'
-                                  form='announcementEditId'
-                                  variant='primary'
-                                >
-                                  Save Changes
-                                </Button>
-                              </Modal.Footer>
-                            </Modal>
-
-                            {!item.deleted_at && (
-                              <Button
-                                variant='primary'
-                                className='me-2'
-                                onClick={() =>
-                                  item.is_published
-                                    ? handleDraft(item.id)
-                                    : handlePublish(item.id)
-                                }
-                              >
-                                {item.is_published ? 'Draft' : 'Publish'}
-                              </Button>
-                            )}
-
-                            <Button
-                              variant={item.deleted_at ? 'info' : 'warning'}
+                              className='me-2 rounded'
                               onClick={() =>
-                                item.deleted_at
-                                  ? handleRestoration(item.id)
-                                  : handleDeletion(item.id)
+                                item.is_published
+                                  ? handleDraft(item.id)
+                                  : handlePublish(item.id)
                               }
-                              className='me-2'
                             >
-                              {item.deleted_at ? 'Restore' : 'Delete'}
+                              {item.is_published ? 'Draft' : 'Publish'}
                             </Button>
+                          )}
 
-                            <Button
-                              variant='danger'
-                              className='me-2'
-                              onClick={() => forceDelete(item.id)}
-                            >
-                              Force Delete
-                            </Button>
-                          </div>
+                          <Button
+                            variant={item.deleted_at ? 'info' : 'warning'}
+                            onClick={() =>
+                              item.deleted_at
+                                ? handleRestoration(item.id)
+                                : handleDeletion(item.id)
+                            }
+                            className='me-2 text-white rounded'
+                          >
+                            {item.deleted_at ? 'Restore' : 'Delete'}
+                          </Button>
+
+                          <Button
+                            variant='danger'
+                            className='me-2 rounded'
+                            onClick={() => forceDelete(item.id)}
+                          >
+                            Force Delete
+                          </Button>
                         </div>
-                      </Card>
-                    ) : (
-                      ''
-                    )
+                      </div>
+                    </Card>
+                  ) : (
+                    ''
                   )
-                : 'No data'}
+                )
+              ) : (
+                <div className='text-center w-100 mt-5'>
+                  <p> No Announcement Posted</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
