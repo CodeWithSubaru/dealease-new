@@ -50,7 +50,7 @@ export const Login = () => {
               <div>
                 <label htmlFor='' className='text-white'>
                   {' '}
-                  Email{' '}
+                  Email / Username{' '}
                 </label>
               </div>
               <div>
