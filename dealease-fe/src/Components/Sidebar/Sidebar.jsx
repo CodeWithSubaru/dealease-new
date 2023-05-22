@@ -183,13 +183,17 @@ export function SidebarUser() {
                     Orders
                   </Nav.Item>
 
-                  <Nav.Item
-                    href='/orders/seller'
-                    eventKey='2'
-                    icon={<GroupIcon />}
-                  >
-                    Orders (Seller)
-                  </Nav.Item>
+                  {user.verified_user == 1 ? (
+                    <Nav.Item
+                      href='/orders/seller'
+                      eventKey='2'
+                      icon={<GroupIcon />}
+                    >
+                      Orders (Seller)
+                    </Nav.Item>
+                  ) : (
+                    ''
+                  )}
 
                   {user.verified_user == 1 ? (
                     <>

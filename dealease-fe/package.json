@@ -1,7 +1,6 @@
 {
   "name": "dealease-fe",
   "version": "0.1.0",
-  "homepage": "https://dealease.online",
   "private": true,
   "scripts": {
     "dev": "vite --host",

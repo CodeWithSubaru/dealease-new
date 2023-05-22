@@ -138,6 +138,21 @@ class PaymentController extends Controller
         return response()->json($responseData, 200);
     }
 
+    public function numberOfUnderReviewTransaction()
+    {
+        return ShellTransaction::with('user')->where('payment_status', '1')->where('user_id', auth()->user()->user_id)->count();
+    }
+
+    public function numberOfApprovedTransaction()
+    {
+        return ShellTransaction::with('user')->where('payment_status', '2')->where('user_id', auth()->user()->user_id)->count();
+    }
+
+    public function numberOfCancelledTransaction()
+    {
+        return ShellTransaction::with('user')->where('payment_status', '0')->where('user_id', auth()->user()->user_id)->count();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -153,7 +168,7 @@ class PaymentController extends Controller
     {
         $status = $transaction;
 
-        return ShellTransaction::with('user', 'user.user_details')->where('payment_status', $status)->get();
+        return ShellTransaction::with('user', 'user.user_details')->where('payment_status', $status)->where('user_id', auth()->user()->user_id)->latest()->get();
     }
 
     /**

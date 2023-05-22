@@ -11,7 +11,7 @@ import '../../assets/scss/withdraw.scss';
 export function Withdraw() {
   // Withdraw from shell into money
   const { user, fetchUserInfo } = useAuthContext();
-  const [shellToConvert, setShellToConvert] = useState(1000);
+  const [shellToConvert, setShellToConvert] = useState(0);
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 

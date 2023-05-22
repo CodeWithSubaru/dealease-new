@@ -64,19 +64,19 @@ export function TransactionsUser() {
   ];
 
   function fetchUnderReviewTransaction() {
-    axiosClient.get('/transactions/', 1).then((res) => {
+    axiosClient.get('/transactions/under-review').then((res) => {
       setNumberOfUnderReviewTransaction(res.data);
     });
   }
 
   function fetchApprovedTransaction() {
-    axiosClient.get('/transactions/', 2).then((res) => {
+    axiosClient.get('/transactions/approved').then((res) => {
       setNumberOfApprovedTransaction(res.data);
     });
   }
 
   function fetchCancelledTransaction() {
-    axiosClient.get('/transactions/', 0).then((res) => {
+    axiosClient.get('/transactions/cancelled').then((res) => {
       console.log(res);
       setNumberOfCancelledTransaction(res.data);
     });
@@ -128,103 +128,119 @@ export function TransactionsUser() {
   function setUserTransactionsDataTable(id) {
     setBody([]);
     setLoading(true);
-    axiosClient
-      .get('/admin/transactions/show/transactions/' + id)
-      .then((resp) => {
-        const transactions = resp.data.map((transaction, i) => {
-          return {
-            id: i + 1,
-            payment_number: transaction.payment_number,
-            fullname: (
-              <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
-                <div>
-                  <p className='mb-0'>
-                    {transaction.user.first_name + ' '}
-                    {transaction.user.user_details.middle_name
-                      ? transaction.user.user_details.middle_name[0] + '. '
-                      : ''}
-                    {transaction.user.user_details.last_name}{' '}
-                    {transaction.user.user_details.ext_name
-                      ? transaction.user.user_details.ext_name
-                      : ''}
-                  </p>
-                </div>
-              </div>
-            ),
-            other_details: (
-              <>
-                <span>
-                  {' '}
-                  <span className='fw-semibold'>Email: </span>{' '}
-                  {transaction.user.email}
-                </span>{' '}
-                <span>
-                  <span className='fw-semibold'> Contact #:</span>{' '}
-                  {transaction.user.user_details.contact_number
-                    ? transaction.user.user_details.contact_number
+    axiosClient.get('/transactions/' + id).then((resp) => {
+      const transactions = resp.data.map((transaction, i) => {
+        return {
+          id: i + 1,
+          payment_number: transaction.payment_number,
+          fullname: (
+            <div key={i} className='d-flex' style={{ columnGap: '10px' }}>
+              <div>
+                <p className='mb-0'>
+                  {transaction.user.first_name + ' '}
+                  {transaction.user.user_details.middle_name
+                    ? transaction.user.user_details.middle_name[0] + '. '
                     : ''}
-                </span>
-              </>
-            ),
-
-            payment_status: (
-              <span
-                className={
-                  'text-nowrap rounded px-2 text-uppercase border border-2 ' +
-                  switchColor(transaction.payment_status)
-                }
-              >
-                {status(transaction.payment_status)}
-              </span>
-            ),
-            payment_description: transaction.payment_description,
-            payment_total_amount: (
-              <>
+                  {transaction.user.user_details.last_name}{' '}
+                  {transaction.user.user_details.ext_name
+                    ? transaction.user.user_details.ext_name
+                    : ''}
+                </p>
+              </div>
+            </div>
+          ),
+          other_details: (
+            <>
+              <span>
                 {' '}
-                <img
-                  src='/images/seashell.png'
-                  height={25}
-                  width={25}
-                  className='mx-1'
-                  alt=''
-                />{' '}
-                {transaction.payment_total_amount}
-              </>
-            ),
-            created_at: dateFormat(transaction.created_at),
-            // action: (
-            //   <div key={i} className='button-actions text-light d-flex'>
-            //     <Button
-            //       variant='primary'
-            //       onClick={() => viewCompleteDetails(user.user_id)}
-            //       style={{ cursor: 'pointer' }}
-            //       className='p-2 me-2 rounded'
-            //     >
-            //       <FontAwesomeIcon icon={faCheck} className='mx-2' />
-            //     </Button>
-            //     <Button
-            //       variant='danger'
-            //       onClick={() => findUser(user.user_id)}
-            //       style={{ cursor: 'pointer' }}
-            //       className='p-2 2 rounded'
-            //     >
-            //       <FontAwesomeIcon icon={faClose} className='mx-2' />
-            //     </Button>
-            //   </div>
-            // ),
-          };
-        });
+                <span className='fw-semibold'>Email: </span>{' '}
+                {transaction.user.email}
+              </span>{' '}
+              <span>
+                <span className='fw-semibold'> Contact #:</span>{' '}
+                {transaction.user.user_details.contact_number
+                  ? transaction.user.user_details.contact_number
+                  : ''}
+              </span>
+            </>
+          ),
 
-        setBody(transactions);
-        setLoading(false);
+          payment_status: (
+            <span
+              className={
+                'text-nowrap rounded px-2 text-uppercase border border-2 ' +
+                switchColor(transaction.payment_status)
+              }
+            >
+              {status(transaction.payment_status)}
+            </span>
+          ),
+          payment_description: transaction.payment_description,
+          payment_total_amount: (
+            <div className='text-nowrap'>
+              {transaction.payment_description === 'Recharge' ? (
+                <>
+                  Php {transaction.payment_total_amount} &rarr;
+                  <img
+                    src='/images/seashell.png'
+                    height={25}
+                    width={25}
+                    className='mx-1'
+                    alt=''
+                  />{' '}
+                  {transaction.shells}
+                </>
+              ) : (
+                <>
+                  <img
+                    src='/images/seashell.png'
+                    height={25}
+                    width={25}
+                    className='mx-1'
+                    alt=''
+                  />{' '}
+                  {transaction.shells} <span className='mx-1'> &rarr; </span>{' '}
+                  Php
+                  {transaction.payment_total_amount}
+                </>
+              )}
+            </div>
+          ),
+          created_at: dateFormat(transaction.created_at),
+          // action: (
+          //   <div key={i} className='button-actions text-light d-flex'>
+          //     <Button
+          //       variant='primary'
+          //       onClick={() => viewCompleteDetails(user.user_id)}
+          //       style={{ cursor: 'pointer' }}
+          //       className='p-2 me-2 rounded'
+          //     >
+          //       <FontAwesomeIcon icon={faCheck} className='mx-2' />
+          //     </Button>
+          //     <Button
+          //       variant='danger'
+          //       onClick={() => findUser(user.user_id)}
+          //       style={{ cursor: 'pointer' }}
+          //       className='p-2 2 rounded'
+          //     >
+          //       <FontAwesomeIcon icon={faClose} className='mx-2' />
+          //     </Button>
+          //   </div>
+          // ),
+        };
       });
+
+      setBody(transactions);
+      setLoading(false);
+    });
   }
 
   useEffect(() => {
     setUserTransactionsDataTable(1);
     fetchUnderReviewTransaction();
     fetchApprovedTransaction();
-  }, [body.id]);
+    fetchCancelledTransaction();
+  }, []);
 
   return (
     <>
