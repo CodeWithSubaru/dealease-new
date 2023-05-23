@@ -70,22 +70,14 @@ export function ChangePasswordUser() {
         <SidebarUser />
         <main className='w-100' style={{ minHeight: '828px' }}>
           <br />
-          <Container style={{ margin: '50px 0px 0px  0px', width: '100%' }}>
-            <Card style={{ width: '100%', minWidth: '200px' }}>
+          <Container className='changePasswordContainer'>
+            <Card className='changePasswordCard'>
               <form onSubmit={handleSubmit}>
-                <H1 className='text-home' style={{ marginLeft: '5px' }}>
-                  Change Password
-                </H1>
+                <h3 className='changePasswordh3'>Change Password</h3>
                 <Form.Group className='mb-3'>
-                  <Form.Label
-                    className='text-black'
-                    style={{ marginLeft: '5px' }}
-                  >
-                    Old Password
-                  </Form.Label>
+                  <Form.Label className='text-black'>Old Password</Form.Label>
                   &nbsp;<span className='text-danger'>*</span>
                   <Form.Control
-                    style={{ margin: '0px 10px 0px  5px', width: '95%' }}
                     type='password'
                     placeholder='Enter Old Password'
                     onChange={(e) =>
@@ -100,15 +92,9 @@ export function ChangePasswordUser() {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
-                  <Form.Label
-                    className='text-black'
-                    style={{ marginLeft: '5px' }}
-                  >
-                    New Password
-                  </Form.Label>
+                  <Form.Label className='text-black'>New Password</Form.Label>
                   &nbsp;<span className='text-danger'>*</span>
                   <Form.Control
-                    style={{ margin: '0px 10px 0px 5px', width: '95%' }}
                     type='password'
                     placeholder='Enter New Password'
                     onChange={(e) =>
@@ -123,16 +109,12 @@ export function ChangePasswordUser() {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
-                  <Form.Label
-                    className='text-black'
-                    style={{ marginLeft: '5px' }}
-                  >
+                  <Form.Label className='text-black'>
                     Confirm Password
                   </Form.Label>
                   &nbsp;
                   <span className='text-danger'>*</span>
                   <Form.Control
-                    style={{ margin: '0px 10px 0px  5px', width: '95%' }}
                     type='password'
                     placeholder='Re-Enter Confirm Password'
                     onChange={(e) =>
@@ -143,12 +125,7 @@ export function ChangePasswordUser() {
                     }
                   />
                 </Form.Group>
-                <button
-                  className='btn btn-primary w-30 rounded'
-                  style={{ marginBottom: '10px', marginLeft: '5px' }}
-                >
-                  Submit
-                </button>
+                <button className='btn btn-primary w-30 rounded'>Submit</button>
               </form>
             </Card>
           </Container>

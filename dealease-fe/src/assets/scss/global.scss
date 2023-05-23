@@ -186,8 +186,29 @@
 .transactionsMobileView {
   display: none;
 }
-
+.changePasswordCard {
+  padding: 50px;
+  width: 50%;
+  margin: auto;
+}
+.changePasswordContainer {
+  width: 100%;
+  margin-top: 30px;
+}
 @media only screen and (max-width: 600px) {
+  .changePasswordContainer {
+    width: 100%;
+    padding: 0 !important;
+  }
+  .changePasswordCard {
+    padding: 30px;
+    width: 100%;
+    margin: auto;
+    top: 65px;
+  }
+  .changePasswordh3 {
+    font-size: 18px;
+  }
   .ordersTableDesktopView {
     display: none;
   }
@@ -498,6 +519,7 @@
   .offCanvas {
     background-color: #0c6ffd;
   }
+
   .contacts-footer {
     height: 490px;
   }
