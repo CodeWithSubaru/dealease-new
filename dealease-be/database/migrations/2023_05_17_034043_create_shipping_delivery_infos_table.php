@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('shipping_delivery_infos', function (Blueprint $table) {
             $table->id('shipping_delivery_id');
             $table->foreignId('order_trans_id');
-            $table->foreignId('rider_id')->nullable();
+            // $table->foreignId('rider_id')->nullable();
             $table->string('full_name');
             $table->string('contact_number', 11);
             $table->char('delivery_status', 1);

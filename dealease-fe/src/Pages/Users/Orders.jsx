@@ -520,22 +520,27 @@ export function OrdersSeller() {
     if (status === '2') {
       return 'Preparing';
     }
+
+    // if (status === '3') {
+    //   return 'Waiting rider';
+    // }
+    // if (status === '4') {
+    //   return 'To Pick Up';
+    // }
+
     if (status === '3') {
-      return 'Waiting rider';
-    }
-    if (status === '4') {
-      return 'To Pick Up';
-    }
-    if (status === '5') {
       return 'To Deliver';
     }
-    if (status === '6') {
+
+    if (status === '4') {
       return 'Delivered';
     }
-    if (status === '7') {
+
+    if (status === '5') {
       return 'Success';
     }
-    if (status === '8') {
+
+    if (status === '6') {
       return 'Failed';
     }
   }
@@ -560,14 +565,11 @@ export function OrdersSeller() {
     if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
-    if (status === '6') {
-      return 'border-success bg-success bg-opacity-75 text-light';
-    }
     if (status === '7') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
     if (status === '8') {
-      return 'border-danger bg-danger bg-opacity-75 text-light';
+      return 'border-success bg-success bg-opacity-75 text-light';
     }
   }
 
@@ -590,21 +592,57 @@ export function OrdersSeller() {
     });
   }
 
-  function findRider(orderNumber) {
+  // function findRider(orderNumber) {
+  //   Finalize({
+  //     text: 'You want accept this order request and Find Rider',
+  //     confirmButton: 'Yes',
+  //     successMsg: 'Order Accepted Successfully.',
+  //   }).then((res) => {
+  //     if (res.isConfirmed) {
+  //       axiosClient
+  //         .put('/orders/' + orderNumber, { status: 3 })
+  //         .then((resp) => {})
+  //         .catch((e) => console.log(e));
+  //       fetchNumberOrdersByStatusUser(1);
+  //       fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+  //       fetchNumberOrdersByStatusUser([6, 7, 8]);
+  //       setUserOrdersTable([2, 3, 4, 5]);
+  //     }
+  //   });
+  // }
+
+  function toDeliver(orderTransId) {
     Finalize({
-      text: 'You want accept this order request and Find Rider',
+      text: 'Are you sure you want change status To Deliver Status?',
       confirmButton: 'Yes',
-      successMsg: 'Order Accepted Successfully.',
+      successMsg: 'Order changed status To Deliver Successfully.',
     }).then((res) => {
       if (res.isConfirmed) {
         axiosClient
-          .put('/orders/' + orderNumber, { status: 3 })
+          .post('/seller/toDeliver/' + orderTransId)
+          .then((resp) => {
+            setUserOrdersTable(3);
+          })
+          .catch((e) => console.log(e));
+      }
+    });
+  }
+
+  function delivered(orderTransId) {
+    Finalize({
+      text: 'Change status to Delivered?',
+      confirmButton: 'Yes',
+      successMsg: 'Status Changed to Delivered Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/seller/delivered/' + orderTransId)
           .then((resp) => {})
           .catch((e) => console.log(e));
-        fetchNumberOrdersByStatusUser(1);
-        fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-        fetchNumberOrdersByStatusUser([6, 7, 8]);
-        setUserOrdersTable([2, 3, 4, 5]);
+        // fetchNumberOrdersByStatusUser(1);
+        // fetchNumberOrdersByStatusUser(2);
+        // fetchNumberOrdersByStatusUser(3);
+        setRiderDeliveryTable('/rider/toPickUp');
       }
     });
   }
@@ -690,10 +728,6 @@ export function OrdersSeller() {
     {
       title: 'Shipping Address',
       prop: 'shipping_address',
-    },
-    {
-      title: 'Rider Name',
-      prop: 'rider_name',
     },
     {
       title: 'Status',
@@ -786,37 +820,32 @@ export function OrdersSeller() {
             (order.buyer.user_details.city
               ? order.buyer.user_details.city
               : ''),
-          rider_name: (
-            <div key={order.order_trans_id}>
-              <div>
-                <p className='mb-0'>
-                  {order.delivery
-                    ? order.delivery.rider.first_name
-                      ? order.delivery.rider.first_name
-                      : ''
-                    : ''}{' '}
-                  {order.delivery
-                    ? order.delivery.rider
-                      ? order.delivery.rider.user_details.middle_name
-                        ? order.delivery.rider.user_details.middle_name[0] +
-                          '. '
-                        : ''
-                      : ''
-                    : ''}
-                  {order.delivery
-                    ? order.delivery.rider
-                      ? order.delivery.rider.user_details.last_name
-                      : ' '
-                    : ''}{' '}
-                  {order.delivery
-                    ? order.delivery.rider
-                      ? order.delivery.rider.user_details.ext_name
-                      : ''
-                    : ''}
-                </p>
-              </div>
-            </div>
-          ),
+          // rider_name: (
+          //   <div key={order.order_trans_id}>
+          //     <div>
+          //       <p className='mb-0'>
+          //         {order.delivery
+          //           ? order.delivery.rider.first_name
+          //             ? order.delivery.rider.first_name
+          //             : ''
+          //           : ''}{' '}
+          //         {order.delivery
+          //           ? order.delivery.rider
+          //             ? order.delivery.rider.user_details.middle_name
+          //               ? order.delivery.rider.user_details.middle_name[0] +
+          //                 '. '
+          //               : ''
+          //             : ''
+          //           : ''}
+          //         {order.delivery
+          //           ? order.delivery.rider
+          //             ? order.delivery.rider.user_details.ext_name
+          //             : ''
+          //           : ''}
+          //       </p>
+          //     </div>
+          //   </div>
+          // ),
           order_status: (
             <span
               className={
@@ -855,8 +884,8 @@ export function OrdersSeller() {
                 View
               </Button>
 
-              {order.order_trans_status === '1' &&
-              order.order_trans_status > 0 ? (
+              {/* accept order */}
+              {order.order_trans_status === '1' ? (
                 <>
                   <Button
                     variant='success'
@@ -873,18 +902,36 @@ export function OrdersSeller() {
                 ''
               )}
 
-              {order.order_trans_status === '2' &&
-              order.order_trans_status > 0 ? (
+              {/* to delivery */}
+              {order.order_trans_status === '2' ? (
                 <>
                   <Button
                     variant='success'
                     onClick={() => {
-                      findRider(order.order_number);
+                      toDeliver(order.order_trans_id);
                     }}
                     style={{ cursor: 'pointer' }}
                     className='badge rounded px-2 me-2'
                   >
-                    Find Rider
+                    To Deliver
+                  </Button>
+                </>
+              ) : (
+                ''
+              )}
+
+              {/* Delivered action */}
+              {order.order_trans_status === '3' ? (
+                <>
+                  <Button
+                    variant='success'
+                    onClick={() => {
+                      delivered(order.order_trans_id);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2 me-2'
+                  >
+                    Delivered
                   </Button>
                 </>
               ) : (

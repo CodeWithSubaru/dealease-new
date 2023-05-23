@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id('deliveries_id');
             $table->foreignId('order_trans_id');
-            $table->foreignId('rider_id');
+            // $table->foreignId('rider_id');
             $table->char('delivery_status', 1);
             $table->timestamps();
         });

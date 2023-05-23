@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Admin\AdminPaymentController;
 use App\Http\Controllers\Api\ManageProfile;
 use App\Http\Controllers\Api\ProductFilterController;
 use App\Http\Controllers\Api\Rider\RiderController;
+use App\Http\Controllers\Api\Seller\SellerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,16 +66,32 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     // Rider
-    Route::get('/rider', [RiderController::class, 'availableOrdersToPickUp']);
-    Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
-    Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
-    Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
-    Route::get('/rider/onGoingOrders', [RiderController::class, 'onGoingOrders']);
-    Route::post('/rider/delivered/{id}', [RiderController::class, 'delivered']);
-    Route::get('/rider/delivered', [RiderController::class, 'itemDelivered']);
-    Route::post('/rider/returnItem/{id}', [RiderController::class, 'returnItem']);
-    Route::get('/rider/failedDelivery', [RiderController::class, 'failedDelivery']);
-    Route::get('/rider/successDelivery', [RiderController::class, 'successDelivery']);
+    // Route::get('/rider', [RiderController::class, 'availableOrdersToPickUp']);
+    // Route::post('/riderAcceptOrder', [RiderController::class, 'acceptOrder']);
+    // Route::get('/rider/toPickUp', [RiderController::class, 'itemToPickUp']);
+    // Route::post('/rider/toDeliver/{id}', [RiderController::class, 'toDeliver']);
+    // Route::get('/rider/onGoingOrders', [RiderController::class, 'onGoingOrders']);
+    // Route::post('/rider/delivered/{id}', [RiderController::class, 'delivered']);
+    // Route::get('/rider/delivered', [RiderController::class, 'itemDelivered']);
+    // Route::post('/rider/returnItem/{id}', [RiderController::class, 'returnItem']);
+    // Route::get('/rider/failedDelivery', [RiderController::class, 'failedDelivery']);
+    // Route::get('/rider/successDelivery', [RiderController::class, 'successDelivery']);
+
+    // Seller Route
+    Route::post('/seller/toDeliver/{id}', [SellerController::class, 'toDeliver']);
+    Route::get('/seller/onGoingOrders', [SellerController::class, 'onGoingOrders']);
+    Route::post('/seller/delivered/{id}', [SellerController::class, 'delivered']);
+    Route::get('/seller/delivered', [SellerController::class, 'itemDelivered']);
+    Route::post('/seller/returnItem/{id}', [SellerController::class, 'returnItem']);
+    Route::get('/seller/failedDelivery', [SellerController::class, 'failedDelivery']);
+    Route::get('/seller/successDelivery', [SellerController::class, 'successDelivery']);
+    Route::post('/seller/toDeliver/{id}', [SellerController::class, 'toDeliver']);
+    Route::get('/seller/onGoingOrders', [SellerController::class, 'onGoingOrders']);
+    Route::post('/seller/delivered/{id}', [SellerController::class, 'delivered']);
+    Route::get('/seller/delivered', [SellerController::class, 'itemDelivered']);
+    Route::post('/seller/returnItem/{id}', [SellerController::class, 'returnItem']);
+    Route::get('/seller/failedDelivery', [SellerController::class, 'failedDelivery']);
+    Route::get('/seller/successDelivery', [SellerController::class, 'successDelivery']);
 
     // Buyer Order Received
     Route::post('/buyer/orderReceived/{id}', [OrderController::class, 'orderReceived']);

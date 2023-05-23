@@ -262,7 +262,6 @@ export const DeliveredRider = () => {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderDeliveryTable('/rider/toPickUp');
       }
     });
   }

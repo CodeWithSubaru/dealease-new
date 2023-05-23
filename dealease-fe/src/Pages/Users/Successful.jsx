@@ -5,6 +5,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { H1 } from '../../Components/Helpers/index.style';
 
 export function SuccessfulUser() {
   const { user } = useAuthContext();
@@ -54,7 +55,7 @@ export function SuccessfulUser() {
     let totalPrice = 0;
     Object.values(cart).forEach((cartItem) => {
       for (let i = 0; i < cartItem.length; i++) {
-        totalPrice += Number(cartItem[i].total_price) + Number(delFee);
+        totalPrice += Number(cartItem[i].total_price) + Number(0);
       }
     });
     return Number(totalPrice);
@@ -63,7 +64,7 @@ export function SuccessfulUser() {
   return (
     <div className='mx-2 shadow mt-3 py-4'>
       <Card className='mt-3' style={{ minHeight: '85vh' }}>
-        <h1 className='fw-bold mb-0 p-4 pb-0 fs-2'>Payment Receipt</h1>
+        <H1 className='fw-bold mb-0 p-4 pb-0 fs-2'>Payment Receipt</H1>
         <div className='d-flex flex-column justify-content-center align-items-center h-100 pt-0'>
           <div className=''>
             <div className='border border-2 border-info rounded p-3 mb-5'>
@@ -190,14 +191,6 @@ export function SuccessfulUser() {
                 <br />
                 <span className='fw-semibold'> Sub Total:</span>{' '}
                 {calculateSubTotalPrice(item)}
-                <p>
-                  <span className='fw-semibold'> Delivery Fee: </span>{' '}
-                  {changeDeliveryFeePerBrgy(
-                    Object.keys(otherAddress).length > 0
-                      ? otherAddress.shippingFee.barangay
-                      : user.user_details.barangay
-                  )}
-                </p>
               </p>
             ))}
             <div className='border border-2 border-info rounded p-3 bg-info bg-opacity-25 mb-4'>
@@ -211,14 +204,7 @@ export function SuccessfulUser() {
                     alt=''
                     className='mx-2'
                   />{' '}
-                  {calculateGrandTotalDeliveryFee(
-                    step1,
-                    changeDeliveryFeePerBrgy(
-                      Object.keys(otherAddress).length > 0
-                        ? otherAddress.shippingFee.barangay
-                        : user.user_details.barangay
-                    )
-                  )}
+                  {calculateGrandTotalDeliveryFee(step1)}
                 </span>
               </div>
             </div>
@@ -249,7 +235,7 @@ export function SuccessfulUser() {
               className='text-success mb-2'
               style={{ fontSize: '70px' }}
             />
-            <H1 className='text-home'>Successful</H1>
+            <h1 className='fw-semibold capitalize mb-3'>Successful</h1>
             <p className='mb-0'>Your order is on pending.</p>
             <p>Please wait for the confirmation of Seller</p>
             <hr />
