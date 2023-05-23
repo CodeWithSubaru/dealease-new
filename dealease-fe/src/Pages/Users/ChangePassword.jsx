@@ -27,6 +27,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Footer } from '../../Components/Footer/Footer';
 import { SidebarUser } from '../../Components/Sidebar/Sidebar';
+import { H1 } from '../../Components/Helpers/index.style';
 
 export function ChangePasswordUser() {
   const [errors, setErrors] = useState({});

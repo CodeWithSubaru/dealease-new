@@ -73,7 +73,8 @@ const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
 
 export function SidebarUser() {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);
-  const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
+  const { user, setEmailVerified, setRegistrationSuccess, fetchUserInfo } =
+    useAuthContext();
   const { setDoneTransaction } = useOrderContext();
   const [errors, setErrors] = useState([]);
 
@@ -134,6 +135,7 @@ export function SidebarUser() {
           message: res.data.status,
           icon: 'success',
         }).then(() => {
+          fetchUserInfo();
           closeUpdateAccessModal();
         });
       })
@@ -289,10 +291,12 @@ export function SidebarUser() {
                               Update Access
                             </Button>
                           </>
-                        ) : (
+                        ) : user.verified_user == 0 && user.avr_id == 1 ? (
                           <span className='bg-secondary text-white p-2 rounded'>
                             Wait for Admin Approval
                           </span>
+                        ) : (
+                          ''
                         )}
                       </div>
                     )}

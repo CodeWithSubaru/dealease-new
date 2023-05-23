@@ -29,6 +29,7 @@ import { CustomNav } from '../../Components/Header/CustomNav';
 import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 import axiosClient from '../../api/axios';
 import { Notification } from '../../Components/Notification/Notification';
+import { H1 } from '../../Components/Helpers/index.style';
 const styles = {
   width: 300,
   marginBottom: 10,
@@ -106,7 +107,7 @@ export const ProfileUser = () => {
             bordered
             header={
               <Stack justifyContent='space-between'>
-                <h5 className=''>Account Information</h5>
+                <H1 className='text-home'>Account Information</H1>
               </Stack>
             }
           >
