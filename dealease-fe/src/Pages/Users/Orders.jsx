@@ -8,6 +8,7 @@ import useAuthContext from "../../Hooks/Context/AuthContext";
 import { SidebarUser } from "../../Components/Sidebar/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { CustomList } from "../../Components/List/CustomList";
+
 export function OrdersBuyer() {
   const title = "Buyer";
   const [body, setBody] = useState([]);
@@ -18,6 +19,8 @@ export function OrdersBuyer() {
   const [viewOrderProduct, setViewOrderProduct] = useState(false);
   const [viewOrders, setViewOrders] = useState([]);
   const { fetchUserInfo } = useAuthContext();
+  const [currentColor, setCurrentColor] = useState(0);
+  const [pageTitle, setPageTitle] = useState("Pending Orders");
 
   function fetchNumberOrdersByStatusUser(orderStatus) {
     axiosClient
@@ -226,6 +229,7 @@ export function OrdersBuyer() {
     setBody([]);
     setLoading(true);
     axiosClient.get("/orders/orders-user/buyer/" + number).then((resp) => {
+      console.log(resp.data);
       const orders = resp.data.map((order, i) => {
         return {
           id: i + 1,
@@ -238,7 +242,7 @@ export function OrdersBuyer() {
             >
               <div>
                 <p className="mb-0">
-                  {order.seller.first_name}{" "}
+                  {order.seller.user_details.first_name}{" "}
                   {order.seller.user_details.middle_name
                     ? order.seller.user_details.middle_name[0] + ". "
                     : ""}
@@ -342,26 +346,107 @@ export function OrdersBuyer() {
   }, []);
 
   return (
-    <div style={{ display: "flex", height: "100%" }}>
+    <div className="d-flex">
       <SidebarUser />
+
       <main className="w-100">
-        <OrdersTable
-          loading={loading}
-          setLoading={setLoading}
-          header={header}
-          body={body}
-          title={title}
-          pendingOrderNumber={pendingOrderNumber}
-          processingOrderNumber={processingOrderNumber}
-          deliveredOrderNumber={deliveredOrderNumber}
-          viewOrderProduct={viewOrderProduct}
-          closeViewOrderProduct={closeViewOrderProduct}
-          viewOrders={viewOrders}
-          status={status}
-          calculateGrandTotalPrice={calculateGrandTotalPrice}
-          setUserOrdersTable={setUserOrdersTable}
-          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        />
+        <div className="ordersTableDesktopView">
+          <OrdersTable
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            body={body}
+            title={title}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrderProduct={viewOrderProduct}
+            closeViewOrderProduct={closeViewOrderProduct}
+            viewOrders={viewOrders}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
+        </div>
+
+        <div className="ordersTableMobileView mx-2 mt-5 pt-5">
+          <div className="d-flex mb-2">
+            <span
+              className={
+                "px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold " +
+                (currentColor == 0 ? "btn-primary" : "btn-secondary")
+              }
+              onClick={() => {
+                setUserOrdersTable(1);
+                fetchNumberOrdersByStatusUser(1);
+                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                setPageTitle("Pending Orders");
+                setCurrentColor(0);
+              }}
+              disabled={loading}
+            >
+              Pending
+            </span>
+
+            <span
+              className={
+                "px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold " +
+                (currentColor == 1 ? "btn-primary" : "btn-secondary")
+              }
+              onClick={() => {
+                setUserOrdersTable([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser(1);
+                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                setPageTitle("Processing Orders");
+                setCurrentColor(1);
+              }}
+              disabled={loading}
+            >
+              Processing
+            </span>
+
+            <span
+              className={
+                "px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold " +
+                (currentColor == 2 ? "btn-primary" : "btn-secondary")
+              }
+              onClick={() => {
+                setUserOrdersTable([6, 7, 8]);
+                fetchNumberOrdersByStatusUser(1);
+                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                setPageTitle("Delivered Orders");
+                setCurrentColor(2);
+                disabled = { loading };
+              }}
+              disabled={loading}
+            >
+              Delivered
+            </span>
+          </div>
+
+          <CustomList
+            data={body}
+            title={title}
+            pageTitle={pageTitle}
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrderProduct={viewOrderProduct}
+            closeViewOrderProduct={closeViewOrderProduct}
+            viewOrders={viewOrders}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
+        </div>
       </main>
     </div>
   );
@@ -378,6 +463,8 @@ export function OrdersSeller() {
   const [viewOrders, setViewOrders] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuthContext();
+  const [currentColor, setCurrentColor] = useState(0);
+  const [pageTitle, setPageTitle] = useState("Pending Orders");
 
   if (user.verified_user == 0) {
     navigate("/orders");
@@ -737,7 +824,6 @@ export function OrdersSeller() {
                 switchColor(order.order_trans_status)
               }
             >
-              {console.log("HERE", order)}
               {status(order.order_trans_status)}
             </span>
           ),
@@ -841,27 +927,108 @@ export function OrdersSeller() {
   }, []);
 
   return (
-    <div style={{ display: "flex", height: "100%" }}>
+    <div className="d-flex">
       <SidebarUser />
       <main className="w-100">
-        <OrdersTable
-          loading={loading}
-          setLoading={setLoading}
-          header={header}
-          header1={header1}
-          body={body}
-          title={title}
-          pendingOrderNumber={pendingOrderNumber}
-          processingOrderNumber={processingOrderNumber}
-          deliveredOrderNumber={deliveredOrderNumber}
-          viewOrders={viewOrders}
-          viewOrderBuyerModal={viewOrderBuyerModal}
-          closeViewOrderBuyerModal={closeViewOrderBuyerModal}
-          status={status}
-          calculateGrandTotalPrice={calculateGrandTotalPrice}
-          setUserOrdersTable={setUserOrdersTable}
-          fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        />
+        {/* Desktop View */}
+        <div className="ordersTableDesktopView">
+          <OrdersTable
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            header1={header1}
+            body={body}
+            title={title}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrders={viewOrders}
+            viewOrderBuyerModal={viewOrderBuyerModal}
+            closeViewOrderBuyerModal={closeViewOrderBuyerModal}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
+        </div>
+
+        {/* Mobile View */}
+        <div className="ordersTableMobileView mx-2 mt-5 pt-1">
+          <div className="mt-5">
+            <div className="d-flex mb-2">
+              <span
+                className={
+                  "px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold " +
+                  (currentColor == 0 ? "btn-primary" : "btn-secondary")
+                }
+                onClick={() => {
+                  setUserOrdersTable(1);
+                  fetchNumberOrdersByStatusUser(1);
+                  fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser([6, 7, 8]);
+                  setPageTitle("Pending Orders");
+                  setCurrentColor(0);
+                }}
+                disabled={loading}
+              >
+                Pending
+              </span>
+
+              <span
+                className={
+                  "px-1 rounded-pill btn btn-filter-product mt-3 fw-semibold " +
+                  (currentColor == 1 ? "btn-primary" : "btn-secondary")
+                }
+                onClick={() => {
+                  setUserOrdersTable([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser(1);
+                  fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser([6, 7, 8]);
+                  setPageTitle("Processing Orders");
+                  setCurrentColor(1);
+                }}
+                disabled={loading}
+              >
+                Processing
+              </span>
+
+              <span
+                className={
+                  "px-1 rounded-pill btn btn-filter-product mt-3  fw-semibold " +
+                  (currentColor == 2 ? "btn-primary" : "btn-secondary")
+                }
+                onClick={() => {
+                  setUserOrdersTable([6, 7, 8]);
+                  fetchNumberOrdersByStatusUser(1);
+                  fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
+                  fetchNumberOrdersByStatusUser([6, 7, 8]);
+                  setPageTitle("Delivered Orders");
+                  setCurrentColor(2);
+                }}
+                disabled={loading}
+              >
+                Delivered
+              </span>
+            </div>
+          </div>
+
+          <CustomList
+            data={body}
+            title={title}
+            pageTitle={pageTitle + " (Seller)"}
+            loading={loading}
+            setLoading={setLoading}
+            header={header}
+            pendingOrderNumber={pendingOrderNumber}
+            processingOrderNumber={processingOrderNumber}
+            deliveredOrderNumber={deliveredOrderNumber}
+            viewOrders={viewOrders}
+            status={status}
+            calculateGrandTotalPrice={calculateGrandTotalPrice}
+            setUserOrdersTable={setUserOrdersTable}
+            fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
+          />
+        </div>
       </main>
     </div>
   );

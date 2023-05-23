@@ -39,7 +39,7 @@ export const LoginAdmin = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     loginAdmin({
-      email,
+      login: email,
       password,
       role_type,
     });
@@ -67,7 +67,9 @@ export const LoginAdmin = () => {
                 <div className='Auth-form-content'>
                   <H1 className='Auth-form-title text-white'>Login Admin</H1>
                   <div className='mt-4'>
-                    <div style={{ color: '#fff', opacity: '1' }}>Email</div>
+                    <div style={{ color: '#fff', opacity: '1' }}>
+                      Email / Username
+                    </div>
                     <div>
                       <div className='login-wrapper'>
                         <FontAwesomeIcon
@@ -77,7 +79,7 @@ export const LoginAdmin = () => {
                         <input
                           type='email'
                           className='login-input form-control mt-1'
-                          name='email'
+                          name='text'
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder='Email'
                           autoFocus
@@ -111,7 +113,10 @@ export const LoginAdmin = () => {
                   </small>
 
                   <div className='d-flex mt-5'>
-                    <button type='submit' className='btn btn-submit'>
+                    <button
+                      type='submit'
+                      className='btn btn-outline btn-light btn-submit-login'
+                    >
                       Sign in
                     </button>
                   </div>

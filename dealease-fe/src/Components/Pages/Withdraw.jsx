@@ -27,15 +27,8 @@ export function Withdraw() {
 
   return (
     <Container className='withdraw-container'>
-      <Card
-        className='withdraw-card'
-        style={{
-          width: '100%',
-          minWidth: '200px',
-          margin: '80px 50px 0px  0px',
-        }}
-      >
-        <div className='p-3'>
+      <Card className='withdraw-card'>
+        <div className=''>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -73,7 +66,15 @@ export function Withdraw() {
               });
             }}
           >
-            <h1 className='fs-1 lh-sm mb-3'>Request for Withdrawal</h1>
+            Your Current Balance:{' '}
+            <img
+              src='/images/seashell.png'
+              className='ml-2 mr-1 d-inline-block align-top'
+              width='20'
+              height='20'
+            ></img>{' '}
+            {user.wallet ? user.wallet.shell_coin_amount : null}
+            <h1 className='fs-1 request-title mb-3'>Request for Withdrawal</h1>
             <Form.Group>
               <Form.Label className='text-black'>Shell amount</Form.Label>
               <Form.Control
@@ -105,7 +106,6 @@ export function Withdraw() {
                 Php {shellToConvert - calculateFee()}
               </span>
             </Form.Group>
-
             <Button
               type='submit'
               variant='primary'
@@ -114,7 +114,7 @@ export function Withdraw() {
                   Number(user.wallet ? user.wallet.shell_coin_amount : 0) ||
                 shellToConvert < 1000
               }
-              className='rounded'
+              className='rounded mt-3 w-100'
             >
               Withdraw
             </Button>

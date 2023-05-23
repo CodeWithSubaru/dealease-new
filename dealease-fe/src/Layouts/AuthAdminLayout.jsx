@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
-
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header/Header';
 import useAuthContext from '../Hooks/Context/AuthContext';
@@ -32,7 +32,11 @@ export function AuthAdminLayout() {
   const handleLogout = () => {
     logout();
   };
-
+  const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+    <Link ref={ref} to={href} {...rest}>
+      {children}
+    </Link>
+  ));
   return (
     <>
       {['lg'].map((expand) => (
@@ -88,16 +92,32 @@ export function AuthAdminLayout() {
               </Offcanvas.Header>
               <Offcanvas.Body className='offCanvas'>
                 <Nav className='justify-content-center flex-grow-1 pe-4'>
-                  <Nav.Link className='navLink' href='/admin/dashboard'>
+                  <Nav.Link
+                    className='navLink'
+                    as={NavLink}
+                    href='/admin/dashboard'
+                  >
                     Dashboard
                   </Nav.Link>
-                  <Nav.Link className='navLink' href='/admin/users'>
+                  <Nav.Link
+                    className='navLink'
+                    as={NavLink}
+                    href='/admin/users'
+                  >
                     Users
                   </Nav.Link>
-                  <Nav.Link className='navLink' href='/admin/transactions'>
+                  <Nav.Link
+                    className='navLink'
+                    as={NavLink}
+                    href='/admin/transactions'
+                  >
                     Transactions
                   </Nav.Link>
-                  <Nav.Link className='navLink' href='/admin/announcement'>
+                  <Nav.Link
+                    className='navLink'
+                    as={NavLink}
+                    href='/admin/announcement'
+                  >
                     Announcement
                   </Nav.Link>
 
@@ -120,7 +140,7 @@ export function AuthAdminLayout() {
                     overlay={<Tooltip id='tooltip-disabled'>Settings</Tooltip>}
                     placement='bottom'
                   >
-                    <Nav.Link href='/settings'>
+                    <Nav.Link as={NavLink} href='/admin/settings'>
                       <FontAwesomeIcon icon={faCog} className='navs-icon' />{' '}
                     </Nav.Link>
                   </OverlayTrigger>
@@ -203,7 +223,7 @@ export function AuthAdminLayout() {
                         objectFit: 'fit',
                       }}
                     />{' '}
-                    {user.first_name}
+                    {user.user_details.first_name}
                   </Button>
 
                   <Dropdown.Toggle

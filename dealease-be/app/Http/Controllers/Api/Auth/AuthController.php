@@ -37,6 +37,7 @@ class AuthController extends Controller
             'barangay' => ['required'],
             'birth_date' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
+            'username' => ['required', 'string', 'regex:/\w*$/', 'min:3', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'first_valid_id' => $request->has('first_valid_id') ? ['required', 'image'] : '',
@@ -69,7 +70,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $user->first_name = $request->first_name;
+        $user->username = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_type = $request->user_type ? $request->user_type : 1;
@@ -82,6 +83,7 @@ class AuthController extends Controller
 
         if ($user) {
             $userDetails = UserDetail::create([
+                'first_name' => $request->first_name,
                 'middle_name' => $request->middle_name,
                 'last_name' => $request->last_name,
                 'ext_name' => $request->ext_name,
@@ -177,24 +179,34 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $loginField = '';
+        $loginValue = '';
+
+        $loginField = filter_var(
+            $request->input('login'),
+            FILTER_VALIDATE_EMAIL
+        ) ? 'email' : 'username';
+        $loginValue = $request->input('login');
+        $request->merge([$loginField => $loginValue]);
 
         $validated = $request->validate([
-            'email' => ['required', 'string', 'email'],
+            'username' => ['required_without:email', 'string', 'max:255'], // validation for username : 'regex:/\w*$/', , 'unique:users', 
+            'email' => ['required_without:username', 'string', 'email'],
             'password' => ['required', 'string'],
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password', 'role_type'))) {
+        if (!Auth::attempt($request->only($loginField, 'password', 'role_type'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
-        $auth_user = User::with('user_details', 'wallet')->where('email', $request->email);
+        $auth_user = User::with('user_details', 'wallet')->where($loginField, $loginValue);
 
-        $token = $request->user()->createToken($auth_user->get()[0]->email)->plainTextToken;
+        $token = $request->user()->createToken($auth_user->first()->email ? $auth_user->first()->email : $auth_user->first()->username)->plainTextToken;
 
         $data = [
-            'message' => 'Welcome ' . Auth::user()->first_name . '. You are Login Succesfully',
+            'message' => 'Welcome ' . Auth::user()->username . '. You are Login Succesfully',
             'user' => $auth_user->get(),
             'token' => $token,
         ];

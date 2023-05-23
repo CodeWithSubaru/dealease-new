@@ -51,6 +51,8 @@ import { Link } from 'react-router-dom';
 import { ViewSingleUser } from './ViewSingleUser';
 import PUBLIC_URL from '../../api/public_url';
 import { Footer } from '../../Components/Footer/Footer';
+import { Load } from '../../Components/Loader/Load';
+
 export function Dashboard() {
   const [singleUser, setSingleUser] = useState(null);
   const [countOfUsers, setCountOfUsers] = useState([]);
@@ -62,6 +64,7 @@ export function Dashboard() {
   const [totalAmountRecharge, settotalAmountRecharge] = useState(0);
   const [totalAmountWithdraw, settotalAmountWithdraw] = useState(0);
   const [totalAmount, settotalAmount] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const header = [
     {
@@ -133,6 +136,8 @@ export function Dashboard() {
   };
 
   function setUserDataTable() {
+    setLoading(true);
+    setBody([]);
     axiosClient.get('/admin/users-by-10').then((resp) => {
       const user = resp.data.listOfUser.map((user, i) => {
         return {
@@ -146,7 +151,7 @@ export function Dashboard() {
               />
               <div>
                 <p className='mb-0'>
-                  {user.first_name + ' '}
+                  {user.user_details ? user.user_details.first_name : ''}
                   {user.user_details
                     ? user.user_details.middle_name
                       ? user.user_details.middle_name + '. '
@@ -184,6 +189,7 @@ export function Dashboard() {
         };
       });
       setBody(user);
+      setLoading(false);
     });
   }
 
@@ -393,7 +399,7 @@ export function Dashboard() {
         </Sidebar> */}
         <main className='w-100' style={{ minHeight: '815px' }}>
           <Card className='dashboard w-75 mx-auto px-4'>
-            <H1 className='mt-4'>Dashboard</H1>
+            <H1 className='text-home mt-4'>Dashboard</H1>
             <div className='cards-details-wrapper d-flex justify-content-between flex-wrap mb-5'>
               <CardDetails
                 title='Users'
@@ -480,8 +486,12 @@ export function Dashboard() {
             </div>
 
             <div className='card my-5 p-4 rounded border-0'>
-              <H1 className='mb-3'>Latest Users</H1>
-              <TableComponent header={header} body={body} />
+              <H1 className='text-home mb-3'>Latest Users</H1>
+              {loading ? (
+                <Load />
+              ) : (
+                <TableComponent header={header} body={body} />
+              )}
             </div>
           </Card>
         </main>

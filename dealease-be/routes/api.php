@@ -44,6 +44,7 @@ Route::get('/product/search/{product}', [ProductFilterController::class, 'search
 
 // Login
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -78,8 +79,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Buyer Order Received
     Route::post('/buyer/orderReceived/{id}', [OrderController::class, 'orderReceived']);
 
-
+    Route::get('/transactions/under-review', [PaymentController::class, 'numberOfUnderReviewTransaction']);
+    Route::get('/transactions/approved', [PaymentController::class, 'numberOfApprovedTransaction']);
+    Route::get('/transactions/cancelled', [PaymentController::class, 'numberOfCancelledTransaction']);
     Route::apiResource('/transactions', PaymentController::class);
+
     Route::get('/orders/buyer/{order_number}', [OrderController::class, 'viewOrderByOrdNumber']);
     Route::get('/orders/order-status/buyer/{order_status}', [OrderController::class, 'numberOfOrdersByStatusBuyer']);
     Route::get('/orders/order-status/seller/{order_status}', [OrderController::class, 'numberOfOrdersByStatusSeller']);
@@ -128,7 +132,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/admin/get-number-of-message', [AnalyticsControllers::class, 'getNumOfMessages']);
 
     // announcement
-    Route::get('/announcement', [AnnouncementController::class, 'publicAnnouncement']);
     Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
     Route::post('/admin/announcement/{id}', [AnnouncementController::class, 'update']);
     Route::apiResource('/admin/announcement', AnnouncementController::class);

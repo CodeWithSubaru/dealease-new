@@ -39,8 +39,15 @@ import {
 
 import { OrdersBuyer } from '../Pages/Users/Orders';
 // import { GoogleAdSense } from '../Components/GoogleAdSense';
+import React from 'react';
 
 export function AuthUserLayout() {
+  const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+    <Link ref={ref} to={href} {...rest}>
+      {children}
+    </Link>
+  ));
+
   const [activeKeyTop, setActiveKeyTop] = useState(null);
 
   const [activeKey, setActiveKey] = useState(null);
@@ -69,7 +76,7 @@ export function AuthUserLayout() {
     <>
       <Navbar bg='primary' variant='dark' sticky='top' className='UserNavbar'>
         <Container>
-          <Navbar.Brand href='/'>
+          <Navbar.Brand as={NavLink} href='/'>
             <span className='fs-3 text-white fw-bold fst-italic'>
               <img
                 alt=''
@@ -94,7 +101,7 @@ export function AuthUserLayout() {
               overlay={<Tooltip id='tooltip-disabled'>Cart</Tooltip>}
               placement='bottom'
             >
-              <Nav.Link href='/add-to-cart'>
+              <Nav.Link as={NavLink} href='/add-to-cart'>
                 <FontAwesomeIcon
                   icon={faCartShopping}
                   className='navs-icon fs-5'
@@ -107,6 +114,17 @@ export function AuthUserLayout() {
                 </span>
               </Nav.Link>
             </OverlayTrigger>
+
+            {/* conditional role type to determine a buyer or seller */}
+            <OverlayTrigger
+              overlay={<Tooltip id='tooltip-disabled'>Cart</Tooltip>}
+              placement='bottom'
+            >
+              <Nav.Link as={NavLink}>
+                {user.verified_user === 0 ? 'Buyer' : 'Seller'}
+              </Nav.Link>
+            </OverlayTrigger>
+
             <OverlayTrigger
               overlay={<Tooltip id='tooltip-disabled'>Wallet</Tooltip>}
               placement='bottom'
@@ -124,14 +142,7 @@ export function AuthUserLayout() {
                 {user.wallet ? user.wallet.shell_coin_amount : null}
               </button>
             </OverlayTrigger>
-            <OverlayTrigger
-              overlay={<Tooltip id='tooltip-disabled'>Settings</Tooltip>}
-              placement='bottom'
-            >
-              <Nav.Link href='/settings'>
-                <FontAwesomeIcon icon={faCog} className='navs-icon' />{' '}
-              </Nav.Link>
-            </OverlayTrigger>
+
             <OverlayTrigger
               overlay={<Tooltip id='tooltip-disabled'>Help</Tooltip>}
               placement='bottom'
@@ -230,7 +241,7 @@ export function AuthUserLayout() {
                         objectFit: 'fit',
                       }}
                     />{' '}
-                    {user.first_name}
+                    {user.user_details.first_name}
                   </Button>
 
                   <Dropdown.Toggle

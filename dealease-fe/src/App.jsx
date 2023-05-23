@@ -15,6 +15,7 @@ import { AddToCart } from './Pages/Users/AddToCart';
 import { ShippingFee } from './Pages/Users/ShippingFee';
 import { SuccessfulUser } from './Pages/Users/Successful';
 import { OrdersBuyer, OrdersSeller } from './Pages/Users/Orders';
+import { TransactionsUser } from './Pages/Users/Transactions';
 import { SettingsUser } from './Pages/Users/Settings';
 import { ReportUser } from './Pages/Users/Report';
 
@@ -23,6 +24,7 @@ import { HomeRider } from './Pages/Rider/Home';
 import { ToDeliverRider } from './Pages/Rider/ToDeliver';
 import { DeliveredRider } from './Pages/Rider/Delivered';
 import { ProfileRider } from './Pages/Rider/Profile';
+import { WithdrawRider } from './Pages/Rider/Withdraw';
 import { LoginRider } from './Pages/Auth/LoginRider';
 import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
 
@@ -35,7 +37,7 @@ import { ProfileAdmin } from './Pages/Admin/Profile';
 import { Users } from './Pages/Admin/Users';
 import { AnnouncementAdmin } from './Pages/Admin/Announcement';
 import { TransactionsAdmin } from './Pages/Admin/Transactions';
-import { TransactionsUser } from './Pages/Users/Transactions';
+import { SettingsAdmin } from './Pages/Admin/Settings';
 
 // solla
 // Guest Layout
@@ -90,6 +92,7 @@ function App() {
               element={<ChangePasswordAdmin />}
             />
             <Route path='/admin/announcement' element={<AnnouncementAdmin />} />
+            <Route path='/admin/settings' element={<SettingsAdmin />} />
           </Route>
 
           {/* Rider */}
@@ -98,6 +101,7 @@ function App() {
             <Route path='/rider/to-deliver' element={<ToDeliverRider />} />
             <Route path='/rider/delivered' element={<DeliveredRider />} />
             <Route path='/rider/profile' element={<ProfileRider />} />
+            <Route path='/rider/withdraw' element={<WithdrawRider />} />
           </Route>
 
           <Route element={<GuestLayout />}>

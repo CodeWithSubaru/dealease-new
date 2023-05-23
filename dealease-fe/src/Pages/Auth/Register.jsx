@@ -37,6 +37,7 @@ export function Register() {
     contact_number: '',
     barangay: '',
     street: '',
+    username: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -61,7 +62,11 @@ export function Register() {
   };
 
   const brgy = (e) => {
-    setUser({ ...user, barangay: e.target.selectedOptions[0].text });
+    if (e.target.value === '') {
+      setUser({ ...user, barangay: '' });
+    } else {
+      setUser({ ...user, barangay: e.target.selectedOptions[0].text });
+    }
   };
 
   const [image, setImage] = useState();
@@ -316,7 +321,7 @@ export function Register() {
                       <div className='mt-2  reg-label'>Barangay</div>
                       <div>
                         <select onChange={brgy} className='form-select'>
-                          <option>Select Barangay</option>
+                          <option value=''>Select Barangay</option>
                           {barangayData &&
                             barangayData.length > 0 &&
                             barangayData.map((item) => (
@@ -407,6 +412,29 @@ export function Register() {
                     </div>
                     <small className='errMsg' v-if='errors.email'>
                       {errors && errors.email && errors.email[0]}
+                    </small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div>
+                      <div className='mt-2  reg-label'>
+                        {' '}
+                        Username <span className='asterisk'>*</span>{' '}
+                      </div>
+                      <div>
+                        <input
+                          className='form-control'
+                          type='text'
+                          name='username'
+                          onChange={(e) =>
+                            setUser({ ...user, username: e.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <small className='errMsg'>
+                      {errors && errors.username && errors.username[0]}
                     </small>
                   </Col>
                 </Row>

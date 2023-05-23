@@ -26,6 +26,9 @@ import MagicIcon from '@rsuite/icons/legacy/Magic';
 import useAuthContext from '../../Hooks/Context/AuthContext';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Link } from 'react-router-dom';
+import axiosClient from '../../api/axios';
+import { FaBoxOpen } from 'react-icons/fa';
+import React from 'react';
 
 const headerStyles = {
   padding: 18,
@@ -61,26 +64,22 @@ const headerStyles = {
 //     </Navbar>
 //   );
 // };
+const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+  <Link ref={ref} to={href} {...rest}>
+    {children}
+  </Link>
+));
 
 export function SidebarUser() {
   const [updateAccessModal, setUpdateAccessModal] = useState(false);
-  const { user, setEmailVerified, setRegistrationSuccess } = useAuthContext();
+  const { user, setEmailVerified, setRegistrationSuccess, fetchUserInfo } =
+    useAuthContext();
   const { setDoneTransaction } = useOrderContext();
   const [errors, setErrors] = useState([]);
 
   function closeUpdateAccessModal() {
     setUpdateAccessModal(false);
   }
-  // terms and condition modal
-  const [check, setCheck] = useState(false);
-  const handleCheckboxChange = (e) => {
-    setCheck(e.target.checked);
-    sessionStorage.setItem('check-subs-agreement', e.target.checked);
-  };
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   //
   const [validIdFront, setValidIdFront] = useState(null);
@@ -88,6 +87,19 @@ export function SidebarUser() {
   const [imgFront, setImgFront] = useState(null);
   const [imgBack, setImgBack] = useState(null);
   const [termsAndCondition, setTermsAndCondition] = useState(false);
+
+  // terms and condition modal
+  const [check, setCheck] = useState(false);
+  const handleCheckboxChange = (e) => {
+    setCheck(e.target.checked);
+    sessionStorage.setItem('check-subs-agreement', e.target.checked);
+    setTermsAndCondition(e.target.checked);
+  };
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const onImageChangeFront = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -122,6 +134,7 @@ export function SidebarUser() {
           message: res.data.status,
           icon: 'success',
         }).then(() => {
+          fetchUserInfo();
           closeUpdateAccessModal();
         });
       })
@@ -137,7 +150,7 @@ export function SidebarUser() {
       setEmailVerified(false);
     };
   }, []);
-  // const [expand, setExpand] = useState(true);
+
   return (
     <>
       <div className='show-fake-browser sidebar-page'>
@@ -158,8 +171,9 @@ export function SidebarUser() {
               appearance='subtle'
             >
               <Sidenav.Body className='mt-4'>
-                <Nav>
+                <Nav className='h-100'>
                   <Nav.Item
+                    as={NavLink}
                     href='/'
                     eventKey='1'
                     active
@@ -168,23 +182,56 @@ export function SidebarUser() {
                     Home
                   </Nav.Item>
                   <Nav.Item
+                    as={NavLink}
                     href='/transactions'
                     eventKey='2'
                     icon={<GroupIcon />}
                   >
                     Shell Transactions
                   </Nav.Item>
-                  <Nav.Item href='/orders' eventKey='2' icon={<GroupIcon />}>
-                    Orders
-                  </Nav.Item>
                   <Nav.Item
-                    href='/orders/seller'
+                    as={NavLink}
+                    href='/orders'
                     eventKey='2'
                     icon={<GroupIcon />}
                   >
-                    Orders (Seller)
+                    Orders
                   </Nav.Item>
 
+                  {user.verified_user == 1 ? (
+                    <Nav.Item
+                      as={NavLink}
+                      href='/orders/seller'
+                      eventKey='2'
+                      icon={<GroupIcon />}
+                    >
+                      Orders (Seller)
+                    </Nav.Item>
+                  ) : (
+                    ''
+                  )}
+
+                  {user.verified_user == 1 ? (
+                    <>
+                      <Nav.Item
+                        as={NavLink}
+                        href='/product'
+                        eventKey='7'
+                        style={{ paddingLeft: '20px' }}
+                      >
+                        <div>
+                          {' '}
+                          <span className='me-3'>
+                            {' '}
+                            <FaBoxOpen />{' '}
+                          </span>{' '}
+                          <span> Product </span>{' '}
+                        </div>
+                      </Nav.Item>
+                    </>
+                  ) : (
+                    ''
+                  )}
                   <Nav.Menu
                     eventKey='4'
                     trigger='hover'
@@ -192,10 +239,14 @@ export function SidebarUser() {
                     icon={<GearCircleIcon />}
                     placement='rightStart'
                   >
-                    <Nav.Item href='/profile' eventKey='4-1'>
+                    <Nav.Item as={NavLink} href='/profile' eventKey='4-1'>
                       Profile
                     </Nav.Item>
-                    <Nav.Item href='/change-password' eventKey='4-2'>
+                    <Nav.Item
+                      as={NavLink}
+                      href='/change-password'
+                      eventKey='4-2'
+                    >
                       Change Password
                     </Nav.Item>
                     {user.verified_user === '1' ? (
@@ -206,13 +257,23 @@ export function SidebarUser() {
                         Product
                       </Nav.Item>
                     ) : (
-                      <div className='d-flex flex-column justify-content-end flex-grow-1 h-100'>
-                        <Button
-                          className='btn btn-sm d-inline-block'
-                          onClick={() => setUpdateAccessModal(true)}
-                        >
-                          Update Access
-                        </Button>
+                      <div className='d-flex flex-column justify-content-end align-items-center'>
+                        {user.verified_user == 0 && !user.avr_id ? (
+                          <>
+                            <Button
+                              className='btn d-inline-block rounded mx-3'
+                              onClick={() => setUpdateAccessModal(true)}
+                            >
+                              Update Access
+                            </Button>
+                          </>
+                        ) : user.verified_user == 0 && user.avr_id == 1 ? (
+                          <span className='bg-secondary text-white p-2 rounded'>
+                            Wait for Admin Approval
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       </div>
                     )}
                   </Nav.Menu>
@@ -259,7 +320,7 @@ export function SidebarUser() {
                 <FontAwesomeIcon icon={faExclamationCircle} />
               </OverlayTrigger>
             </div>
-            <ul className='ms-4'>
+            <ul className='ms-4 d-flex flex-grow-1 h-100'>
               <li>
                 Please make sure that both pictures of the government IDs are
                 clear and valid.
@@ -282,7 +343,6 @@ export function SidebarUser() {
                   onChange={onImageChangeFront}
                   isInvalid={!!errors.valid_id_front}
                 />
-                {console.log(errors)}
                 <Form.Control.Feedback type='invalid'>
                   {errors.valid_id_front}
                 </Form.Control.Feedback>
@@ -366,11 +426,11 @@ export function SidebarUser() {
                 </Col>
               </Row>
 
-              {/* <Form.Control.Feedback type='invalid' className='text-danger'>
-                    {errors.length > 0 &&
-                      errors.terms_and_conditions.length > 0 &&
-                      errors.terms_and_conditions[0]}
-                  </Form.Control.Feedback> */}
+              <Form.Control.Feedback type='invalid' className='text-danger'>
+                {errors.length > 0 &&
+                  errors.terms_and_conditions.length > 0 &&
+                  errors.terms_and_conditions[0]}
+              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -431,6 +491,7 @@ export function SidebarRider() {
               <Sidenav.Body className='mt-4'>
                 <Nav>
                   <Nav.Item
+                    as={NavLink}
                     href='/'
                     eventKey='1'
                     active
@@ -439,6 +500,7 @@ export function SidebarRider() {
                     To Pick Up
                   </Nav.Item>
                   <Nav.Item
+                    as={NavLink}
                     href='/rider/to-deliver'
                     eventKey='2'
                     icon={<GroupIcon />}
@@ -446,6 +508,7 @@ export function SidebarRider() {
                     To Deliver
                   </Nav.Item>
                   <Nav.Item
+                    as={NavLink}
                     href='/rider/delivered'
                     eventKey='2'
                     icon={<GroupIcon />}
@@ -459,10 +522,14 @@ export function SidebarRider() {
                     icon={<GearCircleIcon />}
                     placement='rightStart'
                   >
-                    <Nav.Item href='/rider/profile' eventKey='4-1'>
+                    <Nav.Item as={NavLink} href='/rider/profile' eventKey='4-1'>
                       Profile
                     </Nav.Item>
-                    <Nav.Item href='/rider/change-password' eventKey='4-2'>
+                    <Nav.Item
+                      as={NavLink}
+                      href='/rider/change-password'
+                      eventKey='4-2'
+                    >
                       Change Password
                     </Nav.Item>
                     {/* {user.verified_user ? (

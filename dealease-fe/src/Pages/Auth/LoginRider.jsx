@@ -84,7 +84,9 @@ export const LoginRider = () => {
                 <div className='Auth-form-content'>
                   <H1 className='Auth-form-title text-white'>Login Rider</H1>
                   <div className='mt-4'>
-                    <div style={{ color: '#fff', opacity: '1' }}>Email</div>
+                    <div style={{ color: '#fff', opacity: '1' }}>
+                      Email / Username
+                    </div>
                     <div>
                       <div className='login-wrapper'>
                         <FontAwesomeIcon
@@ -94,7 +96,7 @@ export const LoginRider = () => {
                         <input
                           type='email'
                           className='login-input form-control mt-1'
-                          name='email'
+                          name='text'
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder='Email'
                           autoFocus
@@ -128,7 +130,10 @@ export const LoginRider = () => {
                   </small>
 
                   <div className='d-flex mt-5'>
-                    <button type='submit' className='btn btn-submit'>
+                    <button
+                      type='submit'
+                      className='btn btn-outline btn-light btn-submit-login'
+                    >
                       Sign in
                     </button>
                   </div>

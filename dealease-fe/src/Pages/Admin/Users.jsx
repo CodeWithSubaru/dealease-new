@@ -36,6 +36,12 @@ const header = [
     prop: 'fullname',
   },
   {
+    title: 'Username',
+    prop: 'username',
+    isFilterable: true,
+    isSortable: true,
+  },
+  {
     title: 'Email Address',
     prop: 'email',
     isFilterable: true,
@@ -128,6 +134,7 @@ export function Users() {
           contact_number: '',
           barangay: '',
           street: '',
+          username: '',
           email: '',
           password: '',
           password_confirmation: '',
@@ -260,7 +267,7 @@ export function Users() {
               />
               <div>
                 <p className='mb-0'>
-                  {user.first_name + ' '}
+                  {user.user_details ? user.user_details.first_name : ' '}{' '}
                   {user.user_details
                     ? user.user_details.middle_name
                       ? user.user_details.middle_name[0] + '. '
@@ -288,6 +295,7 @@ export function Users() {
               </div>
             </div>
           ),
+          username: user.username,
           email: user.email,
           date_joined: dateFormat(user.created_at),
           action: (
@@ -429,7 +437,7 @@ export function Users() {
           <Tab.Content>
             <Tab.Pane eventKey='first'>
               <Card className='p-5 pb-1 rounded'>
-                <h1 className='mb-4 fw-bold'>All Users</h1>
+                <H1 className='text-home mb-4 fw-bold'>All Users</H1>
                 {loading ? (
                   <Load />
                 ) : (
@@ -451,7 +459,7 @@ export function Users() {
             </Tab.Pane>
             <Tab.Pane eventKey='second'>
               <Card className='p-5 pb-1 rounded'>
-                <h1 className='mb-4 fw-bold'>Unverified Users</h1>
+                <H1 className='text-home mb-4 fw-bold'>Unverified Users</H1>
                 {loading ? (
                   <Load />
                 ) : (

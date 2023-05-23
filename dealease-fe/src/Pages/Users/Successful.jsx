@@ -77,7 +77,7 @@ export function SuccessfulUser() {
                     {' '}
                     {Object.keys(otherAddress).length > 0
                       ? otherAddress.shippingFee.full_name
-                      : user.first_name +
+                      : user.user_details.first_name +
                         ' ' +
                         (user.user_details.middle_name
                           ? user.user_details.middle_name[0] + '. '
@@ -165,9 +165,9 @@ export function SuccessfulUser() {
                 <strong>
                   {item.length > 1
                     ? item[index]
-                      ? item[index].product.user.first_name
+                      ? item[index].product.user.user_details.first_name
                       : ''
-                    : item[0].product.user.first_name}{' '}
+                    : item[0].product.user.user_details.first_name}{' '}
                   {item.length > 1
                     ? item[index].product.user.user_details.middle_name
                       ? item[index].product.user.user_details.middle_name[0] +
