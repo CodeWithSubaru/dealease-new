@@ -15,7 +15,11 @@ import {
   Content,
   Navbar,
   Nav,
+  Divider,
+  Badge,
 } from 'rsuite';
+import PUBLIC_PATH from '../../api/public_url';
+
 import CogIcon from '@rsuite/icons/legacy/Cog';
 import AngleLeftIcon from '@rsuite/icons/legacy/AngleLeft';
 import AngleRightIcon from '@rsuite/icons/legacy/AngleRight';
@@ -31,13 +35,10 @@ import { FaBoxOpen } from 'react-icons/fa';
 import React from 'react';
 
 const headerStyles = {
-  padding: 18,
+  padding: '40px 20px 0px 20px',
   fontSize: 16,
-  height: 56,
-  background: '#34c3ff',
+  background: '#0001',
   color: ' #fff',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
 };
 
 // const NavToggle = ({ expand, onChange }) => {
@@ -155,6 +156,7 @@ export function SidebarUser() {
         <Container style={{ width: '250px' }}>
           <Sidebar
             style={{
+              zIndex: '1',
               display: 'flex',
               flexDirection: 'column',
               background: '#fff',
@@ -163,12 +165,34 @@ export function SidebarUser() {
               top: '0',
             }}
           >
-            <Sidenav
-              className='mt-5'
-              defaultOpenKeys={['3']}
-              appearance='subtle'
-            >
-              <Sidenav.Body className='mt-4'>
+            <Sidenav className='' defaultOpenKeys={['3']} appearance='subtle'>
+              <Sidenav.Header>
+                <div style={headerStyles}>wag alisin</div>
+              </Sidenav.Header>
+              <Sidenav.Header>
+                <div style={headerStyles}>
+                  {' '}
+                  <img
+                    className='mx-auto mb-4 d-block rounded-circle'
+                    style={{ height: '100px', width: '100px' }}
+                    src={PUBLIC_PATH + 'images/' + user.prof_img}
+                    alt=''
+                  />
+                  <span className='nameProfile text-dark'>
+                    {user.username ? user.username : ''}
+                    <Divider vertical className='divider' />
+                    <Badge
+                      className=''
+                      content={user.role_type ? user.role_type : ''}
+                    />
+                    <p className='nameEmail text-dark'>
+                      {user.email ? user.email : ''}
+                    </p>
+                    <Divider className='text-primary divider border-primary' />
+                  </span>
+                </div>
+              </Sidenav.Header>
+              <Sidenav.Body className=''>
                 <Nav className='h-100'>
                   <Nav.Item
                     as={NavLink}
@@ -255,7 +279,7 @@ export function SidebarUser() {
                         Product
                       </Nav.Item>
                     ) : (
-                      <div className='d-flex flex-column justify-content-end align-items-center'>
+                      <div className='d-flex flex-column justify-content-end mt-4 align-items-center'>
                         {user.verified_user == 0 && !user.avr_id ? (
                           <>
                             <Button

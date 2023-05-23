@@ -98,12 +98,19 @@ export const Login = () => {
             </div>
 
             <div className='forgotpass mt-2 d-flex justify-content-end'>
-              <Link
+              <a
+                className='text-white text-capitalize text-right'
+                href='/forgot-password'
+              >
+                {' '}
+                Forgot Password
+              </a>
+              {/* <Link
                 to='/forgot-password'
                 className='text-white text-capitalize text-right'
               >
                 Forgot Password
-              </Link>
+              </Link> */}
             </div>
 
             <div className=' mt-3'>
