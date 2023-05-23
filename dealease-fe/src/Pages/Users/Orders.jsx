@@ -844,7 +844,7 @@ export function OrdersSeller() {
     <div style={{ display: "flex", height: "100%" }}>
       <SidebarUser />
       <main className="w-100">
-        <CustomList
+        <OrdersTable
           loading={loading}
           setLoading={setLoading}
           header={header}
@@ -861,7 +861,7 @@ export function OrdersSeller() {
           calculateGrandTotalPrice={calculateGrandTotalPrice}
           setUserOrdersTable={setUserOrdersTable}
           fetchNumberOrdersByStatusUser={fetchNumberOrdersByStatusUser}
-        ></CustomList>
+        />
       </main>
     </div>
   );
