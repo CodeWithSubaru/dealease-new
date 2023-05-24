@@ -14,7 +14,7 @@ class ProductContoller extends Controller
     // display publicly
     public function getProductsForPublic($id)
     {
-        return Product::with('seller', 'seller.user_details')->where('user_id', '!=', $id)->where('stocks_per_kg', '>=', 0)
+        return Product::with('seller', 'seller.user_details')->where('user_id', '!=', $id)->where('stocks_per_kg', '>', 0)
             ->latest('created_at')
             ->get();
     }

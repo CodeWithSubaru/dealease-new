@@ -12,7 +12,7 @@ class ProductFilterController extends Controller
 
     public function thisDay($id)
     {
-        return Product::with('seller', 'seller.user_details')->whereDate('created_at', Carbon::now())->where('user_id', '!=', $id)->latest('created_at')->get();
+        return Product::with('seller', 'seller.user_details')->whereDate('created_at', Carbon::now())->where('stocks_per_kg', '>', 0)->where('user_id', '!=', $id)->latest('created_at')->get();
     }
 
     public function availableProducts($id)
