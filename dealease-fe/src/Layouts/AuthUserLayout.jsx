@@ -115,16 +115,6 @@ export function AuthUserLayout() {
               </Nav.Link>
             </OverlayTrigger>
 
-            {/* conditional role type to determine a buyer or seller */}
-            <OverlayTrigger
-              overlay={<Tooltip id='tooltip-disabled'>Cart</Tooltip>}
-              placement='bottom'
-            >
-              <Nav.Link as={NavLink}>
-                {user.verified_user === 0 ? 'Buyer' : 'Seller'}
-              </Nav.Link>
-            </OverlayTrigger>
-
             <OverlayTrigger
               overlay={<Tooltip id='tooltip-disabled'>Wallet</Tooltip>}
               placement='bottom'

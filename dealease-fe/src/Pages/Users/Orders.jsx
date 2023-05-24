@@ -31,15 +31,10 @@ export function OrdersBuyer() {
         } else if (
           orderStatus[0] === 2 ||
           orderStatus[1] === 3 ||
-          orderStatus[2] === 4 ||
-          orderStatus[3] === 5
+          orderStatus[2] === 4
         ) {
           setProcessingOrderNumber(res.data);
-        } else if (
-          orderStatus[0] === 6 ||
-          orderStatus[1] === 7 ||
-          orderStatus[2] === 8
-        ) {
+        } else if (orderStatus[0] === 5 || orderStatus[1] === 6) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -73,22 +68,24 @@ export function OrdersBuyer() {
     if (status === '2') {
       return 'Preparing';
     }
+    // if (status === '3') {
+    //   return 'Waiting rider';
+    // }
+    // if (status === '4') {
+    //   return 'To Pick Up';
+    // }
     if (status === '3') {
-      return 'Waiting rider';
-    }
-    if (status === '4') {
-      return 'To Pick Up';
-    }
-    if (status === '5') {
       return 'To Deliver';
     }
-    if (status === '6') {
+
+    if (status === '4') {
       return 'Delivered';
     }
-    if (status === '7') {
+
+    if (status === '5') {
       return 'Success';
     }
-    if (status === '8') {
+    if (status === '6') {
       return 'Failed';
     }
   }
@@ -167,9 +164,32 @@ export function OrdersBuyer() {
           .post('/buyer/orderReceived/' + id)
           .then((resp) => {
             fetchUserInfo();
+            fetchNumberOrdersByStatusUser(1);
+            fetchNumberOrdersByStatusUser([2, 3, 4]);
+            fetchNumberOrdersByStatusUser([5, 6]);
+            setUserOrdersTable([5, 6]);
           })
           .catch((e) => console.log(e));
-        setUserOrdersTable([6, 7, 8]);
+      }
+    });
+  }
+
+  function returnItem(orderTransId) {
+    Finalize({
+      text: 'You want to change status to Return Item?',
+      confirmButton: 'Yes',
+      successMsg: 'Updated to Return Item Status Successfully.',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axiosClient
+          .post('/seller/returnItem/' + orderTransId)
+          .then((resp) => {
+            fetchNumberOrdersByStatusUser(1);
+            fetchNumberOrdersByStatusUser([2, 3, 4]);
+            fetchNumberOrdersByStatusUser([5, 6]);
+            setUserOrdersTable([2, 3, 4]);
+          })
+          .catch((e) => console.log(e));
       }
     });
   }
@@ -179,7 +199,7 @@ export function OrdersBuyer() {
     let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
       totalPrice += Number(orderItem.total_price);
-      deliveryFee = Number(orderItem.delivery_fee);
+      deliveryFee = Number(0);
     });
 
     return Number(totalPrice) + deliveryFee;
@@ -187,7 +207,7 @@ export function OrdersBuyer() {
 
   function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
     let totalPriceDelFee = 0;
-    totalPriceDelFee += Number(totalPrice) + Number(delFee);
+    totalPriceDelFee += Number(totalPrice) + Number(0);
     return Number(totalPriceDelFee).toLocaleString('en-US');
   }
 
@@ -273,10 +293,7 @@ export function OrdersBuyer() {
                 style={{ width: '25px' }}
                 className='me-2'
               />{' '}
-              {calculateGrandTotalDeliveryFee(
-                order.total_amount,
-                order.delivery_fee
-              )}{' '}
+              {calculateGrandTotalDeliveryFee(order.total_amount)}{' '}
             </div>
           ),
           created_at: dateFormat(order.created_at),
@@ -300,10 +317,7 @@ export function OrdersBuyer() {
                   onClick={() => {
                     cancel(
                       order.order_number,
-                      calculateGrandTotalDeliveryFee(
-                        order.total_amount,
-                        order.delivery_fee
-                      )
+                      calculateGrandTotalDeliveryFee(order.total_amount)
                     );
                   }}
                   style={{ cursor: 'pointer' }}
@@ -315,17 +329,30 @@ export function OrdersBuyer() {
                 ''
               )}
 
-              {order.order_trans_status == '6' ? (
-                <Button
-                  variant='danger'
-                  onClick={() => {
-                    orderReceived(order.order_trans_id);
-                  }}
-                  style={{ cursor: 'pointer' }}
-                  className='badge rounded bg-success px-2'
-                >
-                  Order Received
-                </Button>
+              {order.order_trans_status == '4' ? (
+                <>
+                  <Button
+                    variant='danger'
+                    onClick={() => {
+                      orderReceived(order.order_trans_id);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded bg-success px-2 me-2'
+                  >
+                    Order Received
+                  </Button>
+
+                  <Button
+                    variant='danger'
+                    onClick={() => {
+                      returnItem(order.order_trans_id);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                    className='badge rounded px-2'
+                  >
+                    Return
+                  </Button>
+                </>
               ) : (
                 ''
               )}
@@ -340,8 +367,8 @@ export function OrdersBuyer() {
 
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
-    fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-    fetchNumberOrdersByStatusUser([6, 7, 8]);
+    fetchNumberOrdersByStatusUser([2, 3, 4]);
+    fetchNumberOrdersByStatusUser([5, 6]);
     setUserOrdersTable(1);
   }, []);
 
@@ -380,8 +407,8 @@ export function OrdersBuyer() {
               onClick={() => {
                 setUserOrdersTable(1);
                 fetchNumberOrdersByStatusUser(1);
-                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                fetchNumberOrdersByStatusUser([2, 3, 4]);
+                fetchNumberOrdersByStatusUser([5, 6]);
                 setPageTitle('Pending Orders');
                 setCurrentColor(0);
               }}
@@ -396,10 +423,10 @@ export function OrdersBuyer() {
                 (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
               }
               onClick={() => {
-                setUserOrdersTable([2, 3, 4, 5]);
+                setUserOrdersTable([2, 3, 4]);
                 fetchNumberOrdersByStatusUser(1);
-                fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                fetchNumberOrdersByStatusUser([6, 7, 8]);
+                fetchNumberOrdersByStatusUser([2, 3, 4]);
+                fetchNumberOrdersByStatusUser([5, 6]);
                 setPageTitle('Processing Orders');
                 setCurrentColor(1);
               }}
@@ -479,15 +506,10 @@ export function OrdersSeller() {
         } else if (
           orderStatus[0] === 2 ||
           orderStatus[1] === 3 ||
-          orderStatus[2] === 4 ||
-          orderStatus[3] === 5
+          orderStatus[2] === 4
         ) {
           setProcessingOrderNumber(res.data);
-        } else if (
-          orderStatus[0] === 6 ||
-          orderStatus[1] === 7 ||
-          orderStatus[2] === 8
-        ) {
+        } else if (orderStatus[0] === 5 || orderStatus[1] === 6) {
           setDeliveredOrderNumber(res.data);
         }
       })
@@ -621,7 +643,7 @@ export function OrdersSeller() {
         axiosClient
           .post('/seller/toDeliver/' + orderTransId)
           .then((resp) => {
-            setUserOrdersTable(3);
+            setUserOrdersTable([3, 4]);
           })
           .catch((e) => console.log(e));
       }
@@ -642,7 +664,7 @@ export function OrdersSeller() {
         // fetchNumberOrdersByStatusUser(1);
         // fetchNumberOrdersByStatusUser(2);
         // fetchNumberOrdersByStatusUser(3);
-        setRiderDeliveryTable('/rider/toPickUp');
+        setUserOrdersTable([3, 4]);
       }
     });
   }
@@ -666,7 +688,7 @@ export function OrdersSeller() {
     let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
       totalPrice += Number(orderItem.total_price);
-      deliveryFee = Number(orderItem.delivery_fee);
+      deliveryFee = Number(0);
     });
 
     return Number(totalPrice) + deliveryFee;
@@ -772,7 +794,7 @@ export function OrdersSeller() {
 
   function calculateGrandTotalDeliveryFee(totalPrice, delFee) {
     let totalPriceDelFee = 0;
-    totalPriceDelFee += Number(totalPrice) + Number(delFee);
+    totalPriceDelFee += Number(totalPrice) + Number(0);
     return Number(totalPriceDelFee).toLocaleString('en-US');
   }
 
@@ -863,10 +885,7 @@ export function OrdersSeller() {
                 style={{ width: '25px' }}
                 className='me-2'
               />{' '}
-              {calculateGrandTotalDeliveryFee(
-                order.total_amount,
-                order.delivery_fee
-              )}{' '}
+              {calculateGrandTotalDeliveryFee(order.total_amount)}{' '}
             </>
           ),
           created_at: dateFormat(order.created_at),
@@ -944,10 +963,7 @@ export function OrdersSeller() {
                   onClick={() => {
                     cancel(
                       order.order_number,
-                      calculateGrandTotalDeliveryFee(
-                        order.total_amount,
-                        order.delivery_fee
-                      ),
+                      calculateGrandTotalDeliveryFee(order.total_amount),
                       order.buyer_id
                     );
                   }}

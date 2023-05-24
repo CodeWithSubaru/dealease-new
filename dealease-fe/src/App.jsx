@@ -20,13 +20,13 @@ import { SettingsUser } from './Pages/Users/Settings';
 import { ReportUser } from './Pages/Users/Report';
 
 // Rider Components
-import { HomeRider } from './Pages/Rider/Home';
-import { ToDeliverRider } from './Pages/Rider/ToDeliver';
-import { DeliveredRider } from './Pages/Rider/Delivered';
-import { ProfileRider } from './Pages/Rider/Profile';
-import { WithdrawRider } from './Pages/Rider/Withdraw';
-import { LoginRider } from './Pages/Auth/LoginRider';
-import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
+// import { HomeRider } from './Pages/Rider/Home';
+// import { ToDeliverRider } from './Pages/Rider/ToDeliver';
+// import { DeliveredRider } from './Pages/Rider/Delivered';
+// import { ProfileRider } from './Pages/Rider/Profile';
+// import { WithdrawRider } from './Pages/Rider/Withdraw';
+// import { LoginRider } from './Pages/Auth/LoginRider';
+// import { AuthRiderLayout } from './Layouts/AuthRiderLayout';
 
 // Admin Components
 import { LoginAdmin } from './Pages/Auth/LoginAdmin';
@@ -41,7 +41,7 @@ import { SettingsAdmin } from './Pages/Admin/Settings';
 
 // solla
 // Guest Layout
-import { RegisterRider } from './Pages/Auth/RegisterRider';
+// import { RegisterRider } from './Pages/Auth/RegisterRider';
 import { Register } from './Pages/Auth/Register';
 import { Mainpage } from './Pages';
 import { GuestLayout } from './Layouts/GuestLayout';
@@ -96,13 +96,13 @@ function App() {
           </Route>
 
           {/* Rider */}
-          <Route element={<AuthRiderLayout />}>
+          {/* <Route element={<AuthRiderLayout />}>
             <Route path='/rider/to-pick-up' element={<HomeRider />} />
             <Route path='/rider/to-deliver' element={<ToDeliverRider />} />
             <Route path='/rider/delivered' element={<DeliveredRider />} />
             <Route path='/rider/profile' element={<ProfileRider />} />
             <Route path='/rider/withdraw' element={<WithdrawRider />} />
-          </Route>
+          </Route> */}
 
           <Route element={<GuestLayout />}>
             {/*Solla */}
@@ -112,8 +112,8 @@ function App() {
             <Route path='/password-reset/:token' element={<PasswordReset />} />
           </Route>
 
-          <Route path='/rider/login' element={<LoginRider />} />
-          <Route path='/rider/register' element={<RegisterRider />} />
+          {/* <Route path='/rider/login' element={<LoginRider />} /> */}
+          {/* <Route path='/rider/register' element={<RegisterRider />} /> */}
           <Route path='/admin/login' element={<LoginAdmin />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

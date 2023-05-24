@@ -82,4 +82,8 @@ export const GlobalStyles = createGlobalStyle`
   .card {
     border: 0;
   }
+
+  ol, ul {
+    padding: 0px !important;
+  }
 `;

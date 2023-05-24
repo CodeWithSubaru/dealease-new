@@ -160,13 +160,11 @@ export function ShippingFee() {
     return arr;
   }
 
-  console.log(stocksByProduct());
-
   function calculateGrandTotalDeliveryFee(cart, delFee) {
     let totalPrice = 0;
     Object.values(cart).forEach((cartItem) => {
       for (let i = 0; i < cartItem.length; i++) {
-        totalPrice += Number(cartItem[i].total_price) + Number(delFee);
+        totalPrice += Number(cartItem[i].total_price) + Number(0);
       }
     });
     return Number(totalPrice);
@@ -331,10 +329,6 @@ export function ShippingFee() {
                             <span className='fw-semibold '> Sub Total:</span>{' '}
                             Php {calculateSubTotalPrice(item)}
                           </p>
-                          <p>
-                            <span className='fw-semibold'> Delivery Fee: </span>{' '}
-                            {20 * 1.5}
-                          </p>
                         </div>
                         <br />
                       </>
@@ -353,12 +347,7 @@ export function ShippingFee() {
                     alt=''
                     className='mx-1'
                   />{' '}
-                  {calculateGrandTotalDeliveryFee(
-                    step1,
-                    changeDeliveryFeePerBrgy(
-                      barangayForm ? barangayForm : user.user_details.barangay
-                    )
-                  )}
+                  {calculateGrandTotalDeliveryFee(step1)}
                 </p>
               </div>
             </div>
@@ -655,29 +644,6 @@ export function ShippingFee() {
                                       </td>
                                     </tr>
 
-                                    <tr>
-                                      <td className='d-flex ms-3'>
-                                        {' '}
-                                        Delivery Fee
-                                      </td>
-                                      <td></td>
-                                      <td className='text-end'>
-                                        <img
-                                          src='/images/seashell.png'
-                                          height={15}
-                                          width={15}
-                                          alt=''
-                                          className=''
-                                        />{' '}
-                                        <span>
-                                          {changeDeliveryFeePerBrgy(
-                                            barangayForm
-                                              ? barangayForm
-                                              : user.user_details.barangay
-                                          )}
-                                        </span>
-                                      </td>
-                                    </tr>
                                     <tr>
                                       <td className='d-flex ms-3 text-nowrap'>
                                         Sub Total

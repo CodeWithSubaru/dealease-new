@@ -71,7 +71,7 @@ class SellerController extends Controller
         //     // inserting in Deliveries table
         $acceptOrder = Deliveries::create([
             'order_trans_id' => $id,
-            'rider_id' => $rider,
+            // 'rider_id' => $rider,
             'delivery_status' => '1',
         ]);
 
@@ -103,7 +103,7 @@ class SellerController extends Controller
             // will update status of order transaction table at the same time.
             $product = Deliveries::find($id);
             OrderTransaction::where('order_trans_id', $product->order_trans_id)->update([
-                'order_trans_status' => '5',
+                'order_trans_status' => '4',
             ]);
         }
     }
@@ -133,7 +133,7 @@ class SellerController extends Controller
             // Add the delivery fee to rider's wallet account 
             $totalShellAmount = 0;
             $riderWallet = UsersWallet::where('user_id', $delivery->rider_id);
-            $totalShellAmount = $riderWallet->first()->shell_coin_amount + $delivery->orderToDeliver->delivery_fee;
+            $totalShellAmount = $riderWallet->first()->shell_coin_amount + 0; // $delivery->orderToDeliver->delivery_fee
 
             $riderWallet->update([
                 'shell_coin_amount' => $totalShellAmount,

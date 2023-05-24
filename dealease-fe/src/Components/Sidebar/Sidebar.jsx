@@ -183,9 +183,11 @@ export function SidebarUser() {
                   <span className='nameProfile text-dark'>
                     {user.username ? user.username : ''}
                     <Divider vertical className='divider' />
+
+                    {/* conditional role type to determine a buyer or seller */}
                     <Badge
                       className=''
-                      content={user.role_type ? user.role_type : ''}
+                      content={user.verified_user === 0 ? 'Buyer' : 'Seller'}
                     />
                     <p className='nameEmail text-dark'>
                       {user.email ? user.email : ''}

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('order_number');
             $table->char('order_trans_status', 1);
             $table->decimal('total_amount', 8, 2);
-            $table->decimal('delivery_fee', 8, 2);
+            // $table->decimal('delivery_fee', 8, 2);
             $table->foreignId('seller_id');
             $table->foreignId('buyer_id');
             $table->foreignId('delivery_address_id')->nullable();

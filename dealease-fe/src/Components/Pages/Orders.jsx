@@ -143,22 +143,6 @@ export function OrdersTable(props) {
               <div className='d-flex'>
                 <div className='w-50 me-5'></div>
                 <div className='me-5'>
-                  <p className='d-flex'>
-                    <span className='fw-bold text-secondary'>
-                      Delivery Fee:
-                    </span>{' '}
-                    <span className='d-flex'>
-                      {' '}
-                      <img
-                        src='/images/seashell.png'
-                        className='ms-4 me-2'
-                        style={{ height: '20px' }}
-                      />{' '}
-                      {props.viewOrders[0]
-                        ? props.viewOrders[0].delivery_fee
-                        : ''}
-                    </span>
-                  </p>
                   <h5 className='d-flex align-items-center justify-content-end'>
                     <span className='me-2 fw-bold'> Grand Total: </span>{' '}
                     <img
@@ -309,22 +293,6 @@ export function OrdersTable(props) {
               <div className='d-flex'>
                 <div className='w-50 me-5'></div>
                 <div className='me-5'>
-                  <p className='d-flex'>
-                    <span className='fw-bold text-secondary'>
-                      Delivery Fee:
-                    </span>{' '}
-                    <span className='d-flex'>
-                      {' '}
-                      <img
-                        src='/images/seashell.png'
-                        className='ms-4 me-2'
-                        style={{ height: '20px' }}
-                      />{' '}
-                      {props.viewOrders[0]
-                        ? props.viewOrders[0].delivery_fee
-                        : ''}
-                    </span>
-                  </p>
                   <h5 className='d-flex align-items-center justify-content-end'>
                     <span className='me-2 fw-bold'> Grand Total: </span>{' '}
                     <img
@@ -358,8 +326,8 @@ export function OrdersTable(props) {
                     onClick={() => {
                       props.setUserOrdersTable(1);
                       props.fetchNumberOrdersByStatusUser(1);
-                      props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                      props.fetchNumberOrdersByStatusUser([6, 7, 8]);
+                      props.fetchNumberOrdersByStatusUser([2, 3, 4]);
+                      props.fetchNumberOrdersByStatusUser([5, 6]);
                     }}
                     disabled={props.loading}
                   >
@@ -377,10 +345,10 @@ export function OrdersTable(props) {
                   <Nav.Link
                     eventKey='second'
                     onClick={() => {
-                      props.setUserOrdersTable([2, 3, 4, 5]);
+                      props.setUserOrdersTable([2, 3, 4]);
                       props.fetchNumberOrdersByStatusUser(1);
-                      props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                      props.fetchNumberOrdersByStatusUser([6, 7, 8]);
+                      props.fetchNumberOrdersByStatusUser([2, 3, 4]);
+                      props.fetchNumberOrdersByStatusUser([5, 6]);
                     }}
                     disabled={props.loading}
                   >
@@ -399,10 +367,10 @@ export function OrdersTable(props) {
                   <Nav.Link
                     eventKey='third'
                     onClick={() => {
-                      props.setUserOrdersTable([6, 7, 8]);
+                      props.setUserOrdersTable([5, 6]);
                       props.fetchNumberOrdersByStatusUser(1);
-                      props.fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-                      props.fetchNumberOrdersByStatusUser([6, 7, 8]);
+                      props.fetchNumberOrdersByStatusUser([2, 3, 4]);
+                      props.fetchNumberOrdersByStatusUser([5, 6]);
                     }}
                     disabled={props.loading}
                   >

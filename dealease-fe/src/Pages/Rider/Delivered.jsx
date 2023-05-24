@@ -120,7 +120,7 @@ export const DeliveredRider = () => {
     let deliveryFee;
     Object.values(orders).forEach((orderItem) => {
       totalPrice += Number(orderItem.total_price);
-      deliveryFee = Number(orderItem.delivery_fee);
+      deliveryFee = Number(0); // orderItem.delivery_fee
     });
 
     return Number(totalPrice) + deliveryFee;
