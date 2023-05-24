@@ -119,14 +119,14 @@ class SellerController extends Controller
 
     public function returnItem(string $id)
     {
-        $changeStatus = Deliveries::where('deliveries_id', $id)->update([
+        $changeStatus = Deliveries::where('order_trans_id', $id)->update([
             'delivery_status' => '4',
         ]);
 
         if ($changeStatus) {
             // will update status of order transaction table at the same time.
             $delivery = Deliveries::with('orderToDeliver')->find($id)->first();
-            OrderTransaction::where('order_trans_id', $delivery->order_trans_id)->update([
+            OrderTransaction::where('order_trans_id', $id)->update([
                 'order_trans_status' => '6',
             ]);
 
