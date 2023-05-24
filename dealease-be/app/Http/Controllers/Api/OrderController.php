@@ -196,7 +196,7 @@ class OrderController extends Controller
                 // option for other shipping address
                 $deliveryAddress = ShippingDeliveryInfo::create([
                     'order_trans_id' => $orderTransaction->order_trans_id,
-                    'rider_id' => null,
+                    // 'rider_id' => null,
                     'full_name' =>  $request->shippingFee['full_name'],
                     'contact_number' => $request->shippingFee['contact_number'],
                     'delivery_status' => 1,
@@ -365,11 +365,11 @@ class OrderController extends Controller
             // if the update is succeeded
             if ($deliveriesChangeStatus) {
                 // fetch for delivery details
-                $delivery = Deliveries::find($id);
-                $rider_id = $delivery->rider_id;
+                // $delivery = Deliveries::where('order_trans_id', $id);
+                // $rider_id = $delivery->rider_id;
 
                 // fetch for order details
-                $order = OrderTransaction::find($id)->first();
+                $order = OrderTransaction::where('order_trans_id', $id)->first();
                 $seller_id = $order->seller_id;
 
                 // seller amount to add
@@ -392,11 +392,12 @@ class OrderController extends Controller
                 // if ($updateRiderWallet) {
 
                 // fetching for seller's wallet
-                $sellerWallet = UsersWallet::find($seller_id)->first();
+                $sellerWallet = UsersWallet::where('user_id', $seller_id)->first();
                 $sellerCurrentWallet = $sellerWallet->shell_coin_amount;
                 // current wallet amount + amount revenue
                 $updatedSellerWallet = $sellerCurrentWallet + ($seller_revenue - ($seller_revenue * 0.02));
-                UsersWallet::where('wallet_id', $seller_id)->update([
+
+                UsersWallet::where('user_id', $seller_id)->update([
                     'shell_coin_amount' => $updatedSellerWallet,
                 ]);
                 // }
