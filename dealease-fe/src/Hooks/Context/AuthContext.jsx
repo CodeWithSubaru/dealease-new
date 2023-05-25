@@ -162,8 +162,10 @@ export const AuthProvider = ({ children }) => {
         setUser(res.data[0]);
       })
       .catch((e) => {
-        // localStorage.removeItem('ACCESS_TOKEN');
-        // localStorage.removeItem('USER_TYPE');
+        if (e.status != 419) {
+          localStorage.removeItem('ACCESS_TOKEN');
+          localStorage.removeItem('USER_TYPE');
+        }
         setLoading(false);
       });
     setErrors([]);

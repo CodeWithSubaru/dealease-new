@@ -294,8 +294,8 @@ export function SidebarUser() {
                             </Button>
                           </>
                         ) : user.verified_user == 0 && user.avr_id ? (
-                          <span className='bg-secondary text-white p-2 rounded'>
-                            Wait for Admin Approval
+                          <span className='bg-secondary text-white p-2 rounded text-center'>
+                            Request Sent. <br /> Wait for admin approval.
                           </span>
                         ) : (
                           ''
@@ -361,7 +361,7 @@ export function SidebarUser() {
             <div className='d-flex align-items-center clearfix mb-3'>
               <Form.Group controlId='formFile' className='mb-3 w-100'>
                 <Form.Label className='text-secondary'>
-                  First Valid Government Id
+                  Valid Government Id (Front)
                 </Form.Label>
                 <Form.Control
                   type='file'
@@ -375,7 +375,7 @@ export function SidebarUser() {
               </Form.Group>
               <div className='w-50'>
                 <div className='float-end'>
-                  <p className='mb-0 text-center'>First ID Preview </p>
+                  <p className='mb-0 text-center'>Front ID Preview </p>
                   <img
                     src={imgFront}
                     className='rounded p-3 float-end'
@@ -391,7 +391,7 @@ export function SidebarUser() {
             <div className='d-flex align-items-center clearfix'>
               <Form.Group controlId='formFile' className='w-100 mb-3'>
                 <Form.Label className='text-secondary'>
-                  Second Valid Government Id
+                  Valid Government Id (Back)
                 </Form.Label>
                 <Form.Control
                   type='file'
@@ -405,7 +405,7 @@ export function SidebarUser() {
               </Form.Group>
               <div className='w-50'>
                 <div className='float-end'>
-                  <p className='mb-0 text-center'>Second ID Preview </p>
+                  <p className='mb-0 text-center'>Back ID Preview </p>
                   <img
                     src={imgBack}
                     className='rounded p-3 float-end'

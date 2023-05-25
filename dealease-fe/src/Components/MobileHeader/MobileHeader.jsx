@@ -37,6 +37,7 @@ import { faBars, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { Form, Button, Modal, Row, Col, Table } from 'react-bootstrap';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axiosClient from '../../api/axios';
 
 const styles = {
   width: 'auto',
@@ -136,6 +137,7 @@ export function NavbarUser({ onSelectTop, activeKeyTop, ...props }) {
     </>
   );
 }
+
 export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
   const { user } = useAuthContext();
   const { loading } = useAuthContext();
@@ -165,7 +167,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
       .post('/change-password', password)
       .then((res) => {
         if (res.status === 200) {
-          Notification({
+          new Notification({
             title: 'Success',
             message:
               'Your password has been changed. You will be redirected to home page',
@@ -177,7 +179,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
         setErrors([]);
       })
       .catch((e) => {
-        Notification({
+        new Notification({
           title: 'Error',
           message: 'Something went wrong',
           icon: 'error',
@@ -477,7 +479,7 @@ export function NavbarRiderProfile({ onSelectTop, activeKeyTop, ...props }) {
   );
 }
 export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
-  const { user } = useAuthContext();
+  const { user, fetchUserInfo } = useAuthContext();
   const { loading } = useAuthContext();
   const [openProfile, setOpenProfile] = useState(false);
   const [validIdFront, setValidIdFront] = useState(null);
@@ -490,6 +492,7 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
   const handleCheckboxChange = (e) => {
     setCheck(e.target.checked);
     sessionStorage.setItem('check-subs-agreement', e.target.checked);
+    setTermsAndCondition(e.target.checked);
   };
   const [show, setShow] = useState(false);
 
@@ -528,13 +531,17 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
-        Notification({
+        new Notification({
           title: 'Success',
           message: res.data.status,
           icon: 'success',
-        }).then(() => {});
+        });
+        fetchUserInfo();
       })
-      .catch((e) => setErrors(e.response.data.errors));
+      .catch((e) => {
+        console.log(e);
+        setErrors(e.response.data.errors);
+      });
   }
   return (
     <>
@@ -590,177 +597,184 @@ export function NavbarUserProfile({ onSelectTop, activeKeyTop, ...props }) {
           </Drawer.Actions>
         </Drawer.Header>
         <Drawer.Body className='panelGroupSettings'>
-          <PanelGroup accordion bordered>
-            <Panel shaded header='Update Access' eventKey={1} id='panel1'>
-              <Alert show={true} variant='success'>
-                <div className='d-flex justify-content-between'>
-                  <Alert.Heading style={{ fontSize: '14px' }}>
-                    Instruction{' '}
-                  </Alert.Heading>
+          {user.verified_user == 0 && !user.avr_id ? (
+            <PanelGroup accordion bordered>
+              <Panel shaded header='Update Access' eventKey={1} id='panel1'>
+                <Alert show={true} variant='success'>
+                  <div className='d-flex justify-content-between'>
+                    <Alert.Heading style={{ fontSize: '14px' }}>
+                      Instruction{' '}
+                    </Alert.Heading>
 
-                  <OverlayTrigger
-                    placement='bottom'
-                    overlay={
-                      <Tooltip id='button-tooltip-2'>
-                        <div className='p-2 text-start'>
-                          Once you didn't follow the instruction, we will
-                          automatically reject your request.
-                        </div>
-                      </Tooltip>
-                    }
-                  >
-                    <FontAwesomeIcon icon={faExclamationCircle} />
-                  </OverlayTrigger>
-                </div>
-                <ul className='ms-4'>
-                  <li>
-                    Please make sure that both pictures of the government IDs
-                    are clear and valid.
-                  </li>
-                </ul>
-                <hr />
-                <div className='clearfix'>
-                  <p className='float-end mb-0'> - System Administator</p>
-                </div>
-              </Alert>
-              <Form onSubmit={handleUpdateAccessForm} id='updateAccessForm'>
-                <div className='d-flex flex-column align-items-center clearfix mb-3'>
-                  <div className='w-auto'>
-                    <div className='float-end'>
-                      <p className='mb-0 text-center'>First ID Preview </p>
-                      <img
-                        src={imgFront}
-                        className='rounded p-3 float-end'
-                        style={{
-                          height: '300px',
-                          width: '300px',
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <Form.Group controlId='formFile' className='mb-3 w-100'>
-                    <Form.Label className='text-secondary'>
-                      First Valid Government Id
-                    </Form.Label>
-                    <Form.Control
-                      type='file'
-                      id='formFile'
-                      onChange={onImageChangeFront}
-                      isInvalid={!!errors.valid_id_front}
-                    />
-                    {console.log(errors)}
-                    <Form.Control.Feedback type='invalid'>
-                      {errors.valid_id_front}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </div>
-
-                <div className='d-flex flex-column align-items-center clearfix'>
-                  <div className='w-auto'>
-                    <div className='float-end'>
-                      <p className='mb-0 text-center'>Second ID Preview </p>
-                      <img
-                        src={imgBack}
-                        className='rounded p-3 float-end'
-                        style={{
-                          height: '300px',
-                          width: '300px',
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <Form.Group controlId='formFile' className='w-100 mb-3'>
-                    <Form.Label className='text-secondary'>
-                      Second Valid Government Id
-                    </Form.Label>
-                    <Form.Control
-                      type='file'
-                      id='formFile'
-                      onChange={onImageChangeBack}
-                      isInvalid={!!errors.valid_id_back}
-                    />
-                    <Form.Control.Feedback type='invalid'>
-                      {errors.valid_id_back}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </div>
-
-                <Form.Group className='my-2'>
-                  <Row xs='auto'>
-                    <Col
-                      style={{
-                        padding: '0 0 0 12px',
-                      }}
+                    <OverlayTrigger
+                      placement='bottom'
+                      overlay={
+                        <Tooltip id='button-tooltip-2'>
+                          <div className='p-2 text-start'>
+                            Once you didn't follow the instruction, we will
+                            automatically reject your request.
+                          </div>
+                        </Tooltip>
+                      }
                     >
-                      <Form.Check
-                        checked={check}
-                        onChange={handleCheckboxChange}
-                        type='checkbox'
-                        id='termsAndCondition'
-                        isInvalid={!!errors.terms_and_conditions}
-                        feedbackType='invalid'
-                        feedback={
-                          errors.terms_and_conditions &&
-                          errors.terms_and_conditions.length > 0 &&
-                          errors.terms_and_conditions[0]
-                        }
-                      />
-                    </Col>
-                    <Col>
-                      <Form.Label
-                        className='text-secondary fw-light mb-0'
-                        controlId='termsAndCondition'
-                      >
-                        I agree to the
-                        <a
-                          onClick={handleShow}
-                          target='_blank'
-                          className='fw-bold'
-                        >
-                          Terms and Condition
-                        </a>
+                      <FontAwesomeIcon icon={faExclamationCircle} />
+                    </OverlayTrigger>
+                  </div>
+                  <ul className='ms-4'>
+                    <li>
+                      Please make sure that both pictures of the government IDs
+                      are clear and valid.
+                    </li>
+                  </ul>
+                  <hr />
+                  <div className='clearfix'>
+                    <p className='float-end mb-0'> - System Administator</p>
+                  </div>
+                </Alert>
+                <Form onSubmit={handleUpdateAccessForm} id='updateAccessForm'>
+                  <div className='d-flex flex-column align-items-center clearfix mb-3'>
+                    <div className='w-auto'>
+                      <div className='float-end'>
+                        <p className='mb-0 text-center'>ID Preview (Front) </p>
+                        <img
+                          src={imgFront}
+                          className='rounded p-3 float-end'
+                          style={{
+                            height: '300px',
+                            width: '300px',
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <Form.Group controlId='formFile' className='mb-3 w-100'>
+                      <Form.Label className='text-secondary'>
+                        Valid Government Id (Front)
                       </Form.Label>
-                    </Col>
-                  </Row>
+                      <Form.Control
+                        type='file'
+                        id='formFile'
+                        onChange={onImageChangeFront}
+                        isInvalid={!!errors.valid_id_front}
+                      />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.valid_id_front}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </div>
 
-                  {/* <Form.Control.Feedback type='invalid' className='text-danger'>
+                  <div className='d-flex flex-column align-items-center clearfix'>
+                    <div className='w-auto'>
+                      <div className='float-end'>
+                        <p className='mb-0 text-center'>ID Preview (Back) </p>
+                        <img
+                          src={imgBack}
+                          className='rounded p-3 float-end'
+                          style={{
+                            height: '300px',
+                            width: '300px',
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <Form.Group controlId='formFile' className='w-100 mb-3'>
+                      <Form.Label className='text-secondary'>
+                        Valid Government Id (Back)
+                      </Form.Label>
+                      <Form.Control
+                        type='file'
+                        id='formFile'
+                        onChange={onImageChangeBack}
+                        isInvalid={!!errors.valid_id_back}
+                      />
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.valid_id_back}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </div>
+
+                  <Form.Group className='my-2'>
+                    <Row xs='auto'>
+                      <Col
+                        style={{
+                          padding: '0 0 0 12px',
+                        }}
+                      >
+                        <Form.Check
+                          checked={check}
+                          onChange={handleCheckboxChange}
+                          type='checkbox'
+                          id='termsAndCondition'
+                          isInvalid={!!errors.terms_and_conditions}
+                          feedbackType='invalid'
+                          feedback={
+                            errors.terms_and_conditions &&
+                            errors.terms_and_conditions.length > 0 &&
+                            errors.terms_and_conditions[0]
+                          }
+                        />
+                      </Col>
+                      <Col>
+                        <Form.Label
+                          className='text-secondary fw-light mb-0'
+                          controlId='termsAndCondition'
+                        >
+                          I agree to the
+                          <a
+                            onClick={handleShow}
+                            target='_blank'
+                            className='fw-bold'
+                          >
+                            Terms and Condition
+                          </a>
+                        </Form.Label>
+                      </Col>
+                    </Row>
+
+                    {/* <Form.Control.Feedback type='invalid' className='text-danger'>
                     {errors.length > 0 &&
                       errors.terms_and_conditions.length > 0 &&
                       errors.terms_and_conditions[0]}
                   </Form.Control.Feedback> */}
-                </Form.Group>
-              </Form>
+                  </Form.Group>
+                </Form>
 
-              <Button
-                disabled={!check}
-                variant='primary'
-                className='rounded'
-                form='updateAccessForm'
-                type='submit'
-              >
-                Submit
-              </Button>
+                <Button
+                  disabled={!check}
+                  variant='primary'
+                  className='rounded'
+                  form='updateAccessForm'
+                  type='submit'
+                >
+                  Submit
+                </Button>
 
-              <Modal scrollable show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Terms and Conditions</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  Woohoo, you are reading this text in a modal!
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant='primary'
-                    className='rounded'
-                    onClick={handleClose}
-                  >
-                    I understand
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </Panel>
-            {/* <Panel shaded header='Logout' eventKey={1} id='panel1'></Panel> */}
-          </PanelGroup>
+                <Modal scrollable show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Terms and Conditions</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Woohoo, you are reading this text in a modal!
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant='primary'
+                      className='rounded'
+                      onClick={handleClose}
+                    >
+                      I understand
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </Panel>
+            </PanelGroup>
+          ) : (
+            <div className='d-flex flex-column justify-content-end mt-4 align-items-center'>
+              <span className='bg-secondary text-white p-2 rounded text-center'>
+                Request Sent. <br /> Wait for admin approval.
+              </span>
+            </div>
+          )}
+          {/* <Panel shaded header='Logout' eventKey={1} id='panel1'></Panel> */}
           <div className='p-5'>
             <button
               className='btn btn-danger p-3'

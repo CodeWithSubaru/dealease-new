@@ -13,7 +13,7 @@ export function ForgotPassword() {
   function handleSubmit(e) {
     e.preventDefault();
     axiosClient
-      .post('../forgot-password', email)
+      .post('/forgot-password', email)
       .then((res) => {
         setResend(true);
         setNotification(res.data.status);
