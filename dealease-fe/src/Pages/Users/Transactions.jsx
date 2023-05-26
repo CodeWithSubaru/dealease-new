@@ -244,9 +244,9 @@ export function TransactionsUser() {
 
   return (
     <>
-      <div className='d-flex transactionsDesktopView'>
+      <div className='d-flex'>
         <SidebarUser />
-        <main className='mx-2'>
+        <main className='w-100'>
           <div className='transactionsDesktopView'>
             <Transactions
               header={header}

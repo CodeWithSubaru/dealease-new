@@ -11,7 +11,7 @@ export function Mainpage(props) {
   return (
     <>
       <HeroSection showRegisterModal={props.showRegisterModal} />
-      <Container fluid style={{ marginTop: '-120px' }}>
+      {/* <Container fluid style={{ marginTop: '-120px' }}>
         <div className='promotion'>
           <Row>
             <Col md={6}>
@@ -37,7 +37,7 @@ export function Mainpage(props) {
             </Col>
           </Row>
         </div>
-      </Container>
+      </Container> */}
       <Announcement />
       <Card />
     </>

@@ -55,7 +55,7 @@ export function Card() {
               <Col className='d-flex align-items-center'>
                 <span
                   className={
-                    'badge rounded-pill btn fw-semibold me-2 fs-6 ' +
+                    'badge mt-3 rounded-pill btn fw-semibold me-2 fs-6 ' +
                     (currentColor == 0 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
@@ -68,7 +68,7 @@ export function Card() {
 
                 <span
                   className={
-                    'badge rounded-pill btn fw-semibold me-2 fs-6 ' +
+                    'badge mt-3 rounded-pill btn fw-semibold me-2 fs-6 ' +
                     (currentColor == 1 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
@@ -81,7 +81,7 @@ export function Card() {
 
                 <span
                   className={
-                    'badge rounded-pill btn fw-semibold fs-6 ' +
+                    'badge mt-3 rounded-pill btn fw-semibold fs-6 ' +
                     (currentColor == 2 ? 'btn-primary' : 'btn-secondary')
                   }
                   onClick={() => {
