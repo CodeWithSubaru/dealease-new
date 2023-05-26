@@ -39,7 +39,7 @@ export const ViewSingleUser = (props) => {
               {props.data.avr_id ? (
                 <>
                   <div>
-                    <span className='d-block'> 1st Submitted Id :</span>{' '}
+                    <span className='d-block'> 1st Submitted Id (Front):</span>{' '}
                     <img
                       src={
                         PUBLIC_URL +
@@ -54,7 +54,7 @@ export const ViewSingleUser = (props) => {
                     />
                   </div>
                   <div>
-                    <span className='d-block'>2nd Submitted Id : </span>{' '}
+                    <span className='d-block'>2nd Submitted Id (Back) : </span>{' '}
                     <img
                       src={
                         PUBLIC_URL +
@@ -145,7 +145,8 @@ export const ViewSingleUser = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title className='fw-bold'>
-            {imageToPreview === 1 ? '1st' : '2nd'} User's Valid ID
+            {imageToPreview === 1 ? '1st' : '2nd'} User's Valid ID{' '}
+            {imageToPreview === 1 ? '(Front)' : '(Back)'}
           </Modal.Title>
         </Modal.Header>
 
