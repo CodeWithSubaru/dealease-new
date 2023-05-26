@@ -10,6 +10,7 @@ import axiosClient from '../../api/axios';
 import useAddToCartContext from '../../Hooks/Context/AddToCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import { Input, InputGroup } from 'rsuite';
 import {
   faEye,
   faEdit,
@@ -33,6 +34,8 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import useOrderContext from '../../Hooks/Context/OrderContext';
 import { Load } from '../../Components/Loader/Load';
 import { SidebarUser } from '../../Components/Sidebar/Sidebar';
+import React from 'react';
+import CloseIcon from '@rsuite/icons/Close';
 
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
@@ -42,6 +45,13 @@ export function AddToCart() {
   const { user } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [value, setValue] = React.useState(0);
+  const handleMinus = () => {
+    setValue(parseInt(value, 10) - 1);
+  };
+  const handlePlus = () => {
+    setValue(parseInt(value, 10) + 1);
+  };
 
   function fetchCartHistoryBySellerId() {
     axiosClient
@@ -224,11 +234,7 @@ export function AddToCart() {
                                       className='d-flex flex-row p-2 mb-3 mt-2 border border-1 border-dark-subtle'
                                       key={index}
                                     >
-                                      <div
-                                        style={{
-                                          overflow: 'hidden',
-                                        }}
-                                      >
+                                      <div className='addcartproductimgcontainer'>
                                         <img
                                           src={
                                             PUBLIC_URL +
@@ -240,71 +246,94 @@ export function AddToCart() {
                                               ? cartItem.product.image
                                               : ''
                                           }
-                                          style={{
-                                            objectFit: 'cover',
-                                          }}
-                                          className='rounded h-100 w-100'
+                                          className='rounded addcartproductimg'
                                         />
                                       </div>
                                       <div className='flex-grow-1 d-flex justify-content-between ms-3'>
                                         <div>
-                                          <H3 className='fs-3'>
-                                            {cartItem.product.title}
-                                          </H3>
                                           <div className='d-flex flex-column'>
-                                            <span>
-                                              Price: Php{' '}
-                                              {cartItem.product.price_per_kg}
-                                            </span>
-                                            <span>
+                                            <H3 className='titleproduct'>
+                                              {cartItem.product.title}
+                                            </H3>
+                                            <span className='mb-1'>
                                               Available Stocks :{' '}
                                               {cartItem.product.stocks_per_kg}{' '}
                                               kg
                                             </span>
                                           </div>
+                                          <div className='quantitybuttoncontainer'>
+                                            <InputGroup className='quantitybutton'>
+                                              <InputGroup.Button
+                                                onClick={() =>
+                                                  decrement(cartItem.id)
+                                                }
+                                                disabled={cartItem.weight == 1}
+                                                className='bg-primary text-white textbtnquantity '
+                                              >
+                                                -
+                                              </InputGroup.Button>
+                                              <Input
+                                                className={
+                                                  'custom-input-number text-center textbtnquantity'
+                                                }
+                                                value={cartItem.weight}
+                                                onChange={setValue}
+                                              />
+                                              <InputGroup.Button
+                                                onClick={() =>
+                                                  increment(cartItem.id)
+                                                }
+                                                disabled={
+                                                  cartItem.product
+                                                    .stocks_per_kg <=
+                                                  cartItem.weight
+                                                }
+                                                className='bg-primary text-white textbtnquantity'
+                                              >
+                                                +
+                                              </InputGroup.Button>
+                                            </InputGroup>
+                                          </div>
                                         </div>
                                         <div className='d-flex flex-xs-column align-self-end justify-content-end'>
-                                          <div>
-                                            <Button
-                                              variant='primary'
-                                              className='w-25 py-2 px-0 me-2 rounded'
+                                          <div
+                                            style={{
+                                              top: '0',
+                                              position: 'absolute',
+                                            }}
+                                          >
+                                            <CloseIcon
+                                              className='fs-4 mt-2 fw-bold '
                                               onClick={() =>
-                                                decrement(cartItem.id)
+                                                removeFromCart(cartItem.id)
                                               }
-                                              disabled={cartItem.weight == 1}
-                                            >
-                                              -
-                                            </Button>
-                                            <input
-                                              type='text'
-                                              className='w-25 py-1 text-center'
-                                              value={cartItem.weight}
-                                              disabled
                                             />
-                                            <Button
-                                              variant='primary'
-                                              className='w-25 py-2 px-0 ms-2 rounded me-2'
-                                              onClick={() =>
-                                                increment(cartItem.id)
-                                              }
-                                              disabled={
-                                                cartItem.product
-                                                  .stocks_per_kg <=
-                                                cartItem.weight
-                                              }
-                                            >
-                                              +
-                                            </Button>
+                                          </div>
 
-                                            <Button
+                                          <span
+                                            style={{
+                                              position: 'absolute',
+                                              bottom: '0',
+                                            }}
+                                            className='m-3 textbtnquantity'
+                                          >
+                                            <img
+                                              src='/images/seashell.png'
+                                              height={20}
+                                              width={20}
+                                              className='mx-1'
+                                              alt=''
+                                            />{' '}
+                                            {cartItem.product.price_per_kg}
+                                          </span>
+                                          {/* <Button
                                               className='btn btn-danger rounded mt-2'
                                               onClick={() =>
                                                 removeFromCart(cartItem.id)
                                               }
                                             >
                                               Remove
-                                            </Button>
-                                          </div>
+                                            </Button> */}
                                         </div>
                                       </div>
                                     </Card>

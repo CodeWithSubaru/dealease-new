@@ -75,7 +75,7 @@ export function AuthUserLayout() {
   return (
     <>
       <Navbar bg='primary' variant='dark' sticky='top' className='UserNavbar'>
-        <Container fluid>
+        <Container fluid className='header-container'>
           <Navbar.Brand as={NavLink} href='/'>
             <span className='fs-3 text-white fw-bold fst-italic text-decoration-none'>
               <img
