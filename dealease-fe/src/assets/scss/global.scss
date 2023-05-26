@@ -395,9 +395,9 @@
   display: none;
 }
 .card-add-to-cart {
-  width: 80%;
+  width: 95%;
   margin: 0 auto;
-  margin-top: 25px;
+  margin-top: 60px;
 }
 .deskchangeprof {
   display: block;
@@ -419,8 +419,19 @@
 .withdraw-card {
   width: 100% !important;
 }
-
+.mobileaddcart {
+  display: none;
+}
 @media screen and (max-width: 960px) {
+  .desktopaddcart {
+    display: none;
+  }
+  .mobileaddcart {
+    display: block;
+    width: 25% !important;
+    margin-top: 15px !important;
+    margin: 0 auto;
+  }
   .request-title {
     font-size: 23px !important;
     line-height: 1.3;

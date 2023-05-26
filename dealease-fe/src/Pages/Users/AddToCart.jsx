@@ -36,7 +36,8 @@ import { SidebarUser } from '../../Components/Sidebar/Sidebar';
 
 export function AddToCart() {
   const [cartHistoryBySellerId, setCartHistoryBySellerId] = useState([]);
-  const { fetchCountInItemsCart } = useAddToCartContext();
+
+  const { countItemsInCart, fetchCountInItemsCart } = useAddToCartContext();
   const { setStep1, setGrandTotal } = useOrderContext();
   const { user } = useAuthContext();
   const navigate = useNavigate();
@@ -118,15 +119,54 @@ export function AddToCart() {
     <>
       <div style={{ display: 'flex', height: '100%' }}>
         <SidebarUser />
-        <main className=' w-100' style={{ minHeight: '85vh' }}>
-          <Card className='shadow card-add-to-cart'>
+        <main className=' w-100'>
+          <Card className=' card-add-to-cart'>
             {loading ? (
-              <Load />
+              <div className='addtocart-container p-3 h-100 mx-2'>
+                <Card.Header className='d-flex justify-content-between'>
+                  <H1 className='text-home pt-2'>
+                    Your Cart [
+                    {countItemsInCart === 9 ? '9+' : countItemsInCart}]
+                  </H1>
+                  <Link
+                    className='btn btn-primary my-auto text-decoration-none w-auto rounded desktopaddcart'
+                    to='/home'
+                  >
+                    <FontAwesomeIcon icon={faPlus} /> Add
+                  </Link>
+                </Card.Header>
+                <Link
+                  className='btn btn-primary my-auto text-decoration-none rounded mobileaddcart'
+                  to='/home'
+                >
+                  <FontAwesomeIcon icon={faPlus} /> Add
+                </Link>
+                <div
+                  className=' rounded pt-0'
+                  style={{ height: '50vh', overflowY: 'auto' }}
+                >
+                  <Load />
+                </div>
+              </div>
             ) : (
               <div className='addtocart-container p-3 h-100 mx-2'>
-                <H1 className='text-home mb-3 pt-2'>Add to Cart</H1>
-                <Link className='btn btn-primary rounded' to='/home'>
-                  <FontAwesomeIcon icon={faPlus} /> Add More
+                <Card.Header className='d-flex justify-content-between'>
+                  <H1 className='text-home pt-2'>
+                    Your Cart [
+                    {countItemsInCart === 9 ? '9+' : countItemsInCart}]
+                  </H1>
+                  <Link
+                    className='btn btn-primary my-auto text-decoration-none w-auto rounded desktopaddcart'
+                    to='/home'
+                  >
+                    <FontAwesomeIcon icon={faPlus} /> Add
+                  </Link>
+                </Card.Header>
+                <Link
+                  className='btn btn-primary my-auto text-decoration-none rounded mobileaddcart'
+                  to='/home'
+                >
+                  <FontAwesomeIcon icon={faPlus} /> Add
                 </Link>
                 <div
                   className=' rounded pt-0'
