@@ -94,7 +94,7 @@ export function Register() {
               <Row>
                 <Col>
                   <div className='register-description mb-1 mx-auto'>
-                    <h1 className=' fw-bold'>Register</h1>
+                    <h1 className='fw-bold'>Register</h1>
                     <p className='register-details '>
                       Please provide your details
                     </p>
@@ -141,7 +141,7 @@ export function Register() {
                   </Col>
                 </Row>
                 <Row className=''>
-                  <Col lg={6}>
+                  <Col lg={3}>
                     <div>
                       <div className='mt-2  reg-label'>
                         {' '}
@@ -162,7 +162,7 @@ export function Register() {
                       </small>
                     </div>
                   </Col>
-                  <Col lg={6}>
+                  <Col lg={3}>
                     <div>
                       <div className='mt-2  reg-label'> Middle Name </div>
                       <div>
@@ -177,9 +177,7 @@ export function Register() {
                       </div>
                     </div>
                   </Col>
-                </Row>
-                <Row className=''>
-                  <Col lg={6}>
+                  <Col lg={3}>
                     <div>
                       <div className='mt-2  reg-label'>
                         {' '}
@@ -200,7 +198,7 @@ export function Register() {
                       </small>
                     </div>
                   </Col>
-                  <Col lg={6}>
+                  <Col lg={3}>
                     <div>
                       <div className='mt-2  reg-label'> Extension Name </div>
                       <div>
@@ -393,7 +391,7 @@ export function Register() {
                 {/* <h3>Account Details</h3> */}
                 {/* <hr /> */}
                 <Row className=''>
-                  <Col>
+                  <Col lg={6}>
                     <div>
                       <div className='mt-2  reg-label'>
                         {' '}
@@ -414,9 +412,7 @@ export function Register() {
                       {errors && errors.email && errors.email[0]}
                     </small>
                   </Col>
-                </Row>
-                <Row>
-                  <Col>
+                  <Col lg={6}>
                     <div>
                       <div className='mt-2  reg-label'>
                         {' '}
@@ -439,7 +435,7 @@ export function Register() {
                   </Col>
                 </Row>
                 <Row className=''>
-                  <Col>
+                  <Col lg={6}>
                     <div>
                       <div className='mt-2  reg-label'>
                         Password <span className='asterisk'>*</span>{' '}
@@ -460,9 +456,8 @@ export function Register() {
                       {errors && errors.password && errors.password[0]}
                     </small>
                   </Col>
-                </Row>
-                <Row className=''>
-                  <Col>
+
+                  <Col lg={6}>
                     <div className='mb-1'>
                       <div className='mt-2  reg-label'>
                         Confirm Password <span className='asterisk'>*</span>{' '}

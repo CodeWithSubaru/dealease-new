@@ -155,11 +155,13 @@ export function Header(props) {
                 <button
                   // className='signup-button'
                   // onClick={() => setRegisterModalShow(true)}
-                  onClick={() => setChooseShow(true)}
+                  // onClick={() => setChooseShow(true)}
                   role={Button}
                   className='btn btn-dark btn-sm text-decoration-none border border-2 border-dark me-3'
                 >
-                  Signup
+                  <Link to='/register' className='text-decoration-none'>
+                    Signup{' '}
+                  </Link>
                 </button>
                 {/* <RegisterModal
                   showRegister={modalRegisterShow}

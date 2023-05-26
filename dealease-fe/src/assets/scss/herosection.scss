@@ -11,19 +11,20 @@ video {
   // background: ;
   width: 100%;
 
-  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 0;
-  height: 80vh;
+  height: 700px;
 }
 .hero-container {
   // background: ;
+  height: 700px;
+  line-height: 100px;
   padding: 0px 120px;
   position: relative;
   width: 100%;
   top: 0;
   z-index: 1;
-  height: 80vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -32,7 +33,7 @@ video {
 .hero-container > h1 {
   color: #fff;
   font-size: 70px;
-  margin-top: 180px;
+  margin-top: 250px;
 }
 .hero-container > p {
   font-size: 32px;
@@ -68,10 +69,19 @@ video {
   margin-top: 32px;
 }
 
-.hero-btns .btn {
-  margin: 6px;
+.getstartedbtn {
+  margin-right: 35px !important;
+}
+.ordernowbtn {
+  margin-left: 35px !important;
 }
 @media screen and (max-width: 960px) {
+  .getstartedbtn {
+    margin-right: 0px !important;
+  }
+  .ordernowbtn {
+    margin-left: 0px !important;
+  }
   .hero-container > h1 {
     font-size: 70px;
   }
@@ -80,8 +90,13 @@ video {
   }
 }
 @media screen and (max-width: 768px) {
+  .hero-container {
+    line-height: normal;
+  }
   .hero-container > h1 {
     font-size: 40px;
+
+    margin-top: 180px;
   }
   .hero-container > p {
     font-size: 22px;

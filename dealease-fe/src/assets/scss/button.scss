@@ -120,6 +120,12 @@
 .dropdown-logout-profile {
   margin-left: -20px;
 }
+@media screen and (max-width: 768px) {
+  .btn-large {
+    font-size: 16px;
+  }
+}
+
 @media screen and (max-width: 960px) {
   .search-input {
     height: 40px;
