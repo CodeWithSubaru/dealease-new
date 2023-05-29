@@ -309,16 +309,19 @@ export function TransactionsAdmin() {
               <div key={i} className='button-actions text-light d-flex'>
                 {transaction.payment_status === '1' && (
                   <>
-                    <Button
-                      variant='primary'
-                      onClick={() =>
-                        checkDetails(transaction.checkout_session_id)
-                      }
-                      style={{ cursor: 'pointer' }}
-                      className='badge rounded px-2 me-2 btn'
-                    >
-                      View
-                    </Button>
+                    {transaction.payment_description === 'Recharge' && (
+                      <Button
+                        variant='primary'
+                        onClick={() =>
+                          checkDetails(transaction.checkout_session_id)
+                        }
+                        style={{ cursor: 'pointer' }}
+                        className='badge rounded px-2 me-2 btn'
+                      >
+                        View
+                      </Button>
+                    )}
+
                     <Button
                       variant='primary'
                       onClick={() =>

@@ -238,7 +238,11 @@ export function Users() {
 
   function switchUserType(user) {
     if (user.role_type === 'User') {
-      return user.role_type;
+      if (user.verified_user === 1) {
+        return 'Seller';
+      } else {
+        return 'Buyer';
+      }
     }
 
     if (user.role_type === 'Rider') {
@@ -287,7 +291,7 @@ export function Users() {
                 <span
                   className={
                     'badge rounded-pill text-bg-' +
-                    (switchUserType(user) == 'User' ? 'primary' : 'secondary')
+                    (switchUserType(user) == 'Seller' ? 'primary' : 'secondary')
                   }
                 >
                   {switchUserType(user)}
