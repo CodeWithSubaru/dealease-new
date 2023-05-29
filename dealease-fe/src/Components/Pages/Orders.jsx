@@ -327,7 +327,7 @@ export function OrdersTable(props) {
                       props.setUserOrdersTable(1);
                       props.fetchNumberOrdersByStatusUser(1);
                       props.fetchNumberOrdersByStatusUser([2, 3, 4]);
-                      props.fetchNumberOrdersByStatusUser([5, 6]);
+                      props.fetchNumberOrdersByStatusUser([5, 6, 0]);
                     }}
                     disabled={props.loading}
                   >
@@ -348,7 +348,7 @@ export function OrdersTable(props) {
                       props.setUserOrdersTable([2, 3, 4]);
                       props.fetchNumberOrdersByStatusUser(1);
                       props.fetchNumberOrdersByStatusUser([2, 3, 4]);
-                      props.fetchNumberOrdersByStatusUser([5, 6]);
+                      props.fetchNumberOrdersByStatusUser([5, 6, 0]);
                     }}
                     disabled={props.loading}
                   >
@@ -367,10 +367,10 @@ export function OrdersTable(props) {
                   <Nav.Link
                     eventKey='third'
                     onClick={() => {
-                      props.setUserOrdersTable([5, 6]);
+                      props.setUserOrdersTable([5, 6, 0]);
                       props.fetchNumberOrdersByStatusUser(1);
                       props.fetchNumberOrdersByStatusUser([2, 3, 4]);
-                      props.fetchNumberOrdersByStatusUser([5, 6]);
+                      props.fetchNumberOrdersByStatusUser([5, 6, 0]);
                     }}
                     disabled={props.loading}
                   >

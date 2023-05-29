@@ -166,8 +166,8 @@ export function OrdersBuyer() {
             fetchUserInfo();
             fetchNumberOrdersByStatusUser(1);
             fetchNumberOrdersByStatusUser([2, 3, 4]);
-            fetchNumberOrdersByStatusUser([5, 6]);
-            setUserOrdersTable([5, 6]);
+            fetchNumberOrdersByStatusUser([5, 6, 0]);
+            setUserOrdersTable([5, 6, 0]);
           })
           .catch((e) => console.log(e));
       }
@@ -186,7 +186,7 @@ export function OrdersBuyer() {
           .then((resp) => {
             fetchNumberOrdersByStatusUser(1);
             fetchNumberOrdersByStatusUser([2, 3, 4]);
-            fetchNumberOrdersByStatusUser([5, 6]);
+            fetchNumberOrdersByStatusUser([5, 6, 0]);
             setUserOrdersTable([2, 3, 4]);
           })
           .catch((e) => console.log(e));
@@ -368,7 +368,7 @@ export function OrdersBuyer() {
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
     fetchNumberOrdersByStatusUser([2, 3, 4]);
-    fetchNumberOrdersByStatusUser([5, 6]);
+    fetchNumberOrdersByStatusUser([5, 6, 0]);
     setUserOrdersTable(1);
   }, []);
 
@@ -408,7 +408,7 @@ export function OrdersBuyer() {
                 setUserOrdersTable(1);
                 fetchNumberOrdersByStatusUser(1);
                 fetchNumberOrdersByStatusUser([2, 3, 4]);
-                fetchNumberOrdersByStatusUser([5, 6]);
+                fetchNumberOrdersByStatusUser([5, 6, 0]);
                 setPageTitle('Pending Orders');
                 setCurrentColor(0);
               }}
@@ -426,7 +426,7 @@ export function OrdersBuyer() {
                 setUserOrdersTable([2, 3, 4]);
                 fetchNumberOrdersByStatusUser(1);
                 fetchNumberOrdersByStatusUser([2, 3, 4]);
-                fetchNumberOrdersByStatusUser([5, 6]);
+                fetchNumberOrdersByStatusUser([5, 6, 0]);
                 setPageTitle('Processing Orders');
                 setCurrentColor(1);
               }}
@@ -984,8 +984,8 @@ export function OrdersSeller() {
 
   useEffect(() => {
     fetchNumberOrdersByStatusUser(1);
-    fetchNumberOrdersByStatusUser([2, 3, 4, 5]);
-    fetchNumberOrdersByStatusUser([6, 7, 8]);
+    fetchNumberOrdersByStatusUser([2, 3, 4]);
+    fetchNumberOrdersByStatusUser([5, 6, 0]);
     setUserOrdersTable(1);
   }, []);
 
