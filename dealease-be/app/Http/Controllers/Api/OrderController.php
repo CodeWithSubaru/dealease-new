@@ -224,7 +224,7 @@ class OrderController extends Controller
             ->join('order_transactions', 'order_transactions.order_number', 'orders.order_number')
             ->leftJoin('shipping_delivery_infos', 'shipping_delivery_infos.shipping_delivery_id', 'order_transactions.delivery_address_id')
             ->where('orders.order_number', $order)
-            ->where('order_transactions.order_trans_status', '!=', 0)
+            // ->where('order_transactions.order_trans_status', '!=', 0)
             ->get();
     }
 
