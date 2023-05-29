@@ -125,19 +125,19 @@ class SellerController extends Controller
 
         if ($changeStatus) {
             // will update status of order transaction table at the same time.
-            $delivery = Deliveries::with('orderToDeliver')->find($id)->first();
+            $delivery = Deliveries::with('orderToDeliver')->find($id);
             OrderTransaction::where('order_trans_id', $id)->update([
                 'order_trans_status' => '6',
             ]);
 
             // Add the delivery fee to rider's wallet account 
-            $totalShellAmount = 0;
-            $riderWallet = UsersWallet::where('user_id', $delivery->rider_id);
-            $totalShellAmount = $riderWallet->first()->shell_coin_amount + 0; // $delivery->orderToDeliver->delivery_fee
+            // $totalShellAmount = 0;
+            // $riderWallet = UsersWallet::where('user_id', $delivery->rider_id);
+            // $totalShellAmount = $riderWallet->first()->shell_coin_amount + 0; // $delivery->orderToDeliver->delivery_fee
 
-            $riderWallet->update([
-                'shell_coin_amount' => $totalShellAmount,
-            ]);
+            // $riderWallet->update([
+            //     'shell_coin_amount' => $totalShellAmount,
+            // ]);
 
             // Add the total amount to buyers's wallet account 
             $totalBuyerShellAmount = 0;

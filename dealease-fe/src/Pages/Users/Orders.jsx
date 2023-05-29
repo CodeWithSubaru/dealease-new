@@ -58,7 +58,7 @@ export function OrdersBuyer() {
   }
 
   function status(status) {
-    if (status === 0) {
+    if (status === '0') {
       return 'Cancelled';
     }
 
@@ -98,25 +98,24 @@ export function OrdersBuyer() {
     if (status === '1') {
       return 'border-warning bg-warning bg-opacity-75 text-light';
     }
+
     if (status === '2') {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
+
     if (status === '3') {
       return 'border-success bg-success bg-opacity-75 text-light';
     }
+
     if (status === '4') {
       return 'border-info bg-info bg-opacity-75 text-light';
     }
+
     if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
+
     if (status === '6') {
-      return 'border-success bg-success bg-opacity-75 text-light';
-    }
-    if (status === '7') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
-    }
-    if (status === '8') {
       return 'border-danger bg-danger bg-opacity-75 text-light';
     }
   }
@@ -575,23 +574,25 @@ export function OrdersSeller() {
     if (status === '1') {
       return 'border-warning bg-warning bg-opacity-75 text-light';
     }
+
     if (status === '2') {
       return 'border-secondary bg-secondary bg-opacity-75 text-light';
     }
+
     if (status === '3') {
       return 'border-success bg-success bg-opacity-75 text-light';
     }
+
     if (status === '4') {
       return 'border-info bg-info bg-opacity-75 text-light';
     }
+
     if (status === '5') {
       return 'border-primary bg-primary bg-opacity-75 text-light';
     }
-    if (status === '7') {
-      return 'border-primary bg-primary bg-opacity-75 text-light';
-    }
-    if (status === '8') {
-      return 'border-success bg-success bg-opacity-75 text-light';
+
+    if (status === '6') {
+      return 'border-danger bg-danger bg-opacity-75 text-light';
     }
   }
 
